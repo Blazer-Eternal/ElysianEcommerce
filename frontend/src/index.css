@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply text-gray-800;
+    background: linear-gradient(135deg, #eafcfd 0%, #d7f4f6 40%, #bcecef 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/60 backdrop-blur-md border border-white/80;
+  }
+  .glass-strong {
+    @apply bg-white/80 backdrop-blur-lg border border-white/90;
+  }
+  .glass-nav {
+    @apply bg-white/55 backdrop-blur-lg border-b border-white/70;
+  }
+  .accent-bg {
+    background-color: #bcecef;
+  }
+  .accent-text {
+    color: #0e7c85;
+  }
+}
