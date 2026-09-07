@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { categoryService } from "../../services/categoryService";
 import { useDebounce } from "../../hooks/useDebounce";
+import CategoryDropdown from "./CategoryDropdown";
 import type { ProductQueryParams } from "../../types/product.types";
 
 interface ProductFiltersProps {
@@ -32,24 +33,15 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         placeholder="Search products..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full border rounded px-3 py-2"
+        className="w-full border rounded-lg px-3 py-2 bg-white/70"
       />
 
       <div className="flex flex-wrap gap-3">
-        <select
-          value={filters.category_id || ""}
-          onChange={(e) =>
-            onChange({ ...filters, category_id: e.target.value || undefined, page: 1 })
-          }
-          className="border rounded px-3 py-2 text-sm"
-        >
-          <option value="">All Categories</option>
-          {categories.map((cat) => (
-            <option key={cat._id} value={cat._id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
+        <CategoryDropdown
+          categories={categories}
+          selectedId={filters.category_id}
+          onSelect={(categoryId) => onChange({ ...filters, category_id: categoryId, page: 1 })}
+        />
 
         <input
           type="number"
@@ -62,7 +54,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
               page: 1,
             })
           }
-          className="border rounded px-3 py-2 text-sm w-28"
+          className="border rounded-lg px-3 py-2 text-sm w-28 bg-white/70"
         />
 
         <input
@@ -76,7 +68,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
               page: 1,
             })
           }
-          className="border rounded px-3 py-2 text-sm w-28"
+          className="border rounded-lg px-3 py-2 text-sm w-28 bg-white/70"
         />
 
         <label className="flex items-center gap-1.5 text-sm">
@@ -94,7 +86,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
             const [sortBy, sortOrder] = e.target.value.split(":");
             onChange({ ...filters, sortBy, sortOrder: sortOrder as "asc" | "desc", page: 1 });
           }}
-          className="border rounded px-3 py-2 text-sm"
+          className="border rounded-lg px-3 py-2 text-sm bg-white/70"
         >
           <option value="created_at:asc">Oldest First</option>
           <option value="created_at:desc">Newest First</option>

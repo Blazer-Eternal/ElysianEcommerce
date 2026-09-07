@@ -20,19 +20,44 @@ const ProductList = () => {
     queryFn: () => productService.getAll(filters),
   });
 
+  const totalProducts = data?.pagination?.total_items || 0;
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">All Products</h1>
+    <div className="space-y-12 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Header */}
+        <div className="mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">
+            All <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Products</span>
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Browse our complete collection ({totalProducts} items available)
+          </p>
+        </div>
 
-      <ProductFilters filters={filters} onChange={setFilters} />
+        {/* Filters Section */}
+        <div className="mb-12">
+          <div className="glass rounded-2xl p-6 sm:p-8">
+            <ProductFilters filters={filters} onChange={setFilters} />
+          </div>
+        </div>
+      </div>
 
-      <ProductGrid products={data?.data || []} isLoading={isLoading} />
+      {/* Products Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <ProductGrid products={data?.data || []} isLoading={isLoading} />
+      </div>
 
-      {data?.pagination && (
-        <Pagination
-          pagination={data.pagination}
-          onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
-        />
+      {/* Pagination */}
+      {data?.pagination && !isLoading && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-center">
+            <Pagination
+              pagination={data.pagination}
+              onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
