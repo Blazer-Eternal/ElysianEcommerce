@@ -33,7 +33,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-bold text-lg text-gray-900">ElysianEcommerce</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
-              A full-stack ecommerce platform built with the MERN stack and TypeScript, delivering excellence in every transaction.
+              Where quality meets innovation. We're committed to delivering an exceptional shopping experience with curated products, seamless transactions, and customer-first service at every step.
             </p>
             {/* Social links */}
             <div className="flex gap-3 pt-2">
@@ -133,7 +133,7 @@ const Footer = () => {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
           <p>© {currentYear} ElysianEcommerce. All rights reserved.</p>
           <p className="flex items-center gap-2">
-            Made with <span className="text-red-500">♥</span> using React • TypeScript • MERN Stack
+            Crafted with <span className="text-red-500">♥</span> for shoppers who deserve better
           </p>
         </div>
       </div>

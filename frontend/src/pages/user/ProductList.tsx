@@ -20,18 +20,17 @@ const ProductList = () => {
     queryFn: () => productService.getAll(filters),
   });
 
-  const totalProducts = data?.pagination?.total_items || 0;
 
-  return (
+ return (
     <div className="space-y-12 py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">
-            All <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Products</span>
+            All <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Products</span>
           </h1>
           <p className="text-gray-600 text-lg">
-            Browse our complete collection ({totalProducts} items available)
+            Discover premium quality products curated just for you — explore our exclusive collection today
           </p>
         </div>
 

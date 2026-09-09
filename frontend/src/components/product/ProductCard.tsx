@@ -36,7 +36,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const { addItem } = useCart();
-  
+
   const outOfStock = product.stock === 0;
   const rating = Math.round(product.rating_avg || 0);
   const imageUrl = product.images?.[0] || "https://via.placeholder.com/400";
@@ -63,7 +63,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     >
       <div className="glass rounded-2xl overflow-hidden hover:bg-white/80 transition-all duration-300 h-full flex flex-col shadow-md hover:shadow-xl hover:-translate-y-1">
         {/* Image Container */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#eafcfd] to-[#d7f4f6] aspect-square">
+        <div className="relative overflow-hidden bg-linear-to-br from-[#eafcfd] to-[#d7f4f6] aspect-square">
           {/* Product Image */}
           <img
             src={imageUrl}
@@ -74,7 +74,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
           {/* Overlay on hover */}
           <div
-            className={`absolute inset-0 bg-gradient-to-t from-black/40 to-transparent transition-opacity duration-300 ${
+            className={`absolute inset-0 bg-linear-to-t from-black/40 to-transparent transition-opacity duration-300 ${
               isHovered ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -137,7 +137,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {/* Price Container */}
           <div className="pt-3 border-t border-white/40 mt-3">
             <div className="flex items-baseline gap-2">
-              <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+              <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
                 {formatCurrency(product.price)}
               </span>
               {product.cost_price && product.cost_price < product.price && (
