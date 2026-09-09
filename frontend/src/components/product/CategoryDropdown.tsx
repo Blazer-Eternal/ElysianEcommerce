@@ -96,7 +96,7 @@ const CategoryDropdown = ({ categories, selectedId, onSelect }: CategoryDropdown
         createPortal(
           <div
             ref={panelRef}
-            className="fixed w-56 bg-white border border-gray-200 rounded-xl shadow-2xl py-1.5 text-sm z-[9999] max-h-72 overflow-y-auto"
+            className="fixed w-56 bg-white border border-gray-200 rounded-xl shadow-2xl py-1.5 text-sm z-9999 max-h-72 overflow-y-auto"
             style={{ top: `${dropdownPosition.top}px`, left: `${dropdownPosition.left}px` }}
           >
             {activeParent && (
