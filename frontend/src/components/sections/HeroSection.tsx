@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
+import heroImage from "../../assets/images/hero.png";
 
 const ArrowIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -12,8 +13,8 @@ const HeroSection = () => {
     <div className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden pt-12 sm:pt-20 pb-12 sm:pb-24">
       {/* Animated background gradient */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob"></div>
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-gradient-to-bl from-teal-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute top-0 left-0 w-96 h-96 bg-linear-to-br from-blue-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob"></div>
+        <div className="absolute top-1/2 right-0 w-96 h-96 bg-linear-to-bl from-teal-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -26,7 +27,7 @@ const HeroSection = () => {
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-gray-900">
-                Discover <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Premium</span> Products
+                Discover <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Premium</span> Products
               </h1>
               
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-xl">
@@ -73,25 +74,16 @@ const HeroSection = () => {
           <div className="order-1 lg:order-2">
             <div className="relative">
               {/* Decorative elements */}
-              <div className="absolute -inset-8 bg-gradient-to-br from-[#0e7c85]/10 to-cyan-300/10 rounded-3xl blur-2xl"></div>
+              <div className="absolute -inset-8 bg-linear-to-br from-[#0e7c85]/10 to-cyan-300/10 rounded-3xl blur-2xl"></div>
               
               {/* Main glass card */}
               <div className="glass rounded-3xl p-8 sm:p-12 relative z-10">
-                <div className="aspect-square bg-gradient-to-br from-[#eafcfd] to-[#bcecef] rounded-2xl flex items-center justify-center overflow-hidden">
-                  <div className="w-full h-full bg-gradient-to-br from-white/40 to-cyan-100/40 flex items-center justify-center">
-                    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" className="opacity-60">
-                      <rect x="40" y="60" width="120" height="100" rx="8" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
-                      <path d="M80 80v60M120 80v60" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.2"/>
-                      <circle cx="70" cy="100" r="3" fill="currentColor"/>
-                      <circle cx="100" cy="110" r="4" fill="currentColor"/>
-                      <circle cx="130" cy="95" r="3" fill="currentColor"/>
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Floating badge */}
-                <div className="absolute -bottom-4 -right-4 glass rounded-2xl px-4 py-3 font-semibold text-[#0e7c85]">
-                  30% OFF
+                <div className="aspect-square bg-linear-to-br from-[#eafcfd] to-[#bcecef] rounded-2xl flex items-center justify-center overflow-hidden">
+                  <img 
+                    src={heroImage} 
+                    alt="Premium Products" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -103,3 +95,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+

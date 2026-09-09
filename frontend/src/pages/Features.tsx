@@ -85,7 +85,7 @@ const Features = () => {
       <div className="pt-12 sm:pt-20 pb-8 sm:pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
-            Why Shop With <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Us</span>
+            Why Shop With <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Us</span>
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
             Everything we do is built around getting this right — delivering excellence in every interaction.
@@ -102,7 +102,7 @@ const Features = () => {
               className="glass rounded-2xl p-8 hover:bg-white/80 transition-all duration-300 group"
             >
               {/* Icon */}
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#0e7c85]/20 to-cyan-200/20 rounded-xl group-hover:from-[#0e7c85]/30 group-hover:to-cyan-200/30 transition-all duration-300 mb-4 text-[#0e7c85]">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-[#0e7c85]/20 to-cyan-200/20 rounded-xl group-hover:from-[#0e7c85]/30 group-hover:to-cyan-200/30 transition-all duration-300 mb-4 text-[#0e7c85]">
                 {feature.icon}
               </div>
 
@@ -145,12 +145,12 @@ const Features = () => {
               <div className="text-4xl font-bold text-[#0e7c85]">100%</div>
               <div className="text-gray-600">Authentic Products</div>
             </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+            <div className="h-px bg-linear-to-r from-transparent via-white/40 to-transparent"></div>
             <div className="space-y-2">
               <div className="text-4xl font-bold text-[#0e7c85]">4.8★</div>
               <div className="text-gray-600">Average Rating</div>
             </div>
-            <div className="h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+            <div className="h-px bg-linear-to-r from-transparent via-white/40 to-transparent"></div>
             <div className="space-y-2">
               <div className="text-4xl font-bold text-[#0e7c85]">0%</div>
               <div className="text-gray-600">Hidden Fees</div>

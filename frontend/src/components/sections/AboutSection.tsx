@@ -34,7 +34,7 @@ const AboutSection = () => {
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-                Your Trusted Online <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Shopping Partner</span>
+                Your Trusted Online <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Shopping Partner</span>
               </h2>
 
               <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
@@ -46,7 +46,7 @@ const AboutSection = () => {
             <div className="space-y-3">
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-start gap-3">
-                  <div className="flex-shrink-0 mt-1 w-5 h-5 rounded-full bg-gradient-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                  <div className="shrink-0 mt-1 w-5 h-5 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
                     <CheckIcon />
                   </div>
                   <span className="text-gray-700 text-sm sm:text-base">{benefit}</span>
@@ -71,7 +71,7 @@ const AboutSection = () => {
               <div className="grid grid-cols-2 gap-6">
                 {stats.map((stat, index) => (
                   <div key={index} className="space-y-2">
-                    <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                    <div className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
                       {stat.value}
                     </div>
                     <div className="text-xs sm:text-sm text-gray-600">{stat.label}</div>
@@ -80,7 +80,7 @@ const AboutSection = () => {
               </div>
 
               {/* Divider */}
-              <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+              <div className="my-8 h-px bg-linear-to-r from-transparent via-white/40 to-transparent"></div>
 
               {/* Additional info */}
               <div className="space-y-4">
@@ -94,7 +94,7 @@ const AboutSection = () => {
             </div>
 
             {/* Decorative card */}
-            <div className="glass rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-[#0e7c85]/5 to-cyan-200/5 border-l-4 border-[#0e7c85]">
+            <div className="glass rounded-2xl p-6 sm:p-8 bg-linear-to-br from-[#0e7c85]/5 to-cyan-200/5 border-l-4 border-[#0e7c85]">
               <p className="text-sm font-semibold text-[#0e7c85] mb-2">🎯 Our Mission</p>
               <p className="text-gray-700 text-sm leading-relaxed">
                 To revolutionize online shopping by providing quality products, exceptional service, and an unforgettable user experience.
@@ -108,3 +108,4 @@ const AboutSection = () => {
 };
 
 export default AboutSection;
+

@@ -77,7 +77,7 @@ const Wishlist = () => {
     <div className="space-y-12 py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">
-          My <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Wishlist</span>
+          My <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Wishlist</span>
         </h1>
         <p className="text-gray-600 text-lg">{items.length} item{items.length !== 1 ? "s" : ""} saved</p>
       </div>
@@ -105,7 +105,7 @@ const Wishlist = () => {
               >
                 <div className="glass rounded-2xl overflow-hidden hover:bg-white/80 transition-all duration-300 h-full flex flex-col shadow-md hover:shadow-xl hover:-translate-y-1">
                   {/* Image Container */}
-                  <div className="relative overflow-hidden bg-gradient-to-br from-[#eafcfd] to-[#d7f4f6] aspect-square">
+                  <div className="relative overflow-hidden bg-linear-to-br from-[#eafcfd] to-[#d7f4f6] aspect-square">
                     <img
                       src={imageUrl}
                       alt={product.name}
@@ -114,7 +114,7 @@ const Wishlist = () => {
 
                     {/* Overlay */}
                     <div
-                      className={`absolute inset-0 bg-gradient-to-t from-black/40 to-transparent transition-opacity duration-300 ${
+                      className={`absolute inset-0 bg-linear-to-t from-black/40 to-transparent transition-opacity duration-300 ${
                         isHovered ? "opacity-100" : "opacity-0"
                       }`}
                     />
@@ -178,7 +178,7 @@ const Wishlist = () => {
                     {/* Price & Button */}
                     <div className="pt-3 border-t border-white/40 mt-3 space-y-3">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                        <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
                           {formatCurrency(product.price)}
                         </span>
                         {product.cost_price && product.cost_price < product.price && (
@@ -193,7 +193,7 @@ const Wishlist = () => {
                       <button
                         onClick={() => handleAddToCart(product._id)}
                         disabled={outOfStock || isAdding}
-                        className="w-full py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white hover:from-[#0b6169] hover:to-cyan-700 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                        className="w-full py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white hover:from-[#0b6169] hover:to-cyan-700 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
                       >
                         <AddToCartIcon />
                         {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "Added ✓" : "Add to Cart"}

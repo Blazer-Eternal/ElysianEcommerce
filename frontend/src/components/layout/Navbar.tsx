@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useCart } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
 import { ROUTES } from "../../constants/routes";
+import logo from "../../assets/images/logo.png";
 
 const UserIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -64,10 +65,13 @@ const Navbar = () => {
 
   return (
     <nav className="glass-nav sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-3 sm:gap-6">
-        <Link to={ROUTES.HOME} className="font-semibold shrink-0 text-base sm:text-xl whitespace-nowrap tracking-tight">
-          <span className="sm:hidden">Elysian</span>
-          <span className="hidden sm:inline">ElysianEcommerce</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-3 flex items-center justify-between gap-3 sm:gap-6">
+        <Link to={ROUTES.HOME} className="shrink-0 flex items-center">
+          <img 
+            src={logo} 
+            alt="ElysianEcommerce Logo" 
+            className="h-10 sm:h-12 md:h-16 lg:h-20 w-auto object-contain transition-transform hover:scale-105"
+          />
         </Link>
 
         <div className="hidden md:flex items-center gap-10 text-sm text-gray-700 absolute left-1/2 -translate-x-1/2">

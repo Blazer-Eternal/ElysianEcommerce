@@ -55,7 +55,7 @@ const About = () => {
       <div className="pt-12 sm:pt-20 pb-8 sm:pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
-            About <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">ElysianEcommerce</span>
+            About <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">ElysianEcommerce</span>
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
             We believe that exceptional shopping experiences matter. That's why we built ElysianEcommerce with care, using the latest technology to serve you better.
@@ -126,7 +126,7 @@ const About = () => {
             <div key={index} className="glass rounded-2xl p-6 sm:p-8 border-l-4 border-[#0e7c85]">
               <div className="flex items-start gap-6">
                 <div className="flex-shrink-0">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-gradient-to-br from-[#0e7c85]/20 to-cyan-200/20 text-[#0e7c85] font-bold">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-linear-to-br from-[#0e7c85]/20 to-cyan-200/20 text-[#0e7c85] font-bold">
                     {milestone.year.slice(2)}
                   </div>
                 </div>

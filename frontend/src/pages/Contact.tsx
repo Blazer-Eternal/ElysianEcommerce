@@ -37,7 +37,7 @@ const Contact = () => {
       <div className="pt-12 sm:pt-20 pb-8 sm:pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
-            Get in <span className="bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Touch</span>
+            Get in <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Touch</span>
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
             We'd love to hear from you. Whether you have a question or feedback, don't hesitate to reach out.
@@ -60,7 +60,7 @@ const Contact = () => {
             {/* Location */}
             <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
                   <LocationIcon />
                 </div>
                 <div>
@@ -74,7 +74,7 @@ const Contact = () => {
             {/* Phone */}
             <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
                   <PhoneIcon />
                 </div>
                 <div>
@@ -88,7 +88,7 @@ const Contact = () => {
             {/* Email */}
             <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
                   <EmailIcon />
                 </div>
                 <div>
@@ -109,7 +109,7 @@ const Contact = () => {
               </p>
 
               {submitted && (
-                <div className="mb-6 glass bg-gradient-to-r from-[#eafcfd] to-[#d7f4f6] border-l-4 border-[#0e7c85] rounded-lg px-6 py-4">
+                <div className="mb-6 glass bg-linear-to-r from-[#eafcfd] to-[#d7f4f6] border-l-4 border-[#0e7c85] rounded-lg px-6 py-4">
                   <p className="text-[#0e7c85] font-semibold">✓ Message Received!</p>
                   <p className="text-[#0e7c85] text-sm mt-1">We'll get back to you within 24 hours.</p>
                 </div>
@@ -166,7 +166,7 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold py-3 rounded-lg hover:from-[#0b6169] hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                  className="w-full bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold py-3 rounded-lg hover:from-[#0b6169] hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   Send Message
                 </button>

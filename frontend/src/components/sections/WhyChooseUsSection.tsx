@@ -89,7 +89,7 @@ const WhyChooseUsSection = () => {
               className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group cursor-pointer h-full"
             >
               {/* Icon */}
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#0e7c85]/20 to-cyan-200/20 rounded-xl group-hover:from-[#0e7c85]/30 group-hover:to-cyan-200/30 transition-all duration-300 mb-4 text-[#0e7c85]">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-[#0e7c85]/20 to-cyan-200/20 rounded-xl group-hover:from-[#0e7c85]/30 group-hover:to-cyan-200/30 transition-all duration-300 mb-4 text-[#0e7c85]">
                 {feature.icon}
               </div>
 
@@ -118,3 +118,4 @@ const WhyChooseUsSection = () => {
 };
 
 export default WhyChooseUsSection;
+

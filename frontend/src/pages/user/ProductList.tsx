@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import ProductGrid from "../../components/product/ProductGrid";
@@ -20,11 +20,15 @@ const ProductList = () => {
     queryFn: () => productService.getAll(filters),
   });
 
+  // Scroll to top whenever the page number changes, so the user actually
+  // sees the new set of products instead of staying near the pagination controls.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [filters.page]);
 
- return (
+  return (
     <div className="space-y-12 py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Header */}
         <div className="mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-3">
             All <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Products</span>
@@ -34,7 +38,6 @@ const ProductList = () => {
           </p>
         </div>
 
-        {/* Filters Section */}
         <div className="mb-12">
           <div className="glass rounded-2xl p-6 sm:p-8">
             <ProductFilters filters={filters} onChange={setFilters} />
@@ -42,12 +45,10 @@ const ProductList = () => {
         </div>
       </div>
 
-      {/* Products Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <ProductGrid products={data?.data || []} isLoading={isLoading} />
       </div>
 
-      {/* Pagination */}
       {data?.pagination && !isLoading && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex justify-center">
