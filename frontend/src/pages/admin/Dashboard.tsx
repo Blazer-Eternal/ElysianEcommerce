@@ -133,7 +133,7 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Summary */}
-        <div className="max-w-7xl mx-auto glass rounded-2xl p-8 bg-linear-to-br from-[#0e7c85]/5 to-cyan-200/5 border-l-4 border-[#0e7c85] border border-white/20">
+        <div className="max-w-7xl mx-auto glass rounded-2xl p-8 bg-linear-to-br from-[#0e7c85]/5 to-cyan-200/5 border border-white/20">
           <h3 className="text-lg font-bold text-gray-900 mb-6">Store Summary</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
