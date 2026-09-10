@@ -23,7 +23,7 @@ const ProductList = () => {
   // Scroll to top whenever the page number changes, so the user actually
   // sees the new set of products instead of staying near the pagination controls.
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, [filters.page]);
 
   return (

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, memo } from "react";
 import type { Product } from "../../types/product.types";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { ROUTES } from "../../constants/routes";
@@ -153,4 +153,4 @@ const ProductCard = ({ product }: ProductCardProps) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

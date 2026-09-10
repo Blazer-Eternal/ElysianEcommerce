@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import AuthLayout from "./components/layout/AuthLayout";
-import AdminSidebar from "./components/layout/AdminSidebar";
 import AuthRedirect from "./components/AuthRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/auth/Login";
@@ -24,6 +23,7 @@ import ManageProducts from "./pages/admin/ManageProducts";
 import ManageCategories from "./pages/admin/ManageCategories";
 import ManageCoupons from "./pages/admin/ManageCoupons";
 import ManageOrders from "./pages/admin/ManageOrders";
+import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
 import ManageUsers from "./pages/admin/ManageUsers";
 import About from "./pages/About";
 import Features from "./pages/Features";
@@ -37,10 +37,7 @@ import NotFound from "./pages/NotFound";
 import { ROUTES } from "./constants/routes";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex">
-    <AdminSidebar />
-    <div className="flex-1">{children}</div>
-  </div>
+  <div>{children}</div>
 );
 
 // flex-col + min-h-screen forces this wrapper to always fill at least the
@@ -207,6 +204,16 @@ function App() {
           <ProtectedRoute requireAdmin>
             <AdminLayout>
               <ManageOrders />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.ADMIN_ORDER_DETAIL()}
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <AdminOrderDetail />
             </AdminLayout>
           </ProtectedRoute>
         }

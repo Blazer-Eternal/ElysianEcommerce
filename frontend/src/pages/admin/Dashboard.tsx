@@ -2,10 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
 import { userService } from "../../services/userService";
-import AdminNavbar from "../../components/layout/AdminNavbar";
+import AdminLayout from "../../components/layout/AdminLayout";
 import StatCard from "../../components/admin/StatCard";
 import { formatCurrency } from "../../utils/formatCurrency";
-import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 
@@ -35,8 +34,6 @@ const RevenueIcon = () => (
 );
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  
   const { data: productsRes } = useQuery({
     queryKey: ["admin", "products", "count"],
     queryFn: () => productService.getAll({ limit: 1 }),
@@ -56,14 +53,13 @@ const Dashboard = () => {
     ordersRes?.data.reduce((sum, order) => (order.payment_status === "paid" ? sum + order.total_amount : sum), 0) || 0;
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#eafcfd] to-white">
-      <AdminNavbar />
+    <AdminLayout>
       <div className="w-full px-4 sm:px-6 space-y-8 py-8">
         {/* Header */}
         <div className="max-w-7xl mx-auto space-y-2">
           <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider">ADMINISTRATION</div>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
-            Welcome back, Admin! 👋
+            Dashboard
           </h1>
           <p className="text-gray-600 text-lg">Manage your ElysianEcommerce store from your administration dashboard.</p>
         </div>
@@ -100,7 +96,7 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto space-y-4">
           <h2 className="text-2xl font-bold text-gray-900">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to={ROUTES.ADMIN_PRODUCTS} className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group cursor-pointer">
+            <Link to={ROUTES.ADMIN_PRODUCTS} className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group cursor-pointer border border-white/20">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-[#0e7c85]/20 to-cyan-600/20 flex items-center justify-center text-[#0e7c85] text-xl group-hover:scale-110 transition-transform">
                   <ProductIcon />
@@ -111,7 +107,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </Link>
-            <Link to={ROUTES.ADMIN_ORDERS} className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group cursor-pointer">
+            <Link to={ROUTES.ADMIN_ORDERS} className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group cursor-pointer border border-white/20">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center text-blue-600 text-xl group-hover:scale-110 transition-transform">
                   <OrderIcon />
@@ -122,7 +118,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </Link>
-            <Link to={ROUTES.ADMIN_USERS} className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group cursor-pointer">
+            <Link to={ROUTES.ADMIN_USERS} className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group cursor-pointer border border-white/20">
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center text-purple-600 text-xl group-hover:scale-110 transition-transform">
                   <UserIcon />
@@ -136,26 +132,30 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Admin Info Card */}
-        <div className="max-w-7xl mx-auto glass rounded-2xl p-8 bg-linear-to-br from-[#0e7c85]/5 to-cyan-200/5 border-l-4 border-[#0e7c85]">
-          <h3 className="text-lg font-bold text-gray-900 mb-6">Administrator Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Stats Summary */}
+        <div className="max-w-7xl mx-auto glass rounded-2xl p-8 bg-linear-to-br from-[#0e7c85]/5 to-cyan-200/5 border-l-4 border-[#0e7c85] border border-white/20">
+          <h3 className="text-lg font-bold text-gray-900 mb-6">Store Summary</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Full Name</p>
-              <p className="text-lg font-semibold text-gray-900">{user?.name || "Admin User"}</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Total Products</p>
+              <p className="text-3xl font-bold text-[#0e7c85]">{productsRes?.pagination.total ?? "—"}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Email Address</p>
-              <p className="text-lg font-semibold text-gray-900">{user?.email || "admin@elysian.com"}</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Total Orders</p>
+              <p className="text-3xl font-bold text-blue-600">{ordersRes?.pagination.total ?? "—"}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Status</p>
-              <p className="inline-block px-3 py-1 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white text-sm font-semibold rounded-full">Active</p>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Total Users</p>
+              <p className="text-3xl font-bold text-purple-600">{usersRes?.pagination.total ?? "—"}</p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Total Revenue</p>
+              <p className="text-3xl font-bold text-amber-600">{formatCurrency(totalRevenue)}</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 
