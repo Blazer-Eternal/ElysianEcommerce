@@ -1,16 +1,54 @@
 @import "tailwindcss";
 
+/* ========================================
+   PERFORMANCE CRITICAL OPTIMIZATIONS
+   ======================================== */
+
+/* Enable hardware acceleration globally */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @layer base {
+  /* Optimized Root Styles */
+  :root {
+    /* CSS Variables for consistent animation timing */
+    --transition-fast: 150ms;
+    --transition-base: 300ms;
+    --transition-slow: 500ms;
+    --animation-duration-blob: 7s;
+    --animation-duration-fade: 600ms;
+    
+    /* Easing functions for smooth animations */
+    --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-in: cubic-bezier(0.42, 0, 1, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Reduce paint thrashing */
+    contain: layout style paint;
+  }
+
   body {
     @apply text-gray-800;
     background: linear-gradient(135deg, #eafcfd 0%, #d7f4f6 40%, #bcecef 100%);
     background-attachment: fixed;
     min-height: 100vh;
+    
+    /* Performance optimizations */
+    overflow-x: hidden;
+    contain: layout style paint;
+    /* Reduce CPU load on mobile */
+    touch-action: manipulation;
   }
 
-  /* Scrollbar Styling */
+  /* Scrollbar Styling - Optimized */
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
@@ -18,36 +56,93 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #999;
-    border-radius: 3px;
+    background: rgba(153, 153, 153, 0.5);
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #666;
+    background: rgba(102, 102, 102, 0.7);
+  }
+
+  /* Optimize input elements */
+  input, textarea, select {
+    font-size: 16px; /* Prevents zoom on mobile focus */
+  }
+}
+
+@layer components {
+  /* Optimization: Contain layout for cards and sections */
+  .card-container {
+    @apply rounded-xl;
+    contain: layout style paint;
+  }
+
+  .section-container {
+    @apply w-full;
+    contain: layout style;
+  }
+
+  /* Optimized transitions */
+  .transition-fast {
+    transition: all var(--transition-fast) var(--ease-in-out);
+  }
+
+  .transition-smooth {
+    transition: all var(--transition-base) var(--ease-in-out);
+  }
+
+  .transition-slow {
+    transition: all var(--transition-slow) var(--ease-out);
+  }
+
+  /* GPU-accelerated transforms */
+  .gpu-accelerate {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .will-animate {
+    will-change: transform, opacity;
   }
 }
 
 @layer utilities {
+  /* Glass Morphism Effects - Optimized */
   .glass {
     @apply bg-white/60 backdrop-blur-md border border-white/80;
+    contain: layout style paint;
   }
+
   .glass-strong {
     @apply bg-white/80 backdrop-blur-lg border border-white/90;
+    contain: layout style paint;
   }
+
   .glass-nav {
     @apply bg-white/55 backdrop-blur-lg border-b border-white/70;
+    contain: layout style paint;
   }
+
+  /* Accent Colors */
   .accent-bg {
     background-color: #bcecef;
   }
+
   .accent-text {
     color: #0e7c85;
   }
-  
-  /* Animations */
+
+  /* ========================================
+     SMOOTH, OPTIMIZED ANIMATIONS
+     ======================================== */
+
+  /* Blob Animation - GPU Accelerated */
   @keyframes blob {
     0%, 100% {
       transform: translate(0, 0) scale(1);
+      animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
     }
     33% {
       transform: translate(30px, -50px) scale(1.1);
@@ -56,16 +151,259 @@
       transform: translate(-20px, 20px) scale(0.9);
     }
   }
-  
+
   .animate-blob {
-    animation: blob 7s infinite;
+    animation: blob var(--animation-duration-blob) infinite;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
-  
+
+  /* Fade In Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn var(--animation-duration-fade) var(--ease-out) forwards;
+  }
+
+  /* Slide In from Left */
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft var(--animation-duration-fade) var(--ease-out) forwards;
+  }
+
+  /* Slide In from Right */
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight var(--animation-duration-fade) var(--ease-out) forwards;
+  }
+
+  /* Slide In from Top */
+  @keyframes slideInTop {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-in-top {
+    animation: slideInTop var(--animation-duration-fade) var(--ease-out) forwards;
+  }
+
+  /* Scale In */
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-scale-in {
+    animation: scaleIn var(--animation-duration-fade) var(--ease-out) forwards;
+  }
+
+  /* Pulse Animation - Optimized */
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Smooth Loading Skeleton */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Animation Delays */
+  @for $i from 1 through 12 {
+    .animation-delay-#{$i * 100}ms {
+      animation-delay: calc($i * 100ms);
+    }
+  }
+
+  .animation-delay-100ms {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200ms {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300ms {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400ms {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-500ms {
+    animation-delay: 500ms;
+  }
+
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+
   .animation-delay-2000 {
     animation-delay: 2s;
   }
-  
+
   .animation-delay-4000 {
     animation-delay: 4s;
+  }
+
+  /* ========================================
+     RESPONSIVE UTILITY CLASSES
+     ======================================== */
+
+  /* Responsive padding scale */
+  .px-responsive {
+    @apply px-4 sm:px-6 md:px-8 lg:px-10;
+  }
+
+  .py-responsive {
+    @apply py-6 sm:py-8 md:py-10 lg:py-12;
+  }
+
+  .gap-responsive {
+    @apply gap-4 sm:gap-6 md:gap-8;
+  }
+
+  /* Responsive grid utilities */
+  .grid-responsive-2 {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-responsive;
+  }
+
+  .grid-responsive-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-responsive;
+  }
+
+  .grid-responsive-4 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-responsive;
+  }
+
+  /* Responsive text sizing */
+  .text-responsive-h1 {
+    @apply text-4xl sm:text-5xl lg:text-6xl;
+  }
+
+  .text-responsive-h2 {
+    @apply text-3xl sm:text-4xl lg:text-5xl;
+  }
+
+  .text-responsive-h3 {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  .text-responsive-body {
+    @apply text-base sm:text-lg;
+  }
+
+  /* Responsive container */
+  .container-responsive {
+    @apply max-w-7xl mx-auto px-4 sm:px-6;
+  }
+
+  /* ========================================
+     PERFORMANCE UTILITIES
+     ======================================== */
+
+  /* Prevent layout shift */
+  .aspect-square {
+    aspect-ratio: 1;
+  }
+
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Smooth hover states */
+  .hover-lift {
+    @apply transition-smooth hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .hover-glow {
+    @apply transition-smooth hover:shadow-[0_0_20px_rgba(14,124,133,0.3)];
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    @apply animate-shimmer bg-gray-200 rounded;
+  }
+
+  /* Disable animations for reduced-motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Optimize for touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    button,
+    a {
+      min-height: 44px;
+      min-width: 44px;
+    }
   }
 }

@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { ROUTES } from "../../constants/routes";
+import { GhostFibers } from "../../components/GhostFibers";
 
 const UserIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
@@ -40,8 +41,38 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#1a4d6d] to-[#0f2d42] flex items-center justify-center px-4">
-      <div className="w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-2 relative">
+    <div className="min-h-screen bg-linear-to-br from-[#1a4d6d] to-[#0f2d42] flex items-center justify-center px-4 relative overflow-hidden">
+      {/* GhostFibers background */}
+      <div className="absolute inset-0 -z-10" style={{ width: '100%', height: '100%' }}>
+        <GhostFibers
+          lineColor="#0f2d42"
+          glowColor="#2596be"
+          speed={0.15}
+          scale={2.5}
+          rotation={45}
+          rotationSpeed={0.1}
+          layers={3}
+          waveAmplitude={0.01}
+          waveFrequency={2}
+          waveSpeed={0.1}
+          layerSpeed={0.05}
+          twist={0.08}
+          twistFrequency={4}
+          twistSpeed={1}
+          lineFrequency={4}
+          lineSpacing={2}
+          lineSharpness={14}
+          glowFalloff={8}
+          glowIntensity={1.4}
+          brightness={1.8}
+          blueBoost={1.3}
+          vignette={0.6}
+          grain={0.03}
+          dpr={1}
+        />
+      </div>
+
+      <div className="w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-2 relative z-10">
         {/* Diagonal Partition SVG */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block z-0" preserveAspectRatio="none" viewBox="0 0 1000 1000">
           <defs>

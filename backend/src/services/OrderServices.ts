@@ -67,6 +67,10 @@ export class OrderServices {
     return await OrderModel.findByIdAndUpdate(id, { payment_status }, { returnDocument: "after" });
   }
 
+  public async updateShippingAddress(id: string, shipping_address: any): Promise<OrderInterface | null> {
+    return await OrderModel.findByIdAndUpdate(id, { shipping_address }, { returnDocument: "after" }).populate("user_id", "name email").populate("coupon_id", "code discount_type value");
+  }
+
   public generateOrderNumber(): string {
     const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();

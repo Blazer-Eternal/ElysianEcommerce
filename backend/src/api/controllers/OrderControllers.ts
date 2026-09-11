@@ -278,4 +278,31 @@ export class OrderController {
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }
+
+  static async updateShippingAddress(req: CustomRequestInterface, res: Response) {
+    const id = req.params.id as string;
+    const userId = req.user?.id as string;
+    const { shipping_address } = req.body;
+
+    try {
+      const order = await new OrderServices().findById(id);
+      if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+
+      const ownerId = getOrderOwnerId(order.user_id);
+      if (ownerId !== userId && req.user?.role !== RoleEnum.admin) {
+        return res.status(403).json({ success: false, message: "You can only update your own orders" });
+      }
+
+      if (order.status !== OrderStatusEnum.pending && order.status !== OrderStatusEnum.paid) {
+        return res.status(400).json({ success: false, message: "You can only update address for pending or paid orders" });
+      }
+
+      const updatedOrder = await new OrderServices().updateShippingAddress(id, shipping_address);
+
+      return res.status(200).json({ success: true, message: "Shipping address updated successfully", data: updatedOrder });
+    } catch (error) {
+      console.error("updateShippingAddress error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
 }

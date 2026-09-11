@@ -42,4 +42,9 @@ export const orderService = {
     const { data } = await axiosInstance.patch(`/orders/${id}/payment-status`, { payment_status });
     return data;
   },
+
+  updateShippingAddress: async (id: string, shipping_address: any): Promise<ApiResponse<Order>> => {
+    const { data } = await axiosInstance.patch(`/orders/${id}/shipping-address`, { shipping_address });
+    return data;
+  },
 };

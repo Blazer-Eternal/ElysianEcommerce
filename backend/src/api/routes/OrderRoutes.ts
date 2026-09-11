@@ -25,6 +25,12 @@ orderRoutes.get("/:id", exceptionHandler(Guard.grantAccess), exceptionHandler(Or
 
 orderRoutes.patch("/:id/cancel", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.cancelOrder));
 
+orderRoutes.patch(
+  "/:id/shipping-address",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(OrderController.updateShippingAddress)
+);
+
 orderRoutes.get(
   "/",
   exceptionHandler(Guard.grantAccess),

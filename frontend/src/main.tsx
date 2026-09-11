@@ -8,7 +8,11 @@ import { WishlistProvider } from "./context/WishlistContex.tsx";
 import { CartProvider } from "./context/CartContext.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import { queryClient } from "./lib/queryClient.ts";
+import { initPerformanceMonitoring } from "./utils/performanceMonitoring.ts";
 import "./index.css";
+
+// Initialize performance monitoring
+initPerformanceMonitoring();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

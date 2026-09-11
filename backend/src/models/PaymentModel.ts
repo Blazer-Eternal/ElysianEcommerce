@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { PaymentInterface } from "../intefaces/PaymentInterface";
-import { PaymentMethodEnum, GatewayPaymentStatusEnum } from "../enums/PaymentEnums";
+import { PaymentMethodEnum } from "../enums/OrderEnums";
+import { GatewayPaymentStatusEnum } from "../enums/PaymentEnums";
 
 const PaymentSchema = new Schema<PaymentInterface>({
   order_id: {

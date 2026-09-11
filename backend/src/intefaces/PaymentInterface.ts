@@ -1,5 +1,6 @@
 import { Document, Types } from "mongoose";
-import { PaymentMethodEnum, GatewayPaymentStatusEnum } from "../enums/PaymentEnums";
+import { PaymentMethodEnum } from "../enums/OrderEnums";
+import { GatewayPaymentStatusEnum } from "../enums/PaymentEnums";
 
 export interface InputPaymentInterface {
   order_id: Types.ObjectId;

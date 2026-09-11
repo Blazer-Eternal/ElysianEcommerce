@@ -1,3 +1,5 @@
+import { GhostFibers } from "../components/GhostFibers";
+
 const TruckIcon = () => (
   <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/>
@@ -81,9 +83,39 @@ const features: Feature[] = [
 const Features = () => {
   return (
     <div className="space-y-20">
-      {/* Hero Section */}
-      <div className="pt-12 sm:pt-20 pb-8 sm:pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
+      {/* Hero Section with GhostFibers */}
+      <div className="relative pt-12 sm:pt-20 pb-8 sm:pb-12 overflow-hidden">
+        {/* GhostFibers background */}
+        <div className="absolute inset-0 -z-10" style={{ width: '100%', height: '100%' }}>
+          <GhostFibers
+            lineColor="#0e7c85"
+            glowColor="#06b6d4"
+            speed={0.2}
+            scale={2.2}
+            rotation={0}
+            rotationSpeed={0.15}
+            layers={4}
+            waveAmplitude={0.015}
+            waveFrequency={3}
+            waveSpeed={0.15}
+            layerSpeed={0.08}
+            twist={0.1}
+            twistFrequency={5}
+            twistSpeed={1.2}
+            lineFrequency={5}
+            lineSpacing={2}
+            lineSharpness={16}
+            glowFalloff={10}
+            glowIntensity={1.6}
+            brightness={2}
+            blueBoost={1.2}
+            vignette={0.7}
+            grain={0.04}
+            dpr={1}
+          />
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6 relative z-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
             Why Shop With <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Us</span>
           </h1>
