@@ -26,6 +26,7 @@ import ManageOrders from "./pages/admin/ManageOrders";
 import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
 import ManageUsers from "./pages/admin/ManageUsers";
 import About from "./pages/About";
+import Values from "./pages/Values";
 import Features from "./pages/Features";
 import Contact from "./pages/Contact";
 import RefundPolicy from "./pages/legal/RefundPolicy";
@@ -68,6 +69,7 @@ function App() {
       <Route path={ROUTES.PRODUCTS} element={<PublicPage><ProductList /></PublicPage>} />
       <Route path={ROUTES.PRODUCT_DETAIL()} element={<PublicPage><ProductDetail /></PublicPage>} />
       <Route path={ROUTES.ABOUT} element={<PublicPage><About /></PublicPage>} />
+      <Route path={ROUTES.VALUES} element={<PublicPage><Values /></PublicPage>} />
       <Route path={ROUTES.FEATURES} element={<PublicPage><Features /></PublicPage>} />
       <Route path={ROUTES.CONTACT} element={<PublicPage><Contact /></PublicPage>} />
       <Route path={ROUTES.REFUND_POLICY} element={<PublicPage><RefundPolicy /></PublicPage>} />

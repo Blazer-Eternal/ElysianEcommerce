@@ -243,6 +243,23 @@
     animation: scaleIn var(--animation-duration-fade) var(--ease-out) forwards;
   }
 
+  /* Fade In Up Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp var(--animation-duration-fade) var(--ease-out) forwards;
+    opacity: 0;
+  }
+
   /* Pulse Animation - Optimized */
   @keyframes pulse {
     0%, 100% {

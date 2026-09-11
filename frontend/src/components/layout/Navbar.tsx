@@ -40,22 +40,35 @@ const Navbar = () => {
   const { itemCount } = useCart();
   const navigate = useNavigate();
 
-  const [menuOpen, setMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
+      const target = e.target as Node;
+      
+      // Don't close if clicking on the user button itself
+      if (userButtonRef.current?.contains(target)) {
+        return;
+      }
+      
+      // Close if clicking outside the user menu and the menu is visible
+      if (userMenuOpen && userMenuRef.current && !userMenuRef.current.contains(target)) {
+        setUserMenuOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    
+    // Only add listener if menu is open to avoid unnecessary event handling
+    if (userMenuOpen) {
+      document.addEventListener("click", handleClickOutside);
+      return () => document.removeEventListener("click", handleClickOutside);
+    }
+  }, [userMenuOpen]);
 
   const handleLogout = () => {
-    setMenuOpen(false);
+    setUserMenuOpen(false);
     setMobileMenuOpen(false);
     logout();
     navigate(ROUTES.HOME);
@@ -78,7 +91,7 @@ const Navbar = () => {
           <Link to={ROUTES.ABOUT} className="hover:accent-text transition-colors">About</Link>
         </div>
 
-        <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto" ref={menuRef}>
+        <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto" ref={userMenuRef}>
           {isAuthenticated ? (
             <>
               {/* Cart Icon - visible on all authenticated screens */}
@@ -92,9 +105,10 @@ const Navbar = () => {
               </Link>
 
               {/* User Profile Icon - visible on all authenticated screens */}
-              <div className="relative sm:relative">
+              <div className="relative" ref={userMenuRef}>
                 <button
-                  onClick={() => setMenuOpen((prev) => !prev)}
+                  ref={userButtonRef}
+                  onClick={() => setUserMenuOpen((prev) => !prev)}
                   aria-label="Account menu"
                   className="text-gray-700 hover:accent-text transition-colors cursor-pointer p-1 flex items-center justify-center"
                 >
@@ -102,14 +116,14 @@ const Navbar = () => {
                 </button>
 
                 {/* DROPDOWN MENU - Desktop: small fixed dropdown | Mobile: full-width panel */}
-                {menuOpen && (
+                {userMenuOpen && (
                   <>
                     {/* Desktop dropdown - fixed position */}
                     <div className="hidden sm:block fixed right-4 top-16 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
                       <div className="px-4 py-2 border-b border-gray-200 text-gray-600 text-xs font-semibold truncate">{user?.name}</div>
                       <button
                         onClick={() => {
-                          setMenuOpen(false);
+                          setUserMenuOpen(false);
                           navigate(ROUTES.PROFILE);
                         }}
                         className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
@@ -118,7 +132,7 @@ const Navbar = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setMenuOpen(false);
+                          setUserMenuOpen(false);
                           navigate(ROUTES.WISHLIST);
                         }}
                         className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
@@ -127,7 +141,7 @@ const Navbar = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setMenuOpen(false);
+                          setUserMenuOpen(false);
                           navigate(ROUTES.ORDER_HISTORY);
                         }}
                         className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
@@ -137,7 +151,7 @@ const Navbar = () => {
                       {user?.role === "admin" && (
                         <button
                           onClick={() => {
-                            setMenuOpen(false);
+                            setUserMenuOpen(false);
                             navigate(ROUTES.ADMIN_DASHBOARD);
                           }}
                           className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm border-t border-gray-200 hover:text-[#0e7c85]"
@@ -180,26 +194,57 @@ const Navbar = () => {
       </div>
 
       {/* Mobile User Dropdown Panel */}
-      {menuOpen && isAuthenticated && (
-        <div className="sm:hidden bg-white border-b border-gray-200">
+      {userMenuOpen && isAuthenticated && (
+        <div className="sm:hidden bg-white border-b border-gray-200 z-40" ref={userMenuRef} onClick={(e) => e.stopPropagation()}>
           <div className="px-4 py-3 border-b border-gray-200 text-gray-600 text-sm font-semibold">{user?.name}</div>
-          <Link to={ROUTES.PROFILE} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setUserMenuOpen(false);
+              navigate(ROUTES.PROFILE);
+            }}
+            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+          >
             Your Profile
-          </Link>
-          <Link to={ROUTES.WISHLIST} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setUserMenuOpen(false);
+              navigate(ROUTES.WISHLIST);
+            }}
+            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+          >
             My Wishlist
-          </Link>
-          <Link to={ROUTES.ORDER_HISTORY} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setUserMenuOpen(false);
+              navigate(ROUTES.ORDER_HISTORY);
+            }}
+            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+          >
             My Orders
-          </Link>
+          </button>
           {user?.role === "admin" && (
-            <Link to={ROUTES.ADMIN_DASHBOARD} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setUserMenuOpen(false);
+                navigate(ROUTES.ADMIN_DASHBOARD);
+              }}
+              className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+            >
               Dashboard
-            </Link>
+            </button>
           )}
           <button 
-            onClick={handleLogout} 
-            className="w-full py-3 px-4 text-red-600 hover:bg-red-50 transition-colors text-sm text-left"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLogout();
+            }}
+            className="w-full py-3 px-4 text-red-600 hover:bg-red-50 transition-colors text-sm text-left active:bg-red-100"
           >
             Logout
           </button>

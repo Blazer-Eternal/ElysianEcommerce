@@ -26,6 +26,7 @@ export const ROUTES = {
   ADMIN_USERS: "/admin/users",
 
   ABOUT: "/about",
+  VALUES: "/values",
   FEATURES: "/features",
   CONTACT: "/contact",
   REFUND_POLICY: "/legal/refund-policy",

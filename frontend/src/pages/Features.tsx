@@ -82,7 +82,7 @@ const features: Feature[] = [
 
 const Features = () => {
   return (
-    <div className="space-y-20">
+    <div className="space-y-20 pb-20 sm:pb-32">
       {/* Hero Section with GhostFibers */}
       <div className="relative pt-12 sm:pt-20 pb-8 sm:pb-12 overflow-hidden">
         {/* GhostFibers background */}
@@ -116,10 +116,13 @@ const Features = () => {
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6 relative z-10">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
-            Why Shop With <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Us</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 animate-fade-in-up">
+            Why Shop With <span className="bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-pulse">Us</span>
           </h1>
-          <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
+          <p
+            className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in-up"
+            style={{ animationDelay: '0.1s' }}
+          >
             Everything we do is built around getting this right — delivering excellence in every interaction.
           </p>
         </div>
@@ -131,19 +134,34 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="glass rounded-2xl p-8 hover:bg-white/80 transition-all duration-300 group"
+              className="group relative animate-fade-in-up"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Icon */}
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-[#0e7c85]/20 to-cyan-200/20 rounded-xl group-hover:from-[#0e7c85]/30 group-hover:to-cyan-200/30 transition-all duration-300 mb-4 text-[#0e7c85]">
-                {feature.icon}
+              {/* Gradient Background Animation */}
+              <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-[#0e7c85]/10 via-cyan-500/5 to-teal-400/10 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" />
+
+              {/* Card */}
+              <div className="relative glass rounded-2xl p-8 backdrop-blur-xl border border-white/40 hover:border-[#0e7c85]/50 hover:bg-white/60 transition-all duration-500 h-full hover:shadow-2xl hover:shadow-cyan-500/20">
+                {/* Icon */}
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-[#0e7c85]/25 via-cyan-300/15 to-teal-200/25 rounded-xl group-hover:from-[#0e7c85]/40 group-hover:via-cyan-400/30 group-hover:to-teal-300/40 transition-all duration-500 mb-4 text-[#0e7c85] group-hover:scale-110 transform group-hover:rotate-6">
+                  {feature.icon}
+                </div>
+
+                {/* Content */}
+                <h2 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-[#0e7c85] transition-colors duration-300">
+                  {feature.title}
+                </h2>
+
+                <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                  {feature.description}
+                </p>
+
+                {/* Animated Bottom Bar */}
+                <div className="mt-6 flex items-center gap-2">
+                  <div className="h-1 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full w-1 group-hover:w-8 transition-all duration-500" />
+                  <div className="flex-1 h-0.5 bg-linear-to-r from-[#0e7c85]/50 to-transparent group-hover:from-cyan-500/50 group-hover:to-teal-400/50 transition-all duration-500 rounded-full" />
+                </div>
               </div>
-
-              {/* Content */}
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h2>
-              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-
-              {/* Hover indicator */}
-              <div className="mt-4 w-1 h-1 bg-[#0e7c85] rounded-full group-hover:w-full transition-all duration-300"></div>
             </div>
           ))}
         </div>
@@ -152,11 +170,15 @@ const Features = () => {
       {/* Additional Info */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Quality Assurance</h2>
+          <div className="space-y-6 animate-fade-in-up">
+            <h2 className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+              Quality Assurance
+            </h2>
+
             <p className="text-gray-600 leading-relaxed">
               We go above and beyond to ensure every product meets our stringent quality standards. Our team manually inspects and verifies each item before it ships to you.
             </p>
+
             <ul className="space-y-3">
               {[
                 "Rigorous quality control process",
@@ -164,46 +186,118 @@ const Features = () => {
                 "Safe packaging and handling",
                 "Real-time tracking updates",
               ].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-gray-700">
-                  <span className="flex-shrink-0 w-2 h-2 rounded-full bg-[#0e7c85]"></span>
+                <li
+                  key={i}
+                  className="flex items-center gap-3 text-gray-700 group/item hover:text-[#0e7c85] transition-colors duration-300 cursor-default"
+                >
+                  <span className="shrink-0 w-2 h-2 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500 group-hover/item:scale-150 transition-transform duration-300"></span>
                   {item}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="glass rounded-2xl p-8 sm:p-12 space-y-8">
-            <div className="space-y-2">
-              <div className="text-4xl font-bold text-[#0e7c85]">100%</div>
-              <div className="text-gray-600">Authentic Products</div>
+          <div className="glass rounded-3xl p-8 sm:p-12 space-y-8 backdrop-blur-xl border border-white/40 hover:border-[#0e7c85]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 animate-fade-in-up">
+            <style>{`
+              @keyframes gradient-shift {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+              }
+
+              .animate-gradient {
+                background-size: 200% 200%;
+                animation: gradient-shift 6s ease infinite;
+              }
+            `}</style>
+
+            <div className="space-y-2 group/stat p-4 rounded-xl hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10 transition-all duration-300">
+              <div
+                className="text-4xl font-bold animate-gradient"
+                style={{
+                  backgroundImage: 'linear-gradient(90deg, #0e7c85, #06b6d4, #14b8a6, #0e7c85)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                100%
+              </div>
+
+              <div className="text-gray-600 group-hover/stat:text-gray-700 transition-colors duration-300">
+                Authentic Products
+              </div>
             </div>
-            <div className="h-px bg-linear-to-r from-transparent via-white/40 to-transparent"></div>
-            <div className="space-y-2">
-              <div className="text-4xl font-bold text-[#0e7c85]">4.8★</div>
-              <div className="text-gray-600">Average Rating</div>
+
+            <div className="h-px bg-linear-to-r from-transparent via-[#0e7c85]/40 to-transparent"></div>
+
+            <div className="space-y-2 group/stat p-4 rounded-xl hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10 transition-all duration-300">
+              <div
+                className="text-4xl font-bold animate-gradient"
+                style={{
+                  backgroundImage: 'linear-gradient(90deg, #0e7c85, #06b6d4, #14b8a6, #0e7c85)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                4.8★
+              </div>
+
+              <div className="text-gray-600 group-hover/stat:text-gray-700 transition-colors duration-300">
+                Average Rating
+              </div>
             </div>
-            <div className="h-px bg-linear-to-r from-transparent via-white/40 to-transparent"></div>
-            <div className="space-y-2">
-              <div className="text-4xl font-bold text-[#0e7c85]">0%</div>
-              <div className="text-gray-600">Hidden Fees</div>
+
+            <div className="h-px bg-linear-to-r from-transparent via-[#0e7c85]/40 to-transparent"></div>
+
+            <div className="space-y-2 group/stat p-4 rounded-xl hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10 transition-all duration-300">
+              <div
+                className="text-4xl font-bold animate-gradient"
+                style={{
+                  backgroundImage: 'linear-gradient(90deg, #0e7c85, #06b6d4, #14b8a6, #0e7c85)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                0%
+              </div>
+
+              <div className="text-gray-600 group-hover/stat:text-gray-700 transition-colors duration-300">
+                Hidden Fees
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* CTA */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="glass-strong rounded-3xl p-12 text-center space-y-6">
-          <h2 className="text-3xl font-bold text-gray-900">Experience the Difference</h2>
-          <p className="text-gray-600 text-lg">
-            Start shopping today and discover why thousands choose ElysianEcommerce.
-          </p>
-          <a
-            href="/products"
-            className="inline-block glass px-8 py-3 rounded-xl font-semibold text-gray-900 hover:bg-white/70 transition-all duration-300"
-          >
-            Browse Products →
-          </a>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-8">
+        <div className="relative group animate-fade-in-up">
+          {/* Gradient background glow */}
+          <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/20 via-cyan-500/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
+
+          {/* Card */}
+          <div className="relative glass-strong rounded-3xl p-12 text-center space-y-6 backdrop-blur-xl border border-white/50 group-hover:border-[#0e7c85]/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-cyan-500/30">
+            <h2 className="text-3xl font-bold bg-linear-to-r from-gray-900 via-[#0e7c85] to-gray-900 bg-clip-text text-transparent">
+              Experience the Difference
+            </h2>
+
+            <p className="text-gray-600 text-lg group-hover:text-gray-700 transition-colors duration-300">
+              Start shopping today and discover why thousands choose ElysianEcommerce.
+            </p>
+
+            <a
+              href="/products"
+              className="inline-block group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-cyan-500/50 overflow-hidden"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                Browse Products
+                <span className="transform group-hover/btn:translate-x-1 transition-transform duration-300">
+                  →
+                </span>
+              </span>
+
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent translate-x-full group-hover/btn:translate-x-0 transition-transform duration-500" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

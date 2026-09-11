@@ -25,10 +25,10 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="glass-nav mt-16 sm:mt-24 border-t border-white/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+    <footer className="border-t border-white/60 bg-white/50 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
         {/* Main footer content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-6">
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="font-bold text-lg text-gray-900">ElysianEcommerce</h3>
@@ -127,10 +127,10 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-linear-to-r from-transparent via-white/40 to-transparent mb-8"></div>
+        <div className="h-px bg-linear-to-r from-transparent via-white/40 to-transparent mb-4"></div>
 
         {/* Bottom footer */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-600">
           <p>© {currentYear} ElysianEcommerce. All rights reserved.</p>
           <p className="flex items-center gap-2">
             Crafted with <span className="text-red-500">♥</span> for shoppers who deserve better
