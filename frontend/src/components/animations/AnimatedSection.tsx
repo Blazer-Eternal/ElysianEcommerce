@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import React from "react";
 import { useStaggeredAnimation } from "../../hooks/useInViewAnimation";
 
-interface AnimatedSectionProps {
+export interface AnimatedSectionProps {
   children: ReactNode[];
   className?: string;
   itemAnimation?: "fade" | "slide-left" | "slide-right" | "scale";

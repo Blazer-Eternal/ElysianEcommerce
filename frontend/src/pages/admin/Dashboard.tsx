@@ -1,4 +1,4 @@
-import { memo, useMemo, useEffect, useRef, useState } from "react";
+import { memo, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
@@ -135,7 +135,6 @@ StatsGrid.displayName = "StatsGrid";
 // Main Dashboard Component
 const Dashboard = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
 
   // Queries with optimized stale time
   const { data: productsRes, isLoading: productsLoading } = useQuery({
@@ -171,29 +170,6 @@ const Dashboard = memo(() => {
   }, [ordersRes?.data]);
 
   const isLoading = productsLoading || ordersLoading || usersLoading;
-
-  // Intersection Observer for animation
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.unobserve(entry.target);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
-    };
-  }, []);
 
   const productTotal = productsRes?.pagination.total ?? "—";
   const orderTotal = ordersRes?.pagination.total ?? "—";

@@ -5,7 +5,7 @@
 
 import React from "react";
 
-interface SkeletonLoaderProps {
+export interface SkeletonLoaderProps {
   type?: "card" | "text" | "image" | "table" | "grid";
   count?: number;
   className?: string;

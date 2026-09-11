@@ -37,7 +37,7 @@ import NotFound from "./pages/NotFound";
 import { ROUTES } from "./constants/routes";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailure from "./pages/PaymentFailure";
-import SplashCursor from "./components/ui/SplashCursor";
+
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => (
   <div>{children}</div>
@@ -63,7 +63,6 @@ function App() {
 
   return (
     <>
-      <SplashCursor />
       <Routes>
       <Route path={ROUTES.HOME} element={<PublicPage><Home /></PublicPage>} />
       <Route path={ROUTES.PRODUCTS} element={<PublicPage><ProductList /></PublicPage>} />

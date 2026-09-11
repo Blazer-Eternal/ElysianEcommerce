@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import React from "react";
 import { useInViewAnimation } from "../../hooks/useInViewAnimation";
 
-interface AnimatedCardProps {
+export interface AnimatedCardProps {
   children: ReactNode;
   className?: string;
   animation?: "fade" | "slide-left" | "slide-right" | "scale";

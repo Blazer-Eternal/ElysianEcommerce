@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useCart } from "../../hooks/useCart";
-import { useWishlist } from "../../hooks/useWishlist";
 import { ROUTES } from "../../constants/routes";
 import logo from "../../assets/images/logo.png";
 
@@ -39,7 +38,6 @@ const CloseIcon = () => (
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const { itemCount } = useCart();
-  const { items: wishlistItems } = useWishlist();
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -64,138 +62,162 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="glass-nav sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-3 flex items-center justify-between gap-3 sm:gap-6">
+    <nav className="glass-nav sticky top-0 z-40 overflow-visible">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible">
         <Link to={ROUTES.HOME} className="shrink-0 flex items-center">
           <img 
             src={logo} 
             alt="ElysianEcommerce Logo" 
-            className="h-10 sm:h-12 md:h-16 lg:h-20 w-auto object-contain transition-transform hover:scale-105"
+            className="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain transition-transform hover:scale-105"
           />
         </Link>
 
-        <div className="hidden md:flex items-center gap-10 text-sm text-gray-700 absolute left-1/2 -translate-x-1/2">
+        <div className="hidden md:flex items-center gap-8 lg:gap-10 text-xs sm:text-sm md:text-sm text-gray-700 absolute left-1/2 -translate-x-1/2">
           <Link to={ROUTES.PRODUCTS} className="hover:accent-text transition-colors">Products</Link>
           <Link to={ROUTES.FEATURES} className="hover:accent-text transition-colors">Features</Link>
           <Link to={ROUTES.ABOUT} className="hover:accent-text transition-colors">About</Link>
         </div>
 
-        <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+        <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto" ref={menuRef}>
           {isAuthenticated ? (
             <>
-              <div className="relative hidden sm:block" ref={menuRef}>
-                <button
-                  onClick={() => setMenuOpen((prev) => !prev)}
-                  aria-label="Account menu"
-                  className="block text-gray-700 hover:accent-text transition-colors"
-                >
-                  <UserIcon />
-                </button>
-
-                {menuOpen && (
-                  <div className="absolute right-0 top-[calc(100%+12px)] w-48 glass-strong rounded-xl shadow-lg py-1.5 text-sm overflow-hidden">
-                    <div className="px-3.5 py-2 border-b border-white/70 text-gray-500 text-xs">{user?.name}</div>
-                    <Link to={ROUTES.PROFILE} onClick={() => setMenuOpen(false)} className="block px-3.5 py-2 hover:bg-[#eafcfd]">
-                      Your Profile
-                    </Link>
-                    <Link to={ROUTES.WISHLIST} onClick={() => setMenuOpen(false)} className="block px-3.5 py-2 hover:bg-[#eafcfd]">
-                      My Wishlist{wishlistItems.length > 0 && ` (${wishlistItems.length})`}
-                    </Link>
-                    <Link to={ROUTES.ORDER_HISTORY} onClick={() => setMenuOpen(false)} className="block px-3.5 py-2 hover:bg-[#eafcfd]">
-                      My Orders
-                    </Link>
-                    {user?.role === "admin" && (
-                      <Link to={ROUTES.ADMIN_DASHBOARD} onClick={() => setMenuOpen(false)} className="block px-3.5 py-2 hover:bg-[#eafcfd]">
-                        Dashboard
-                      </Link>
-                    )}
-                    <button onClick={handleLogout} className="w-full text-left px-3.5 py-2 text-red-600 hover:bg-[#eafcfd]">
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <Link to={ROUTES.CART} aria-label="Cart" className="relative text-gray-700 hover:accent-text transition-colors">
+              {/* Cart Icon - visible on all authenticated screens */}
+              <Link to={ROUTES.CART} aria-label="Cart" className="relative text-gray-700 hover:accent-text transition-colors flex items-center justify-center">
                 <BagIcon />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#0e7c85] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-[#0e7c85] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-semibold">
                     {itemCount}
                   </span>
                 )}
               </Link>
+
+              {/* User Profile Icon - visible on all authenticated screens */}
+              <div className="relative sm:relative">
+                <button
+                  onClick={() => setMenuOpen((prev) => !prev)}
+                  aria-label="Account menu"
+                  className="text-gray-700 hover:accent-text transition-colors cursor-pointer p-1 flex items-center justify-center"
+                >
+                  <UserIcon />
+                </button>
+
+                {/* DROPDOWN MENU - Desktop: small fixed dropdown | Mobile: full-width panel */}
+                {menuOpen && (
+                  <>
+                    {/* Desktop dropdown - fixed position */}
+                    <div className="hidden sm:block fixed right-4 top-16 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                      <div className="px-4 py-2 border-b border-gray-200 text-gray-600 text-xs font-semibold truncate">{user?.name}</div>
+                      <button
+                        onClick={() => {
+                          setMenuOpen(false);
+                          navigate(ROUTES.PROFILE);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
+                      >
+                        Your Profile
+                      </button>
+                      <button
+                        onClick={() => {
+                          setMenuOpen(false);
+                          navigate(ROUTES.WISHLIST);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
+                      >
+                        My Wishlist
+                      </button>
+                      <button
+                        onClick={() => {
+                          setMenuOpen(false);
+                          navigate(ROUTES.ORDER_HISTORY);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
+                      >
+                        My Orders
+                      </button>
+                      {user?.role === "admin" && (
+                        <button
+                          onClick={() => {
+                            setMenuOpen(false);
+                            navigate(ROUTES.ADMIN_DASHBOARD);
+                          }}
+                          className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm border-t border-gray-200 hover:text-[#0e7c85]"
+                        >
+                          Dashboard
+                        </button>
+                      )}
+                      <button 
+                        onClick={handleLogout} 
+                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors text-sm border-t border-gray-200"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </>
           ) : (
-            <div className="hidden sm:flex items-center gap-3">
-              <Link to={ROUTES.LOGIN} className="text-sm text-gray-700 hover:accent-text">Login</Link>
+            <div className="hidden sm:flex items-center gap-2 md:gap-3">
+              <Link to={ROUTES.LOGIN} className="text-xs sm:text-sm text-gray-700 hover:accent-text">Login</Link>
               <Link
                 to={ROUTES.REGISTER}
-                className="text-sm bg-[#0e7c85] text-white px-4 py-1.5 rounded-full hover:bg-[#0b6169] transition-colors"
+                className="text-xs sm:text-sm bg-[#0e7c85] text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full hover:bg-[#0b6169] transition-colors whitespace-nowrap"
               >
                 Register
               </Link>
             </div>
           )}
 
-          {/* Hamburger — visible below md */}
+          {/* Hamburger — visible below sm */}
           <button
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label="Open menu"
-            className="md:hidden text-gray-700"
+            className="sm:hidden text-gray-700 flex items-center justify-center"
           >
             {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
         </div>
       </div>
 
+      {/* Mobile User Dropdown Panel */}
+      {menuOpen && isAuthenticated && (
+        <div className="sm:hidden bg-white border-b border-gray-200">
+          <div className="px-4 py-3 border-b border-gray-200 text-gray-600 text-sm font-semibold">{user?.name}</div>
+          <Link to={ROUTES.PROFILE} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+            Your Profile
+          </Link>
+          <Link to={ROUTES.WISHLIST} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+            My Wishlist
+          </Link>
+          <Link to={ROUTES.ORDER_HISTORY} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+            My Orders
+          </Link>
+          {user?.role === "admin" && (
+            <Link to={ROUTES.ADMIN_DASHBOARD} onClick={() => setMenuOpen(false)} className="block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100">
+              Dashboard
+            </Link>
+          )}
+          <button 
+            onClick={handleLogout} 
+            className="w-full py-3 px-4 text-red-600 hover:bg-red-50 transition-colors text-sm text-left"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+
       {/* Mobile dropdown panel */}
       {mobileMenuOpen && (
-        <div className="md:hidden glass-strong border-t border-white/60 px-4 py-4 space-y-1 text-sm">
-          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2">
+        <div className="sm:hidden glass-strong border-t border-white/60 px-3 py-3 space-y-1 text-xs sm:text-sm">
+          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85]">
             Products
           </Link>
-          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2">
+          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85]">
             Features
           </Link>
-          <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2">
+          <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85]">
             About
           </Link>
-
-          {isAuthenticated ? (
-            <>
-              <div className="border-t border-white/60 my-2 pt-2 text-xs text-gray-500">{user?.name}</div>
-              <Link to={ROUTES.PROFILE} onClick={() => setMobileMenuOpen(false)} className="block py-2">
-                Your Profile
-              </Link>
-              <Link to={ROUTES.WISHLIST} onClick={() => setMobileMenuOpen(false)} className="block py-2">
-                My Wishlist{wishlistItems.length > 0 && ` (${wishlistItems.length})`}
-              </Link>
-              <Link to={ROUTES.ORDER_HISTORY} onClick={() => setMobileMenuOpen(false)} className="block py-2">
-                My Orders
-              </Link>
-              {user?.role === "admin" && (
-                <Link to={ROUTES.ADMIN_DASHBOARD} onClick={() => setMobileMenuOpen(false)} className="block py-2">
-                  Dashboard
-                </Link>
-              )}
-              <button onClick={handleLogout} className="block w-full text-left py-2 text-red-600">
-                Logout
-              </button>
-            </>
-          ) : (
-            <div className="border-t border-white/60 mt-2 pt-2 flex flex-col gap-2">
-              <Link to={ROUTES.LOGIN} onClick={() => setMobileMenuOpen(false)} className="py-1.5">
-                Login
-              </Link>
-              <Link
-                to={ROUTES.REGISTER}
-                onClick={() => setMobileMenuOpen(false)}
-                className="bg-[#0e7c85] text-white text-center py-2 rounded-full"
-              >
-                Register
-              </Link>
-            </div>
-          )}
         </div>
       )}
     </nav>
