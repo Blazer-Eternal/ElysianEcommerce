@@ -6,7 +6,6 @@ import { createOrderValidator, updateOrderStatusValidator, updatePaymentStatusVa
 
 const orderRoutes = Router();
 
-// Logged-in user: checkout
 orderRoutes.post(
   "/",
   exceptionHandler(Guard.grantAccess),
@@ -14,16 +13,18 @@ orderRoutes.post(
   exceptionHandler(OrderController.createOrder)
 );
 
-// Logged-in user: own order history
 orderRoutes.get("/my-orders", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.getMyOrders));
 
-// Owner or admin: single order
+orderRoutes.get(
+  "/esewa/verify",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(OrderController.verifyEsewaPayment)
+);
+
 orderRoutes.get("/:id", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.getOrderById));
 
-// Owner or admin: cancel order
 orderRoutes.patch("/:id/cancel", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.cancelOrder));
 
-// Admin: view all orders
 orderRoutes.get(
   "/",
   exceptionHandler(Guard.grantAccess),
@@ -31,7 +32,6 @@ orderRoutes.get(
   exceptionHandler(OrderController.getAllOrders)
 );
 
-// Admin: update order status
 orderRoutes.patch(
   "/:id/status",
   exceptionHandler(Guard.grantAccess),
@@ -40,7 +40,6 @@ orderRoutes.patch(
   exceptionHandler(OrderController.updateOrderStatus)
 );
 
-// Admin: update payment status
 orderRoutes.patch(
   "/:id/payment-status",
   exceptionHandler(Guard.grantAccess),

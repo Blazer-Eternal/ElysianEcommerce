@@ -35,6 +35,8 @@ import TermsOfService from "./pages/legal/TermsOfService";
 import Cancellations from "./pages/legal/Cancellations";
 import NotFound from "./pages/NotFound";
 import { ROUTES } from "./constants/routes";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailure from "./pages/PaymentFailure";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => (
   <div>{children}</div>
@@ -71,6 +73,8 @@ function App() {
       <Route path={ROUTES.PRIVACY_POLICY} element={<PublicPage><PrivacyPolicy /></PublicPage>} />
       <Route path={ROUTES.TERMS_OF_SERVICE} element={<PublicPage><TermsOfService /></PublicPage>} />
       <Route path={ROUTES.CANCELLATIONS} element={<PublicPage><Cancellations /></PublicPage>} />
+      <Route path={ROUTES.PAYMENT_SUCCESS} element={<PublicPage><PaymentSuccess /></PublicPage>} />
+      <Route path={ROUTES.PAYMENT_FAILURE} element={<PublicPage><PaymentFailure /></PublicPage>} />
 
       <Route
         path={ROUTES.WISHLIST}

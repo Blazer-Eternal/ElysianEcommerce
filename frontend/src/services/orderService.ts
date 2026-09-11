@@ -1,10 +1,15 @@
 import axiosInstance from "./axiosInstance";
 import type { ApiResponse, PaginatedResponse } from "../types/pagination.types";
-import type { Order, CreateOrderPayload, OrderStatus, PaymentStatus } from "../types/order.types";
+import type { Order, CreateOrderPayload, CreateOrderResponseData, OrderStatus, PaymentStatus } from "../types/order.types";
 
 export const orderService = {
-  create: async (payload: CreateOrderPayload): Promise<ApiResponse<Order>> => {
+  create: async (payload: CreateOrderPayload): Promise<CreateOrderResponseData> => {
     const { data } = await axiosInstance.post("/orders", payload);
+    return data;
+  },
+
+  verifyEsewaPayment: async (orderNumber: string): Promise<ApiResponse<Order>> => {
+    const { data } = await axiosInstance.get("/orders/esewa/verify", { params: { order_number: orderNumber } });
     return data;
   },
 

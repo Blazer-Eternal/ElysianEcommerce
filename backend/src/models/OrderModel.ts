@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { OrderInterface, OrderItemInterface, OrderShippingAddressInterface } from "../intefaces/OrderInterface";
-import { OrderStatusEnum, PaymentStatusEnum } from "../enums/OrderEnums";
+import { OrderStatusEnum, PaymentStatusEnum, PaymentMethodEnum } from "../enums/OrderEnums";
 
 const OrderItemSchema = new Schema<OrderItemInterface>({
   product_id: {
@@ -86,6 +86,11 @@ const OrderSchema = new Schema<OrderInterface>({
     type: String,
     enum: Object.values(PaymentStatusEnum),
     default: PaymentStatusEnum.unpaid,
+  },
+  payment_method: {
+    type: String,
+    enum: Object.values(PaymentMethodEnum),
+    default: PaymentMethodEnum.cod,
   },
   created_at: {
     type: Date,

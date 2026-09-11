@@ -9,6 +9,7 @@ export const createOrderValidator = z.object({
     country: z.string().min(1, "Country is required"),
   }),
   coupon_code: z.string().optional(),
+  payment_method: z.enum(["cod", "esewa"]).default("cod"),
 });
 
 export const updateOrderStatusValidator = z.object({

@@ -1,5 +1,5 @@
 import { Document, Types } from "mongoose";
-import { OrderStatusEnum, PaymentStatusEnum } from "../enums/OrderEnums";
+import { OrderStatusEnum, PaymentStatusEnum, PaymentMethodEnum } from "../enums/OrderEnums";
 
 export interface OrderItemInterface {
   _id?: Types.ObjectId;
@@ -28,6 +28,7 @@ export interface InputOrderInterface {
   total_amount: number;
   status?: OrderStatusEnum;
   payment_status?: PaymentStatusEnum;
+  payment_method?: PaymentMethodEnum;
 }
 
 export interface OrderInterface extends Document {
@@ -41,5 +42,6 @@ export interface OrderInterface extends Document {
   total_amount: number;
   status: OrderStatusEnum;
   payment_status: PaymentStatusEnum;
+  payment_method: PaymentMethodEnum;
   created_at: Date;
 }

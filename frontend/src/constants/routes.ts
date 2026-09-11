@@ -14,6 +14,9 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
 
+  PAYMENT_SUCCESS: "/payment/success",
+  PAYMENT_FAILURE: "/payment/failure",
+
   ADMIN_DASHBOARD: "/admin",
   ADMIN_PRODUCTS: "/admin/products",
   ADMIN_CATEGORIES: "/admin/categories",

@@ -1,8 +1,8 @@
 import { Response } from "express";
 import { CustomRequestInterface } from "../../intefaces";
-import { OrderServices, CartServices, ProductServices, CouponServices } from "../../services";
+import { OrderServices, CartServices, ProductServices, CouponServices, EsewaServices } from "../../services";
 import { RoleEnum } from "../../enums/UserEnums";
-import { OrderStatusEnum, PaymentStatusEnum } from "../../enums/OrderEnums";
+import { OrderStatusEnum, PaymentStatusEnum, PaymentMethodEnum } from "../../enums/OrderEnums";
 import { OrderItemInterface } from "../../intefaces/OrderInterface";
 
 // Extracts the raw user id string whether user_id is populated or a plain ObjectId
@@ -16,7 +16,7 @@ const getOrderOwnerId = (userIdField: any): string => {
 export class OrderController {
   static async createOrder(req: CustomRequestInterface, res: Response) {
     const userId = req.user?.id as string;
-    const { shipping_address, coupon_code } = req.body;
+    const { shipping_address, coupon_code, payment_method } = req.body;
 
     try {
       const cart = await new CartServices().findRawByUserId(userId);
@@ -86,9 +86,11 @@ export class OrderController {
         }
       }
 
+      const order_number = new OrderServices().generateOrderNumber();
+
       const order = await new OrderServices().create({
         user_id: userId as any,
-        order_number: new OrderServices().generateOrderNumber(),
+        order_number,
         items: orderItems,
         shipping_address,
         coupon_id: couponId,
@@ -97,13 +99,74 @@ export class OrderController {
         total_amount,
         status: OrderStatusEnum.pending,
         payment_status: PaymentStatusEnum.unpaid,
+        payment_method: payment_method as PaymentMethodEnum,
       });
 
       await new CartServices().clearCart(userId);
 
-      return res.status(201).json({ success: true, message: "Order placed successfully", data: order });
+      // COD — nothing further needed, order is placed as-is.
+      if (payment_method === PaymentMethodEnum.cod) {
+        return res.status(201).json({ success: true, message: "Order placed successfully", data: order });
+      }
+
+      // eSewa — build the signed payment form fields for the frontend to
+      // auto-submit to eSewa's gateway. Order stays 'pending'/'unpaid' until
+      // the payment is verified via the success redirect.
+      const esewaService = new EsewaServices();
+      const fields = esewaService.buildPaymentFields(order_number, total_amount);
+
+      return res.status(201).json({
+        success: true,
+        message: "Order created, redirecting to eSewa",
+        data: order,
+        esewa: {
+          fields,
+          gatewayUrl: esewaService.gatewayUrl(),
+        },
+      });
     } catch (error) {
       console.error("createOrder error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  // Called by the frontend's payment-success page after eSewa redirects back.
+  // Independently re-checks the transaction status with eSewa before marking paid.
+  static async verifyEsewaPayment(req: CustomRequestInterface, res: Response) {
+    const userId = req.user?.id as string;
+    const orderNumber = req.query.order_number as string;
+
+    try {
+      if (!orderNumber) {
+        return res.status(400).json({ success: false, message: "Missing order_number" });
+      }
+
+      const order = await new OrderServices().findByOrderNumber(orderNumber);
+      if (!order) {
+        return res.status(404).json({ success: false, message: "Order not found" });
+      }
+
+      const ownerId = getOrderOwnerId(order.user_id);
+      if (ownerId !== userId && req.user?.role !== RoleEnum.admin) {
+        return res.status(403).json({ success: false, message: "You can only verify your own orders" });
+      }
+
+      if (order.payment_status === PaymentStatusEnum.paid) {
+        return res.status(200).json({ success: true, message: "Payment already verified", data: order });
+      }
+
+      const isVerified = await new EsewaServices().verifyTransaction(order.order_number, order.total_amount);
+
+      if (!isVerified) {
+        return res.status(400).json({ success: false, message: "Payment could not be verified" });
+      }
+
+      await new OrderServices().updatePaymentStatus(order._id.toString(), PaymentStatusEnum.paid);
+      const updatedOrder = await new OrderServices().updateStatus(order._id.toString(), OrderStatusEnum.paid);
+
+      return res.status(200).json({ success: true, message: "Payment verified successfully", data: updatedOrder });
+    } catch (error) {
+      console.error("verifyEsewaPayment error:", error);
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }

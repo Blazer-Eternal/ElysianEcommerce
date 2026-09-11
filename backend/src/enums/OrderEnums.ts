@@ -11,3 +11,8 @@ export enum PaymentStatusEnum {
   paid = "paid",
   refunded = "refunded",
 }
+
+export enum PaymentMethodEnum {
+  cod = "cod",
+  esewa = "esewa",
+}

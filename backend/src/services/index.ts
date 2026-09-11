@@ -13,3 +13,5 @@ export * from './ReviewServices'
 export * from './WishlistServices'
 
 export * from './OrderServices'
+
+export * from "./EsewaServices";
