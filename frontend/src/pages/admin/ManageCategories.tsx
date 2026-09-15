@@ -37,6 +37,7 @@ const ManageCategories = () => {
   const [form, setForm] = useState<CreateCategoryPayload>(emptyForm);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "categories"],
@@ -119,15 +120,54 @@ const ManageCategories = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Categories</h1>
               <p className="text-gray-600 mt-2">Add, edit and manage product categories.</p>
             </div>
-            <button
-              onClick={openCreateForm}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
-            >
-              <span className="text-xl">+</span> Add Category
-            </button>
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-3">
+              <button
+                onClick={openCreateForm}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
+              >
+                <span className="text-xl">+</span> Add Category
+              </button>
+              {/* View Toggle - Icon Only */}
+              <div className="flex gap-0 bg-gray-200 p-1 rounded-lg">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  title="Grid View"
+                  className={`flex items-center justify-center p-2 rounded-l-md transition-all duration-200 ${
+                    viewMode === "grid"
+                      ? "bg-white text-[#0e7c85] shadow-md"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  title="List View"
+                  className={`flex items-center justify-center p-2 rounded-r-md transition-all duration-200 ${
+                    viewMode === "list"
+                      ? "bg-white text-[#0e7c85] shadow-md"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="8" y1="6" x2="21" y2="6" />
+                    <line x1="8" y1="12" x2="21" y2="12" />
+                    <line x1="8" y1="18" x2="21" y2="18" />
+                    <line x1="3" y1="6" x2="3.01" y2="6" />
+                    <line x1="3" y1="12" x2="3.01" y2="12" />
+                    <line x1="3" y1="18" x2="3.01" y2="18" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Categories Grid */}
+          {/* Categories Grid/List */}
           {isLoading ? (
             <div className="text-center py-12">
               <p className="text-gray-600">Loading categories...</p>
@@ -142,7 +182,7 @@ const ManageCategories = () => {
                 <span>+</span> Create First Category
               </button>
             </div>
-          ) : (
+          ) : viewMode === "grid" ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
                 {categories.map((category) => (
@@ -193,6 +233,73 @@ const ManageCategories = () => {
                         >
                           <DeleteIcon />
                           Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="space-y-3 mb-8">
+                {categories.map((category) => (
+                  <div
+                    key={category._id}
+                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-white/20 p-4 sm:p-6"
+                  >
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
+                      {/* Category Icon */}
+                      <div className="w-full sm:w-24 h-24 shrink-0 bg-linear-to-br from-[#0e7c85]/10 to-cyan-600/10 rounded-lg flex items-center justify-center">
+                        <div className="text-[#0e7c85]/60">
+                          <CategoryIcon />
+                        </div>
+                      </div>
+
+                      {/* Category Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                          <div>
+                            <h3 className="font-bold text-gray-900 text-base sm:text-lg hover:text-[#0e7c85]">
+                              {category.name}
+                            </h3>
+                            <p className="text-xs text-[#0e7c85] font-semibold mt-1 uppercase tracking-wider">
+                              {getParentName(category.parent_id)}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Category Details */}
+                        <div className="py-3 border-t border-b border-white/20">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            <div>
+                              <p className="text-xs text-gray-600 font-medium">Slug</p>
+                              <p className="font-mono text-[#0e7c85] text-sm">{category.slug}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        {category.description && (
+                          <p className="text-sm text-gray-600 mt-3 line-clamp-2">{category.description}</p>
+                        )}
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="w-full sm:w-auto flex gap-2 pt-2 sm:pt-0">
+                        <button
+                          onClick={() => openEditForm(category)}
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-[#0e7c85]/10 hover:bg-[#0e7c85]/20 text-[#0e7c85] rounded-lg transition-all duration-200 font-medium text-sm"
+                        >
+                          <EditIcon />
+                          <span className="hidden sm:inline">Edit</span>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(category._id)}
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-600 rounded-lg transition-all duration-200 font-medium text-sm"
+                        >
+                          <DeleteIcon />
+                          <span className="hidden sm:inline">Delete</span>
                         </button>
                       </div>
                     </div>

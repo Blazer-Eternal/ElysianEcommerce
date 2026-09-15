@@ -32,7 +32,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="space-y-20">
+    <div className="space-y-20 pb-20 sm:pb-32">
       {/* Hero Section */}
       <div className="pt-12 sm:pt-20 pb-8 sm:pb-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
@@ -60,7 +60,7 @@ const Contact = () => {
             {/* Location */}
             <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
                   <LocationIcon />
                 </div>
                 <div>
@@ -74,7 +74,7 @@ const Contact = () => {
             {/* Phone */}
             <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
                   <PhoneIcon />
                 </div>
                 <div>
@@ -88,7 +88,7 @@ const Contact = () => {
             {/* Email */}
             <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
                   <EmailIcon />
                 </div>
                 <div>

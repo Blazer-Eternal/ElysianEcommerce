@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { categoryService } from "../../services/categoryService";
@@ -47,6 +47,7 @@ const ManageProducts = () => {
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "products", page],
@@ -134,6 +135,18 @@ const ManageProducts = () => {
     return categories.find((c) => c._id === id)?.name || "Uncategorized";
   };
 
+  // Scroll to top when page changes
+  useEffect(() => {
+    // Find the scrollable parent container
+    const scrollContainer = document.querySelector('.overflow-auto');
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // Fallback to window scroll
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [page]);
+
   return (
     <AdminLayout>
       <div className="w-full px-4 sm:px-6 py-8">
@@ -145,15 +158,52 @@ const ManageProducts = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Products</h1>
               <p className="text-gray-600 mt-2">Add, edit and manage products in your collection.</p>
             </div>
-            <button
-              onClick={openCreateForm}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
-            >
-              <span className="text-xl">+</span> Add Product
-            </button>
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-3">
+              <button
+                onClick={openCreateForm}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
+              >
+                <span className="text-xl">+</span> Add Product
+              </button>
+              {/* View Toggle - Icon Only */}
+              <div className="flex gap-0 bg-gray-200 p-1 rounded-lg">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  title="Grid View"
+                  className={`flex items-center justify-center p-2 rounded-l-md transition-all duration-200 ${viewMode === "grid"
+                      ? "bg-white text-[#0e7c85] shadow-md"
+                      : "text-gray-600 hover:text-gray-900"
+                    }`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  title="List View"
+                  className={`flex items-center justify-center p-2 rounded-r-md transition-all duration-200 ${viewMode === "list"
+                      ? "bg-white text-[#0e7c85] shadow-md"
+                      : "text-gray-600 hover:text-gray-900"
+                    }`}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="8" y1="6" x2="21" y2="6" />
+                    <line x1="8" y1="12" x2="21" y2="12" />
+                    <line x1="8" y1="18" x2="21" y2="18" />
+                    <line x1="3" y1="6" x2="3.01" y2="6" />
+                    <line x1="3" y1="12" x2="3.01" y2="12" />
+                    <line x1="3" y1="18" x2="3.01" y2="18" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Products Grid */}
+          {/* Products Grid/List */}
           {isLoading ? (
             <div className="text-center py-12">
               <p className="text-gray-600">Loading products...</p>
@@ -168,7 +218,7 @@ const ManageProducts = () => {
                 <span>+</span> Create First Product
               </button>
             </div>
-          ) : (
+          ) : viewMode === "grid" ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
                 {products.map((product) => (
@@ -192,13 +242,12 @@ const ManageProducts = () => {
                       {/* Status Badge */}
                       <div className="absolute top-3 right-3">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${
-                            product.status === "active"
+                          className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${product.status === "active"
                               ? "bg-green-500/90 text-white"
                               : product.status === "draft"
                                 ? "bg-yellow-500/90 text-white"
                                 : "bg-gray-500/90 text-white"
-                          }`}
+                            }`}
                         >
                           {product.status}
                         </span>
@@ -215,7 +264,7 @@ const ManageProducts = () => {
                       </div>
 
                       {/* Product Details */}
-                      <div className="grid grid-cols-2 gap-3 py-2 border-t border-white/20 border-b border-white/20">
+                      <div className="grid grid-cols-2 gap-3 py-2 border-t border-b border-white/20">
                         <div>
                           <p className="text-xs text-gray-600 font-medium">Price</p>
                           <p className="font-bold text-[#0e7c85] text-sm">{formatCurrency(product.price)}</p>
@@ -248,6 +297,105 @@ const ManageProducts = () => {
                         >
                           <DeleteIcon />
                           Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {data?.pagination && <Pagination pagination={data.pagination} onPageChange={setPage} />}
+            </>
+          ) : (
+            <>
+              <div className="space-y-3 mb-8">
+                {products.map((product) => (
+                  <div
+                    key={product._id}
+                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-white/20 p-4 sm:p-6"
+                  >
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
+                      {/* Product Image */}
+                      <div className="w-full sm:w-24 h-24 shrink-0">
+                        {product.images && product.images.length > 0 ? (
+                          <img
+                            src={product.images[0]}
+                            alt={product.name}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-300 rounded-lg">
+                            <span className="text-gray-600 text-2xl">📦</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                          <div>
+                            <h3 className="font-bold text-gray-900 text-base sm:text-lg hover:text-[#0e7c85]">
+                              {product.name}
+                            </h3>
+                            <p className="text-xs text-[#0e7c85] font-semibold mt-1">{getCategoryName(product.category_id)}</p>
+                          </div>
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide w-fit ${product.status === "active"
+                                ? "bg-green-500/90 text-white"
+                                : product.status === "draft"
+                                  ? "bg-yellow-500/90 text-white"
+                                  : "bg-gray-500/90 text-white"
+                              }`}
+                          >
+                            {product.status}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-white/20">
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">Price</p>
+                            <p className="font-bold text-[#0e7c85] text-sm">{formatCurrency(product.price)}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">Stock</p>
+                            <p className={`font-bold text-sm ${product.stock > 0 ? "text-green-600" : "text-red-600"}`}>
+                              {product.stock}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">SKU</p>
+                            <p className="font-mono text-[#0e7c85] text-sm">{product.sku}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">Cost Price</p>
+                            <p className="font-bold text-gray-700 text-sm">
+                              {product.cost_price ? formatCurrency(product.cost_price) : "N/A"}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Description */}
+                        {product.description && (
+                          <p className="text-sm text-gray-600 mt-3 line-clamp-2">{product.description}</p>
+                        )}
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="w-full sm:w-auto flex gap-2 pt-2 sm:pt-0">
+                        <button
+                          onClick={() => openEditForm(product)}
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-[#0e7c85]/10 hover:bg-[#0e7c85]/20 text-[#0e7c85] rounded-lg transition-all duration-200 font-medium text-sm"
+                        >
+                          <EditIcon />
+                          <span className="hidden sm:inline">Edit</span>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(product._id)}
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-600 rounded-lg transition-all duration-200 font-medium text-sm"
+                        >
+                          <DeleteIcon />
+                          <span className="hidden sm:inline">Delete</span>
                         </button>
                       </div>
                     </div>
