@@ -70,7 +70,7 @@ const HeroSection = memo(() => {
   return (
     <div 
       ref={containerRef}
-      className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden pt-12 sm:pt-20 pb-12 sm:pb-24 section-container"
+      className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden pt-10 sm:pt-14 pb-10 sm:pb-14 section-container"
     >
       {/* GhostFibers animated background - GPU accelerated */}
       <div className="absolute inset-0 -z-10 gpu-accelerate" style={{ width: "100%", height: "100%", contain: "strict" }}>

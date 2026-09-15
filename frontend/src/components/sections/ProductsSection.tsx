@@ -1,39 +1,29 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { ROUTES } from "../../constants/routes";
 import ProductCard from "../product/ProductCard";
-import type { Product } from "../../types/product.types";
 
 const ProductsSection = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: response, isLoading: loading } = useQuery({
+    queryKey: ["products", { limit: 8, page: 1, status: "active", sortBy: "created_at", sortOrder: "asc" }],
+    queryFn: () => productService.getAll({ 
+      limit: 8, 
+      page: 1, 
+      status: "active",
+      sortBy: "created_at",
+      sortOrder: "asc"
+    }),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await productService.getAll({ 
-          limit: 8, 
-          page: 1, 
-          status: "active",
-          sortBy: "created_at",
-          sortOrder: "asc"
-        });
-        setProducts(response.data || []);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
+  const products = response?.data || [];
 
   return (
-    <div className="py-16 sm:py-24">
+    <div className="py-10 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-12 sm:mb-16">
+        <div className="flex items-center justify-between mb-9 sm:mb-11">
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Latest Products</h2>
             <p className="text-gray-600 text-sm sm:text-base">Handpicked collection just for you</p>
@@ -48,10 +38,10 @@ const ProductsSection = () => {
 
         {/* Products Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="glass rounded-2xl p-4 animate-pulse">
-                <div className="bg-gray-300 rounded-xl h-56 mb-4"></div>
+                <div className="bg-gray-300 rounded-lg h-40 mb-4"></div>
                 <div className="bg-gray-300 h-4 rounded mb-3"></div>
                 <div className="bg-gray-300 h-4 rounded w-2/3 mb-4"></div>
                 <div className="bg-gray-300 h-5 rounded w-1/2"></div>
@@ -59,7 +49,7 @@ const ProductsSection = () => {
             ))}
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

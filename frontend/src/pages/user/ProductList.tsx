@@ -109,8 +109,8 @@ const ProductList = () => {
 
       {/* Decorative Background Blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-300/15 to-teal-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob-rotate" />
-        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-gradient-to-br from-[#0e7c85]/15 to-cyan-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob-rotate" style={{ animationDelay: '-2s' }} />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-linear-to-br from-cyan-300/15 to-teal-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob-rotate" />
+        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-linear-to-br from-[#0e7c85]/15 to-cyan-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob-rotate" style={{ animationDelay: '-2s' }} />
       </div>
 
       <div className="space-y-16 py-8 sm:py-16 relative z-10">
@@ -120,7 +120,7 @@ const ProductList = () => {
             <div className="animate-fade-in-down" style={{ animationDelay: '0s' }}>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-gray-900 mb-4 leading-tight">
                 Discover Our{' '}
-                <span className="bg-gradient-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient" style={{ backgroundSize: '200% 200%' }}>
+                <span className="bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient" style={{ backgroundSize: '200% 200%' }}>
                   Curated Collection
                 </span>
               </h1>
@@ -131,8 +131,8 @@ const ProductList = () => {
             </p>
 
             <div className="flex gap-3 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <div className="h-1 w-12 bg-gradient-to-r from-[#0e7c85] to-cyan-500 rounded-full" />
-              <div className="h-1 w-3 bg-gradient-to-r from-cyan-500 to-teal-400 rounded-full opacity-70" />
+              <div className="h-1 w-12 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full" />
+              <div className="h-1 w-3 bg-linear-to-r from-cyan-500 to-teal-400 rounded-full opacity-70" />
             </div>
           </div>
 
@@ -140,12 +140,12 @@ const ProductList = () => {
           <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <div className="group relative">
               {/* Glow Background */}
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-[#0e7c85]/20 via-cyan-500/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-all duration-700 blur-2xl" />
+              <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/20 via-cyan-500/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-all duration-700 blur-2xl" />
 
               {/* Filter Card */}
               <div className="relative glass rounded-3xl p-6 sm:p-10 backdrop-blur-2xl border border-white/70 hover:border-[#0e7c85]/80 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/30 group-hover:bg-white/60">
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" style={{
+                  <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-transparent via-white/10 to-transparent animate-shimmer" style={{
                     backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
                     backgroundSize: '1000px 100%',
                     animation: 'shimmer 3s infinite'
@@ -165,7 +165,7 @@ const ProductList = () => {
           {/* Section Header */}
           <div className="mb-12 space-y-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <div className="flex items-center gap-4">
-              <div className="h-1 w-8 bg-gradient-to-r from-[#0e7c85] to-cyan-500 rounded-full" />
+              <div className="h-1 w-8 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full" />
               <h2 className="text-sm sm:text-base font-bold text-[#0e7c85] uppercase tracking-widest">
                 {data?.pagination?.total || 0} Items Available
               </h2>
@@ -175,17 +175,17 @@ const ProductList = () => {
 
           {/* Loading State - Animated Skeleton */}
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
               {[...Array(12)].map((_, i) => (
                 <div
                   key={i}
-                  className="glass rounded-2xl p-6 backdrop-blur-xl border border-white/40 animate-pulse"
+                  className="glass rounded-2xl p-4 backdrop-blur-xl border border-white/40 animate-pulse"
                   style={{ animationDelay: `${i * 0.05}s` }}
                 >
-                  <div className="w-full h-64 bg-gradient-to-r from-white/20 to-white/10 rounded-xl mb-4" />
+                  <div className="w-full h-48 bg-linear-to-r from-white/20 to-white/10 rounded-xl mb-4" />
                   <div className="space-y-3">
-                    <div className="h-4 bg-gradient-to-r from-white/20 to-white/10 rounded w-3/4" />
-                    <div className="h-3 bg-gradient-to-r from-white/20 to-white/10 rounded w-1/2" />
+                    <div className="h-4 bg-linear-to-r from-white/20 to-white/10 rounded w-3/4" />
+                    <div className="h-3 bg-linear-to-r from-white/20 to-white/10 rounded w-1/2" />
                   </div>
                 </div>
               ))}
@@ -201,7 +201,7 @@ const ProductList = () => {
             <div className="flex justify-center animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
               <div className="group relative">
                 {/* Glow */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#0e7c85]/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" />
+                <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#0e7c85]/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" />
 
                 {/* Pagination */}
                 <div className="relative bg-white/40 backdrop-blur rounded-2xl p-6 border border-white/60 hover:border-[#0e7c85]/50 transition-all duration-300">
@@ -232,7 +232,7 @@ const ProductList = () => {
                   sortBy: "created_at",
                   sortOrder: "asc",
                 })}
-                className="group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#0e7c85] via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-cyan-500/50 overflow-hidden"
+                className="group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-cyan-500/50 overflow-hidden"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   Reset Filters

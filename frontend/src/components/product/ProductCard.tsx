@@ -80,7 +80,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           />
 
           {/* Stock Badge */}
-          <div className="absolute top-3 left-3 glass rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md">
+          <div className="absolute top-2 left-2 glass rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur-md">
             {outOfStock ? (
               <span className="text-red-600">Out of Stock</span>
             ) : product.stock && product.stock < 5 ? (
@@ -91,8 +91,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
 
           {/* Wishlist Button */}
-          <div className="absolute top-3 right-3 z-20">
-            <div className="glass rounded-full p-2.5 backdrop-blur-md hover:bg-white/80 transition-all duration-300 flex items-center justify-center">
+          <div className="absolute top-2 right-2 z-20">
+            <div className="glass rounded-full p-2 backdrop-blur-md hover:bg-white/80 transition-all duration-300 flex items-center justify-center">
               <WishlistButton productId={product._id} />
             </div>
           </div>
@@ -101,7 +101,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <button
             onClick={handleAddToCart}
             disabled={outOfStock || isAdding}
-            className={`absolute bottom-3 right-3 glass rounded-full p-2.5 backdrop-blur-md transition-all duration-300 flex items-center justify-center text-[#0e7c85] group-hover:bg-[#0e7c85] group-hover:text-white disabled:opacity-50 disabled:cursor-not-allowed ${
+            className={`absolute bottom-2 right-2 glass rounded-full p-2 backdrop-blur-md transition-all duration-300 flex items-center justify-center text-[#0e7c85] group-hover:bg-[#0e7c85] group-hover:text-white disabled:opacity-50 disabled:cursor-not-allowed ${
               isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}
           >
@@ -110,16 +110,16 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
 
         {/* Content Container */}
-        <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
+        <div className="flex-1 p-4 flex flex-col justify-between">
           {/* Product Name */}
-          <div className="space-y-3">
-            <h3 className="font-semibold text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-[#0e7c85] transition-colors duration-300">
+          <div className="space-y-2">
+            <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 group-hover:text-[#0e7c85] transition-colors duration-300">
               {product.name}
             </h3>
 
             {/* Rating */}
-            {product.rating_avg && (
-              <div className="flex items-center gap-2">
+            {product.rating_avg && product.rating_count > 0 ? (
+              <div className="flex items-center gap-1.5">
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <span key={i}>
@@ -128,16 +128,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   ))}
                 </div>
                 <span className="text-xs text-gray-600">
-                  ({product.rating_count || 0} {product.rating_count === 1 ? "review" : "reviews"})
+                  ({product.rating_count} {product.rating_count === 1 ? "review" : "reviews"})
                 </span>
+              </div>
+            ) : (
+              <div className="text-xs text-gray-500 font-medium">
+                No reviews yet
               </div>
             )}
           </div>
 
           {/* Price Container */}
           <div className="pt-3 border-t border-white/40 mt-3">
-            <div className="flex items-baseline gap-2">
-              <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-base font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
                 {formatCurrency(product.price)}
               </span>
               {product.cost_price && product.cost_price < product.price && (

@@ -190,7 +190,7 @@ const CTASection = () => {
     <>
       <style>{styles}</style>
 
-      <div className="py-8 sm:py-12 relative overflow-hidden">
+      <div className="py-8 sm:py-10 relative overflow-hidden">
         {/* Enhanced animated background */}
         <div className="absolute inset-0 -z-10">
 

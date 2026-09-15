@@ -54,7 +54,7 @@ const ProductDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="py-24 flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="py-24 flex items-center justify-center min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900">
         <Spinner size="lg" />
       </div>
     );
@@ -77,11 +77,11 @@ const ProductDetail = () => {
   const ratingPercentage = (product.rating_avg / 5) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-purple-200/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-200/20 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-linear-to-bl from-purple-200/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-tr from-blue-200/20 to-transparent rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -89,7 +89,7 @@ const ProductDetail = () => {
         <div className="mb-8 flex items-center gap-2 animate-fade-in">
           <Link 
             to={ROUTES.PRODUCTS} 
-            className="text-sm font-medium text-gray-600 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 transition-all duration-300"
+            className="text-sm font-medium text-gray-600 hover:text-transparent hover:bg-clip-text hover:bg-linear-to-r hover:from-purple-600 hover:to-indigo-600 transition-all duration-300"
           >
             Products
           </Link>
@@ -98,14 +98,14 @@ const ProductDetail = () => {
             <>
               <Link 
                 to={ROUTES.PRODUCTS} 
-                className="text-sm font-medium text-gray-600 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 transition-all duration-300"
+                className="text-sm font-medium text-gray-600 hover:text-transparent hover:bg-clip-text hover:bg-linear-to-r hover:from-purple-600 hover:to-indigo-600 transition-all duration-300"
               >
                 {category.name}
               </Link>
               <span className="text-gray-400">/</span>
             </>
           )}
-          <span className="text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
+          <span className="text-sm font-semibold text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-indigo-600">
             {product.name}
           </span>
         </div>
@@ -115,7 +115,7 @@ const ProductDetail = () => {
           <div className="flex items-center justify-center animate-slide-in-left">
             <div className="relative w-full">
               {/* Glowing Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 via-blue-400/10 to-indigo-400/10 rounded-2xl blur-2xl -z-10"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-purple-400/10 via-blue-400/10 to-indigo-400/10 rounded-2xl blur-2xl -z-10"></div>
               <ProductGallery images={product.images} productName={product.name} />
             </div>
           </div>
@@ -127,11 +127,11 @@ const ProductDetail = () => {
               {/* Title and Wishlist */}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-gray-900 bg-clip-text text-transparent mb-2">
+                  <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-gray-900 via-purple-800 to-gray-900 bg-clip-text text-transparent mb-2">
                     {product.name}
                   </h1>
                   {category && (
-                    <p className="text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 uppercase tracking-wider">
+                    <p className="text-sm font-semibold text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-indigo-600 uppercase tracking-wider">
                       {category.name}
                     </p>
                   )}
@@ -169,14 +169,14 @@ const ProductDetail = () => {
 
               {/* Price Section */}
               <div className="space-y-2">
-                <p className="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
+                <p className="text-5xl font-bold bg-linear-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
                   {formatCurrency(product.price)}
                 </p>
                 <div className="flex items-center gap-2">
                   <div className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                     product.stock > 0
-                      ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 shadow-lg shadow-green-200/50'
-                      : 'bg-gradient-to-r from-red-100 to-rose-100 text-red-700 shadow-lg shadow-red-200/50'
+                      ? 'bg-linear-to-r from-green-100 to-emerald-100 text-green-700 shadow-lg shadow-green-200/50'
+                      : 'bg-linear-to-r from-red-100 to-rose-100 text-red-700 shadow-lg shadow-red-200/50'
                   }`}>
                     {product.stock > 0 ? (
                       <span>✓ In Stock ({product.stock} available)</span>
@@ -202,12 +202,12 @@ const ProductDetail = () => {
             <div className="mt-8 space-y-4">
               {/* Messages */}
               {addError && (
-                <div className="p-3 rounded-lg bg-gradient-to-r from-red-50 to-rose-50 border border-red-200 text-red-700 text-sm font-medium animate-slide-down">
+                <div className="p-3 rounded-lg bg-linear-to-r from-red-50 to-rose-50 border border-red-200 text-red-700 text-sm font-medium animate-slide-down">
                   {addError}
                 </div>
               )}
               {addSuccess && (
-                <div className="p-3 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 text-green-700 text-sm font-medium animate-slide-down">
+                <div className="p-3 rounded-lg bg-linear-to-r from-green-50 to-emerald-50 border border-green-200 text-green-700 text-sm font-medium animate-slide-down">
                   ✓ Successfully added to cart!
                 </div>
               )}
@@ -216,12 +216,12 @@ const ProductDetail = () => {
               {!outOfStock && (
                 <div className="flex gap-4 items-center flex-col sm:flex-row">
                   {/* Quantity Selector */}
-                  <div className="flex items-center gap-2 bg-gradient-to-r from-gray-100 to-gray-50 rounded-xl p-1.5 shadow-lg border border-gray-200">
+                  <div className="flex items-center gap-2 bg-linear-to-r from-gray-100 to-gray-50 rounded-xl p-1.5 shadow-lg border border-gray-200">
                     <button
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                       onMouseEnter={() => setHoveredButton('minus')}
                       onMouseLeave={() => setHoveredButton(null)}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 font-bold transition-all duration-300 hover:bg-gradient-to-br hover:from-purple-500 hover:to-indigo-500 hover:text-white hover:shadow-lg hover:shadow-purple-300/50 transform hover:scale-105"
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 font-bold transition-all duration-300 hover:bg-linear-to-br hover:from-purple-500 hover:to-indigo-500 hover:text-white hover:shadow-lg hover:shadow-purple-300/50 transform hover:scale-105"
                     >
                       −
                     </button>
@@ -230,7 +230,7 @@ const ProductDetail = () => {
                       onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
                       onMouseEnter={() => setHoveredButton('plus')}
                       onMouseLeave={() => setHoveredButton(null)}
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 font-bold transition-all duration-300 hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-500 hover:text-white hover:shadow-lg hover:shadow-indigo-300/50 transform hover:scale-105"
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 font-bold transition-all duration-300 hover:bg-linear-to-br hover:from-indigo-500 hover:to-purple-500 hover:text-white hover:shadow-lg hover:shadow-indigo-300/50 transform hover:scale-105"
                     >
                       +
                     </button>
@@ -277,7 +277,7 @@ const ProductDetail = () => {
               {outOfStock && (
                 <button
                   disabled
-                  className="w-full py-3 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed opacity-50 transition-all duration-300"
+                  className="w-full py-3 px-6 rounded-xl font-bold text-white bg-linear-to-r from-gray-400 to-gray-500 cursor-not-allowed opacity-50 transition-all duration-300"
                 >
                   Out of Stock
                 </button>
@@ -288,22 +288,48 @@ const ProductDetail = () => {
       </div>
 
       {/* Reviews Section */}
-      <div className="relative z-10 mt-16 md:mt-24 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            {/* Section Header */}
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 to-purple-700 bg-clip-text text-transparent mb-8 animate-fade-in">
-              Reviews
-            </h2>
+      <div className="relative z-10 mt-16 md:mt-24 py-16 md:py-24 border-t border-purple-200/20">
+        {/* Decorative Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/2 right-0 w-96 h-96 bg-linear-to-l from-purple-200/10 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-linear-to-t from-indigo-200/10 to-transparent rounded-full blur-3xl"></div>
+        </div>
 
-            {/* Reviews Content */}
-            <div className="space-y-8">
-              {isAuthenticated && (
-                <div className="bg-gradient-to-br from-purple-50/50 via-blue-50/30 to-indigo-50/50 rounded-2xl p-6 md:p-8 border border-purple-200/30 backdrop-blur-sm animate-fade-in-up">
-                  <ReviewForm productId={product._id} />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl">
+            {/* Section Header with Icon */}
+            <div className="mb-12 animate-fade-in">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-pink-400 rounded-lg blur-lg opacity-50"></div>
+                  <div className="relative bg-linear-to-r from-purple-500 to-pink-500 rounded-lg p-3 text-white text-2xl shadow-lg">
+                    ⭐
+                  </div>
                 </div>
-              )}
-              <ReviewList productId={product._id} />
+                <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
+                  Customer Reviews
+                </h2>
+              </div>
+              <p className="text-gray-600 text-lg ml-16">See what others think about this product</p>
+            </div>
+
+            {/* Reviews Content Container */}
+            <div className="space-y-8">
+              {/* Review Form Card */}
+              <div className="animate-slide-in-left" style={{ animationDelay: '0.1s' }}>
+                <ReviewForm productId={product._id} />
+              </div>
+
+              {/* Reviews List Container */}
+              <div className="animate-slide-in-left" style={{ animationDelay: '0.2s' }}>
+                <div className="relative">
+                  {/* Background Glow */}
+                  <div className="absolute -inset-2 bg-linear-to-r from-purple-200/20 via-pink-200/20 to-indigo-200/20 rounded-3xl blur-2xl -z-10"></div>
+                  <div className="relative bg-linear-to-br from-white/80 via-purple-50/40 to-blue-50/30 backdrop-blur-sm rounded-3xl p-8 border border-purple-200/30 shadow-2xl hover:shadow-2xl transition-shadow duration-500">
+                    <ReviewList productId={product._id} />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

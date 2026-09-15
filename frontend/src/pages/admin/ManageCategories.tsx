@@ -24,12 +24,6 @@ const DeleteIcon = () => (
   </svg>
 );
 
-const CategoryIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-  </svg>
-);
-
 const ManageCategories = () => {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
@@ -190,13 +184,6 @@ const ManageCategories = () => {
                     key={category._id}
                     className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-white/20"
                   >
-                    {/* Category Icon Background */}
-                    <div className="relative overflow-hidden bg-linear-to-br from-[#0e7c85]/10 to-cyan-600/10 h-48 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                      <div className="text-[#0e7c85]/60 group-hover:text-[#0e7c85] transition-colors">
-                        <CategoryIcon />
-                      </div>
-                    </div>
-
                     {/* Category Info */}
                     <div className="p-5 sm:p-6 space-y-3">
                       <div>
@@ -249,13 +236,6 @@ const ManageCategories = () => {
                     className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-white/20 p-4 sm:p-6"
                   >
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
-                      {/* Category Icon */}
-                      <div className="w-full sm:w-24 h-24 shrink-0 bg-linear-to-br from-[#0e7c85]/10 to-cyan-600/10 rounded-lg flex items-center justify-center">
-                        <div className="text-[#0e7c85]/60">
-                          <CategoryIcon />
-                        </div>
-                      </div>
-
                       {/* Category Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">

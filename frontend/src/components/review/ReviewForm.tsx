@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { reviewService } from "../../services/reviewService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -9,12 +9,80 @@ interface ReviewFormProps {
 
 const ReviewForm = ({ productId }: ReviewFormProps) => {
   const queryClient = useQueryClient();
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hoveredStar, setHoveredStar] = useState<number | null>(null);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const starContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleStarHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!starContainerRef.current) return;
+    
+    const rect = starContainerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const starWidth = rect.width / 5;
+    const starIndex = Math.floor(x / starWidth);
+    const isLeftHalf = (x % starWidth) < starWidth / 2;
+    
+    const newRating = isLeftHalf ? starIndex + 0.5 : starIndex + 1;
+    setHoveredRating(Math.max(0.5, Math.min(5, newRating)));
+  };
+
+  const handleStarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!starContainerRef.current) return;
+    
+    const rect = starContainerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const starWidth = rect.width / 5;
+    const starIndex = Math.floor(x / starWidth);
+    const isLeftHalf = (x % starWidth) < starWidth / 2;
+    
+    const newRating = isLeftHalf ? starIndex + 0.5 : starIndex + 1;
+    setRating(Math.max(0.5, Math.min(5, newRating)));
+  };
+
+  const handleStarLeave = () => {
+    setHoveredRating(0);
+  };
+
+  const renderStars = (value: number) => {
+    return (
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((starIndex) => {
+          let fillPercentage = 0;
+          
+          if (value >= starIndex) {
+            fillPercentage = 100;
+          } else if (value > starIndex - 1) {
+            fillPercentage = (value - (starIndex - 1)) * 100;
+          }
+          
+          return (
+            <div key={starIndex} className="relative w-6 h-6">
+              {/* Empty star background */}
+              <svg className="w-6 h-6 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              
+              {/* Filled star overlay */}
+              {fillPercentage > 0 && (
+                <div 
+                  className="absolute top-0 left-0 h-6 overflow-hidden transition-all duration-75"
+                  style={{ width: `${fillPercentage}%` }}
+                >
+                  <svg className="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -25,7 +93,8 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
       await reviewService.create({ product_id: productId, rating, comment: comment || undefined });
       setSuccess(true);
       setComment("");
-      setRating(5);
+      setRating(0);
+      setHoveredRating(0);
       queryClient.invalidateQueries({ queryKey: ["reviews", productId] });
       queryClient.invalidateQueries({ queryKey: ["product", productId] });
       setTimeout(() => setSuccess(false), 3000);
@@ -37,88 +106,92 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="group relative">
-      {/* Animated Background Blur */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-400/5 via-blue-400/5 to-indigo-400/5 rounded-2xl blur-xl group-hover:from-purple-400/10 group-hover:via-blue-400/10 group-hover:to-indigo-400/10 transition-all duration-500"></div>
-
-      <div className="relative bg-gradient-to-br from-white/80 via-purple-50/30 to-blue-50/30 backdrop-blur-xl rounded-2xl border border-purple-200/40 shadow-xl hover:shadow-2xl transition-all duration-500 p-8">
+    <form onSubmit={handleSubmit} className="w-full">
+      <style>{`
+        @keyframes float-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes star-bounce {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.25); }
+        }
+        .review-form-container {
+          animation: float-in 0.6s ease-out;
+        }
+        .star-hovered {
+          animation: star-bounce 0.3s ease-out;
+        }
+      `}</style>
+      
+      <div className="review-form-container space-y-4 p-6 bg-linear-to-br from-white via-purple-50/30 to-blue-50/30 rounded-2xl border-2 border-purple-300/60 shadow-lg hover:shadow-xl transition-all duration-300">
+        
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">
-            Share Your Experience
+        <div>
+          <h3 className="text-lg font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+            ✨ Share Your Experience
           </h3>
+          <p className="text-xs text-gray-600 mt-0.5">Help others decide</p>
         </div>
-
-        {/* Messages */}
+        
+        {/* Error Alert */}
         {error && (
-          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-red-50 to-rose-50 border border-red-200/60 text-red-700 text-sm font-medium flex items-start gap-3 animate-slide-down">
-            <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-            </svg>
-            <span>{error}</span>
+          <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium flex items-center gap-2">
+            <span>❌</span>
+            {error}
           </div>
         )}
+        
+        {/* Success Alert */}
         {success && (
-          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200/60 text-green-700 text-sm font-medium flex items-start gap-3 animate-slide-down">
-            <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            <span>✓ Thank you! Your review has been submitted successfully!</span>
+          <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium flex items-center gap-2">
+            <span>🎉</span>
+            Thank you! Your review submitted successfully!
           </div>
         )}
 
-        {/* Rating Stars */}
-        <div className="mb-6">
-          <label className="block text-sm font-semibold text-gray-900 mb-3">Your Rating</label>
-          <div className="flex items-center gap-2">
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setRating(star)}
-                  onMouseEnter={() => setHoveredStar(star)}
-                  onMouseLeave={() => setHoveredStar(null)}
-                  className="relative group/star"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full blur opacity-0 group-hover/star:opacity-75 transition-opacity duration-300 -inset-1"></div>
-                  <svg
-                    className={`relative w-8 h-8 transition-all duration-200 transform ${
-                      star <= (hoveredStar ?? rating)
-                        ? "fill-yellow-400 scale-110"
-                        : "fill-gray-300 scale-100"
-                    } hover:scale-125 cursor-pointer`}
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                </button>
-              ))}
+        {/* Rating Section */}
+        <div>
+          <label className="block text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Rating</label>
+          <div className="flex items-center gap-3">
+            <div
+              ref={starContainerRef}
+              onMouseMove={handleStarHover}
+              onClick={handleStarClick}
+              onMouseLeave={handleStarLeave}
+              className="cursor-pointer transition-transform hover:scale-110"
+            >
+              {renderStars(hoveredRating || rating)}
             </div>
-            <span className="ml-3 text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 to-yellow-500">
-              {hoveredStar ?? rating} of 5
-            </span>
+            <div className="flex items-center gap-1">
+              {rating === 0 ? (
+                <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+                  Click to rate
+                </span>
+              ) : (
+                <span className="text-xs font-bold text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-full">
+                  {rating.toFixed(1)}/5
+                </span>
+              )}
+            </div>
           </div>
+          <p className="text-xs text-gray-500 mt-1.5">Hover and click to select half or full stars</p>
         </div>
 
-        {/* Comment Textarea */}
-        <div className="mb-6">
-          <label className="block text-sm font-semibold text-gray-900 mb-3">Your Comment</label>
-          <div className="relative">
-            <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              maxLength={1000}
-              rows={4}
-              placeholder="Tell us about your experience with this product... (optional)"
-              className="w-full px-4 py-3 rounded-xl border border-purple-200/50 bg-white/50 backdrop-blur text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none"
-            />
-            <span className="absolute bottom-3 right-3 text-xs font-medium text-gray-500">
+        {/* Comment Section */}
+        <div>
+          <label className="block text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Comment</label>
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            maxLength={1000}
+            rows={3}
+            placeholder="Tell us about your experience... (optional)"
+            className="w-full p-3 border-2 border-purple-200/60 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-300/50 transition-all duration-300 resize-none text-sm"
+          />
+          <div className="flex justify-between items-center mt-1.5">
+            <span className="text-xs text-gray-500">Character count:</span>
+            <span className={`text-xs font-semibold ${comment.length > 900 ? 'text-orange-600' : 'text-gray-600'}`}>
               {comment.length}/1000
             </span>
           </div>
@@ -128,13 +201,17 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="relative w-full group/btn"
+          className="w-full py-2.5 px-4 font-bold text-white rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-md hover:shadow-lg"
+          style={{
+            background: isSubmitting
+              ? 'linear-gradient(135deg, #a78bfa 0%, #818cf8 100%)'
+              : 'linear-gradient(135deg, #ec4899 0%, #d946ef 50%, #a855f7 100%)',
+          }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 rounded-xl blur opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 -inset-0.5"></div>
-          <div className="relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white font-semibold transition-all duration-300 flex items-center justify-center gap-2 group-hover/btn:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+          <div className="flex items-center justify-center gap-2 text-sm">
             {isSubmitting ? (
               <>
-                <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -142,37 +219,13 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
               </>
             ) : (
               <>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2m0 0v-8m0 8l-6-4m6 4l6-4" />
-                </svg>
+                <span>📤</span>
                 <span>Publish Review</span>
               </>
             )}
           </div>
         </button>
-
-        {/* Character Count Info */}
-        <p className="text-xs text-gray-500 mt-3 text-center">
-          Character count: {comment.length}/{1000}
-        </p>
       </div>
-
-      <style>{`
-        @keyframes slide-down {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-slide-down {
-          animation: slide-down 0.4s ease-out;
-        }
-      `}</style>
     </form>
   );
 };
