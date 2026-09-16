@@ -16,31 +16,37 @@ const DashboardIcon = () => (
 
 const ProductIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-10c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm4 0c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-4 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm4 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
   </svg>
 );
 
 const CategoryIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    <path d="M12 2l-5.5 9h11z M17.5 13c1.93 0 3.5 1.57 3.5 3.5S19.43 20 17.5 20 14 18.43 14 16.5s1.57-3.5 3.5-3.5z M3 13.5h8v8H3z"/>
   </svg>
 );
 
 const CouponIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 9.5c0 .83-.67 1.5-1.5 1.5S11 13.33 11 12.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5z"/>
+    <path d="M21 5H3c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 7H8v2h4v-2zm6 0h-4v2h4v-2z"/>
   </svg>
 );
 
 const OrderIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.33-1.04c-.42-.32-1.02-.23-1.33.09-.32.32-.21.92.11 1.33l2.5 1.96c.46.37 1.12.37 1.58 0l3.96-5.08c.32-.41.23-1.01-.09-1.33-.32-.32-.92-.21-1.33.11l-3.15 4.05z"/>
+    <path d="M3 4h10v2H3V4zm0 6h10v2H3v-2zm0 6h10v2H3v-2zm13-5v4h4v-4h-4zm1 3h2v-1h-2v1z"/>
   </svg>
 );
 
 const UserIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+    <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm0 4c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm9 0c-.29 0-.62.02-.97.05 1.16.64 1.97 1.5 1.97 2.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+  </svg>
+);
+
+const DataTablesIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-10h-2v2h2v-2zm-2 4h-2v2h2v-2zm4-4h-2v2h2v-2zm-2 4h-2v2h2v-2zm4-4h-2v2h2v-2zm-2 4h-2v2h2v-2z"/>
   </svg>
 );
 
@@ -87,6 +93,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { label: "Coupons", route: ROUTES.ADMIN_COUPONS, icon: <CouponIcon /> },
     { label: "Orders", route: ROUTES.ADMIN_ORDERS, icon: <OrderIcon /> },
     { label: "Users", route: ROUTES.ADMIN_USERS, icon: <UserIcon /> },
+    { label: "Data Tables", route: ROUTES.ADMIN_DATA_TABLES, icon: <DataTablesIcon /> },
   ];
 
   const handleLogout = () => {
@@ -98,12 +105,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     <div className="flex h-screen bg-linear-to-b from-[#eafcfd] to-white">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-80 bg-gradient-to-b from-white via-white to-[#f0f9fb] border-r border-[#e0f2f7] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto ${
+        className={`fixed inset-y-0 left-0 z-50 w-80 bg-linear-to-b from-white via-white to-[#f0f9fb] border-r border-[#e0f2f7] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Sidebar Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] p-6 space-y-6">
+        <div className="sticky top-0 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] p-6 space-y-6">
           {/* Logo Section */}
           <div className="flex items-center justify-between">
             <Link to={ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-3 group">
@@ -139,7 +146,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               className="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-linear-to-r hover:from-[#0e7c85]/5 hover:to-cyan-600/5 hover:text-[#0e7c85] transition-all duration-200 group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-linear-to-r from-[#0e7c85]/0 to-cyan-600/0 group-hover:from-[#0e7c85]/10 group-hover:to-cyan-600/10 transition-all -z-10" />
-              <div className="text-gray-500 group-hover:text-[#0e7c85] transition-colors text-2xl flex-shrink-0">
+              <div className="text-gray-500 group-hover:text-[#0e7c85] transition-colors text-2xl shrink-0">
                 {item.icon}
               </div>
               <span className="font-semibold text-base group-hover:text-[#0e7c85] transition-colors">{item.label}</span>
@@ -153,14 +160,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </nav>
 
         {/* Divider */}
-        <div className="mx-4 my-6 h-px bg-gradient-to-r from-transparent via-[#0e7c85]/20 to-transparent" />
+        <div className="mx-4 my-6 h-px linear-to-r from-transparent via-[#0e7c85]/20 to-transparent" />
 
         {/* Sidebar Footer - User Profile & Logout */}
         <div className="px-4 py-6 space-y-4">
           {/* User Profile */}
           <div className="glass rounded-xl p-4 bg-linear-to-br from-[#0e7c85]/5 to-cyan-600/5 border border-[#0e7c85]/10">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
                 {user?.name?.charAt(0).toUpperCase() || "A"}
               </div>
               <div className="flex-1 min-w-0">

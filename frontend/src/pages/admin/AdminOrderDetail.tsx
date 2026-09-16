@@ -50,7 +50,7 @@ const OrderProgressTimeline = memo(({ localStatus }: { localStatus: OrderStatus 
             <div key={status} className="flex-1 flex items-center">
               {/* Timeline Circle */}
               <div
-                className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold transition-smooth gpu-accelerate ${
+                className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold transition-smooth gpu-accelerate ${
                   isCompleted
                     ? isCurrent
                       ? "bg-[#0e7c85] text-white scale-125"
@@ -106,7 +106,7 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
               decoding="async"
             />
           ) : (
-            <div className="w-24 h-24 rounded-lg bg-gray-200 flex items-center justify-center text-gray-400 text-2xl flex-shrink-0">
+            <div className="w-24 h-24 rounded-lg bg-gray-200 flex items-center justify-center text-gray-400 text-2xl shrink-0">
               📦
             </div>
           )}
@@ -153,7 +153,7 @@ const CustomerInfoSection = memo(({ user }: any) => (
       <div className="space-y-4 animate-fade-in">
         {/* Customer Avatar */}
         <div className="flex items-center gap-4 pb-4 border-b border-white/20">
-          <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+          <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white text-xl font-bold shrink-0">
             {user.name?.charAt(0).toUpperCase() || "C"}
           </div>
           <div>
@@ -221,6 +221,28 @@ const PaymentSummarySection = memo(({ order }: any) => (
       <div className="flex justify-between pb-3 border-b border-white/20">
         <p className="text-sm text-gray-600">Items ({order.items.length})</p>
         <p className="text-sm font-semibold text-gray-900">
+          {formatCurrency(order.subtotal || order.total_amount)}
+        </p>
+      </div>
+
+      {/* Discount/Coupon Applied */}
+      {order.discount && order.discount > 0 && (
+        <div className="flex justify-between pb-3 border-b border-white/20 bg-green-50 -mx-2 px-2 py-2 rounded">
+          <p className="text-sm text-gray-600">
+            Discount Applied
+            {order.coupon_id && typeof order.coupon_id === "object" && (
+              <span className="text-xs block font-bold text-green-700">{order.coupon_id.code}</span>
+            )}
+          </p>
+          <p className="text-sm font-semibold text-green-700">
+            -{formatCurrency(order.discount)}
+          </p>
+        </div>
+      )}
+
+      <div className="flex justify-between pt-2">
+        <p className="text-sm font-semibold text-gray-900">Total Amount</p>
+        <p className="text-lg font-bold text-[#0e7c85]">
           {formatCurrency(order.total_amount)}
         </p>
       </div>
@@ -243,6 +265,64 @@ const PaymentSummarySection = memo(({ order }: any) => (
   </div>
 ));
 PaymentSummarySection.displayName = "PaymentSummarySection";
+
+// Memoized Coupon Details Component
+const CouponDetailsSection = memo(({ coupon, discount }: any) => {
+  if (!coupon || discount === 0) {
+    return (
+      <div className="glass rounded-xl p-8 border border-white/20 card-container">
+        <h2 className="text-lg font-bold text-gray-900 mb-6">Coupon Applied</h2>
+        <p className="text-sm text-gray-500 italic">No coupon applied to this order</p>
+      </div>
+    );
+  }
+
+  const couponData = typeof coupon === "object" ? coupon : null;
+  if (!couponData) return null;
+
+  return (
+    <div className="glass rounded-xl p-8 border border-white/20 card-container bg-linear-to-br from-green-50/40 to-emerald-50/40">
+      <h2 className="text-lg font-bold text-gray-900 mb-6">✨ Coupon Applied</h2>
+
+      <div className="space-y-4 animate-fade-in">
+        {/* Coupon Code */}
+        <div className="bg-white rounded-lg p-4 border border-green-200">
+          <p className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Coupon Code</p>
+          <p className="text-2xl font-bold text-green-700 font-mono">{couponData.code}</p>
+        </div>
+
+        {/* Discount Details */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <p className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Discount Type</p>
+            <p className="text-sm font-bold text-gray-900">
+              {couponData.discount_type === "percentage" ? "Percentage" : "Fixed"}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Discount Value</p>
+            <p className="text-sm font-bold text-green-700">
+              {couponData.discount_type === "percentage" ? `${couponData.value}%` : formatCurrency(couponData.value)}
+            </p>
+          </div>
+        </div>
+
+        {/* Discount Amount Applied */}
+        <div>
+          <p className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Discount Amount Applied</p>
+          <p className="text-lg font-bold text-green-700">{formatCurrency(discount)}</p>
+        </div>
+
+        {/* Expiry Status */}
+        <div>
+          <p className="text-xs text-gray-600 font-semibold uppercase tracking-wide mb-1">Expiry Date</p>
+          <p className="text-sm text-gray-900">{formatDate(couponData.expiry_date)}</p>
+        </div>
+      </div>
+    </div>
+  );
+});
+CouponDetailsSection.displayName = "CouponDetailsSection";
 
 // Memoized Update Status Component
 const UpdateStatusSection = memo(({ newStatus, onStatusChange, onUpdateStatus, isSaving }: any) => (
@@ -347,7 +427,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
           <button
             onClick={onSave}
             disabled={isSaving}
-            className="flex-1 px-4 py-3 bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-lg hover:shadow-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-lg hover:shadow-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSaving ? "Saving..." : "Save Address"}
           </button>
@@ -509,6 +589,7 @@ const AdminOrderDetail = () => {
                 onSave={handleSaveAddress}
                 isSaving={isSavingAddress}
               />
+              <CouponDetailsSection coupon={order.coupon_id} discount={order.discount} />
               <PaymentSummarySection order={order} />
               <UpdateStatusSection 
                 newStatus={newStatus}

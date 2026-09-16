@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { orderService } from "../../services/orderService";
+import { couponService } from "../../services/couponService";
 import AdminLayout from "../../components/layout/AdminLayout";
 import Pagination from "../../components/ui/Pagination";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -27,6 +28,26 @@ const ManageOrders = () => {
     queryKey: ["admin", "orders", page],
     queryFn: () => orderService.getAll(page, 15),
   });
+
+  // Fetch coupons to create a lookup map
+  const { data: couponsRes } = useQuery({
+    queryKey: ["coupons", "all"],
+    queryFn: () => couponService.getAll(),
+    staleTime: 10 * 60 * 1000,
+  });
+
+  // Create a map of coupon ID to coupon code
+  const couponMap = new Map<string, string>();
+  if (couponsRes?.data) {
+    couponsRes.data.forEach((coupon: any) => {
+      couponMap.set(coupon._id, coupon.code);
+    });
+  }
+
+  const getCouponCode = (couponId: string | null | undefined) => {
+    if (!couponId) return null;
+    return couponMap.get(couponId) || couponId; // Return code or ID as fallback
+  };
 
   const handleStatusChange = async (id: string, status: OrderStatus) => {
     try {
@@ -110,6 +131,7 @@ const ManageOrders = () => {
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Customer</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Items</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Total</th>
+                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Coupon</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Order Status</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Payment</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Date</th>
@@ -153,6 +175,22 @@ const ManageOrders = () => {
                             <span className="text-sm font-bold text-[#0e7c85]">
                               {formatCurrency(order.total_amount)}
                             </span>
+                          </td>
+
+                          {/* Coupon Applied */}
+                          <td className="px-6 py-4">
+                            {order.coupon_id && order.discount && order.discount > 0 ? (
+                              <div className="flex flex-col gap-1">
+                                <span className="inline-block px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-bold max-w-fit">
+                                  {typeof order.coupon_id === "object" ? order.coupon_id.code : getCouponCode(order.coupon_id)}
+                                </span>
+                                <span className="text-xs text-green-700 font-semibold">
+                                  -{formatCurrency(order.discount)}
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="text-sm text-gray-500 italic">No coupon</span>
+                            )}
                           </td>
 
                           {/* Order Status */}
@@ -204,10 +242,11 @@ const ManageOrders = () => {
                           <td className="px-6 py-4">
                             <Link
                               to={`/admin/orders/${order._id}`}
-                              className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm"
+                              className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-xs whitespace-nowrap"
+                              title="View Order Details"
                             >
                               <ViewIcon />
-                              View Order
+                              View Orders
                             </Link>
                           </td>
                         </tr>

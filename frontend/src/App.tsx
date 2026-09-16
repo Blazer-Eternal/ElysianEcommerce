@@ -25,6 +25,7 @@ import ManageCoupons from "./pages/admin/ManageCoupons";
 import ManageOrders from "./pages/admin/ManageOrders";
 import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
 import ManageUsers from "./pages/admin/ManageUsers";
+import DataTablesDemo from "./pages/admin/DataTablesDemo";
 import About from "./pages/About";
 import Values from "./pages/Values";
 import Features from "./pages/Features";
@@ -232,6 +233,16 @@ function App() {
           <ProtectedRoute requireAdmin>
             <AdminLayout>
               <ManageUsers />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.ADMIN_DATA_TABLES}
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <DataTablesDemo />
             </AdminLayout>
           </ProtectedRoute>
         }
