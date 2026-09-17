@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useCart } from "../../hooks/useCart";
 import { ROUTES } from "../../constants/routes";
-import logo from "../../assets/images/logo.png";
 
 const UserIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -79,7 +78,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible">
         <Link to={ROUTES.HOME} className="shrink-0 flex items-center">
           <img 
-            src={logo} 
+            src="/logo.png" 
             alt="ElysianEcommerce Logo" 
             className="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain transition-transform hover:scale-105"
           />

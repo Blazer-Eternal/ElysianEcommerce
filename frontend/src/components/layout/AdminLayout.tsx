@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "../../hooks/useAuth";
-import logo from "../../assets/images/logo.png";
 
 // Icons
 const DashboardIcon = () => (
@@ -115,7 +114,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="flex items-center justify-between">
             <Link to={ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-3 group">
               <div className="relative">
-                <img src={logo} alt="Logo" className="h-10 w-auto object-contain" />
+                <img src="/logo.png" alt="Logo" className="h-10 w-auto object-contain" />
               </div>
               <div>
                 <div className="text-lg font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">

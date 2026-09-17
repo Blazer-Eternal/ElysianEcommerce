@@ -1,7 +1,6 @@
 import { memo, useMemo, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
-import heroImage from "../../assets/images/HeroSection.png";
 import { GhostFibers } from "../GhostFibers";
 
 const ArrowIcon = memo(() => (
@@ -146,7 +145,7 @@ const HeroSection = memo(() => {
               <div className="relative z-10 will-animate">
                 <div className="aspect-square rounded-3xl flex items-center justify-center overflow-hidden shadow-lg">
                   <img 
-                    src={heroImage} 
+                    src="/HeroSection.png" 
                     alt="Premium Products" 
                     className="w-full h-full object-cover gpu-accelerate"
                     loading="eager"
@@ -165,4 +164,3 @@ const HeroSection = memo(() => {
 HeroSection.displayName = "HeroSection";
 
 export default HeroSection;
-
