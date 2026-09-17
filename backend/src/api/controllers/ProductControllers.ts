@@ -36,16 +36,14 @@ export class ProductController {
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }
-   
-     // Admin: upload product images, returns array of accessible URLs
+
+  // Admin: upload product images, returns array of accessible URLs
   static async uploadImages(req: CustomRequestInterface, res: Response) {
     try {
-      const files = req.files as Express.Multer.File[];
-      if (!files || files.length === 0) {
+      const imageUrls = (req as any).uploadedImageUrls as string[];
+      if (!imageUrls || imageUrls.length === 0) {
         return res.status(400).json({ success: false, message: "No images uploaded" });
       }
-
-      const imageUrls = files.map((file) => `/uploads/products/${file.filename}`);
 
       return res.status(200).json({ success: true, message: "Images uploaded successfully", data: { images: imageUrls } });
     } catch (error) {

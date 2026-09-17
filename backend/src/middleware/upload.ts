@@ -1,16 +1,9 @@
 import multer from "multer";
 import sharp from "sharp";
-import path from "path";
-import fs from "fs";
 import { Request, Response, NextFunction } from "express";
+import cloudinary from "../config/cloudinary";
 
-const uploadDir = path.join(__dirname, "../../uploads/products");
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Store in memory first — sharp compresses before writing to disk
+// Everything stays in memory — never touches disk, works fine on serverless.
 const storage = multer.memoryStorage();
 
 const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
@@ -28,28 +21,37 @@ export const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-// Compresses and writes each uploaded file to disk, replacing req.files
-// with objects carrying the final filename so the controller works unchanged.
+// Compresses each uploaded file in memory, then uploads the buffer directly
+// to Cloudinary — no local filesystem involved at any point.
 export const compressImages = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const files = req.files as Express.Multer.File[];
     if (!files || files.length === 0) return next();
 
-    const processed = await Promise.all(
-      files.map(async (file) => {
-        const filename = `product-${Date.now()}-${Math.round(Math.random() * 1e9)}.webp`;
-        const filepath = path.join(uploadDir, filename);
+    const uploadedUrls: string[] = [];
 
-        await sharp(file.buffer)
-          .resize(1200, 1200, { fit: "inside", withoutEnlargement: true })
-          .webp({ quality: 80 })
-          .toFile(filepath);
+    for (const file of files) {
+      const compressedBuffer = await sharp(file.buffer)
+        .resize(1200, 1200, { fit: "inside", withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toBuffer();
 
-        return { ...file, filename };
-      })
-    );
+      const uploadResult = await new Promise<string>((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "elysian-products", resource_type: "image" },
+          (error, result) => {
+            if (error || !result) return reject(error);
+            resolve(result.secure_url);
+          }
+        );
+        uploadStream.end(compressedBuffer);
+      });
 
-    req.files = processed as Express.Multer.File[];
+      uploadedUrls.push(uploadResult);
+    }
+
+    // Attach the final Cloudinary URLs so the controller can use them directly
+    (req as any).uploadedImageUrls = uploadedUrls;
     next();
   } catch (error) {
     next(error);
