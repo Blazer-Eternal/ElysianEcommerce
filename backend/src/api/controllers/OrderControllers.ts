@@ -253,7 +253,7 @@ export class OrderController {
         subtotal: preOrderData.subtotal,
         discount: preOrderData.discount,
         total_amount: preOrderData.total_amount,
-        status: OrderStatusEnum.pending,
+        status: OrderStatusEnum.paid,
         payment_status: PaymentStatusEnum.paid,
         payment_method: PaymentMethodEnum.esewa,
       });
