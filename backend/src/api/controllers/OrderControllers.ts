@@ -420,4 +420,25 @@ export class OrderController {
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }
+
+  // Admin-only endpoint to migrate existing eSewa orders with paid payment status to paid order status
+  static async migrateEsewaOrderStatus(req: CustomRequestInterface, res: Response) {
+    try {
+      // Verify admin role
+      if (req.user?.role !== RoleEnum.admin) {
+        return res.status(403).json({ success: false, message: "Admin access required" });
+      }
+
+      const result = await new OrderServices().migratePaidEsewaOrders();
+
+      return res.status(200).json({
+        success: true,
+        message: `Successfully migrated ${result.modifiedCount} orders from pending to paid status`,
+        data: { modifiedCount: result.modifiedCount },
+      });
+    } catch (error) {
+      console.error("migrateEsewaOrderStatus error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
 }

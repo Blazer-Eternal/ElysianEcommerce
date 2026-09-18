@@ -54,4 +54,11 @@ orderRoutes.patch(
   exceptionHandler(OrderController.updatePaymentStatus)
 );
 
+orderRoutes.post(
+  "/migrate/esewa-order-status",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(Guard.grantRole(RoleEnum.admin)),
+  exceptionHandler(OrderController.migrateEsewaOrderStatus)
+);
+
 export default orderRoutes;

@@ -1,6 +1,6 @@
 import { OrderModel } from "../models/OrderModel";
 import { OrderInterface, InputOrderInterface, PaginationOptions } from "../intefaces";
-import { OrderStatusEnum, PaymentStatusEnum } from "../enums/OrderEnums";
+import { OrderStatusEnum, PaymentStatusEnum, PaymentMethodEnum } from "../enums/OrderEnums";
 
 export class OrderServices {
   public async findByUser(userId: string, options: PaginationOptions = {}) {
@@ -75,5 +75,19 @@ export class OrderServices {
     const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
     return `ORD-${datePart}-${randomPart}`;
+  }
+
+  // Migrate existing eSewa orders with paid payment status but pending order status
+  // This fixes orders created before the bug was fixed
+  public async migratePaidEsewaOrders(): Promise<{ modifiedCount: number }> {
+    const result = await OrderModel.updateMany(
+      {
+        payment_method: PaymentMethodEnum.esewa,
+        payment_status: PaymentStatusEnum.paid,
+        status: OrderStatusEnum.pending,
+      },
+      { status: OrderStatusEnum.paid }
+    );
+    return { modifiedCount: result.modifiedCount };
   }
 }
