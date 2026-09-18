@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { orderService } from "../services/orderService";
+import { useCart } from "../hooks/useCart";
 import { ROUTES } from "../constants/routes";
 import Spinner from "../components/ui/Spinner";
 import { getErrorMessage } from "../utils/getErrorMessage";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
+  const { refetch: refetchCart } = useCart();
   const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
   const [message, setMessage] = useState("");
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -44,6 +46,15 @@ const PaymentSuccess = () => {
         setMessage("Payment verified successfully. Order created!");
         setOrderId(response.data._id);
 
+        // Refresh cart after successful payment
+        try {
+          await refetchCart();
+          console.log("[Payment Verification] Cart refreshed after successful payment");
+        } catch (err) {
+          console.error("[Payment Verification] Error refreshing cart:", err);
+          // Don't fail the verification if cart refresh fails
+        }
+
         // Clean up
         sessionStorage.removeItem("esewaPreOrderToken");
       } catch (err) {
@@ -56,7 +67,7 @@ const PaymentSuccess = () => {
     };
 
     verify();
-  }, []);
+  }, [refetchCart]);
 
   useEffect(() => {
     if (status === "success" && orderId) {

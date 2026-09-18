@@ -110,7 +110,7 @@ const OrderDetail = () => {
             <p className="text-gray-600">{formatDate(order.created_at)}</p>
           </div>
           <div className="transform transition-transform duration-300 hover:scale-110">
-            <OrderStatusBadge status={order.status} />
+            <OrderStatusBadge status={order.payment_status === "paid" ? "paid" : order.status} />
           </div>
         </div>
         <div className="h-1 w-16 bg-linear-to-r from-[#0e7c85] to-cyan-600 rounded-full" />
@@ -118,7 +118,9 @@ const OrderDetail = () => {
 
       {/* Timeline */}
       <div className="mb-8 animate-fade-in" style={{ animationDelay: "100ms" }}>
-        <OrderTimeline status={order.status} />
+        <OrderTimeline 
+          status={order.payment_status === "paid" ? "paid" : order.status} 
+        />
       </div>
 
       {/* Main Content Grid */}
