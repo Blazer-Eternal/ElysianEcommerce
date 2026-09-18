@@ -121,11 +121,11 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
               </div>
               <div>
                 <p className="text-xs text-gray-600 font-medium">Unit Price</p>
-                <p className="text-lg font-bold text-[#0e7c85]">{formatCurrency((item as any).price)}</p>
+                <p className="text-lg font-bold text-[#0e7c85]">{formatCurrency(item.unit_price)}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-600 font-medium">Total</p>
-                <p className="text-lg font-bold text-gray-900">{formatCurrency(((item as any).price || 0) * item.quantity)}</p>
+                <p className="text-lg font-bold text-gray-900">{formatCurrency(item.unit_price * item.quantity)}</p>
               </div>
             </div>
           </div>
