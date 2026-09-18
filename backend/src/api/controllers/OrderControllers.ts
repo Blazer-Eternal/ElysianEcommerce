@@ -14,22 +14,22 @@ const getOrderOwnerId = (userIdField: any): string => {
   return userIdField.toString();
 };
 
-export class OrderController {
-  // Helper to encode pre-order data into a secure token
-  private static encodePreOrderToken(data: any): string {
-    const json = JSON.stringify(data);
-    return Buffer.from(json).toString("base64");
-  }
+// Helper functions outside the class to avoid context issues
+const encodePreOrderToken = (data: any): string => {
+  const json = JSON.stringify(data);
+  return Buffer.from(json).toString("base64");
+};
 
-  // Helper to decode pre-order token
-  private static decodePreOrderToken(token: string): any {
-    try {
-      const json = Buffer.from(token, "base64").toString("utf-8");
-      return JSON.parse(json);
-    } catch {
-      return null;
-    }
+const decodePreOrderToken = (token: string): any => {
+  try {
+    const json = Buffer.from(token, "base64").toString("utf-8");
+    return JSON.parse(json);
+  } catch {
+    return null;
   }
+};
+
+export class OrderController {
 
   static async createOrder(req: CustomRequestInterface, res: Response) {
     const userId = req.user?.id as string;
@@ -165,7 +165,7 @@ export class OrderController {
             payment_method: PaymentMethodEnum.esewa,
           };
 
-          const preOrderToken = this.encodePreOrderToken(preOrderData);
+          const preOrderToken = encodePreOrderToken(preOrderData);
 
           const esewaService = new EsewaServices();
           const fields = esewaService.buildPaymentFields(order_number, total_amount);
@@ -205,7 +205,7 @@ export class OrderController {
       }
 
       // Decode the pre-order token
-      const preOrderData = this.decodePreOrderToken(preOrderToken);
+      const preOrderData = decodePreOrderToken(preOrderToken);
       if (!preOrderData) {
         return res.status(400).json({ success: false, message: "Invalid or corrupted pre-order token. Please try the checkout again." });
       }
