@@ -111,7 +111,7 @@ const Register = () => {
                 Create your <span className="text-cyan-300">account</span>.
               </h2>
               <p className="text-blue-100 text-lg leading-relaxed max-w-sm">
-                Join thousands of happy customers. Shop, save, and enjoy exclusive deals just for you.
+                Experience premium shopping redefined. Exclusive deals and early access to new collections awaits.
               </p>
             </div>
           </div>

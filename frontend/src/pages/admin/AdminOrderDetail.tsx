@@ -240,14 +240,14 @@ const PaymentSummarySection = memo(({ order }: any) => (
         </div>
       )}
 
-      <div className="flex justify-between pt-2">
+      <div className="flex justify-between pt-2 pb-3 border-b border-white/20">
         <p className="text-sm font-semibold text-gray-900">Total Amount</p>
         <p className="text-lg font-bold text-[#0e7c85]">
           {formatCurrency(order.total_amount)}
         </p>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between pb-3 border-b border-white/20">
         <p className="text-sm text-gray-600">Payment Status</p>
         <span
           className={`px-3 py-1 rounded-full text-xs font-bold transition-smooth ${
@@ -259,6 +259,29 @@ const PaymentSummarySection = memo(({ order }: any) => (
           }`}
         >
           {order.payment_status?.toUpperCase()}
+        </span>
+      </div>
+
+      <div className="flex justify-between pt-2">
+        <p className="text-sm text-gray-600">Payment Method</p>
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-bold transition-smooth flex items-center gap-1 ${
+            order.payment_method === "esewa"
+              ? "bg-green-100 text-green-800"
+              : "bg-blue-100 text-blue-800"
+          }`}
+        >
+          {order.payment_method === "esewa" ? (
+            <>
+              <span>💳</span>
+              <span>eSewa</span>
+            </>
+          ) : (
+            <>
+              <span>💵</span>
+              <span>COD</span>
+            </>
+          )}
         </span>
       </div>
     </div>
@@ -325,33 +348,67 @@ const CouponDetailsSection = memo(({ coupon, discount }: any) => {
 CouponDetailsSection.displayName = "CouponDetailsSection";
 
 // Memoized Update Status Component
-const UpdateStatusSection = memo(({ newStatus, onStatusChange, onUpdateStatus, isSaving }: any) => (
-  <div className="glass rounded-xl p-8 border border-white/20 card-container">
-    <h2 className="text-lg font-bold text-gray-900 mb-4">Update Order Status</h2>
-    <p className="text-sm text-gray-600 mb-4">The customer will see the latest order status.</p>
+const UpdateStatusSection = memo(({ order, newStatus, onStatusChange, onUpdateStatus, isSaving }: any) => {
+  // Determine which statuses are allowed based on payment status and method
+  const getAvailableStatuses = () => {
+    const available = ORDER_STATUSES.filter((status) => {
+      // Can't change cancelled orders
+      if (order.status === "cancelled") return false;
 
-    <select
-      value={newStatus}
-      onChange={onStatusChange}
-      className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth mb-4"
-    >
-      <option value="">Select new status...</option>
-      {ORDER_STATUSES.map((status) => (
-        <option key={status} value={status}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </option>
-      ))}
-    </select>
+      // For eSewa orders: can only ship/deliver if payment is verified
+      if (order.payment_method === "esewa" && order.payment_status !== "paid") {
+        return status !== "shipped" && status !== "delivered";
+      }
 
-    <button
-      onClick={onUpdateStatus}
-      disabled={!newStatus || isSaving}
-      className="w-full bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white py-3 rounded-lg hover:shadow-lg transition-smooth duration-200 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      {isSaving ? "Saving..." : "Save Status"}
-    </button>
-  </div>
-));
+      // COD orders can always be shipped/delivered
+      return true;
+    });
+
+    return available;
+  };
+
+  const availableStatuses = getAvailableStatuses();
+  const isShippingDisabled =
+    order.payment_method === "esewa" &&
+    order.payment_status !== "paid" &&
+    (newStatus === "shipped" || newStatus === "delivered");
+
+  return (
+    <div className="glass rounded-xl p-8 border border-white/20 card-container">
+      <h2 className="text-lg font-bold text-gray-900 mb-4">Update Order Status</h2>
+      <p className="text-sm text-gray-600 mb-4">The customer will see the latest order status.</p>
+
+      {order.payment_method === "esewa" && order.payment_status !== "paid" && (
+        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p className="text-xs text-yellow-800 font-semibold">
+            ⚠️ Payment not verified. Cannot mark as shipped/delivered until payment is confirmed.
+          </p>
+        </div>
+      )}
+
+      <select
+        value={newStatus}
+        onChange={onStatusChange}
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth mb-4"
+      >
+        <option value="">Select new status...</option>
+        {availableStatuses.map((status) => (
+          <option key={status} value={status}>
+            {status.charAt(0).toUpperCase() + status.slice(1)}
+          </option>
+        ))}
+      </select>
+
+      <button
+        onClick={onUpdateStatus}
+        disabled={!newStatus || isSaving || isShippingDisabled}
+        className="w-full bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white py-3 rounded-lg hover:shadow-lg transition-smooth duration-200 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isSaving ? "Saving..." : "Save Status"}
+      </button>
+    </div>
+  );
+});
 UpdateStatusSection.displayName = "UpdateStatusSection";
 
 // Memoized Edit Address Modal
@@ -592,6 +649,7 @@ const AdminOrderDetail = () => {
               <CouponDetailsSection coupon={order.coupon_id} discount={order.discount} />
               <PaymentSummarySection order={order} />
               <UpdateStatusSection 
+                order={order}
                 newStatus={newStatus}
                 onStatusChange={(e: any) => setNewStatus(e.target.value)}
                 onUpdateStatus={handleUpdateStatus}

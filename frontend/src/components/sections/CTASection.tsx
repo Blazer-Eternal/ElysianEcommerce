@@ -233,9 +233,7 @@ const CTASection = () => {
                   </h2>
 
                   <p className="text-gray-700 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-medium line-clamp-3">
-                    Discover thousands of premium products curated just for
-                    you. Experience seamless shopping with our intuitive
-                    interface and secure checkout.
+                    Premium products handpicked for you. Experience shopping redefined with elegance, quality, and care.
                   </p>
                 </div>
 

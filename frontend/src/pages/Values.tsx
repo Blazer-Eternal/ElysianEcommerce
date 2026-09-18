@@ -27,13 +27,13 @@ const Values = () => {
     {
       title: "Innovation & Technology",
       description:
-        "Built with the modern MERN stack, ElysianEcommerce represents the pinnacle of web technology. We continuously innovate to provide seamless, secure, and intelligent shopping experiences that adapt to your needs.",
+        "Smart, intuitive technology that adapts to you. We continuously innovate to provide seamless, secure, and delightful shopping experiences.",
       icon: "⚡",
       details: [
-        "AI-powered recommendations",
-        "Real-time inventory management",
+        "Personalized recommendations",
+        "Real-time inventory updates",
         "Secure payment processing",
-        "Mobile-first design approach",
+        "Mobile-first experience",
       ],
     },
     {
@@ -108,12 +108,12 @@ const Values = () => {
   ];
 
   const techStack = [
-    { name: "React", role: "Dynamic UI" },
-    { name: "Node.js", role: "Scalable Backend" },
-    { name: "Express", role: "Robust API" },
-    { name: "MongoDB", role: "Data Management" },
-    { name: "TypeScript", role: "Type Safety" },
-    { name: "Tailwind CSS", role: "Modern Styling" },
+    { name: "Speed", role: "Lightning fast" },
+    { name: "Security", role: "Bank-level" },
+    { name: "Simplicity", role: "Intuitive design" },
+    { name: "Quality", role: "Never compromised" },
+    { name: "Support", role: "Always here" },
+    { name: "Innovation", role: "Constantly improving" },
   ];
 
   return (
@@ -424,9 +424,7 @@ const Values = () => {
                 </h2>
 
                 <p className="mx-auto max-w-2xl text-lg font-light text-gray-600">
-                  The MERN Stack Powers Excellence. TypeScript ensures
-                  reliability. Tailwind CSS delivers beauty. Everything
-                  optimized for performance, security, and scale.
+                  The latest technology powers our platform. Designed for speed, security, and simplicity. Everything you need, nothing you don't.
                 </p>
               </div>
 
@@ -520,46 +518,38 @@ const Values = () => {
           >
             <div className="glass group animate-glow-pulse space-y-8 rounded-3xl border border-white/70 p-8 backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-12">
               <h3 className="text-3xl font-bold text-gray-900">
-                By The Numbers
+                Our Core Beliefs
               </h3>
 
               <div className="space-y-8">
                 {[
                   {
-                    stat: "99.9%",
-                    label: "Uptime Guarantee",
-                    desc: "Reliable service, always",
+                    quote: "Elegance in Simplicity",
+                    author: "Beautiful design, effortless experience",
                   },
                   {
-                    stat: "0ms",
-                    label: "Cold Start",
-                    desc: "Instant performance",
+                    quote: "Innovation Without Compromise",
+                    author: "Pushing boundaries thoughtfully",
                   },
                   {
-                    stat: "256-bit",
-                    label: "Encryption",
-                    desc: "Military-grade security",
+                    quote: "Crafted with Intention",
+                    author: "Every detail matters",
                   },
                   {
-                    stat: "100%",
-                    label: "SSL Secure",
-                    desc: "All connections encrypted",
+                    quote: "Inspire Everyday",
+                    author: "Making shopping feel magical",
                   },
                 ].map((item, index) => (
                   <div
                     key={index}
                     className="group/stat rounded-xl p-4 transition-all duration-300 hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10"
                   >
-                    <div className="bg-linear-to-r from-[#0e7c85] to-cyan-500 bg-clip-text text-4xl font-black text-transparent">
-                      {item.stat}
+                    <div className="bg-linear-to-r from-[#0e7c85] to-cyan-500 bg-clip-text text-2xl font-black text-transparent">
+                      "{item.quote}"
                     </div>
 
-                    <div className="mt-2 font-bold text-gray-900">
-                      {item.label}
-                    </div>
-
-                    <div className="text-sm text-gray-600 transition-colors duration-300 group-hover/stat:text-gray-700">
-                      {item.desc}
+                    <div className="mt-3 font-light text-gray-700 italic">
+                      — {item.author}
                     </div>
                   </div>
                 ))}

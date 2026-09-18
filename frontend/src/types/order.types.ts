@@ -57,7 +57,8 @@ export interface EsewaPaymentFields {
 export interface CreateOrderResponseData {
   success: boolean;
   message: string;
-  data: Order;
+  data?: Order;
+  preOrderToken?: string;
   esewa?: {
     fields: EsewaPaymentFields;
     gatewayUrl: string;

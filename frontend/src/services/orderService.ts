@@ -8,8 +8,8 @@ export const orderService = {
     return data;
   },
 
-  verifyEsewaPayment: async (orderNumber: string): Promise<ApiResponse<Order>> => {
-    const { data } = await axiosInstance.get("/orders/esewa/verify", { params: { order_number: orderNumber } });
+  verifyEsewaPayment: async (preOrderToken: string): Promise<ApiResponse<Order>> => {
+    const { data } = await axiosInstance.post("/orders/esewa/verify", { preOrderToken });
     return data;
   },
 

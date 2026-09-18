@@ -120,18 +120,6 @@ const HeroSection = memo(() => {
 
             {/* Trust badges - Responsive */}
             <div className="flex items-center gap-responsive pt-4 flex-wrap">
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-bold text-[#0e7c85]">50k+</div>
-                <div className="text-xs sm:text-sm text-gray-600">Happy Customers</div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-bold text-[#0e7c85]">100%</div>
-                <div className="text-xs sm:text-sm text-gray-600">Authentic</div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-2xl sm:text-3xl font-bold text-[#0e7c85]">24/7</div>
-                <div className="text-xs sm:text-sm text-gray-600">Support</div>
-              </div>
             </div>
           </div>
 

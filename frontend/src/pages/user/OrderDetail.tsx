@@ -78,7 +78,7 @@ const OrderDetail = () => {
           <p className="text-lg text-gray-600">Order not found.</p>
           <Link
             to={ROUTES.ORDER_HISTORY}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300"
           >
             Back to Orders
           </Link>
@@ -113,7 +113,7 @@ const OrderDetail = () => {
             <OrderStatusBadge status={order.status} />
           </div>
         </div>
-        <div className="h-1 w-16 bg-gradient-to-r from-[#0e7c85] to-cyan-600 rounded-full" />
+        <div className="h-1 w-16 bg-linear-to-r from-[#0e7c85] to-cyan-600 rounded-full" />
       </div>
 
       {/* Timeline */}
@@ -132,7 +132,7 @@ const OrderDetail = () => {
               {order.items.map((item, idx) => (
                 <div
                   key={item._id || idx}
-                  className="group bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-5 transition-all duration-300 hover:from-white/90 hover:to-white/60 hover:shadow-lg hover:shadow-cyan-200/20"
+                  className="group bg-linear-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-5 transition-all duration-300 hover:from-white/90 hover:to-white/60 hover:shadow-lg hover:shadow-cyan-200/20"
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -143,7 +143,7 @@ const OrderDetail = () => {
                       <p className="text-sm text-gray-600">
                         {formatCurrency(item.unit_price)} × {item.quantity}
                       </p>
-                      <p className="font-bold text-lg bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                      <p className="font-bold text-lg bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
                         {formatCurrency(item.unit_price * item.quantity)}
                       </p>
                     </div>
@@ -166,7 +166,7 @@ const OrderDetail = () => {
                 </button>
               )}
             </div>
-            <div className="bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300">
+            <div className="bg-linear-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300">
               <p className="font-semibold text-gray-900">
                 {order.shipping_address.street}
               </p>
@@ -249,7 +249,7 @@ const OrderDetail = () => {
                   <button
                     onClick={handleSaveAddress}
                     disabled={isSavingAddress}
-                    className="flex-1 px-4 py-3 bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
+                    className="flex-1 px-4 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
                   >
                     {isSavingAddress ? "Saving..." : "Save Address"}
                   </button>
@@ -264,14 +264,14 @@ const OrderDetail = () => {
           {/* Price Breakdown */}
           <div className="animate-fade-in" style={{ animationDelay: "400ms" }}>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
-            <div className="bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 space-y-4 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300">
+            <div className="bg-linear-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 space-y-4 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300">
               <div className="flex items-center justify-between pb-4 border-b border-white/40">
                 <span className="text-gray-600">Subtotal</span>
                 <span className="font-semibold text-gray-900">{formatCurrency(order.subtotal)}</span>
               </div>
 
               {order.discount > 0 && (
-                <div className="flex items-center justify-between pb-4 border-b border-white/40 bg-gradient-to-r from-green-50 to-emerald-50/50 -mx-6 px-6 py-3 rounded-lg">
+                <div className="flex items-center justify-between pb-4 border-b border-white/40 bg-linear-to-r from-green-50 to-emerald-50/50 -mx-6 px-6 py-3 rounded-lg">
                   <div>
                     <span className="text-gray-600 block font-medium">Discount Applied</span>
                     {typeof order.coupon_id === "object" && order.coupon_id?.code && (
@@ -286,7 +286,7 @@ const OrderDetail = () => {
 
               <div className="flex items-center justify-between pt-2">
                 <span className="font-bold text-gray-900">Total</span>
-                <span className="text-2xl font-bold bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
                   {formatCurrency(order.total_amount)}
                 </span>
               </div>
@@ -296,8 +296,8 @@ const OrderDetail = () => {
           {/* Payment Status */}
           <div className="animate-fade-in" style={{ animationDelay: "500ms" }}>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Payment</h2>
-            <div className="bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300">
-              <div className="flex items-center justify-between">
+            <div className="bg-linear-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300 space-y-4">
+              <div className="flex items-center justify-between pb-4 border-b border-white/40">
                 <span className="text-gray-600">Status</span>
                 <span
                   className={`px-4 py-2 rounded-lg font-semibold text-sm ${
@@ -309,6 +309,29 @@ const OrderDetail = () => {
                   }`}
                 >
                   {order.payment_status?.toUpperCase()}
+                </span>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-gray-600">Method</span>
+                <span
+                  className={`px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 ${
+                    order.payment_method === "esewa"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-blue-100 text-blue-800"
+                  }`}
+                >
+                  {order.payment_method === "esewa" ? (
+                    <>
+                      <span className="text-lg">💳</span>
+                      <span>eSewa</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-lg">💵</span>
+                      <span>Cash on Delivery</span>
+                    </>
+                  )}
                 </span>
               </div>
             </div>

@@ -281,7 +281,7 @@ const Features = () => {
             </h2>
 
             <p className="text-gray-600 text-lg group-hover:text-gray-700 transition-colors duration-300">
-              Start shopping today and discover why thousands choose ElysianEcommerce.
+              Start your shopping journey with ElysianEcommerce today.
             </p>
 
             <a

@@ -62,7 +62,7 @@ const About = () => {
     {
       title: "Innovation",
       description:
-        "Built with cutting-edge MERN stack technology for seamless shopping.",
+        "Cutting-edge technology that makes shopping seamless and delightful.",
       icon: <ValuesIcon />,
     },
   ];
@@ -70,23 +70,23 @@ const About = () => {
   const milestones = [
     {
       year: "2024",
-      event: "ElysianEcommerce launched with full MERN stack",
+      event: "Brought our vision to life with elegance and care",
     },
     {
       year: "2024",
-      event: "Reached 1000+ active users",
+      event: "Focused on delivering excellence in every detail",
     },
     {
       year: "2024",
-      event: "Introduced glass-morphism UI design",
+      event: "Committed to continuous excellence and innovation",
     },
   ];
 
   const stats = [
-    { value: "50k+", label: "Happy Customers", delay: "0s" },
-    { value: "10k+", label: "Products Available", delay: "0.2s" },
-    { value: "50+", label: "Categories", delay: "0.4s" },
-    { value: "24/7", label: "Customer Support", delay: "0.6s" },
+    { value: "✨", label: "Excellence in Every Detail", delay: "0s" },
+    { value: "❤️", label: "Passionate About Service", delay: "0.2s" },
+    { value: "🎨", label: "Beautifully Designed", delay: "0.4s" },
+    { value: "💎", label: "Premium Quality Always", delay: "0.6s" },
   ];
 
   return (
@@ -306,22 +306,11 @@ const About = () => {
 
             <div className="space-y-6">
               <p className="text-lg leading-relaxed font-light text-gray-700">
-                ElysianEcommerce was born from a vision to revolutionize online
-                shopping. We saw a gap in the market for a platform that
-                combines elegance, simplicity, and reliability.
+                ElysianEcommerce was born from a vision to create a shopping experience that feels effortless and elegant. We wanted to build something different—a place where every interaction matters.
               </p>
 
               <p className="text-lg leading-relaxed font-light text-gray-700">
-                Built on the MERN stack with TypeScript, our platform
-                represents the pinnacle of modern web technology. Every feature
-                is designed with you in mind — from intuitive browsing to
-                secure checkout.
-              </p>
-
-              <p className="text-lg leading-relaxed font-light text-gray-700">
-                Today, thousands of customers trust us with their purchases,
-                and we're committed to maintaining that trust through excellence
-                and innovation.
+                Today, we're focused on delivering premium products and exceptional service. We listen to our customers, refine our craft, and never stop improving.
               </p>
             </div>
 
@@ -347,7 +336,7 @@ const About = () => {
           >
             <div className="glass group animate-glow-pulse space-y-6 rounded-3xl border border-white/60 p-8 backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/30 sm:p-12">
               <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-                By The Numbers
+                What Makes Us Special
               </h3>
 
               <div className="space-y-5">
@@ -387,7 +376,7 @@ const About = () => {
 
               <div className="border-t border-white/30 pt-4">
                 <p className="text-sm text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
-                  ✓ Established in 2024 • MERN Stack • Always improving
+                  Where elegance meets accessibility, and shopping becomes an experience.
                 </p>
               </div>
             </div>
@@ -556,9 +545,7 @@ const About = () => {
               </h2>
 
               <p className="mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800 sm:text-xl">
-                Join thousands of satisfied customers shopping with
-                ElysianEcommerce today. Discover premium products, exceptional
-                service, and an unforgettable experience.
+                Discover premium products curated with care. Experience shopping reimagined with elegance, quality, and exceptional service.
               </p>
 
               <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">

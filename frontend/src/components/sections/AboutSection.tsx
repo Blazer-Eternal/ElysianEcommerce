@@ -9,10 +9,10 @@ const CheckIcon = () => (
 
 const AboutSection = () => {
   const stats = [
-    { label: "Happy Customers", value: "50k+", color: "from-[#0e7c85]" },
-    { label: "Products Listed", value: "10k+", color: "from-cyan-500" },
-    { label: "Categories", value: "50+", color: "from-teal-400" },
-    { label: "Avg Rating", value: "4.8★", color: "from-blue-500" },
+    { label: "Excellence & Care", value: "✨", color: "from-[#0e7c85]" },
+    { label: "Beautiful Experience", value: "❤️", color: "from-cyan-500" },
+    { label: "Thoughtful Design", value: "🎨", color: "from-teal-400" },
+    { label: "Premium Always", value: "💎", color: "from-blue-500" },
   ];
 
   const benefits = [
@@ -143,7 +143,7 @@ const AboutSection = () => {
             {/* Main Stats Card */}
             <div className="glass rounded-3xl p-8 sm:p-12 backdrop-blur-2xl border border-white/70 hover:border-[#0e7c85]/80 transition-all duration-500 group space-y-8 group-hover-lift">
               <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:text-[#0e7c85] transition-colors duration-300">
-                By The Numbers
+                What We Bring
               </h3>
 
               <div className="grid grid-cols-2 gap-6">
@@ -154,15 +154,10 @@ const AboutSection = () => {
                     style={{ animationDelay: `${0.3 + index * 0.1}s` }}
                   >
                     <div className="space-y-3">
-                      <div className={`text-5xl sm:text-6xl font-black animate-gradient`} style={{
-                        backgroundImage: `linear-gradient(90deg, #0e7c85, #06b6d4, #14b8a6, #0e7c85)`,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundSize: '200% 200%'
-                      }}>
+                      <div className={`text-5xl sm:text-6xl font-black`}>
                         {stat.value}
                       </div>
-                      <div className="text-xs sm:text-sm text-gray-600 font-semibold group-hover/stat:text-gray-800 transition-colors duration-300">
+                      <div className="text-xs sm:text-sm text-gray-700 font-semibold group-hover/stat:text-gray-900 transition-colors duration-300">
                         {stat.label}
                       </div>
                     </div>
@@ -176,10 +171,7 @@ const AboutSection = () => {
               {/* Additional info */}
               <div className="space-y-3">
                 <p className="text-sm text-gray-700 leading-relaxed font-light group-hover:text-gray-800 transition-colors duration-300">
-                  Join thousands of satisfied customers who trust us for their shopping needs.
-                </p>
-                <p className="text-xs text-gray-500 font-medium">
-                  ✓ Established in 2024 • MERN Stack • Always improving
+                  Discover the art of purposeful shopping where every item is chosen with intention and care.
                 </p>
               </div>
             </div>

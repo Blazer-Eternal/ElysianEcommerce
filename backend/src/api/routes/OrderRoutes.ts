@@ -15,7 +15,7 @@ orderRoutes.post(
 
 orderRoutes.get("/my-orders", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.getMyOrders));
 
-orderRoutes.get(
+orderRoutes.post(
   "/esewa/verify",
   exceptionHandler(Guard.grantAccess),
   exceptionHandler(OrderController.verifyEsewaPayment)
