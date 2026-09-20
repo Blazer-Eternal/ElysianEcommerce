@@ -245,11 +245,11 @@ const About = () => {
 
       {/* Decorative Background Blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute top-20 left-1/4 h-96 w-96 rounded-full bg-linear-to-br from-cyan-300/20 to-teal-300/20 opacity-30 mix-blend-multiply blur-3xl filter animate-blob-rotate" />
+        <div className="absolute top-20 left-1/4 h-96 w-96 rounded-full opacity-30 mix-blend-multiply animate-blob-rotate" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.55) 0%, rgba(20,184,166,0.28) 35%, transparent 70%)" }} />
 
         <div
-          className="absolute right-1/4 bottom-20 h-96 w-96 rounded-full bg-linear-to-br from-[#0e7c85]/20 to-cyan-300/20 opacity-30 mix-blend-multiply blur-3xl filter animate-blob-rotate"
-          style={{ animationDelay: "-2s" }}
+          className="absolute right-1/4 bottom-20 h-96 w-96 rounded-full opacity-30 mix-blend-multiply animate-blob-rotate"
+          style={{ animationDelay: "-2s", background: "radial-gradient(circle, rgba(14,124,133,0.55) 0%, rgba(34,211,238,0.28) 35%, transparent 70%)" }}
         />
       </div>
 
@@ -334,7 +334,7 @@ const About = () => {
             className="animate-slide-in-right"
             style={{ animationDelay: "0.3s" }}
           >
-            <div className="glass group animate-glow-pulse space-y-6 rounded-3xl border border-white/60 p-8 backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/30 sm:p-12">
+            <div className="glass group animate-glow-pulse space-y-6 rounded-3xl border border-white/60 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/30 sm:p-12" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
               <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">
                 What Makes Us Special
               </h3>
@@ -418,10 +418,10 @@ const About = () => {
               style={{ animationDelay: `${0.6 + index * 0.15}s` }}
             >
               {/* Animated Gradient Background */}
-              <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-[#0e7c85]/20 via-cyan-500/10 to-teal-400/20 opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 rounded-3xl opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.2), rgba(6,182,212,0.1), rgba(20,184,166,0.2))" }} />
 
               {/* Main Card */}
-              <div className="group-hover-grow glass relative h-full overflow-hidden rounded-3xl border border-white/60 p-8 text-center backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-10">
+              <div className="group-hover-grow glass relative h-full overflow-hidden rounded-3xl border border-white/60 p-8 text-center transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-10" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
                 {/* Icon Container */}
                 <div className="mb-6 flex justify-center text-[#0e7c85] transition-all duration-500 group-hover:rotate-12 group-hover:scale-125 group-hover:text-cyan-600">
                   <div className="relative">
@@ -491,7 +491,7 @@ const About = () => {
               <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#0e7c85]/10 to-cyan-500/10 opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100" />
 
               {/* Card */}
-              <div className="glass relative rounded-2xl border-l-4 border-[#0e7c85] p-6 backdrop-blur-2xl transition-all duration-500 group-hover:-translate-x-2 group-hover:border-cyan-500 group-hover:bg-white/70 group-hover:shadow-lg group-hover:shadow-cyan-500/40 sm:p-8">
+              <div className="glass relative rounded-2xl border-l-4 border-[#0e7c85] p-6 transition-all duration-500 group-hover:-translate-x-2 group-hover:border-cyan-500 group-hover:bg-white/70 group-hover:shadow-lg group-hover:shadow-cyan-500/40 sm:p-8" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(240,249,251,0.78) 100%)" }}>
                 <div className="flex items-start gap-6">
                   {/* Year Badge */}
                   <div className="shrink-0">
@@ -529,10 +529,10 @@ const About = () => {
           style={{ animationDelay: "2s" }}
         >
           {/* Glowing Background */}
-          <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/30 via-cyan-500/30 to-teal-400/30 opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" />
+          <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />
 
           {/* Main Card */}
-          <div className="glass-strong relative overflow-hidden rounded-3xl border border-white/70 p-8 text-center backdrop-blur-2xl transition-all duration-500 group-hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16">
+          <div className="glass-strong relative overflow-hidden rounded-3xl border border-white/70 p-8 text-center transition-all duration-500 group-hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,251,252,0.92) 100%)" }}>
             {/* Background Animation */}
             <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
               <div className="animate-shimmer absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent" />
@@ -566,7 +566,7 @@ const About = () => {
 
                 <a
                   href="/values"
-                  className="group/btn relative overflow-hidden rounded-2xl border border-white/60 bg-white/40 px-10 py-4 text-lg font-bold text-[#0e7c85] backdrop-blur transition-all duration-500 hover:border-[#0e7c85]/50 hover:bg-white/80 hover:shadow-lg"
+                  className="group/btn relative overflow-hidden rounded-2xl border border-white/60 bg-white/40 px-10 py-4 text-lg font-bold text-[#0e7c85] transition-all duration-500 hover:border-[#0e7c85]/50 hover:bg-white/80 hover:shadow-lg"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Learn More

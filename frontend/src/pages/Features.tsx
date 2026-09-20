@@ -138,10 +138,10 @@ const Features = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Gradient Background Animation */}
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-[#0e7c85]/10 via-cyan-500/5 to-teal-400/10 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" />
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.1), rgba(6,182,212,0.05), rgba(20,184,166,0.1))" }} />
 
               {/* Card */}
-              <div className="relative glass rounded-2xl p-8 backdrop-blur-xl border border-white/40 hover:border-[#0e7c85]/50 hover:bg-white/60 transition-all duration-500 h-full hover:shadow-2xl hover:shadow-cyan-500/20">
+              <div className="relative glass rounded-2xl p-8 border border-white/40 hover:border-[#0e7c85]/50 hover:bg-white/60 transition-all duration-500 h-full hover:shadow-2xl hover:shadow-cyan-500/20" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(240,249,251,0.65) 100%)" }}>
                 {/* Icon */}
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-[#0e7c85]/25 via-cyan-300/15 to-teal-200/25 rounded-xl group-hover:from-[#0e7c85]/40 group-hover:via-cyan-400/30 group-hover:to-teal-300/40 transition-all duration-500 mb-4 text-[#0e7c85] group-hover:scale-110 transform group-hover:rotate-6">
                   {feature.icon}
@@ -197,7 +197,7 @@ const Features = () => {
             </ul>
           </div>
 
-          <div className="glass rounded-3xl p-8 sm:p-12 space-y-8 backdrop-blur-xl border border-white/40 hover:border-[#0e7c85]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 animate-fade-in-up">
+          <div className="glass rounded-3xl p-8 sm:p-12 space-y-8 border border-white/40 hover:border-[#0e7c85]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 animate-fade-in-up" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
             <style>{`
               @keyframes gradient-shift {
                 0%, 100% { background-position: 0% 50%; }
@@ -275,7 +275,7 @@ const Features = () => {
           <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/20 via-cyan-500/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
 
           {/* Card */}
-          <div className="relative glass-strong rounded-3xl p-12 text-center space-y-6 backdrop-blur-xl border border-white/50 group-hover:border-[#0e7c85]/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-cyan-500/30">
+          <div className="relative glass-strong rounded-3xl p-12 text-center space-y-6 border border-white/50 group-hover:border-[#0e7c85]/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-cyan-500/30" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,251,252,0.92) 100%)" }}>
             <h2 className="text-3xl font-bold bg-linear-to-r from-gray-900 via-[#0e7c85] to-gray-900 bg-clip-text text-transparent">
               Experience the Difference
             </h2>

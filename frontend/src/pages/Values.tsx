@@ -240,11 +240,11 @@ const Values = () => {
 
       {/* Decorative Background Blobs */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-0 left-1/4 h-96 w-96 animate-float rounded-full bg-linear-to-br from-cyan-300/20 to-teal-300/20 opacity-30 mix-blend-multiply blur-3xl filter" />
+        <div className="absolute top-0 left-1/4 h-96 w-96 animate-float rounded-full opacity-30 mix-blend-multiply" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.55) 0%, rgba(20,184,166,0.28) 35%, transparent 70%)" }} />
 
         <div
-          className="absolute right-1/3 bottom-32 h-96 w-96 animate-float rounded-full bg-linear-to-br from-[#0e7c85]/20 to-cyan-300/20 opacity-30 mix-blend-multiply blur-3xl filter"
-          style={{ animationDelay: "-2s" }}
+          className="absolute right-1/3 bottom-32 h-96 w-96 animate-float rounded-full opacity-30 mix-blend-multiply"
+          style={{ animationDelay: "-2s", background: "radial-gradient(circle, rgba(14,124,133,0.55) 0%, rgba(34,211,238,0.28) 35%, transparent 70%)" }}
         />
       </div>
 
@@ -306,10 +306,10 @@ const Values = () => {
               style={{ animationDelay: `${0.4 + index * 0.1}s` }}
             >
               {/* Glow Background */}
-              <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-[#0e7c85]/20 via-cyan-500/10 to-teal-400/20 opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 rounded-3xl opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.2), rgba(6,182,212,0.1), rgba(20,184,166,0.2))" }} />
 
               {/* Card */}
-              <div className="group-hover-lift glass relative h-full overflow-hidden rounded-3xl border border-white/60 p-8 backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-10">
+              <div className="group-hover-lift glass relative h-full overflow-hidden rounded-3xl border border-white/60 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-10" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
                 {/* Icon */}
                 <div className="mb-6 inline-block transform text-6xl transition-all duration-500 group-hover:rotate-12 group-hover:scale-125">
                   {value.icon}
@@ -377,7 +377,7 @@ const Values = () => {
               <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#0e7c85]/20 to-cyan-500/20 opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100" />
 
               {/* Card */}
-              <div className="group-hover-lift glass relative h-full rounded-2xl border border-white/60 p-8 backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-xl hover:shadow-cyan-500/30">
+              <div className="group-hover-lift glass relative h-full rounded-2xl border border-white/60 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-xl hover:shadow-cyan-500/30" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(240,249,251,0.78) 100%)" }}>
                 {/* Number Badge */}
                 <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-[#0e7c85]/30 to-cyan-500/30 text-lg font-bold text-[#0e7c85] transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
                   {index + 1}
@@ -410,10 +410,10 @@ const Values = () => {
           style={{ animationDelay: "1.8s" }}
         >
           {/* Glow Background */}
-          <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/30 via-cyan-500/30 to-teal-400/30 opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" />
+          <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />
 
           {/* Card */}
-          <div className="glass relative rounded-3xl border border-white/70 p-8 backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16">
+          <div className="glass relative rounded-3xl border border-white/70 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
             <div className="space-y-8">
               <div className="space-y-4 text-center">
                 <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl">
@@ -516,7 +516,7 @@ const Values = () => {
             className="animate-slide-in-right"
             style={{ animationDelay: "2.2s" }}
           >
-            <div className="glass group animate-glow-pulse space-y-8 rounded-3xl border border-white/70 p-8 backdrop-blur-2xl transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-12">
+            <div className="glass group animate-glow-pulse space-y-8 rounded-3xl border border-white/70 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-12" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,251,252,0.92) 100%)" }}>
               <h3 className="text-3xl font-bold text-gray-900">
                 Our Core Beliefs
               </h3>
@@ -566,10 +566,10 @@ const Values = () => {
           style={{ animationDelay: "2.8s" }}
         >
           {/* Glow */}
-          <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/30 via-cyan-500/30 to-teal-400/30 opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" />
+          <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />
 
           {/* Card */}
-          <div className="glass-strong relative overflow-hidden rounded-3xl border border-white/70 p-8 text-center backdrop-blur-2xl transition-all duration-500 group-hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16">
+          <div className="glass-strong relative overflow-hidden rounded-3xl border border-white/70 p-8 text-center transition-all duration-500 group-hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,251,252,0.92) 100%)" }}>
             {/* Shimmer on hover */}
             <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
               <div className="animate-shimmer absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent" />
@@ -605,7 +605,7 @@ const Values = () => {
 
                 <a
                   href="/about"
-                  className="group/btn relative overflow-hidden rounded-2xl border border-white/60 bg-white/40 px-10 py-4 text-lg font-bold text-[#0e7c85] backdrop-blur transition-all duration-500 hover:border-[#0e7c85]/50 hover:bg-white/80 hover:shadow-lg"
+                  className="group/btn relative overflow-hidden rounded-2xl border border-white/60 bg-white/40 px-10 py-4 text-lg font-bold text-[#0e7c85] transition-all duration-500 hover:border-[#0e7c85]/50 hover:bg-white/80 hover:shadow-lg"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Back to About
