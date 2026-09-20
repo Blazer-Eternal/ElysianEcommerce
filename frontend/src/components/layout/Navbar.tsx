@@ -98,8 +98,8 @@ const Navbar = () => {
               <Link to={ROUTES.CART} aria-label="Cart" className="relative text-gray-700 hover:accent-text transition-colors flex items-center justify-center gpu-accelerate" style={{ transform: "translateZ(0)" }}>
                 <BagIcon />
                 {itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#0e7c85] text-white text-[9px] w-5 h-5 rounded-full flex items-center justify-center font-semibold gpu-accelerate min-w-5 min-h-5" style={{ transform: "translateZ(0)" }}>
-                    {itemCount > 99 ? '99+' : itemCount}
+                  <span className="absolute top-0 right-0 bg-[#0e7c85] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold gpu-accelerate leading-none" style={{ transform: "translateZ(0)" }}>
+                    {itemCount}
                   </span>
                 )}
               </Link>

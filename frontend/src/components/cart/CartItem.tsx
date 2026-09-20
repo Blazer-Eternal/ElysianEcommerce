@@ -94,22 +94,22 @@ const CartItem = ({ item }: CartItemProps) => {
             </div>
 
             {/* Quantity Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-4">
-              <div className="inline-flex items-center gap-0 bg-linear-to-r from-gray-100 to-gray-50 rounded-full p-1 border border-gray-200/60 shadow-sm w-fit">
+            <div className="flex items-center gap-2 mt-4">
+              <div className="inline-flex items-center gap-0 bg-linear-to-r from-gray-100 to-gray-50 rounded-full p-1 border border-gray-200/60 shadow-sm">
                 <button
                   onClick={() => handleQuantityChange(item.quantity - 1)}
                   disabled={isUpdating || item.quantity <= 1}
-                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
                 >
                   −
                 </button>
-                <span className="text-sm sm:text-base font-bold text-gray-900 w-8 text-center">
+                <span className="text-xs sm:text-sm font-bold text-gray-900 w-6 text-center">
                   {item.quantity}
                 </span>
                 <button
                   onClick={() => handleQuantityChange(item.quantity + 1)}
                   disabled={isUpdating || item.quantity >= product.stock}
-                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
                 >
                   +
                 </button>
@@ -118,7 +118,7 @@ const CartItem = ({ item }: CartItemProps) => {
               <button
                 onClick={handleRemove}
                 disabled={isUpdating}
-                className="w-full sm:w-auto sm:ml-auto px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-white bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-lg rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-md"
+                className="ml-auto px-2 sm:px-3 py-1.5 text-xs font-bold text-white bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-lg rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-md whitespace-nowrap"
               >
                 🗑️ Remove
               </button>
