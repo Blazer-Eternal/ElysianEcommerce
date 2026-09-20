@@ -94,8 +94,8 @@ const CartItem = ({ item }: CartItemProps) => {
             </div>
 
             {/* Quantity Controls */}
-            <div className="flex items-center gap-3 mt-4">
-              <div className="inline-flex items-center gap-0 bg-linear-to-r from-gray-100 to-gray-50 rounded-full p-1 border border-gray-200/60 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-4">
+              <div className="inline-flex items-center gap-0 bg-linear-to-r from-gray-100 to-gray-50 rounded-full p-1 border border-gray-200/60 shadow-sm w-fit">
                 <button
                   onClick={() => handleQuantityChange(item.quantity - 1)}
                   disabled={isUpdating || item.quantity <= 1}
@@ -118,7 +118,7 @@ const CartItem = ({ item }: CartItemProps) => {
               <button
                 onClick={handleRemove}
                 disabled={isUpdating}
-                className="ml-auto px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-white bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-lg rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-md"
+                className="w-full sm:w-auto sm:ml-auto px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-white bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-lg rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-md"
               >
                 🗑️ Remove
               </button>
