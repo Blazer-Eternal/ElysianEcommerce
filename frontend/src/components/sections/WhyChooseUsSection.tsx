@@ -83,16 +83,19 @@ const WhyChooseUsSection = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
           {features.map((feature, index) => (
             <div
               key={feature.id}
-              className="group relative overflow-hidden rounded-2xl p-6 sm:p-7 transition-all duration-500 cursor-pointer h-full hover:shadow-2xl"
+              className="group relative overflow-hidden rounded-2xl p-6 sm:p-7 transition-all duration-500 cursor-pointer h-full hover:shadow-2xl gpu-accelerate"
               style={{
                 background: "rgba(255, 255, 255, 0.8)",
                 backdropFilter: "blur(10px)",
                 border: "1px solid rgba(14, 124, 133, 0.1)",
-                transitionDelay: `${index * 50}ms`
+                transitionDelay: `${index * 50}ms`,
+                contain: "layout style paint",
+                transform: "translateZ(0)",
+                willChange: "transform, opacity"
               }}
             >
               {/* Animated background gradient on hover */}
@@ -112,9 +115,11 @@ const WhyChooseUsSection = () => {
               {/* Content wrapper */}
               <div className="relative z-10">
                 {/* Icon */}
-                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg"
+                <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg gpu-accelerate"
                   style={{
                     background: "linear-gradient(135deg, #0e7c85/15 0%, #06b6d4/10 100%)",
+                    transform: "translateZ(0)",
+                    willChange: "transform, opacity"
                   }}
                 >
                   <div className="text-[#0e7c85] group-hover:text-[#0a5a62] transition-colors duration-500">

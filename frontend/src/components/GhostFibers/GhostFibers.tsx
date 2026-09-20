@@ -201,7 +201,8 @@ const GhostFibers = ({
       webgl: 2,
       alpha: false,
       antialias: false,
-      dpr: Math.min(Math.max(dpr, 0.5), 2)
+      dpr: Math.min(Math.max(dpr, 0.5), 2),
+      powerPreference: "high-performance"
     } as any);
 
     const gl = renderer.gl;
@@ -210,6 +211,7 @@ const GhostFibers = ({
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
+    canvas.style.willChange = 'transform';
     canvas.setAttribute('aria-hidden', 'true');
 
     container.appendChild(canvas);
@@ -433,7 +435,19 @@ const GhostFibers = ({
     dpr
   ]);
 
-  return <div ref={containerRef} className={`ghost-fibers-container ${className}`.trim()} />;
+  return <div 
+    ref={containerRef} 
+    className={`ghost-fibers-container ${className}`.trim()}
+    style={{
+      width: "100%",
+      height: "100%",
+      contain: "strict",
+      willChange: "contents",
+      transform: "translateZ(0)",
+      backfaceVisibility: "hidden",
+      perspective: "1000px"
+    }}
+  />;
 };
 
 export default GhostFibers;

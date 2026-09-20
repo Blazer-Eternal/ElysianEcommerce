@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAnimationPause } from "../../hooks/useAnimationPause";
 import type { Cart } from "../../types/cart.types";
 import type { Product } from "../../types/product.types";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -9,6 +10,8 @@ interface CartSummaryProps {
 }
 
 const CartSummary = ({ cart }: CartSummaryProps) => {
+  const { ref } = useAnimationPause({ threshold: 0.05, rootMargin: "100px", pauseOnScroll: true });
+  
   const subtotal = cart.items.reduce((sum, item) => {
     const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
     return sum + (product ? product.price * item.quantity : 0);
@@ -17,9 +20,13 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
   const itemCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in h-fit sticky top-24">
+    <div 
+      ref={ref}
+    className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 animate-fade-in h-fit sticky top-24 animation-container gpu-accelerate"
+      style={{ contain: "layout style paint", transform: "translateZ(0)" }}
+    >
       {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#eafcfd] via-white to-cyan-50 -z-10"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 -z-10"></div>
 
       {/* Content */}
       <div className="relative p-5 border border-cyan-200/60 rounded-2xl bg-white/80 backdrop-blur-sm hover:border-cyan-300 transition-all duration-300">
@@ -38,7 +45,7 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
               <span className="text-base">📊</span>
               Items
             </span>
-            <span className="inline-flex items-center justify-center min-w-[1.75rem] h-7 bg-gradient-to-r from-cyan-100 to-teal-100 text-[#0e7c85] font-bold text-sm rounded-full border border-cyan-300/50">
+            <span className="inline-flex items-center justify-center min-w-7 h-7 bg-linear-to-r from-cyan-100 to-teal-100 text-[#0e7c85] font-bold text-sm rounded-full border border-cyan-300/50">
               {itemCount}
             </span>
           </div>
@@ -54,7 +61,7 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
         {/* Info callout */}
         <div className="mb-4 p-2.5 rounded-lg bg-blue-50/80 border-l-3 border-cyan-400">
           <p className="text-xs text-gray-700 font-medium flex items-start gap-1.5">
-            <span className="text-sm mt-0.5 flex-shrink-0">ℹ️</span>
+            <span className="text-sm mt-0.5 shrink-0">ℹ️</span>
             <span>Shipping costs & coupon discounts calculated at checkout</span>
           </p>
         </div>
@@ -62,7 +69,7 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
         {/* CTA Button */}
         <Link
           to={ROUTES.CHECKOUT}
-          className="block w-full py-3 px-4 rounded-xl font-bold text-sm text-white text-center bg-gradient-to-r from-[#0e7c85] to-cyan-600 hover:from-[#0a5f68] hover:to-[#0a9db2] transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+          className="block w-full py-3 px-4 rounded-xl font-bold text-sm text-white text-center bg-linear-to-r from-[#0e7c85] to-cyan-600 hover:from-[#0a5f68] hover:to-[#0a9db2] transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
         >
           Proceed to Checkout
         </Link>

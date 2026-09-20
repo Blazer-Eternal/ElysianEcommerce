@@ -13,6 +13,7 @@ ArrowIcon.displayName = "ArrowIcon";
 
 const HeroSection = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const blobsContainerRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
 
   // Memoize Ghost Fibers props to prevent unnecessary re-renders
@@ -69,42 +70,83 @@ const HeroSection = memo(() => {
   return (
     <div 
       ref={containerRef}
-      className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden pt-10 sm:pt-14 pb-10 sm:pb-14 section-container"
+      className="relative min-h-[60vh] sm:min-h-[70vh] overflow-hidden pt-10 sm:pt-14 pb-10 sm:pb-14 section-container animation-container"
+      style={{ contain: "layout style paint" }}
     >
-      {/* GhostFibers animated background - GPU accelerated */}
-      <div className="absolute inset-0 -z-10 gpu-accelerate" style={{ width: "100%", height: "100%", contain: "strict" }}>
+      {/* GhostFibers animated background - GPU accelerated & optimized */}
+      <div 
+        className="absolute inset-0 -z-10 gpu-accelerate" 
+        style={{ 
+          width: "100%", 
+          height: "100%", 
+          contain: "strict",
+          willChange: "transform"
+        }}
+      >
         {isInView && <GhostFibers {...ghostFibersProps} />}
       </div>
 
-      {/* Animated background gradient overlay - Optimized */}
-      <div className="absolute inset-0 -z-10 opacity-30 pointer-events-none" style={{ contain: "layout style paint" }}>
-        <div className="absolute top-0 left-0 w-96 h-96 bg-linear-to-br from-blue-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob gpu-accelerate will-animate"></div>
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-linear-to-bl from-teal-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob animation-delay-2000 gpu-accelerate will-animate" style={{ contain: "layout style paint" }}></div>
+      {/* Animated background gradient overlay - GPU Accelerated & Paused Off-Screen */}
+      <div 
+        ref={blobsContainerRef}
+        className="absolute inset-0 -z-10 opacity-30 pointer-events-none animation-container"
+        style={{ 
+          contain: "layout style paint",
+          willChange: "contents"
+        }}
+      >
+        <div 
+          className="absolute top-0 left-0 w-96 h-96 bg-linear-to-br from-blue-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob gpu-accelerate will-animate"
+          style={{ 
+            transform: "translateZ(0)",
+            contain: "layout style paint"
+          }}
+        />
+        <div 
+          className="absolute top-1/2 right-0 w-96 h-96 bg-linear-to-bl from-teal-200/40 to-cyan-200/20 rounded-full blur-3xl animate-blob animation-delay-2000 gpu-accelerate will-animate"
+          style={{ 
+            transform: "translateZ(0)",
+            contain: "layout style paint"
+          }}
+        />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left side - Content */}
-          <div className={`space-y-6 sm:space-y-8 order-2 lg:order-1 transition-smooth ${isInView ? "animate-slide-in-left" : "opacity-0"}`}>
+          <div 
+            className={`space-y-6 sm:space-y-8 order-2 lg:order-1 transition-smooth ${isInView ? "animate-slide-in-left" : "opacity-0"}`}
+            style={{ willChange: "transform, opacity" }}
+          >
             <div className="space-y-4">
-              <div className="inline-block glass px-4 py-2 rounded-full text-sm font-medium text-[#0e7c85] animate-fade-in" style={{ animationDelay: isInView ? "0.1s" : "0s" }}>
+              <div 
+                className="inline-block glass px-4 py-2 rounded-full text-sm font-medium text-[#0e7c85] animate-fade-in gpu-accelerate" 
+                style={{ animationDelay: isInView ? "0.1s" : "0s", transform: "translateZ(0)" }}
+              >
                 ✨ Welcome to Excellence
               </div>
               
-              <h1 className="text-responsive-h1 font-bold leading-tight text-gray-900 animate-fade-in" style={{ animationDelay: isInView ? "0.2s" : "0s" }}>
+              <h1 
+                className="text-responsive-h1 font-bold leading-tight text-gray-900 animate-fade-in" 
+                style={{ animationDelay: isInView ? "0.2s" : "0s", willChange: "opacity, transform" }}
+              >
                 Discover <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Premium</span> Products
               </h1>
               
-              <p className="text-responsive-body text-gray-600 leading-relaxed max-w-xl animate-fade-in" style={{ animationDelay: isInView ? "0.3s" : "0s" }}>
+              <p 
+                className="text-responsive-body text-gray-600 leading-relaxed max-w-xl animate-fade-in" 
+                style={{ animationDelay: isInView ? "0.3s" : "0s", willChange: "opacity, transform" }}
+              >
                 Explore our curated collection of high-quality products delivered with elegance. Experience shopping like never before with our seamless platform.
               </p>
             </div>
 
-            {/* CTA Buttons - Optimized */}
+            {/* CTA Buttons - Optimized with GPU acceleration */}
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link
                 to={ROUTES.PRODUCTS}
-                className="glass-strong px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-900 hover:bg-white/90 hover-lift flex items-center justify-center sm:justify-start gap-2 group text-center transition-smooth"
+                className="glass-strong px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-900 hover:bg-white/90 hover-lift flex items-center justify-center sm:justify-start gap-2 group text-center transition-smooth gpu-accelerate"
+                style={{ transform: "translateZ(0)" }}
               >
                 Shop Now
                 <ArrowIcon />
@@ -112,7 +154,8 @@ const HeroSection = memo(() => {
               
               <Link
                 to={ROUTES.FEATURES}
-                className="glass px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-700 hover:bg-white/70 transition-smooth text-center hover-lift"
+                className="glass px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-700 hover:bg-white/70 transition-smooth text-center hover-lift gpu-accelerate"
+                style={{ transform: "translateZ(0)" }}
               >
                 Learn More
               </Link>
@@ -123,14 +166,26 @@ const HeroSection = memo(() => {
             </div>
           </div>
 
-          {/* Right side - Image - Optimized */}
-          <div className={`order-1 lg:order-2 flex justify-center lg:justify-end transition-smooth ${isInView ? "animate-slide-in-right" : "opacity-0"}`}>
+          {/* Right side - Image - Optimized with containment */}
+          <div 
+            className={`order-1 lg:order-2 flex justify-center lg:justify-end transition-smooth ${isInView ? "animate-slide-in-right" : "opacity-0"}`}
+            style={{ 
+              willChange: "transform, opacity",
+              contain: "layout style paint"
+            }}
+          >
             <div className="relative w-96 sm:w-full max-w-md card-container">
-              {/* Decorative elements - GPU accelerated */}
-              <div className="absolute -inset-8 bg-linear-to-br from-[#0e7c85]/10 to-cyan-300/10 rounded-3xl blur-2xl gpu-accelerate pointer-events-none"></div>
+              {/* Decorative elements - GPU accelerated & contained */}
+              <div 
+                className="absolute -inset-8 bg-linear-to-br from-[#0e7c85]/10 to-cyan-300/10 rounded-3xl blur-2xl gpu-accelerate pointer-events-none" 
+                style={{ 
+                  contain: "layout style paint",
+                  transform: "translateZ(0)"
+                }}
+              />
               
               {/* Image without border - Lazy loading optimization */}
-              <div className="relative z-10 will-animate">
+              <div className="relative z-10 will-animate" style={{ contain: "layout style paint" }}>
                 <div className="aspect-square rounded-3xl flex items-center justify-center overflow-hidden shadow-lg">
                   <img 
                     src="/HeroSection.png" 
@@ -138,6 +193,7 @@ const HeroSection = memo(() => {
                     className="w-full h-full object-cover gpu-accelerate"
                     loading="eager"
                     decoding="async"
+                    style={{ transform: "translateZ(0)" }}
                   />
                 </div>
               </div>

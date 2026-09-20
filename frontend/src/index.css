@@ -109,18 +109,22 @@
 }
 
 @layer utilities {
-  /* Glass Morphism Effects - Optimized */
+  /* Glass Morphism Effects - GPU Accelerated & Optimized */
   .glass {
     background: rgb(255 255 255 / 0.6);
     backdrop-filter: blur(12px);
     border: 1px solid rgb(255 255 255 / 0.8);
     contain: layout style paint;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   .glass-strong {
     background: rgb(255 255 255 / 0.8);
     backdrop-filter: blur(16px);
     border: 1px solid rgb(255 255 255 / 0.9);
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
   .glass-nav {
@@ -128,6 +132,17 @@
     backdrop-filter: blur(16px);
     border-bottom: 1px solid rgb(255 255 255 / 0.7);
     contain: layout style;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Reduced blur variant for performance when not critical */
+  .glass-light {
+    background: rgb(255 255 255 / 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgb(255 255 255 / 0.8);
+    contain: layout style paint;
+    transform: translateZ(0);
   }
 
   /* Accent Colors */
@@ -143,17 +158,17 @@
      SMOOTH, OPTIMIZED ANIMATIONS
      ======================================== */
 
-  /* Blob Animation - GPU Accelerated */
+  /* Blob Animation - Highly Optimized GPU-Accelerated Transform Only */
   @keyframes blob {
     0%, 100% {
-      transform: translate(0, 0) scale(1);
+      transform: translate(0, 0) scale(1) translateZ(0);
       animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
     }
     33% {
-      transform: translate(30px, -50px) scale(1.1);
+      transform: translate(30px, -50px) scale(1.1) translateZ(0);
     }
     66% {
-      transform: translate(-20px, 20px) scale(0.9);
+      transform: translate(-20px, 20px) scale(0.9) translateZ(0);
     }
   }
 
@@ -161,106 +176,143 @@
     animation: blob var(--animation-duration-blob) infinite;
     transform: translateZ(0);
     backface-visibility: hidden;
+    will-change: transform;
+    contain: layout style paint;
   }
 
-  /* Fade In Animation */
+  /* Paused state for off-screen blobs */
+  .animate-blob-paused {
+    animation-play-state: paused;
+  }
+
+  /* Fade In Animation - Transform Only */
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(10px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
   }
 
   .animate-fade-in {
     animation: fadeIn var(--animation-duration-fade) var(--ease-out) forwards;
+    will-change: opacity, transform;
   }
 
-  /* Slide In from Left */
+  .animate-fade-in-paused {
+    animation-play-state: paused;
+  }
+
+  /* Slide In from Left - Transform Only */
   @keyframes slideInLeft {
     from {
       opacity: 0;
-      transform: translateX(-30px);
+      transform: translateX(-30px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateX(0) translateZ(0);
     }
   }
 
   .animate-slide-in-left {
     animation: slideInLeft var(--animation-duration-fade) var(--ease-out) forwards;
+    will-change: opacity, transform;
   }
 
-  /* Slide In from Right */
+  .animate-slide-in-left-paused {
+    animation-play-state: paused;
+  }
+
+  /* Slide In from Right - Transform Only */
   @keyframes slideInRight {
     from {
       opacity: 0;
-      transform: translateX(30px);
+      transform: translateX(30px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateX(0) translateZ(0);
     }
   }
 
   .animate-slide-in-right {
     animation: slideInRight var(--animation-duration-fade) var(--ease-out) forwards;
+    will-change: opacity, transform;
   }
 
-  /* Slide In from Top */
+  .animate-slide-in-right-paused {
+    animation-play-state: paused;
+  }
+
+  /* Slide In from Top - Transform Only */
   @keyframes slideInTop {
     from {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateY(-20px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
   }
 
   .animate-slide-in-top {
     animation: slideInTop var(--animation-duration-fade) var(--ease-out) forwards;
+    will-change: opacity, transform;
   }
 
-  /* Scale In */
+  .animate-slide-in-top-paused {
+    animation-play-state: paused;
+  }
+
+  /* Scale In - Transform Only */
   @keyframes scaleIn {
     from {
       opacity: 0;
-      transform: scale(0.95);
+      transform: scale(0.95) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateZ(0);
     }
   }
 
   .animate-scale-in {
     animation: scaleIn var(--animation-duration-fade) var(--ease-out) forwards;
+    will-change: opacity, transform;
   }
 
-  /* Fade In Up Animation */
+  .animate-scale-in-paused {
+    animation-play-state: paused;
+  }
+
+  /* Fade In Up Animation - Transform Only */
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(30px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
   }
 
   .animate-fade-in-up {
     animation: fadeInUp var(--animation-duration-fade) var(--ease-out) forwards;
     opacity: 0;
+    will-change: opacity, transform;
   }
 
-  /* Pulse Animation - Optimized */
+  .animate-fade-in-up-paused {
+    animation-play-state: paused;
+  }
+
+  /* Pulse Animation - Optimized (Opacity only) */
   @keyframes pulse {
     0%, 100% {
       opacity: 1;
@@ -272,9 +324,14 @@
 
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    will-change: opacity;
   }
 
-  /* Smooth Loading Skeleton */
+  .animate-pulse-paused {
+    animation-play-state: paused;
+  }
+
+  /* Smooth Loading Skeleton - Optimized Background Gradient */
   @keyframes shimmer {
     0% {
       background-position: -1000px 0;
@@ -288,6 +345,21 @@
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
+    will-change: background-position;
+    contain: layout style paint;
+  }
+
+  .animate-shimmer-paused {
+    animation-play-state: paused;
+  }
+
+  /* Animation Pause Classes - Pauses all animations and transitions */
+  .animation-paused-by-visibility {
+    animation-play-state: paused !important;
+  }
+
+  .animation-paused-by-visibility * {
+    animation-play-state: paused !important;
   }
 
   /* Animation Delays */
@@ -548,30 +620,56 @@
     aspect-ratio: 16 / 9;
   }
 
-  /* Smooth hover states */
+  /* Smooth hover states - GPU Accelerated */
   .hover-lift {
     transition: all var(--transition-base) var(--ease-in-out);
+    transform: translateZ(0);
   }
 
   .hover-lift:hover {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    transform: translateY(-0.25rem);
+    transform: translateY(-0.25rem) translateZ(0);
   }
 
   .hover-glow {
     transition: all var(--transition-base) var(--ease-in-out);
+    transform: translateZ(0);
   }
 
   .hover-glow:hover {
     box-shadow: 0 0 20px rgba(14, 124, 133, 0.3);
   }
 
-  /* Loading skeleton */
+  /* Loading skeleton - GPU accelerated */
   .skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
     border-radius: 0.5rem;
+    transform: translateZ(0);
+    contain: layout style paint;
+  }
+
+  .skeleton-paused {
+    animation-play-state: paused;
+  }
+
+  /* Animation containment - isolates repaints to container */
+  .animation-container {
+    contain: layout style paint;
+  }
+
+  /* Force GPU acceleration on heavy elements */
+  .force-gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform;
+  }
+
+  /* Reduce animation intensity for performance */
+  .animation-reduced {
+    animation-duration: 0.3s !important;
   }
 
   /* Disable animations for reduced-motion preference */

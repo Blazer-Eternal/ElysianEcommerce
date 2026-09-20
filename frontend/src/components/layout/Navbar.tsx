@@ -74,42 +74,44 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="glass-nav sticky top-0 z-40 overflow-visible">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible">
-        <Link to={ROUTES.HOME} className="shrink-0 flex items-center">
+    <nav className="glass-nav sticky top-0 z-40 overflow-visible animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)", backfaceVisibility: "hidden" }}>
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible" style={{ contain: "layout style" }}>
+        <Link to={ROUTES.HOME} className="shrink-0 flex items-center gpu-accelerate" style={{ transform: "translateZ(0)" }}>
           <img 
             src="/logo.png" 
             alt="ElysianEcommerce Logo" 
             className="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain transition-transform hover:scale-105"
+            style={{ willChange: "transform" }}
           />
         </Link>
 
-        <div className="hidden md:flex items-center gap-8 lg:gap-10 text-xs sm:text-sm md:text-sm text-gray-700 absolute left-1/2 -translate-x-1/2">
-          <Link to={ROUTES.PRODUCTS} className="hover:accent-text transition-colors">Products</Link>
-          <Link to={ROUTES.FEATURES} className="hover:accent-text transition-colors">Features</Link>
-          <Link to={ROUTES.ABOUT} className="hover:accent-text transition-colors">About</Link>
+        <div className="hidden md:flex items-center gap-8 lg:gap-10 text-xs sm:text-sm md:text-sm text-gray-700 absolute left-1/2 -translate-x-1/2" style={{ contain: "layout style" }}>
+          <Link to={ROUTES.PRODUCTS} className="hover:accent-text transition-colors gpu-accelerate" style={{ transform: "translateZ(0)" }}>Products</Link>
+          <Link to={ROUTES.FEATURES} className="hover:accent-text transition-colors gpu-accelerate" style={{ transform: "translateZ(0)" }}>Features</Link>
+          <Link to={ROUTES.ABOUT} className="hover:accent-text transition-colors gpu-accelerate" style={{ transform: "translateZ(0)" }}>About</Link>
         </div>
 
-        <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto" ref={userMenuRef}>
+        <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto" ref={userMenuRef} style={{ contain: "layout style paint" }}>
           {isAuthenticated ? (
             <>
               {/* Cart Icon - visible on all authenticated screens */}
-              <Link to={ROUTES.CART} aria-label="Cart" className="relative text-gray-700 hover:accent-text transition-colors flex items-center justify-center">
+              <Link to={ROUTES.CART} aria-label="Cart" className="relative text-gray-700 hover:accent-text transition-colors flex items-center justify-center gpu-accelerate" style={{ transform: "translateZ(0)" }}>
                 <BagIcon />
                 {itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#0e7c85] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-semibold">
+                  <span className="absolute -top-2 -right-2 bg-[#0e7c85] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-semibold gpu-accelerate" style={{ transform: "translateZ(0)" }}>
                     {itemCount}
                   </span>
                 )}
               </Link>
 
               {/* User Profile Icon - visible on all authenticated screens */}
-              <div className="relative" ref={userMenuRef}>
+              <div className="relative" ref={userMenuRef} style={{ contain: "layout style paint" }}>
                 <button
                   ref={userButtonRef}
                   onClick={() => setUserMenuOpen((prev) => !prev)}
                   aria-label="Account menu"
-                  className="text-gray-700 hover:accent-text transition-colors cursor-pointer p-1 flex items-center justify-center"
+                  className="text-gray-700 hover:accent-text transition-colors cursor-pointer p-1 flex items-center justify-center gpu-accelerate"
+                  style={{ transform: "translateZ(0)" }}
                 >
                   <UserIcon />
                 </button>
@@ -117,15 +119,18 @@ const Navbar = () => {
                 {/* DROPDOWN MENU - Desktop: small fixed dropdown | Mobile: full-width panel */}
                 {userMenuOpen && (
                   <>
-                    {/* Desktop dropdown - fixed position */}
-                    <div className="hidden sm:block fixed right-4 top-16 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                      <div className="px-4 py-2 border-b border-gray-200 text-gray-600 text-xs font-semibold truncate">{user?.name}</div>
+                    {/* Desktop dropdown - fixed position with GPU acceleration */}
+                    <div className="hidden sm:block fixed right-4 top-16 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 gpu-accelerate animation-container" style={{ contain: "layout style paint", transform: "translateZ(0)", willChange: "opacity, transform" }}>
+                      <div className="px-4 py-2 border-b border-gray-200 text-gray-600 text-xs font-semibold truncate" style={{ contain: "layout style" }}>
+                        {user?.name}
+                      </div>
                       <button
                         onClick={() => {
                           setUserMenuOpen(false);
                           navigate(ROUTES.PROFILE);
                         }}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85] gpu-accelerate"
+                        style={{ transform: "translateZ(0)" }}
                       >
                         Your Profile
                       </button>
@@ -134,7 +139,8 @@ const Navbar = () => {
                           setUserMenuOpen(false);
                           navigate(ROUTES.WISHLIST);
                         }}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85] gpu-accelerate"
+                        style={{ transform: "translateZ(0)" }}
                       >
                         My Wishlist
                       </button>
@@ -143,7 +149,8 @@ const Navbar = () => {
                           setUserMenuOpen(false);
                           navigate(ROUTES.ORDER_HISTORY);
                         }}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85]"
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85] gpu-accelerate"
+                        style={{ transform: "translateZ(0)" }}
                       >
                         My Orders
                       </button>
@@ -153,14 +160,16 @@ const Navbar = () => {
                             setUserMenuOpen(false);
                             navigate(ROUTES.ADMIN_DASHBOARD);
                           }}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm border-t border-gray-200 hover:text-[#0e7c85]"
+                          className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm border-t border-gray-200 hover:text-[#0e7c85] gpu-accelerate"
+                          style={{ transform: "translateZ(0)" }}
                         >
                           Dashboard
                         </button>
                       )}
                       <button 
                         onClick={handleLogout} 
-                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors text-sm border-t border-gray-200"
+                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors text-sm border-t border-gray-200 gpu-accelerate"
+                        style={{ transform: "translateZ(0)" }}
                       >
                         Logout
                       </button>
@@ -171,10 +180,11 @@ const Navbar = () => {
             </>
           ) : (
             <div className="hidden sm:flex items-center gap-2 md:gap-3">
-              <Link to={ROUTES.LOGIN} className="text-xs sm:text-sm text-gray-700 hover:accent-text">Login</Link>
+              <Link to={ROUTES.LOGIN} className="text-xs sm:text-sm text-gray-700 hover:accent-text gpu-accelerate" style={{ transform: "translateZ(0)" }}>Login</Link>
               <Link
                 to={ROUTES.REGISTER}
-                className="text-xs sm:text-sm bg-[#0e7c85] text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full hover:bg-[#0b6169] transition-colors whitespace-nowrap"
+                className="text-xs sm:text-sm bg-[#0e7c85] text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full hover:bg-[#0b6169] transition-colors whitespace-nowrap gpu-accelerate"
+                style={{ transform: "translateZ(0)" }}
               >
                 Register
               </Link>
@@ -185,7 +195,8 @@ const Navbar = () => {
           <button
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label="Open menu"
-            className="sm:hidden text-gray-700 flex items-center justify-center"
+            className="sm:hidden text-gray-700 flex items-center justify-center gpu-accelerate"
+            style={{ transform: "translateZ(0)" }}
           >
             {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
@@ -194,15 +205,18 @@ const Navbar = () => {
 
       {/* Mobile User Dropdown Panel */}
       {userMenuOpen && isAuthenticated && (
-        <div className="sm:hidden bg-white border-b border-gray-200 z-40" ref={userMenuRef} onClick={(e) => e.stopPropagation()}>
-          <div className="px-4 py-3 border-b border-gray-200 text-gray-600 text-sm font-semibold">{user?.name}</div>
+        <div className="sm:hidden bg-white border-b border-gray-200 z-40 animation-container" ref={userMenuRef} onClick={(e) => e.stopPropagation()} style={{ contain: "layout style paint" }}>
+          <div className="px-4 py-3 border-b border-gray-200 text-gray-600 text-sm font-semibold" style={{ contain: "layout style" }}>
+            {user?.name}
+          </div>
           <button
             onClick={(e) => {
               e.stopPropagation();
               setUserMenuOpen(false);
               navigate(ROUTES.PROFILE);
             }}
-            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
+            style={{ transform: "translateZ(0)" }}
           >
             Your Profile
           </button>
@@ -212,7 +226,8 @@ const Navbar = () => {
               setUserMenuOpen(false);
               navigate(ROUTES.WISHLIST);
             }}
-            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
+            style={{ transform: "translateZ(0)" }}
           >
             My Wishlist
           </button>
@@ -222,7 +237,8 @@ const Navbar = () => {
               setUserMenuOpen(false);
               navigate(ROUTES.ORDER_HISTORY);
             }}
-            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
+            style={{ transform: "translateZ(0)" }}
           >
             My Orders
           </button>
@@ -233,7 +249,8 @@ const Navbar = () => {
                 setUserMenuOpen(false);
                 navigate(ROUTES.ADMIN_DASHBOARD);
               }}
-              className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors"
+              className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
+              style={{ transform: "translateZ(0)" }}
             >
               Dashboard
             </button>
@@ -243,23 +260,24 @@ const Navbar = () => {
               e.stopPropagation();
               handleLogout();
             }}
-            className="w-full py-3 px-4 text-red-600 hover:bg-red-50 transition-colors text-sm text-left active:bg-red-100"
+            className="w-full py-3 px-4 text-red-600 hover:bg-red-50 transition-colors text-sm text-left active:bg-red-100 gpu-accelerate"
+            style={{ transform: "translateZ(0)" }}
           >
             Logout
           </button>
         </div>
       )}
 
-      {/* Mobile dropdown panel */}
+      {/* Mobile dropdown panel - GPU accelerated */}
       {mobileMenuOpen && (
-        <div className="sm:hidden glass-strong border-t border-white/60 px-3 py-3 space-y-1 text-xs sm:text-sm">
-          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85]">
+        <div className="sm:hidden glass-strong border-t border-white/60 px-3 py-3 space-y-1 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
+          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             Products
           </Link>
-          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85]">
+          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             Features
           </Link>
-          <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85]">
+          <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             About
           </Link>
         </div>

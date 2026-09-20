@@ -1,45 +1,91 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import AuthLayout from "./components/layout/AuthLayout";
 import AuthRedirect from "./components/AuthRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
-import ForgotPassword from "./pages/auth/ForgotPassword";
-import ResetPassword from "./pages/auth/ResetPassword";
-import Home from "./pages/user/Home";
-import ProductList from "./pages/user/ProductList";
-import ProductDetail from "./pages/user/ProductDetail";
-import Wishlist from "./pages/user/Wishlist";
-import Cart from "./pages/user/Cart";
-import Checkout from "./pages/user/Checkout";
-import OrderHistory from "./pages/user/OrderHistory";
-import OrderDetail from "./pages/user/OrderDetail";
-import Profile from "./pages/user/Profile";
-import Dashboard from "./pages/admin/Dashboard";
-import ManageProducts from "./pages/admin/ManageProducts";
-import ManageCategories from "./pages/admin/ManageCategories";
-import ManageCoupons from "./pages/admin/ManageCoupons";
-import ManageOrders from "./pages/admin/ManageOrders";
-import AdminOrderDetail from "./pages/admin/AdminOrderDetail";
-import ManageUsers from "./pages/admin/ManageUsers";
-import DataTablesDemo from "./pages/admin/DataTablesDemo";
-import About from "./pages/About";
-import Values from "./pages/Values";
-import Features from "./pages/Features";
-import Contact from "./pages/Contact";
-import RefundPolicy from "./pages/legal/RefundPolicy";
-import ShippingPolicy from "./pages/legal/ShippingPolicy";
-import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
-import TermsOfService from "./pages/legal/TermsOfService";
-import Cancellations from "./pages/legal/Cancellations";
-import NotFound from "./pages/NotFound";
 import { ROUTES } from "./constants/routes";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import PaymentFailure from "./pages/PaymentFailure";
 
+/* ========================================
+   LAZY-LOADED PAGES (Reduces Initial Bundle)
+   ======================================== */
+
+// Auth Pages
+const Login = lazy(() => import("./pages/auth/Login"));
+const Register = lazy(() => import("./pages/auth/Register"));
+const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
+
+// User Pages
+const Home = lazy(() => import("./pages/user/Home"));
+const ProductList = lazy(() => import("./pages/user/ProductList"));
+const ProductDetail = lazy(() => import("./pages/user/ProductDetail"));
+const Wishlist = lazy(() => import("./pages/user/Wishlist"));
+const Cart = lazy(() => import("./pages/user/Cart"));
+const Checkout = lazy(() => import("./pages/user/Checkout"));
+const OrderHistory = lazy(() => import("./pages/user/OrderHistory"));
+const OrderDetail = lazy(() => import("./pages/user/OrderDetail"));
+const Profile = lazy(() => import("./pages/user/Profile"));
+
+// Admin Pages
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const ManageProducts = lazy(() => import("./pages/admin/ManageProducts"));
+const ManageCategories = lazy(() => import("./pages/admin/ManageCategories"));
+const ManageCoupons = lazy(() => import("./pages/admin/ManageCoupons"));
+const ManageOrders = lazy(() => import("./pages/admin/ManageOrders"));
+const AdminOrderDetail = lazy(() => import("./pages/admin/AdminOrderDetail"));
+const ManageUsers = lazy(() => import("./pages/admin/ManageUsers"));
+const DataTablesDemo = lazy(() => import("./pages/admin/DataTablesDemo"));
+
+// Info Pages
+const About = lazy(() => import("./pages/About"));
+const Values = lazy(() => import("./pages/Values"));
+const Features = lazy(() => import("./pages/Features"));
+const Contact = lazy(() => import("./pages/Contact"));
+
+// Legal Pages
+const RefundPolicy = lazy(() => import("./pages/legal/RefundPolicy"));
+const ShippingPolicy = lazy(() => import("./pages/legal/ShippingPolicy"));
+const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/legal/TermsOfService"));
+const Cancellations = lazy(() => import("./pages/legal/Cancellations"));
+
+// Payment Pages
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const PaymentFailure = lazy(() => import("./pages/PaymentFailure"));
+
+// Error Page
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+/* ========================================
+   LOADING SPINNER COMPONENT (Optimized)
+   ======================================== */
+const PageLoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-50 via-blue-50 to-teal-50 animate-container">
+    <div className="flex flex-col items-center gap-6">
+      {/* Animated Loading Spinner */}
+      <div className="relative w-16 h-16">
+        <div className="absolute inset-0 rounded-full border-4 border-cyan-200 animate-spin" />
+        <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-cyan-500 border-r-teal-400 animate-spin animation-delay-100ms" style={{ animationDirection: "reverse" }} />
+        <div className="absolute inset-4 rounded-full border-4 border-cyan-300 opacity-50 animate-pulse" />
+      </div>
+      
+      {/* Loading Text with Fade Animation */}
+      <div className="animate-fade-in">
+        <p className="text-center text-lg font-semibold text-gray-700">Loading your content...</p>
+        <p className="text-center text-sm text-gray-500 mt-2">This should only take a moment</p>
+      </div>
+
+      {/* GPU-accelerated animated dots */}
+      <div className="flex gap-2">
+        <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse animation-delay-0ms" />
+        <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse animation-delay-200ms" />
+        <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse animation-delay-400ms" />
+      </div>
+    </div>
+  </div>
+);
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => (
   <div>{children}</div>
@@ -56,6 +102,9 @@ const PublicPage = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+/* ========================================
+   MAIN APP COMPONENT (Optimized with Suspense)
+   ======================================== */
 function App() {
   const location = useLocation();
 
@@ -65,7 +114,8 @@ function App() {
 
   return (
     <>
-      <Routes>
+      <Suspense fallback={<PageLoadingSpinner />}>
+        <Routes>
       <Route path={ROUTES.HOME} element={<PublicPage><Home /></PublicPage>} />
       <Route path={ROUTES.PRODUCTS} element={<PublicPage><ProductList /></PublicPage>} />
       <Route path={ROUTES.PRODUCT_DETAIL()} element={<PublicPage><ProductDetail /></PublicPage>} />
@@ -249,7 +299,8 @@ function App() {
       />
 
       <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
-    </Routes>
+        </Routes>
+      </Suspense>
     </>
   );
 }

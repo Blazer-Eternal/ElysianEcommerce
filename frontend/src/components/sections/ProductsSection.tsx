@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { ROUTES } from "../../constants/routes";
 import ProductCard from "../product/ProductCard";
+import { useGridAnimationPause } from "../../hooks/useAnimationPause";
 
 const ProductsSection = () => {
+  const { containerRef } = useGridAnimationPause({ threshold: 0.05, rootMargin: "100px" });
   const { data: response, isLoading: loading } = useQuery({
     queryKey: ["products", { limit: 8, page: 1, status: "active", sortBy: "created_at", sortOrder: "asc" }],
     queryFn: () => productService.getAll({ 
@@ -20,7 +22,7 @@ const ProductsSection = () => {
   const products = response?.data || [];
 
   return (
-    <div className="py-10 sm:py-14">
+    <div className="py-10 sm:py-14 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-9 sm:mb-11">
@@ -38,9 +40,9 @@ const ProductsSection = () => {
 
         {/* Products Grid */}
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="glass rounded-2xl p-4 animate-pulse">
+              <div key={i} className="glass rounded-2xl p-4 animate-pulse gpu-accelerate" style={{ transform: "translateZ(0)" }}>
                 <div className="bg-gray-300 rounded-lg h-40 mb-4"></div>
                 <div className="bg-gray-300 h-4 rounded mb-3"></div>
                 <div className="bg-gray-300 h-4 rounded w-2/3 mb-4"></div>
@@ -49,9 +51,22 @@ const ProductsSection = () => {
             ))}
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
+          <div 
+            ref={containerRef}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate"
+            style={{ contain: "layout style paint", willChange: "contents" }}
+          >
+            {products.map((product, index) => (
+              <div
+                key={product._id}
+                style={{
+                  animation: `fadeInUp 0.5s ease-out ${index * 0.05}s both`,
+                  transform: "translateZ(0)"
+                }}
+                className="gpu-accelerate"
+              >
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         ) : (
@@ -74,6 +89,19 @@ const ProductsSection = () => {
           </Link>
         </div>
       </div>
+
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 };

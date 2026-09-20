@@ -1,6 +1,7 @@
 import type { Product } from "../../types/product.types";
 import ProductCard from "./ProductCard";
 import Spinner from "../ui/Spinner";
+import { useGridAnimationPause } from "../../hooks/useAnimationPause";
 
 interface ProductGridProps {
   products: Product[];
@@ -8,6 +9,8 @@ interface ProductGridProps {
 }
 
 const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
+  const { containerRef } = useGridAnimationPause({ threshold: 0.05, rootMargin: "100px" });
+  
   if (isLoading) {
     return (
       <div className="py-16 flex items-center justify-center">
@@ -30,9 +33,22 @@ const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
-      {products.map((product) => (
-        <ProductCard key={product._id} product={product} />
+    <div 
+      ref={containerRef}
+      className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate"
+      style={{ contain: "layout style paint", willChange: "contents" }}
+    >
+      {products.map((product, index) => (
+        <div 
+          key={product._id}
+          style={{
+            animation: `fadeInUp 0.5s ease-out ${index * 0.05}s both`,
+            transform: "translateZ(0)"
+          }}
+          className="gpu-accelerate"
+        >
+          <ProductCard product={product} />
+        </div>
       ))}
     </div>
   );

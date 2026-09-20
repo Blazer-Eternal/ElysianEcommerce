@@ -16,4 +16,18 @@ export {
   usePrefersReducedMotion,
 } from "./useInViewAnimation";
 
+export {
+  useAnimationPause,
+  useGridAnimationPause,
+  useAnimationResume,
+  pauseAllAnimations,
+  resumeAllAnimations,
+} from "./useAnimationPause";
+
+export {
+  useOptimizedLoading,
+  useAspectRatioPreserver,
+  useSmoothLoading,
+} from "./useOptimizedLoading";
+
 export type { } from "./useInViewAnimation";

@@ -101,12 +101,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   };
 
   return (
-    <div className="flex h-screen bg-linear-to-b from-[#eafcfd] to-white">
+    <div className="flex h-screen bg-linear-to-b from-[#eafcfd] to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-80 bg-linear-to-b from-white via-white to-[#f0f9fb] border-r border-[#e0f2f7] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto ${
+        className={`fixed inset-y-0 left-0 z-50 w-80 bg-linear-to-b from-white via-white to-[#f0f9fb] border-r border-[#e0f2f7] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
         {/* Sidebar Header */}
         <div className="sticky top-0 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] p-6 space-y-6">
@@ -136,21 +137,26 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </div>
 
         {/* Sidebar Navigation */}
-        <nav className="px-4 py-6 space-y-2">
+        <nav className="px-4 py-6 space-y-2 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
           {navItems.map((item, index) => (
             <Link
               key={item.route}
               to={item.route}
               onClick={() => setSidebarOpen(false)}
-              className="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-linear-to-r hover:from-[#0e7c85]/5 hover:to-cyan-600/5 hover:text-[#0e7c85] transition-all duration-200 group relative overflow-hidden"
+              className="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-linear-to-r hover:from-[#0e7c85]/5 hover:to-cyan-600/5 hover:text-[#0e7c85] transition-all duration-200 group relative overflow-hidden gpu-accelerate"
+              style={{
+                animation: `fadeInLeft 0.3s ease-out ${index * 0.05}s both`,
+                transform: "translateZ(0)",
+                willChange: "background-color, transform"
+              }}
             >
-              <div className="absolute inset-0 bg-linear-to-r from-[#0e7c85]/0 to-cyan-600/0 group-hover:from-[#0e7c85]/10 group-hover:to-cyan-600/10 transition-all -z-10" />
-              <div className="text-gray-500 group-hover:text-[#0e7c85] transition-colors text-2xl shrink-0">
+              <div className="absolute inset-0 bg-linear-to-r from-[#0e7c85]/0 to-cyan-600/0 group-hover:from-[#0e7c85]/10 group-hover:to-cyan-600/10 transition-all -z-10 gpu-accelerate" style={{ transform: "translateZ(0)" }} />
+              <div className="text-gray-500 group-hover:text-[#0e7c85] transition-colors text-2xl shrink-0 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
                 {item.icon}
               </div>
-              <span className="font-semibold text-base group-hover:text-[#0e7c85] transition-colors">{item.label}</span>
+              <span className="font-semibold text-base group-hover:text-[#0e7c85] transition-colors gpu-accelerate" style={{ willChange: "color" }}>{item.label}</span>
               {index === 0 && (
-                <div className="ml-auto px-2 py-1 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white text-xs font-bold rounded-full">
+                <div className="ml-auto px-2 py-1 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white text-xs font-bold rounded-full gpu-accelerate" style={{ transform: "translateZ(0)" }}>
                   Home
                 </div>
               )}
@@ -200,18 +206,19 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col w-full overflow-hidden">
+      <div className="flex-1 flex flex-col w-full overflow-hidden animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
         {/* Top Bar */}
-        <div className="bg-white/50 backdrop-blur-xl border-b border-[#e0f2f7] sticky top-0 z-40">
-          <div className="flex items-center justify-between px-6 py-4">
+        <div className="bg-white/50 backdrop-blur-xl border-b border-[#e0f2f7] sticky top-0 z-40 gpu-accelerate" style={{ contain: "layout style paint" }}>
+          <div className="flex items-center justify-between px-6 py-4 gpu-accelerate" style={{ willChange: "background-color" }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden text-[#0e7c85] hover:text-[#1a6b94] transition-colors"
+              className="lg:hidden text-[#0e7c85] hover:text-[#1a6b94] transition-colors gpu-accelerate"
+              style={{ transform: "translateZ(0)" }}
             >
               <MenuIcon />
             </button>
             <div className="flex-1" />
-            <div className="text-right">
+            <div className="text-right gpu-accelerate" style={{ willChange: "opacity" }}>
               <p className="text-sm text-gray-600">Welcome back</p>
               <p className="text-lg font-bold text-gray-900">{user?.name?.split(" ")[0] || "Admin"}</p>
             </div>
@@ -219,7 +226,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </div>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
           {children}
         </div>
       </div>
@@ -227,8 +234,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/20 lg:hidden z-40"
+          className="fixed inset-0 bg-black/20 lg:hidden z-40 gpu-accelerate"
           onClick={() => setSidebarOpen(false)}
+          style={{ transform: "translateZ(0)" }}
         />
       )}
     </div>
