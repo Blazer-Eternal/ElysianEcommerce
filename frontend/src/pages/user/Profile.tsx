@@ -159,21 +159,33 @@ const Profile = () => {
 
         <form onSubmit={handleProfileSubmit} className="space-y-3 max-w-sm">
           <input
+            id="profile-name"
+            name="name"
             type="text"
+            aria-label="Name"
+            autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
             className="w-full border rounded px-3 py-2 text-sm"
           />
           <input
+            id="profile-email"
+            name="email"
             type="email"
+            aria-label="Email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             className="w-full border rounded px-3 py-2 text-sm"
           />
           <input
+            id="profile-phone"
+            name="phone"
             type="tel"
+            aria-label="Phone"
+            autoComplete="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Phone"
@@ -265,7 +277,11 @@ const Profile = () => {
             {addressError && <p className="text-sm text-red-600">{addressError}</p>}
 
             <input
+              id="addr-street"
+              name="street"
               type="text"
+              aria-label="Street"
+              autoComplete="street-address"
               placeholder="Street"
               required
               value={addressForm.street}
@@ -274,7 +290,11 @@ const Profile = () => {
             />
             <div className="grid grid-cols-2 gap-2">
               <input
+                id="addr-city"
+                name="city"
                 type="text"
+                aria-label="City"
+                autoComplete="address-level2"
                 placeholder="City"
                 required
                 value={addressForm.city}
@@ -282,7 +302,11 @@ const Profile = () => {
                 className="border rounded px-3 py-2 text-sm"
               />
               <input
+                id="addr-state"
+                name="state"
                 type="text"
+                aria-label="State"
+                autoComplete="address-level1"
                 placeholder="State"
                 required
                 value={addressForm.state}
@@ -292,7 +316,11 @@ const Profile = () => {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <input
+                id="addr-zip"
+                name="zip"
                 type="text"
+                aria-label="Zip"
+                autoComplete="postal-code"
                 placeholder="Zip"
                 required
                 value={addressForm.zip}
@@ -300,7 +328,11 @@ const Profile = () => {
                 className="border rounded px-3 py-2 text-sm"
               />
               <input
+                id="addr-country"
+                name="country"
                 type="text"
+                aria-label="Country"
+                autoComplete="country-name"
                 placeholder="Country"
                 required
                 value={addressForm.country}
@@ -308,8 +340,10 @@ const Profile = () => {
                 className="border rounded px-3 py-2 text-sm"
               />
             </div>
-            <label className="flex items-center gap-2 text-sm">
+            <label htmlFor="default-address" className="flex items-center gap-2 text-sm">
               <input
+                id="default-address"
+                name="is_default"
                 type="checkbox"
                 checked={addressForm.is_default}
                 onChange={(e) => setAddressForm({ ...addressForm, is_default: e.target.checked })}

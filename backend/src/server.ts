@@ -13,18 +13,29 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration - dynamic origin whitelist
 const localhostRegex = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+// Any Vercel deployment of this frontend (production, preview and branch URLs all end in *.vercel.app),
+// so the deployed site works regardless of the exact *.vercel.app subdomain.
+const vercelRegex = /^https:\/\/[\w-]+\.vercel\.app$/;
 const staticWhitelist = [
   "https://elysian-ecommerce-frontend.vercel.app",
   process.env.FRONTEND_URL,
-].filter((url): url is string => !!url);
+  // Optional extra origins (custom domains) as a comma-separated env var
+  ...(process.env.CORS_ORIGINS ?? "").split(","),
+]
+  .filter((url): url is string => !!url)
+  .map((url) => url.trim())
+  .filter((url) => url.length > 0);
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin || localhostRegex.test(origin) || staticWhitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS not allowed for origin: ${origin}`));
-    }
+    const allowed =
+      !origin ||
+      localhostRegex.test(origin) ||
+      vercelRegex.test(origin) ||
+      staticWhitelist.includes(origin);
+    // Unknown origins get NO Access-Control-Allow-Origin header (browser blocks cleanly)
+    // instead of the cors middleware throwing a 500 that masks the real cause
+    callback(null, allowed);
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],

@@ -58,7 +58,10 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
     <div>
       <div className="flex gap-2">
         <input
+          id="coupon-code"
+          name="couponCode"
           type="text"
+          aria-label="Coupon code"
           placeholder="Coupon code"
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}

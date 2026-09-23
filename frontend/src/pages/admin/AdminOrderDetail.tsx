@@ -422,9 +422,12 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
         
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">Street</label>
+            <label htmlFor="addr-street" className="block text-sm font-semibold text-gray-900 mb-2">Street</label>
             <input
+              id="addr-street"
+              name="street"
               type="text"
+              autoComplete="street-address"
               value={address.street}
               onChange={(e) => onChange("street", e.target.value)}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
@@ -433,18 +436,24 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">City</label>
+              <label htmlFor="addr-city" className="block text-sm font-semibold text-gray-900 mb-2">City</label>
               <input
+                id="addr-city"
+                name="city"
                 type="text"
+                autoComplete="address-level2"
                 value={address.city}
                 onChange={(e) => onChange("city", e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">State</label>
+              <label htmlFor="addr-state" className="block text-sm font-semibold text-gray-900 mb-2">State</label>
               <input
+                id="addr-state"
+                name="state"
                 type="text"
+                autoComplete="address-level1"
                 value={address.state}
                 onChange={(e) => onChange("state", e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
@@ -454,18 +463,24 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">Zip Code</label>
+              <label htmlFor="addr-zip" className="block text-sm font-semibold text-gray-900 mb-2">Zip Code</label>
               <input
+                id="addr-zip"
+                name="zip"
                 type="text"
+                autoComplete="postal-code"
                 value={address.zip}
                 onChange={(e) => onChange("zip", e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">Country</label>
+              <label htmlFor="addr-country" className="block text-sm font-semibold text-gray-900 mb-2">Country</label>
               <input
+                id="addr-country"
+                name="country"
                 type="text"
+                autoComplete="country-name"
                 value={address.country}
                 onChange={(e) => onChange("country", e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"

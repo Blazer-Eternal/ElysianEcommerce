@@ -505,10 +505,12 @@ const ManageProducts = () => {
           </select>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
+            <label htmlFor="product-images" className="block text-sm font-medium text-gray-900 mb-2">
               Images {editingId && "(leave empty to keep current)"}
             </label>
             <input
+              id="product-images"
+              name="images"
               type="file"
               multiple
               accept="image/*"

@@ -118,8 +118,10 @@ const Contact = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">Name *</label>
+                    <label htmlFor="contact-name" className="block text-sm font-semibold text-gray-900 mb-2">Name *</label>
                     <input
+                      id="contact-name"
+                      name="name"
                       type="text"
                       placeholder="Your full name"
                       required
@@ -129,8 +131,10 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-900 mb-2">Email *</label>
+                    <label htmlFor="contact-email" className="block text-sm font-semibold text-gray-900 mb-2">Email *</label>
                     <input
+                      id="contact-email"
+                      name="email"
                       type="email"
                       placeholder="your@email.com"
                       required
@@ -142,8 +146,10 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">Phone</label>
+                  <label htmlFor="contact-phone" className="block text-sm font-semibold text-gray-900 mb-2">Phone</label>
                   <input
+                    id="contact-phone"
+                    name="phone"
                     type="tel"
                     placeholder="+977 98X-XXX-XXXX"
                     value={form.phone}
@@ -153,8 +159,10 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">Message *</label>
+                  <label htmlFor="contact-message" className="block text-sm font-semibold text-gray-900 mb-2">Message *</label>
                   <textarea
+                    id="contact-message"
+                    name="message"
                     placeholder="Tell us how we can help..."
                     required
                     rows={5}

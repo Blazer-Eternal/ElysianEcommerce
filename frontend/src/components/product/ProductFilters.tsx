@@ -29,7 +29,10 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
   return (
     <div className="space-y-4 mb-6">
       <input
+        id="product-search"
+        name="search"
         type="text"
+        aria-label="Search products"
         placeholder="Search products..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -44,7 +47,10 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         />
 
         <input
+          id="min-price"
+          name="minPrice"
           type="number"
+          aria-label="Minimum price"
           placeholder="Min price"
           value={filters.minPrice ?? ""}
           onChange={(e) =>
@@ -58,7 +64,10 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         />
 
         <input
+          id="max-price"
+          name="maxPrice"
           type="number"
+          aria-label="Maximum price"
           placeholder="Max price"
           value={filters.maxPrice ?? ""}
           onChange={(e) =>
@@ -71,8 +80,10 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
           className="border rounded-lg px-3 py-2 text-sm w-28 bg-white/70"
         />
 
-        <label className="flex items-center gap-1.5 text-sm">
+        <label htmlFor="in-stock-only" className="flex items-center gap-1.5 text-sm">
           <input
+            id="in-stock-only"
+            name="inStock"
             type="checkbox"
             checked={filters.inStock === true}
             onChange={(e) => onChange({ ...filters, inStock: e.target.checked || undefined, page: 1 })}
@@ -81,6 +92,9 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         </label>
 
         <select
+          id="sort-products"
+          name="sort"
+          aria-label="Sort products"
           value={`${filters.sortBy || "created_at"}:${filters.sortOrder || "asc"}`}
           onChange={(e) => {
             const [sortBy, sortOrder] = e.target.value.split(":");

@@ -266,6 +266,9 @@ const Wishlist = () => {
 
           {/* Sort Dropdown */}
           <select
+            id="wishlist-sort"
+            name="sort"
+            aria-label="Sort wishlist"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
             className="px-4 py-2 rounded-lg border border-cyan-300 bg-white/70 backdrop-blur-sm text-gray-900 font-medium hover:border-cyan-500 hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"

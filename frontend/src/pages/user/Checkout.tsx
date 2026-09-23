@@ -135,7 +135,11 @@ const Checkout = () => {
                 <div className="space-y-4">
                   <div className="relative group/input">
                     <input
+                      id="street"
+                      name="street"
                       type="text"
+                      aria-label="Street Address"
+                      autoComplete="street-address"
                       placeholder="Street Address"
                       required
                       value={address.street}
@@ -147,7 +151,11 @@ const Checkout = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <input
+                      id="city"
+                      name="city"
                       type="text"
+                      aria-label="City"
+                      autoComplete="address-level2"
                       placeholder="City"
                       required
                       value={address.city}
@@ -155,7 +163,11 @@ const Checkout = () => {
                       className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white/80 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
                     />
                     <input
+                      id="state"
+                      name="state"
                       type="text"
+                      aria-label="State"
+                      autoComplete="address-level1"
                       placeholder="State"
                       required
                       value={address.state}
@@ -166,7 +178,11 @@ const Checkout = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <input
+                      id="zip"
+                      name="zip"
                       type="text"
+                      aria-label="Zip Code"
+                      autoComplete="postal-code"
                       placeholder="Zip Code"
                       required
                       value={address.zip}
@@ -174,7 +190,11 @@ const Checkout = () => {
                       className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white/80 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
                     />
                     <input
+                      id="country"
+                      name="country"
                       type="text"
+                      aria-label="Country"
+                      autoComplete="country-name"
                       placeholder="Country"
                       required
                       value={address.country}

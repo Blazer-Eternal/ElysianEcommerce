@@ -152,7 +152,9 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
 
         {/* Rating Section */}
         <div>
-          <label className="block text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Rating</label>
+          {/* Rating is a custom star widget (no form field), so it's a span - a <label> without an
+              associated form element is an accessibility violation */}
+          <span className="block text-xs font-bold text-gray-900 mb-2 uppercase tracking-wide">Rating</span>
           <div className="flex items-center gap-3">
             <div
               ref={starContainerRef}
