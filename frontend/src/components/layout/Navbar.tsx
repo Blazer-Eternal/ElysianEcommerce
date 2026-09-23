@@ -41,28 +41,26 @@ const Navbar = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const userMenuRef = useRef<HTMLDivElement>(null);
-  const userButtonRef = useRef<HTMLButtonElement>(null);
+  const accountMenuRef = useRef<HTMLDivElement>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-      
-      // Don't close if clicking on the user button itself
-      if (userButtonRef.current?.contains(target)) {
-        return;
-      }
-      
-      // Close if clicking outside the user menu and the menu is visible
-      if (userMenuOpen && userMenuRef.current && !userMenuRef.current.contains(target)) {
+      // The mobile account panel renders OUTSIDE accountMenuRef, so a press on its rows used to count as an
+      // "outside" click: the panel unmounted on mousedown before the click event landed, so the row links
+      // never received it (why mobile account links didn't navigate). Only close when the press is outside
+      // BOTH the desktop dropdown and the mobile panel - the rows close the menu themselves on click.
+      const insideDropdown = accountMenuRef.current?.contains(target) ?? false;
+      const insidePanel = mobilePanelRef.current?.contains(target) ?? false;
+      if (!insideDropdown && !insidePanel) {
         setUserMenuOpen(false);
       }
     };
-    
-    // Only add listener if menu is open to avoid unnecessary event handling
+
     if (userMenuOpen) {
-      document.addEventListener("click", handleClickOutside);
-      return () => document.removeEventListener("click", handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [userMenuOpen]);
 
@@ -73,9 +71,20 @@ const Navbar = () => {
     navigate(ROUTES.HOME);
   };
 
+  const accountMenuItems: Array<{ label: string; to?: string; action?: () => void; red?: boolean; admin?: boolean }> = [
+    { label: "Your Profile", to: ROUTES.PROFILE },
+    { label: "My Wishlist", to: ROUTES.WISHLIST },
+    { label: "My Orders", to: ROUTES.ORDER_HISTORY },
+    { label: "Dashboard", to: ROUTES.ADMIN_DASHBOARD, admin: true },
+    { label: "Logout", red: true, action: handleLogout },
+  ];
+
   return (
-    <nav className="glass-nav sticky top-0 z-40 overflow-visible animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)", backfaceVisibility: "hidden" }}>
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible" style={{ contain: "layout style" }}>
+    <nav className="glass-nav sticky top-0 z-40 overflow-visible animation-container gpu-accelerate" style={{ contain: "layout style", transform: "translateZ(0)", backfaceVisibility: "hidden" }}>
+      {/* No `relative` and no `contain: layout` on this box or the icons row below: either would make this centered
+          box the containing block for the account dropdown. The dropdown must anchor to the full-width <nav>
+          so it can sit flush at the far-right viewport edge. */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible">
         <Link to={ROUTES.HOME} className="shrink-0 flex items-center gpu-accelerate" style={{ transform: "translateZ(0)" }}>
           <img 
             src="/logo.png" 
@@ -91,90 +100,77 @@ const Navbar = () => {
           <Link to={ROUTES.ABOUT} className="hover:accent-text transition-colors gpu-accelerate" style={{ transform: "translateZ(0)" }}>About</Link>
         </div>
 
-        <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto" ref={userMenuRef} style={{ contain: "layout style paint" }}>
+        {/* No `contain: layout` here either - it would capture the dropdown's positioning context */}
+        <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto overflow-visible">
           {isAuthenticated ? (
             <>
-              {/* Cart Icon - visible on all authenticated screens */}
-              <Link to={ROUTES.CART} aria-label="Cart" className="relative text-gray-700 hover:accent-text transition-colors flex items-center justify-center gpu-accelerate" style={{ transform: "translateZ(0)" }}>
-                <BagIcon />
-                {itemCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-[#0e7c85] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold gpu-accelerate leading-none" style={{ transform: "translateZ(0)" }}>
-                    {itemCount}
-                  </span>
-                )}
+              {/* Cart Icon - badge is anchored to an icon-sized wrapper, NOT the link box (the box changes between
+                  desktop 28px and mobile 44px touch rule, the icon never does). Offset makes the badge's left edge
+                  overlap the icon's RIGHT EDGE by 4px and run down it - badge stays connected to the icon in every view */}
+              <Link to={ROUTES.CART} aria-label="Cart" className="relative inline-flex shrink-0 w-7 h-7 items-center justify-center text-gray-700 hover:accent-text transition-colors overflow-visible">
+                <span className="relative inline-flex">
+                  <BagIcon />
+                  {itemCount > 0 && (
+                    <span className="absolute -top-1.5 -right-4 w-5 h-5 text-[10px] rounded-full flex items-center justify-center font-bold bg-[#0e7c85] text-white">
+                      {itemCount > 99 ? '99+' : itemCount}
+                    </span>
+                  )}
+                </span>
               </Link>
 
-              {/* User Profile Icon - visible on all authenticated screens */}
-              <div className="relative" ref={userMenuRef} style={{ contain: "layout style paint" }}>
+              {/* Account Menu - Desktop and Mobile */}
+              <div className="inline-flex shrink-0 overflow-visible" ref={accountMenuRef} style={{ zIndex: 50 }}>
                 <button
-                  ref={userButtonRef}
-                  onClick={() => setUserMenuOpen((prev) => !prev)}
+                  onClick={() => {
+                    setUserMenuOpen(!userMenuOpen);
+                    setMobileMenuOpen(false);
+                  }}
                   aria-label="Account menu"
-                  className="text-gray-700 hover:accent-text transition-colors cursor-pointer p-1 flex items-center justify-center gpu-accelerate"
+                  className="text-gray-700 hover:accent-text transition-colors cursor-pointer p-1 inline-flex items-center justify-center shrink-0 gpu-accelerate"
                   style={{ transform: "translateZ(0)" }}
                 >
                   <UserIcon />
                 </button>
 
-                {/* DROPDOWN MENU - Desktop: small fixed dropdown | Mobile: full-width panel */}
+                {/* Desktop Dropdown Card - anchored to the full-width nav, flush at the far-right viewport edge (20px inset).
+                    Translucent white + light backdrop blur keeps it dull so it doesn't pull focus from the hero (only rendered while open). */}
                 {userMenuOpen && (
-                  <>
-                    {/* Desktop dropdown - fixed position with GPU acceleration */}
-                    <div className="hidden sm:block fixed right-4 top-16 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 gpu-accelerate animation-container" style={{ contain: "layout style paint", transform: "translateZ(0)", willChange: "opacity, transform" }}>
-                      <div className="px-4 py-2 border-b border-gray-200 text-gray-600 text-xs font-semibold truncate" style={{ contain: "layout style" }}>
-                        {user?.name}
+                  <div className="hidden md:block absolute top-full right-5 mt-1 z-50 w-32 whitespace-nowrap rounded-lg border border-white/50 bg-white/75 shadow-md backdrop-blur-sm py-1">
+                    {user?.name && (
+                      <div className="px-3 py-2 border-b border-gray-100/70 text-gray-500 text-xs font-medium truncate">
+                        {user.name}
                       </div>
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          navigate(ROUTES.PROFILE);
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85] gpu-accelerate"
-                        style={{ transform: "translateZ(0)" }}
-                      >
-                        Your Profile
-                      </button>
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          navigate(ROUTES.WISHLIST);
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85] gpu-accelerate"
-                        style={{ transform: "translateZ(0)" }}
-                      >
-                        My Wishlist
-                      </button>
-                      <button
-                        onClick={() => {
-                          setUserMenuOpen(false);
-                          navigate(ROUTES.ORDER_HISTORY);
-                        }}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm hover:text-[#0e7c85] gpu-accelerate"
-                        style={{ transform: "translateZ(0)" }}
-                      >
-                        My Orders
-                      </button>
-                      {user?.role === "admin" && (
-                        <button
-                          onClick={() => {
-                            setUserMenuOpen(false);
-                            navigate(ROUTES.ADMIN_DASHBOARD);
-                          }}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors text-gray-700 text-sm border-t border-gray-200 hover:text-[#0e7c85] gpu-accelerate"
-                          style={{ transform: "translateZ(0)" }}
+                    )}
+                    {accountMenuItems.map((item) => {
+                      if (item.admin && user?.role !== "admin") return null;
+                      const baseClass = `block w-full text-left px-3 py-1 text-sm transition-colors ${item.red ? "text-red-500 hover:bg-red-50/60" : "text-gray-600 hover:bg-white/90"}`;
+                      const onClick = () => setUserMenuOpen(false);
+                      if (item.action) {
+                        return (
+                          <button
+                            key={item.label}
+                            onClick={() => {
+                              onClick();
+                              item.action?.();
+                            }}
+                            className={baseClass}
+                          >
+                            {item.label}
+                          </button>
+                        );
+                      }
+                      return (
+                        <Link
+                          key={item.label}
+                          to={item.to!}
+                          onClick={onClick}
+                          className={baseClass}
                         >
-                          Dashboard
-                        </button>
-                      )}
-                      <button 
-                        onClick={handleLogout} 
-                        className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors text-sm border-t border-gray-200 gpu-accelerate"
-                        style={{ transform: "translateZ(0)" }}
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  </>
+                          {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
             </>
@@ -191,11 +187,14 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* Hamburger — visible below sm */}
+          {/* Hamburger Menu */}
           <button
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            onClick={() => {
+              setMobileMenuOpen(!mobileMenuOpen);
+              setUserMenuOpen(false);
+            }}
             aria-label="Open menu"
-            className="sm:hidden text-gray-700 flex items-center justify-center gpu-accelerate"
+            className="sm:hidden shrink-0 text-gray-700 flex items-center justify-center gpu-accelerate"
             style={{ transform: "translateZ(0)" }}
           >
             {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
@@ -203,72 +202,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile User Dropdown Panel */}
-      {userMenuOpen && isAuthenticated && (
-        <div className="sm:hidden bg-white border-b border-gray-200 z-40 animation-container" ref={userMenuRef} onClick={(e) => e.stopPropagation()} style={{ contain: "layout style paint" }}>
-          <div className="px-4 py-3 border-b border-gray-200 text-gray-600 text-sm font-semibold" style={{ contain: "layout style" }}>
-            {user?.name}
-          </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setUserMenuOpen(false);
-              navigate(ROUTES.PROFILE);
-            }}
-            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
-            style={{ transform: "translateZ(0)" }}
-          >
-            Your Profile
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setUserMenuOpen(false);
-              navigate(ROUTES.WISHLIST);
-            }}
-            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
-            style={{ transform: "translateZ(0)" }}
-          >
-            My Wishlist
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setUserMenuOpen(false);
-              navigate(ROUTES.ORDER_HISTORY);
-            }}
-            className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
-            style={{ transform: "translateZ(0)" }}
-          >
-            My Orders
-          </button>
-          {user?.role === "admin" && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setUserMenuOpen(false);
-                navigate(ROUTES.ADMIN_DASHBOARD);
-              }}
-              className="w-full text-left block py-3 px-4 hover:bg-gray-50 text-gray-700 text-sm hover:text-[#0e7c85] border-b border-gray-100 active:bg-gray-100 transition-colors gpu-accelerate"
-              style={{ transform: "translateZ(0)" }}
-            >
-              Dashboard
-            </button>
-          )}
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              handleLogout();
-            }}
-            className="w-full py-3 px-4 text-red-600 hover:bg-red-50 transition-colors text-sm text-left active:bg-red-100 gpu-accelerate"
-            style={{ transform: "translateZ(0)" }}
-          >
-            Logout
-          </button>
-        </div>
-      )}
-
-      {/* Mobile dropdown panel - GPU accelerated */}
+      {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
         <div className="sm:hidden glass-strong border-t border-white/60 px-3 py-3 space-y-1 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
           <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
@@ -280,6 +214,51 @@ const Navbar = () => {
           <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             About
           </Link>
+        </div>
+      )}
+
+      {/* Mobile Account Panel - full-width stacked rows, matches Vercel ref divider + uniform spacing */}
+      {userMenuOpen && isAuthenticated && (
+        <div ref={mobilePanelRef} className="sm:hidden glass-strong border-t border-white/60 px-3 py-3 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
+          {/* Rows use `flex items-center min-h-[44px]` so every row is exactly 44px with a vertically centered label:
+              neutralizes the touch rule's uneven effect (buttons center their label under min-height, links top-align it),
+              which was making the gap above Logout visibly larger than the rest */}
+          {user?.name && (
+            <div className="flex items-center min-h-[44px] py-2 text-sm font-semibold text-gray-800 border-b border-gray-100 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+              <span className="truncate">{user.name}</span>
+            </div>
+          )}
+          {accountMenuItems.map((item) => {
+            if (item.admin && user?.role !== "admin") return null;
+            const baseClass = `flex items-center w-full min-h-[44px] text-left py-2 border-b border-gray-100 last:border-b-0 gpu-accelerate transition-colors ${item.red ? "text-red-600 hover:text-red-700" : "text-gray-700 hover:text-[#0e7c85]"}`;
+            const onClick = () => setUserMenuOpen(false);
+            if (item.action) {
+              return (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    onClick();
+                    item.action?.();
+                  }}
+                  className={baseClass}
+                  style={{ transform: "translateZ(0)" }}
+                >
+                  {item.label}
+                </button>
+              );
+            }
+            return (
+              <Link
+                key={item.label}
+                to={item.to!}
+                onClick={onClick}
+                className={baseClass}
+                style={{ transform: "translateZ(0)" }}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
       )}
     </nav>

@@ -75,31 +75,48 @@ const CartItem = ({ item }: CartItemProps) => {
             </div>
           </Link>
 
-          {/* Product Details */}
+          {/* Product Details + Total - Total lives inside the flex-1 column so the card's right content edge,
+              the Total price and the Remove button all share the same right alignment */}
           <div className="flex-1 min-w-0">
-            <Link 
-              to={ROUTES.PRODUCT_DETAIL(product._id)} 
-              className="font-bold text-base sm:text-lg text-gray-900 hover:text-transparent hover:bg-linear-to-r hover:from-cyan-600 hover:to-teal-600 hover:bg-clip-text transition-all duration-300 line-clamp-2"
-            >
-              {product.name}
-            </Link>
+            {/* sm+ keeps the original side-by-side row; below sm it stacks so the narrow left column gets the
+                full flex-1 width - price + In Stock then fit on ONE line (Total right-aligns below instead) */}
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+              <div className="min-w-0">
+                <Link
+                  to={ROUTES.PRODUCT_DETAIL(product._id)}
+                  className="font-bold text-base sm:text-lg text-gray-900 hover:text-transparent hover:bg-linear-to-r hover:from-cyan-600 hover:to-teal-600 hover:bg-clip-text transition-all duration-300 line-clamp-2"
+                >
+                  {product.name}
+                </Link>
             
-            <div className="flex items-center gap-2 mt-2">
-              <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
-                {formatCurrency(product.price)}
-              </span>
-              <span className="text-xs px-2 py-1 bg-linear-to-r from-green-100 to-emerald-100 text-green-700 font-semibold rounded-full">
-                In Stock
-              </span>
+                {/* flex-wrap + nowrap pill: on narrow screens the pill can't fit beside the price, so it moves
+                    to its own line WHOLE (single-line text) instead of being crushed into two stacked words */}
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                    {formatCurrency(product.price)}
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-linear-to-r from-green-100 to-emerald-100 text-green-700 font-semibold rounded-full whitespace-nowrap shrink-0">
+                    In Stock
+                  </span>
+                </div>
+              </div>
+
+              {/* Price Total */}
+              <div className="shrink-0 text-right">
+                <p className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Total</p>
+                <p className="text-2xl sm:text-3xl font-black bg-linear-to-br from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent">
+                  {formatCurrency(product.price * item.quantity)}
+                </p>
+              </div>
             </div>
 
-            {/* Quantity Controls */}
+            {/* Quantity Controls - Remove sits flush with the card's right edge via ml-auto */}
             <div className="flex items-center gap-2 mt-4">
               <div className="inline-flex items-center gap-0 bg-linear-to-r from-gray-100 to-gray-50 rounded-full p-1 border border-gray-200/60 shadow-sm">
                 <button
                   onClick={() => handleQuantityChange(item.quantity - 1)}
                   disabled={isUpdating || item.quantity <= 1}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
+                  className="qty-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
                 >
                   −
                 </button>
@@ -109,7 +126,7 @@ const CartItem = ({ item }: CartItemProps) => {
                 <button
                   onClick={() => handleQuantityChange(item.quantity + 1)}
                   disabled={isUpdating || item.quantity >= product.stock}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
+                  className="qty-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
                 >
                   +
                 </button>
@@ -118,19 +135,11 @@ const CartItem = ({ item }: CartItemProps) => {
               <button
                 onClick={handleRemove}
                 disabled={isUpdating}
-                className="ml-auto px-2 sm:px-3 py-1.5 text-xs font-bold text-white bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-lg rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-md whitespace-nowrap"
+                className="remove-btn ml-auto px-2 sm:px-3 py-1.5 text-xs font-bold text-white bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-lg rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-md whitespace-nowrap"
               >
                 🗑️ Remove
               </button>
             </div>
-          </div>
-
-          {/* Price Total */}
-          <div className="shrink-0 text-right">
-            <p className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Total</p>
-            <p className="text-2xl sm:text-3xl font-black bg-linear-to-br from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent">
-              {formatCurrency(product.price * item.quantity)}
-            </p>
           </div>
         </div>
 

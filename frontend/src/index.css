@@ -691,5 +691,17 @@
       min-height: 44px;
       min-width: 44px;
     }
+
+    /* Cart quantity +/- and Remove are dense inline controls that must sit together comfortably on one
+       row on small screens - keep them compact instead of the full 44px target (class beats element) */
+    .qty-btn {
+      min-height: 32px;
+      min-width: 32px;
+    }
+
+    .remove-btn {
+      min-height: 36px;
+      min-width: 0;
+    }
   }
 }

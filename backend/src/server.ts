@@ -11,14 +11,21 @@ const app: Application = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration - allow Vercel frontend
+// CORS configuration - dynamic origin whitelist
+const localhostRegex = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+const staticWhitelist = [
+  "https://elysian-ecommerce-frontend.vercel.app",
+  process.env.FRONTEND_URL,
+].filter((url): url is string => !!url);
+
 const corsOptions: CorsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://elysian-ecommerce-frontend.vercel.app",
-    process.env.FRONTEND_URL,
-  ].filter((url): url is string => !!url),
+  origin: (origin, callback) => {
+    if (!origin || localhostRegex.test(origin) || staticWhitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS not allowed for origin: ${origin}`));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

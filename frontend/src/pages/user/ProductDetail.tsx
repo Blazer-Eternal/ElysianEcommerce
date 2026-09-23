@@ -127,7 +127,8 @@ const ProductDetail = () => {
               {/* Title and Wishlist */}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-gray-900 via-purple-800 to-gray-900 bg-clip-text text-transparent mb-2">
+                  {/* pb-[0.25em]: keeps descenders (p, g) inside the bg-clip-text background box so gradient text isn't cut off */}
+                  <h1 className="text-3xl md:text-4xl font-bold bg-linear-to-r from-gray-900 via-purple-800 to-gray-900 bg-clip-text text-transparent mb-2 pb-[0.25em]">
                     {product.name}
                   </h1>
                   {category && (

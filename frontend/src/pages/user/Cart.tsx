@@ -163,7 +163,9 @@ const Cart = () => {
         
         {/* Header */}
         <div className="mb-8 sm:mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold bg-linear-to-r from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent mb-2 gpu-accelerate" style={{ willChange: "opacity" }}>
+          {/* pb-[0.25em]: bg-clip-text only paints the gradient inside the element box, and text-4xl/5xl have
+              line-height <= ~1.11 - descenders (p, g) would paint below the box with no background = invisible/clipped */}
+          <h1 className="text-4xl sm:text-5xl font-bold bg-linear-to-r from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent mb-2 pb-[0.25em] gpu-accelerate" style={{ willChange: "opacity" }}>
             Shopping Cart
           </h1>
 
