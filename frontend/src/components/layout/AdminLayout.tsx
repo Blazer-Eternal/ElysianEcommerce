@@ -115,7 +115,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="flex items-center justify-between">
             <Link to={ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-3 group">
               <div className="relative">
-                <img src="/logo.png" alt="Logo" className="h-10 w-auto object-contain" />
+                <img src="/logo-256.png" alt="Logo" width={256} height={256} className="h-10 w-auto object-contain" />
               </div>
               <div>
                 <div className="text-lg font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
@@ -218,7 +218,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <MenuIcon />
             </button>
             <div className="flex-1" />
-            <div className="text-right gpu-accelerate" style={{ willChange: "opacity" }}>
+            <div className="text-right gpu-accelerate">
               <p className="text-sm text-gray-600">Welcome back</p>
               <p className="text-lg font-bold text-gray-900">{user?.name?.split(" ")[0] || "Admin"}</p>
             </div>

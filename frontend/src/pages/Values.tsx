@@ -230,7 +230,7 @@ const Values = () => {
         }
 
         .group-hover-lift {
-          transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: var(--transition-visual-props) 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .group:hover .group-hover-lift {
@@ -340,7 +340,7 @@ const Values = () => {
 
                 {/* Bottom Accent */}
                 <div className="mt-8 border-t border-white/30 pt-6 transition-colors duration-300 group-hover:border-[#0e7c85]/30">
-                  <div className="h-1 w-12 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500 transition-all duration-500 group-hover:w-full" />
+                  <div className="h-1 w-full rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500 [clip-path:inset(0_calc(100%-48px)_0_0_round_2px)] group-hover:[clip-path:inset(0_0_0_0_round_2px)] transition-[clip-path] duration-500" />
                 </div>
               </div>
             </div>

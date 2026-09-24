@@ -1,13 +1,14 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../../hooks/useWishlist";
-import { useCart } from "../../hooks/useCart";
+import { useCartActions } from "../../hooks/useCart";
 import type { Product } from "../../types/product.types";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { ROUTES } from "../../constants/routes";
 import Spinner from "../../components/ui/Spinner";
 import WishlistButton from "../../components/wishlist/WishlistButton";
+import { cloudinaryImg } from "../../utils/imageUrl";
 
 const StarIcon = ({ filled }: { filled: boolean }) => (
   <svg
@@ -46,7 +47,7 @@ const TrendingIcon = () => (
 
 const Wishlist = () => {
   const { items, isLoading } = useWishlist();
-  const { addItem } = useCart();
+  const { addItem } = useCartActions();
 
   const [addingId, setAddingId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
@@ -294,7 +295,7 @@ const Wishlist = () => {
             const itemError = errorId?.id === product._id ? errorId.message : null;
             const isHovered = hoveredId === product._id;
             const rating = Math.round(product.rating_avg || 0);
-            const imageUrl = product.images?.[0] || "https://via.placeholder.com/400";
+            const imageUrl = product.images?.[0] || "/placeholder.svg";
             const discountPercent = product.cost_price ? Math.round(((product.cost_price - product.price) / product.cost_price) * 100) : 0;
 
             return (
@@ -314,8 +315,12 @@ const Wishlist = () => {
                     {/* Image Container */}
                     <div className="relative overflow-hidden bg-gradient-to-br from-[#eafcfd] via-[#d7f4f6] to-[#c5eef0] aspect-square group">
                       <img
-                        src={imageUrl}
+                        src={cloudinaryImg(imageUrl, 800)}
                         alt={product.name}
+                        width={800}
+                        height={800}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 will-change-transform"
                       />
 

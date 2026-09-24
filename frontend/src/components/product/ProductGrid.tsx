@@ -1,6 +1,7 @@
 import type { Product } from "../../types/product.types";
 import ProductCard from "./ProductCard";
 import Spinner from "../ui/Spinner";
+import { memo } from "react";
 import { useGridAnimationPause } from "../../hooks/useAnimationPause";
 
 interface ProductGridProps {
@@ -36,7 +37,7 @@ const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
     <div 
       ref={containerRef}
       className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate"
-      style={{ contain: "layout style paint", willChange: "contents" }}
+      style={{ contain: "layout style paint" }}
     >
       {products.map((product, index) => (
         <div 
@@ -54,4 +55,4 @@ const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
   );
 };
 
-export default ProductGrid;
+export default memo(ProductGrid);

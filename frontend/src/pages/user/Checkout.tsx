@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { useCart } from "../../hooks/useCart";
+import { useCartState } from "../../hooks/useCart";
 import { orderService } from "../../services/orderService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -12,7 +12,7 @@ import type { Product } from "../../types/product.types";
 import type { OrderShippingAddress, PaymentMethod } from "../../types/order.types";
 
 const Checkout = () => {
-  const { cart } = useCart();
+  const { cart } = useCartState();
 
   const [address, setAddress] = useState<OrderShippingAddress>({
     street: "",

@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { createContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
 import { wishlistService } from "../services/wishlistService";
 import type { WishlistItem } from "../types/wishlist.types";
 import { useAuth } from "../hooks/useAuth";
@@ -19,42 +19,54 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchWishlist = useCallback(async () => {
-    if (!isAuthenticated) {
-      setItems([]);
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const response = await wishlistService.getAll();
-      setItems(response.data);
-    } catch {
-      setItems([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated]);
+  const fetchWishlist = useCallback(
+    async (signal?: AbortSignal) => {
+      if (!isAuthenticated) {
+        setItems([]);
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const response = await wishlistService.getAll({ signal });
+        if (signal?.aborted) return;
+        setItems(response.data);
+      } catch {
+        if (signal?.aborted) return;
+        setItems([]);
+      } finally {
+        if (!signal?.aborted) setIsLoading(false);
+      }
+    },
+    [isAuthenticated]
+  );
 
   useEffect(() => {
-    fetchWishlist();
+    const controller = new AbortController();
+    fetchWishlist(controller.signal);
+    return () => controller.abort();
   }, [fetchWishlist]);
 
-  const isInWishlist = (productId: string) => {
+  const isInWishlist = useCallback((productId: string) => {
     return items.some((item) => {
       const pid = typeof item.product_id === "object" ? item.product_id._id : item.product_id;
       return pid === productId;
     });
-  };
+  }, [items]);
+
+  const refetch = useCallback(() => fetchWishlist(), [fetchWishlist]);
 
   // Optimistically mark as "in wishlist" immediately for instant heart-icon feedback,
   // then refetch the full populated list from the server so Wishlist.tsx has
   // complete product data to render (the raw POST response isn't populated).
-  const addToWishlist = async (productId: string) => {
-    await wishlistService.add({ product_id: productId });
-    await fetchWishlist();
-  };
+  const addToWishlist = useCallback(
+    async (productId: string) => {
+      await wishlistService.add({ product_id: productId });
+      await fetchWishlist();
+    },
+    [fetchWishlist]
+  );
 
-  const removeFromWishlist = async (productId: string) => {
+  const removeFromWishlist = useCallback(async (productId: string) => {
     await wishlistService.remove(productId);
     setItems((prev) =>
       prev.filter((item) => {
@@ -62,13 +74,12 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
         return pid !== productId;
       })
     );
-  };
+  }, []);
 
-  return (
-    <WishlistContext.Provider
-      value={{ items, isLoading, isInWishlist, addToWishlist, removeFromWishlist, refetch: fetchWishlist }}
-    >
-      {children}
-    </WishlistContext.Provider>
+  const value = useMemo(
+    () => ({ items, isLoading, isInWishlist, addToWishlist, removeFromWishlist, refetch }),
+    [items, isLoading, isInWishlist, addToWishlist, removeFromWishlist, refetch]
   );
+
+  return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 };

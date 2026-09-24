@@ -3,18 +3,18 @@ import type { ApiResponse } from "../types/pagination.types";
 import type { Category, CreateCategoryPayload, UpdateCategoryPayload } from "../types/category.types";
 
 export const categoryService = {
-  getAll: async (): Promise<ApiResponse<Category[]>> => {
-    const { data } = await axiosInstance.get("/categories");
+  getAll: async (config?: { signal?: AbortSignal }): Promise<ApiResponse<Category[]>> => {
+    const { data } = await axiosInstance.get("/categories", { signal: config?.signal });
     return data;
   },
 
-  getById: async (id: string): Promise<ApiResponse<Category>> => {
-    const { data } = await axiosInstance.get(`/categories/${id}`);
+  getById: async (id: string, config?: { signal?: AbortSignal }): Promise<ApiResponse<Category>> => {
+    const { data } = await axiosInstance.get(`/categories/${id}`, { signal: config?.signal });
     return data;
   },
 
-  getChildren: async (id: string): Promise<ApiResponse<Category[]>> => {
-    const { data } = await axiosInstance.get(`/categories/${id}/children`);
+  getChildren: async (id: string, config?: { signal?: AbortSignal }): Promise<ApiResponse<Category[]>> => {
+    const { data } = await axiosInstance.get(`/categories/${id}/children`, { signal: config?.signal });
     return data;
   },
 

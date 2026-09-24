@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useCart } from "../../hooks/useCart";
+import { useCartState } from "../../hooks/useCart";
 import { ROUTES } from "../../constants/routes";
 
 const UserIcon = () => (
@@ -36,7 +36,7 @@ const CloseIcon = () => (
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
-  const { itemCount } = useCart();
+  const { itemCount } = useCartState();
   const navigate = useNavigate();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -87,8 +87,10 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible">
         <Link to={ROUTES.HOME} className="shrink-0 flex items-center gpu-accelerate" style={{ transform: "translateZ(0)" }}>
           <img 
-            src="/logo.png" 
+            src="/logo-256.png" 
             alt="ElysianEcommerce Logo" 
+            width={256}
+            height={256}
             className="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain transition-transform hover:scale-105"
             style={{ willChange: "transform" }}
           />

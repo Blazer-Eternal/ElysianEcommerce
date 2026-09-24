@@ -121,8 +121,14 @@ export class PerformanceMonitor {
   private monitorLongTasks(): void {
     if ("PerformanceObserver" in window) {
       try {
+        let longTaskLogs = 0;
         const observer = new PerformanceObserver((list) => {
+          // Console output is dev-only and capped — logging every long task was
+          // itself main-thread work and flooded the console in production.
+          if (!import.meta.env.DEV) return;
           for (const entry of list.getEntries()) {
+            if (longTaskLogs >= 10) break;
+            longTaskLogs += 1;
             console.warn(`Long task detected: ${entry.duration}ms`, entry);
           }
         });
@@ -171,6 +177,7 @@ export class PerformanceMonitor {
    * Log metrics to console
    */
   public logMetrics(): void {
+    if (!import.meta.env.DEV) return;
     console.group("📊 Performance Metrics");
     console.table(this.metrics);
     console.groupEnd();
@@ -232,7 +239,7 @@ export const useComponentPerformance = (componentName: string) => {
       `${componentName}-render-end`
     );
 
-    if (duration > 100) {
+    if (duration > 100 && import.meta.env.DEV) {
       console.warn(`⚠️ ${componentName} took ${duration}ms to render`);
     }
   };
@@ -318,13 +325,17 @@ export const monitorInputDelay = (callback?: (delay: number) => void): void => {
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           const fid = (entry as any).processingStart - entry.startTime;
-          console.debug(`Input delay: ${Math.round(fid)}ms`);
+          if (import.meta.env.DEV) {
+            console.debug(`Input delay: ${Math.round(fid)}ms`);
+          }
           callback?.(fid);
         }
       });
       observer.observe({ entryTypes: ["first-input"] });
     } catch (e) {
-      console.debug("Input delay monitoring not supported", e);
+      if (import.meta.env.DEV) {
+        console.debug("Input delay monitoring not supported", e);
+      }
     }
   }
 };
@@ -336,11 +347,13 @@ export const initPerformanceMonitoring = (): void => {
   if (typeof window !== "undefined") {
     getPerformanceMonitor();
 
-    // Log metrics after page load
+    // Log metrics after page load (dev-only console diagnostics)
     window.addEventListener("load", () => {
       setTimeout(() => {
         const monitor = getPerformanceMonitor();
         monitor.logMetrics();
+
+        if (!import.meta.env.DEV) return;
 
         console.group("📊 Resource Statistics");
         console.table(getResourceStats());

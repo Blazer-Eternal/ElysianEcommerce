@@ -20,7 +20,7 @@ const OrderDetail = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["order", id],
-    queryFn: () => orderService.getById(id as string),
+    queryFn: ({ signal }) => orderService.getById(id as string, { signal }),
     enabled: !!id,
   });
 

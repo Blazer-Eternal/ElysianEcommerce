@@ -13,13 +13,16 @@ export const orderService = {
     return data;
   },
 
-  getMyOrders: async (page = 1, limit = 20): Promise<PaginatedResponse<Order>> => {
-    const { data } = await axiosInstance.get("/orders/my-orders", { params: { page, limit } });
+  getMyOrders: async (page = 1, limit = 20, config?: { signal?: AbortSignal }): Promise<PaginatedResponse<Order>> => {
+    const { data } = await axiosInstance.get("/orders/my-orders", {
+      params: { page, limit },
+      signal: config?.signal,
+    });
     return data;
   },
 
-  getById: async (id: string): Promise<ApiResponse<Order>> => {
-    const { data } = await axiosInstance.get(`/orders/${id}`);
+  getById: async (id: string, config?: { signal?: AbortSignal }): Promise<ApiResponse<Order>> => {
+    const { data } = await axiosInstance.get(`/orders/${id}`, { signal: config?.signal });
     return data;
   },
 
@@ -28,8 +31,11 @@ export const orderService = {
     return data;
   },
 
-  getAll: async (page = 1, limit = 20): Promise<PaginatedResponse<Order>> => {
-    const { data } = await axiosInstance.get("/orders", { params: { page, limit } });
+  getAll: async (page = 1, limit = 20, config?: { signal?: AbortSignal }): Promise<PaginatedResponse<Order>> => {
+    const { data } = await axiosInstance.get("/orders", {
+      params: { page, limit },
+      signal: config?.signal,
+    });
     return data;
   },
 

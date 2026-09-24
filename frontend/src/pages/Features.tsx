@@ -158,8 +158,8 @@ const Features = () => {
 
                 {/* Animated Bottom Bar */}
                 <div className="mt-6 flex items-center gap-2">
-                  <div className="h-1 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full w-1 group-hover:w-8 transition-all duration-500" />
-                  <div className="flex-1 h-0.5 bg-linear-to-r from-[#0e7c85]/50 to-transparent group-hover:from-cyan-500/50 group-hover:to-teal-400/50 transition-all duration-500 rounded-full" />
+                  <div className="h-1 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full w-8 -mr-7 [clip-path:inset(0_28px_0_0_round_2px)] group-hover:[clip-path:inset(0_0_0_0_round_2px)] transition-[clip-path] duration-500" />
+                  <div className="flex-1 h-0.5 bg-linear-to-r from-[#0e7c85]/50 to-transparent group-hover:from-cyan-500/50 group-hover:to-teal-400/50 transition-all duration-500 rounded-full group-hover:translate-x-7" />
                 </div>
               </div>
             </div>

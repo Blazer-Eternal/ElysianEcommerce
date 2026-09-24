@@ -26,13 +26,13 @@ const ManageOrders = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "orders", page],
-    queryFn: () => orderService.getAll(page, 15),
+    queryFn: ({ signal }) => orderService.getAll(page, 15, { signal }),
   });
 
   // Fetch coupons to create a lookup map
   const { data: couponsRes } = useQuery({
-    queryKey: ["coupons", "all"],
-    queryFn: () => couponService.getAll(),
+    queryKey: ["coupons"],
+    queryFn: ({ signal }) => couponService.getAll({ signal }),
     staleTime: 10 * 60 * 1000,
   });
 

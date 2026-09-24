@@ -139,21 +139,27 @@ const Dashboard = memo(() => {
   // Queries with optimized stale time
   const { data: productsRes, isLoading: productsLoading } = useQuery({
     queryKey: ["admin", "products", "count"],
-    queryFn: () => productService.getAll({ limit: 1 }),
+    queryFn: ({ signal }) => productService.getAll({ limit: 1 }, { signal }),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
+  // PERF: this single query feeds three things - the order count, the recent
+  // orders list, and the total-revenue sum (useMemo below) - by fetching up to
+  // 100 full order documents. Backend should add an aggregate endpoint
+  // (e.g. GET /orders/stats -> { totalOrders, totalRevenue, recent }) so this is
+  // one small response instead of a heavy one. Do NOT mask the payload size with
+  // frontend caching; this is a backend work item.
   const { data: ordersRes, isLoading: ordersLoading } = useQuery({
-    queryKey: ["admin", "orders", "count"],
-    queryFn: () => orderService.getAll(1, 100),
+    queryKey: ["admin", "orders", "all"],
+    queryFn: ({ signal }) => orderService.getAll(1, 100, { signal }),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
 
   const { data: usersRes, isLoading: usersLoading } = useQuery({
     queryKey: ["admin", "users", "count"],
-    queryFn: () => userService.getAll(1, 1),
+    queryFn: ({ signal }) => userService.getAll(1, 1, { signal }),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });

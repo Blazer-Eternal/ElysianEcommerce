@@ -34,17 +34,13 @@ const ManageCategories = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin", "categories"],
-    queryFn: () => categoryService.getAll(),
-  });
-
-  const allCategoriesQuery = useQuery({
-    queryKey: ["admin", "categories", "all"],
-    queryFn: () => categoryService.getAll(),
+    queryKey: ["categories"],
+    queryFn: ({ signal }) => categoryService.getAll({ signal }),
+    staleTime: 5 * 60 * 1000, // singleton data — categories rarely change
   });
 
   const categories = data?.data || [];
-  const allCategories = allCategoriesQuery.data?.data || [];
+  const allCategories = categories;
 
   const openCreateForm = () => {
     setEditingId(null);
@@ -76,7 +72,6 @@ const ManageCategories = () => {
       } else {
         await categoryService.create(form);
       }
-      queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
       setShowForm(false);
     } catch (err) {
@@ -90,7 +85,6 @@ const ManageCategories = () => {
     if (!confirm("Delete this category?")) return;
     try {
       await categoryService.remove(id);
-      queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     } catch (err) {
       alert(getErrorMessage(err));

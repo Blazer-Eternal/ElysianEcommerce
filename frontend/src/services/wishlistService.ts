@@ -3,8 +3,8 @@ import type { ApiResponse } from "../types/pagination.types";
 import type { WishlistItem, AddWishlistPayload } from "../types/wishlist.types";
 
 export const wishlistService = {
-  getAll: async (): Promise<ApiResponse<WishlistItem[]>> => {
-    const { data } = await axiosInstance.get("/wishlist");
+  getAll: async (config?: { signal?: AbortSignal }): Promise<ApiResponse<WishlistItem[]>> => {
+    const { data } = await axiosInstance.get("/wishlist", { signal: config?.signal });
     return data;
   },
 

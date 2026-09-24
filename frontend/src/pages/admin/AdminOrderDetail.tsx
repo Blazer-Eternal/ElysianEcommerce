@@ -7,6 +7,7 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import { formatDate } from "../../utils/formatDate";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { ROUTES } from "../../constants/routes";
+import { cloudinaryImg } from "../../utils/imageUrl";
 import type { OrderStatus, OrderShippingAddress } from "../../types/order.types";
 
 const TIMELINE_STATUSES: OrderStatus[] = ["pending", "paid", "shipped", "delivered"];
@@ -95,12 +96,14 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
 
     <div className="space-y-6">
       {items.map((item: any, index: number) => (
-        <div key={index} className="flex gap-6 pb-6 border-b border-white/20 last:border-0 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+        <div key={item._id ?? index} className="flex gap-6 pb-6 border-b border-white/20 last:border-0 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
           {/* Item Image */}
           {item.product_id && typeof item.product_id === "object" && (item.product_id as any).images?.[0] ? (
             <img
-              src={(item.product_id as any).images[0]}
+              src={cloudinaryImg((item.product_id as any).images[0], 256)}
               alt={item.product_name}
+              width={96}
+              height={96}
               className="w-24 h-24 rounded-lg object-cover gpu-accelerate"
               loading="lazy"
               decoding="async"
@@ -526,7 +529,7 @@ const AdminOrderDetail = () => {
 
   const { data: orderRes, isLoading, refetch } = useQuery({
     queryKey: ["admin", "orders", orderId],
-    queryFn: () => orderService.getById(orderId!),
+    queryFn: ({ signal }) => orderService.getById(orderId!, { signal }),
     enabled: !!orderId,
     staleTime: 2 * 60 * 1000,
   });

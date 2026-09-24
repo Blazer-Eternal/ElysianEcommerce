@@ -78,7 +78,7 @@ const WhyChooseUsSection = () => {
             className="hidden sm:inline-block text-sm font-semibold text-[#0e7c85] hover:text-[#0b6169] transition-colors relative group"
           >
             See all features
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#0e7c85] group-hover:w-full transition-all duration-300"></span>
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#0e7c85] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
           </Link>
         </div>
 
@@ -94,8 +94,7 @@ const WhyChooseUsSection = () => {
                 border: "1px solid rgba(14, 124, 133, 0.1)",
                 transitionDelay: `${index * 50}ms`,
                 contain: "layout style paint",
-                transform: "translateZ(0)",
-                willChange: "transform, opacity"
+                transform: "translateZ(0)"
               }}
             >
               {/* Animated background gradient on hover */}
@@ -136,7 +135,7 @@ const WhyChooseUsSection = () => {
                 </p>
 
                 {/* Animated underline */}
-                <div className="mt-4 h-0.5 bg-linear-to-r from-[#0e7c85] to-cyan-400 w-0 group-hover:w-12 transition-all duration-500 rounded-full"></div>
+                <div className="mt-4 h-0.5 bg-linear-to-r from-[#0e7c85] to-cyan-400 w-12 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-full"></div>
               </div>
 
               {/* Hover lift effect */}
@@ -152,7 +151,7 @@ const WhyChooseUsSection = () => {
             className="inline-block text-sm font-semibold text-[#0e7c85] hover:text-[#0b6169] transition-colors relative group"
           >
             See all features
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#0e7c85] group-hover:w-full transition-all duration-300"></span>
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#0e7c85] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
           </Link>
         </div>
       </div>

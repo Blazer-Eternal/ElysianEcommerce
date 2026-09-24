@@ -3,9 +3,10 @@ import { useState, memo } from "react";
 import type { Product } from "../../types/product.types";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { ROUTES } from "../../constants/routes";
-import { useCart } from "../../hooks/useCart";
+import { useCartActions } from "../../hooks/useCart";
 import { useAnimationPause } from "../../hooks/useAnimationPause";
 import WishlistButton from "../wishlist/WishlistButton";
+import { cloudinaryImg } from "../../utils/imageUrl";
 
 interface ProductCardProps {
   product: Product;
@@ -36,12 +37,12 @@ const AddToCartIcon = () => (
 const ProductCard = ({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const { addItem } = useCart();
+  const { addItem } = useCartActions();
   const { ref } = useAnimationPause({ threshold: 0.05, rootMargin: "100px", pauseOnScroll: true });
 
   const outOfStock = product.stock === 0;
   const rating = Math.round(product.rating_avg || 0);
-  const imageUrl = product.images?.[0] || "https://via.placeholder.com/400";
+  const imageUrl = product.images?.[0] || "/placeholder.svg";
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -73,10 +74,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div className="relative overflow-hidden bg-linear-to-br from-[#eafcfd] to-[#d7f4f6] aspect-square">
             {/* Product Image */}
             <img
-              src={imageUrl}
+              src={cloudinaryImg(imageUrl, 800)}
               alt={product.name}
+              width={800}
+              height={800}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 gpu-accelerate"
               loading="lazy"
+              decoding="async"
               style={{ transform: "translateZ(0)", willChange: "transform" }}
             />
 

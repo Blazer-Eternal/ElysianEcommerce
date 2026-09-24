@@ -7,6 +7,7 @@ import Modal from "../../components/ui/Modal";
 import Pagination from "../../components/ui/Pagination";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { cloudinaryImg } from "../../utils/imageUrl";
 import type { Product, CreateProductPayload, ProductStatus } from "../../types/product.types";
 
 const emptyForm: CreateProductPayload = {
@@ -51,12 +52,13 @@ const ManageProducts = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "products", page],
-    queryFn: () => productService.getAll({ page, limit: 12 }),
+    queryFn: ({ signal }) => productService.getAll({ page, limit: 12 }, { signal }),
   });
 
   const { data: categoriesRes } = useQuery({
     queryKey: ["categories"],
-    queryFn: () => categoryService.getAll(),
+    queryFn: ({ signal }) => categoryService.getAll({ signal }),
+    staleTime: 5 * 60 * 1000, // singleton data — categories rarely change
   });
 
   const categories = categoriesRes?.data || [];
@@ -230,8 +232,12 @@ const ManageProducts = () => {
                     <div className="relative overflow-hidden bg-gray-200 h-48 sm:h-56">
                       {product.images && product.images.length > 0 ? (
                         <img
-                          src={product.images[0]}
+                          src={cloudinaryImg(product.images[0], 400)}
                           alt={product.name}
+                          width={400}
+                          height={400}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                       ) : (
@@ -320,8 +326,12 @@ const ManageProducts = () => {
                       <div className="w-full sm:w-24 h-24 shrink-0">
                         {product.images && product.images.length > 0 ? (
                           <img
-                            src={product.images[0]}
+                            src={cloudinaryImg(product.images[0], 256)}
                             alt={product.name}
+                            width={96}
+                            height={96}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover rounded-lg"
                           />
                         ) : (

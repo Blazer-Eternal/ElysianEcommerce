@@ -72,7 +72,7 @@ const AboutSection = () => {
         }
 
         .group-hover-lift {
-          transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: var(--transition-visual-props) 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .group:hover .group-hover-lift {

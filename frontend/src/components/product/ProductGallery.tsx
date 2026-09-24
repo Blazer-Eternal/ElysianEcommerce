@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { cloudinaryImg } from "../../utils/imageUrl";
 
 interface ProductGalleryProps {
   images: string[];
@@ -16,8 +17,11 @@ const ProductGallery = ({ images, productName }: ProductGalleryProps) => {
     <div>
       <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
         <img
-          src={images[activeIndex]}
+          src={cloudinaryImg(images[activeIndex], 1200)}
           alt={productName}
+          width={1200}
+          height={1200}
+          fetchPriority="high"
           className="w-full h-full object-cover"
         />
       </div>
@@ -32,7 +36,7 @@ const ProductGallery = ({ images, productName }: ProductGalleryProps) => {
                 idx === activeIndex ? "border-black" : "border-transparent"
               }`}
             >
-              <img src={img} alt={`${productName} ${idx + 1}`} className="w-full h-full object-cover" />
+              <img src={cloudinaryImg(img, 256)} alt={`${productName} ${idx + 1}`} width={64} height={64} loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </button>
           ))}
         </div>

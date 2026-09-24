@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { useCart } from "../../hooks/useCart";
+import { useCartState } from "../../hooks/useCart";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import Spinner from "../../components/ui/Spinner";
 import { ROUTES } from "../../constants/routes";
 
 const Cart = () => {
-  const { cart, isLoading } = useCart();
+  const { cart, isLoading } = useCartState();
 
   // Loading state
   if (isLoading) {
@@ -165,7 +165,7 @@ const Cart = () => {
         <div className="mb-8 sm:mb-12">
           {/* pb-[0.25em]: bg-clip-text only paints the gradient inside the element box, and text-4xl/5xl have
               line-height <= ~1.11 - descenders (p, g) would paint below the box with no background = invisible/clipped */}
-          <h1 className="text-4xl sm:text-5xl font-bold bg-linear-to-r from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent mb-2 pb-[0.25em] gpu-accelerate" style={{ willChange: "opacity" }}>
+          <h1 className="text-4xl sm:text-5xl font-bold bg-linear-to-r from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent mb-2 pb-[0.25em] gpu-accelerate">
             Shopping Cart
           </h1>
 

@@ -12,7 +12,7 @@ const OrderHistory = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["my-orders", page],
-    queryFn: () => orderService.getMyOrders(page, 10),
+    queryFn: ({ signal }) => orderService.getMyOrders(page, 10, { signal }),
   });
 
   if (isLoading) {

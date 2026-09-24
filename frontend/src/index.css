@@ -17,6 +17,13 @@
     --transition-fast: 150ms;
     --transition-base: 300ms;
     --transition-slow: 500ms;
+    /* Visual-only property list used instead of `all`. Same rendered hover/state
+       animations, but the browser never has to watch layout properties
+       (width/height/top/margin...) for interpolation, which forces style+layout
+       work on every animation frame. */
+    --transition-visual-props: background-color, background-image, border-color, color,
+      box-shadow, text-shadow, outline-color, fill, stroke, opacity, visibility,
+      transform, translate, scale, rotate, filter, backdrop-filter;
     --animation-duration-blob: 7s;
     --animation-duration-fade: 600ms;
     
@@ -82,17 +89,18 @@
     contain: layout style;
   }
 
-  /* Optimized transitions */
+  /* Optimized transitions - explicit visual-property list, never `all`
+     (`all` makes the browser track every animatable property, layout included) */
   .transition-fast {
-    transition: all var(--transition-fast) var(--ease-in-out);
+    transition: var(--transition-visual-props) var(--transition-fast) var(--ease-in-out);
   }
 
   .transition-smooth {
-    transition: all var(--transition-base) var(--ease-in-out);
+    transition: var(--transition-visual-props) var(--transition-base) var(--ease-in-out);
   }
 
   .transition-slow {
-    transition: all var(--transition-slow) var(--ease-out);
+    transition: var(--transition-visual-props) var(--transition-slow) var(--ease-out);
   }
 
   /* GPU-accelerated transforms */
@@ -198,7 +206,6 @@
 
   .animate-fade-in {
     animation: fadeIn var(--animation-duration-fade) var(--ease-out) forwards;
-    will-change: opacity, transform;
   }
 
   .animate-fade-in-paused {
@@ -219,7 +226,6 @@
 
   .animate-slide-in-left {
     animation: slideInLeft var(--animation-duration-fade) var(--ease-out) forwards;
-    will-change: opacity, transform;
   }
 
   .animate-slide-in-left-paused {
@@ -240,7 +246,6 @@
 
   .animate-slide-in-right {
     animation: slideInRight var(--animation-duration-fade) var(--ease-out) forwards;
-    will-change: opacity, transform;
   }
 
   .animate-slide-in-right-paused {
@@ -261,7 +266,6 @@
 
   .animate-slide-in-top {
     animation: slideInTop var(--animation-duration-fade) var(--ease-out) forwards;
-    will-change: opacity, transform;
   }
 
   .animate-slide-in-top-paused {
@@ -282,7 +286,6 @@
 
   .animate-scale-in {
     animation: scaleIn var(--animation-duration-fade) var(--ease-out) forwards;
-    will-change: opacity, transform;
   }
 
   .animate-scale-in-paused {
@@ -304,7 +307,6 @@
   .animate-fade-in-up {
     animation: fadeInUp var(--animation-duration-fade) var(--ease-out) forwards;
     opacity: 0;
-    will-change: opacity, transform;
   }
 
   .animate-fade-in-up-paused {
@@ -704,4 +706,13 @@
       min-width: 0;
     }
   }
+}
+
+/* UNLAYERED on purpose: Tailwind's `transition-all` utility lives in a cascade
+   layer, so this unlayered rule always wins for transition-property while
+   Tailwind's transition-duration/timing-function longhands still apply as
+   authored. Restricts `all` to the visual property list - identical rendered
+   animations, no per-frame style/layout work on layout properties. */
+.transition-all {
+  transition-property: var(--transition-visual-props);
 }

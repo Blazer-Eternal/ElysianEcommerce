@@ -14,8 +14,8 @@ export const couponService = {
     return data;
   },
 
-  getAll: async (): Promise<ApiResponse<Coupon[]>> => {
-    const { data } = await axiosInstance.get("/coupons");
+  getAll: async (config?: { signal?: AbortSignal }): Promise<ApiResponse<Coupon[]>> => {
+    const { data } = await axiosInstance.get("/coupons", { signal: config?.signal });
     return data;
   },
 

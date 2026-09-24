@@ -16,7 +16,8 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
 
   const { data: categoriesRes } = useQuery({
     queryKey: ["categories"],
-    queryFn: () => categoryService.getAll(),
+    queryFn: ({ signal }) => categoryService.getAll({ signal }),
+    staleTime: 5 * 60 * 1000, // singleton data — categories rarely change
   });
 
   useEffect(() => {

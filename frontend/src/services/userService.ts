@@ -12,8 +12,8 @@ export type AddressPayload = Omit<Address, "_id">;
 export type UpdateAddressPayload = Partial<AddressPayload>;
 
 export const userService = {
-  getById: async (id: string): Promise<ApiResponse<User>> => {
-    const { data } = await axiosInstance.get(`/users/${id}`);
+  getById: async (id: string, config?: { signal?: AbortSignal }): Promise<ApiResponse<User>> => {
+    const { data } = await axiosInstance.get(`/users/${id}`, { signal: config?.signal });
     return data;
   },
 
@@ -41,8 +41,11 @@ export const userService = {
     return data;
   },
 
-  getAll: async (page = 1, limit = 20): Promise<PaginatedResponse<User>> => {
-    const { data } = await axiosInstance.get("/users", { params: { page, limit } });
+  getAll: async (page = 1, limit = 20, config?: { signal?: AbortSignal }): Promise<PaginatedResponse<User>> => {
+    const { data } = await axiosInstance.get("/users", {
+      params: { page, limit },
+      signal: config?.signal,
+    });
     return data;
   },
 

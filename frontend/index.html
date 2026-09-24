@@ -5,6 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>frontend</title>
+    <script>
+      /* Preload the LCP hero image, but ONLY on the home page: on any deep
+         link this ~1.5MB PNG would be downloaded and never rendered. */
+      if (location.pathname === "/") {
+        var heroLink = document.createElement("link");
+        heroLink.rel = "preload";
+        heroLink.as = "image";
+        heroLink.href = "/HeroSection.png";
+        heroLink.fetchPriority = "high";
+        document.head.appendChild(heroLink);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

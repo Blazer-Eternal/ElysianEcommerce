@@ -4,22 +4,27 @@ import { productService } from "../../services/productService";
 import { ROUTES } from "../../constants/routes";
 import ProductCard from "../product/ProductCard";
 import { useGridAnimationPause } from "../../hooks/useAnimationPause";
+import type { Product } from "../../types/product.types";
+
+// Stable empty array reference — avoids breaking memoization on `products`
+// while the query is loading.
+const EMPTY_PRODUCTS: Product[] = [];
 
 const ProductsSection = () => {
   const { containerRef } = useGridAnimationPause({ threshold: 0.05, rootMargin: "100px" });
   const { data: response, isLoading: loading } = useQuery({
     queryKey: ["products", { limit: 8, page: 1, status: "active", sortBy: "created_at", sortOrder: "asc" }],
-    queryFn: () => productService.getAll({ 
+    queryFn: ({ signal }) => productService.getAll({ 
       limit: 8, 
       page: 1, 
       status: "active",
       sortBy: "created_at",
       sortOrder: "asc"
-    }),
+    }, { signal }),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const products = response?.data || [];
+  const products = response?.data ?? EMPTY_PRODUCTS;
 
   return (
     <div className="py-10 sm:py-14 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
@@ -54,7 +59,7 @@ const ProductsSection = () => {
           <div 
             ref={containerRef}
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate"
-            style={{ contain: "layout style paint", willChange: "contents" }}
+            style={{ contain: "layout style paint" }}
           >
             {products.map((product, index) => (
               <div

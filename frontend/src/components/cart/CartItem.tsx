@@ -3,16 +3,17 @@ import { Link } from "react-router-dom";
 import type { CartItem as CartItemType } from "../../types/cart.types";
 import type { Product } from "../../types/product.types";
 import { formatCurrency } from "../../utils/formatCurrency";
-import { useCart } from "../../hooks/useCart";
+import { useCartActions } from "../../hooks/useCart";
 import { useAnimationPause } from "../../hooks/useAnimationPause";
 import { ROUTES } from "../../constants/routes";
+import { cloudinaryImg } from "../../utils/imageUrl";
 
 interface CartItemProps {
   item: CartItemType;
 }
 
 const CartItem = ({ item }: CartItemProps) => {
-  const { updateItem, removeItem } = useCart();
+  const { updateItem, removeItem } = useCartActions();
   const [isUpdating, setIsUpdating] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const { ref } = useAnimationPause({ threshold: 0.05, rootMargin: "50px", pauseOnScroll: true });
@@ -53,7 +54,7 @@ const CartItem = ({ item }: CartItemProps) => {
       {/* Border gradient effect */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-r from-cyan-300/20 via-transparent to-teal-300/20 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
 
-      <div className="relative p-4 sm:p-6 border border-cyan-100/60 group-hover:border-cyan-200/80 transition-all duration-300 rounded-2xl shadow-sm group-hover:shadow-lg backdrop-blur-sm gpu-accelerate" style={{ willChange: "transform, opacity" }}>
+      <div className="relative p-4 sm:p-6 border border-cyan-100/60 group-hover:border-cyan-200/80 transition-all duration-300 rounded-2xl shadow-sm group-hover:shadow-lg backdrop-blur-sm gpu-accelerate">
         
         <div className="flex gap-4 sm:gap-6">
           {/* Product Image */}
@@ -63,8 +64,12 @@ const CartItem = ({ item }: CartItemProps) => {
           >
             <div className="w-20 sm:w-24 h-20 sm:h-24 bg-linear-to-br from-cyan-100 to-teal-100 rounded-xl overflow-hidden border border-cyan-200/50 group-hover/img:border-cyan-400 transition-all duration-300">
               <img 
-                src={product.images[0]} 
+                src={cloudinaryImg(product.images[0], 256)} 
                 alt={product.name} 
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-300 gpu-accelerate"
                 style={{ transform: "translateZ(0)", willChange: "transform" }}
               />

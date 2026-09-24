@@ -3,18 +3,21 @@ import type { ApiResponse, PaginatedResponse } from "../types/pagination.types";
 import type { Product, ProductQueryParams, CreateProductPayload, UpdateProductPayload } from "../types/product.types";
 
 export const productService = {
-  getAll: async (params: ProductQueryParams = {}): Promise<PaginatedResponse<Product>> => {
-    const { data } = await axiosInstance.get("/products", { params });
+  getAll: async (
+    params: ProductQueryParams = {},
+    config?: { signal?: AbortSignal }
+  ): Promise<PaginatedResponse<Product>> => {
+    const { data } = await axiosInstance.get("/products", { params, signal: config?.signal });
     return data;
   },
 
-  getById: async (id: string): Promise<ApiResponse<Product>> => {
-    const { data } = await axiosInstance.get(`/products/${id}`);
+  getById: async (id: string, config?: { signal?: AbortSignal }): Promise<ApiResponse<Product>> => {
+    const { data } = await axiosInstance.get(`/products/${id}`, { signal: config?.signal });
     return data;
   },
 
-  getByCategory: async (categoryId: string): Promise<ApiResponse<Product[]>> => {
-    const { data } = await axiosInstance.get(`/products/category/${categoryId}`);
+  getByCategory: async (categoryId: string, config?: { signal?: AbortSignal }): Promise<ApiResponse<Product[]>> => {
+    const { data } = await axiosInstance.get(`/products/category/${categoryId}`, { signal: config?.signal });
     return data;
   },
 

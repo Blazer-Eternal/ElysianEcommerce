@@ -106,14 +106,14 @@ const styles = `
   .cta-button {
     position: relative;
     overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: var(--transition-visual-props) 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .cta-button::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
+    left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(
@@ -123,11 +123,16 @@ const styles = `
       transparent
     );
     animation: shimmer 3s infinite;
-    transition: all 0.5s ease;
+    /* Same sweep as the old left: -100% -> 100% (starts one full width left of
+       the button, ends one full width past its right edge; overflow: hidden clips
+       both extremes), but transform runs on the compositor instead of re-running
+       layout for a left change on every animation frame. */
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
   }
 
   .cta-button:hover::before {
-    left: 100%;
+    transform: translateX(100%);
   }
 
   .cta-button:hover {
@@ -176,7 +181,7 @@ const styles = `
   }
 
   .cta-card {
-    transition: all 0.3s ease;
+    transition: var(--transition-visual-props) 0.3s ease;
   }
 
   .cta-card:hover {

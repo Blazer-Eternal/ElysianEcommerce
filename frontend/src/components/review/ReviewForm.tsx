@@ -69,7 +69,7 @@ const ReviewForm = ({ productId }: ReviewFormProps) => {
               {/* Filled star overlay */}
               {fillPercentage > 0 && (
                 <div 
-                  className="absolute top-0 left-0 h-6 overflow-hidden transition-all duration-75"
+                  className="absolute top-0 left-0 h-6 overflow-hidden transition-[width] duration-75"
                   style={{ width: `${fillPercentage}%` }}
                 >
                   <svg className="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">

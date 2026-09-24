@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
-import type { SortingState } from "@tanstack/table-core";
-import Papa from "papaparse";
-import * as XLSX from "xlsx";
+
+// Inlined from @tanstack/table-core so the whole @tanstack/react-table family
+// can be dropped from the bundle (this type was its only import).
+type SortingState = Array<{ id: string; desc: boolean }>;
 
 interface Column {
   id?: string;
@@ -140,7 +141,7 @@ export const TanStackDataTable = React.forwardRef<
     };
 
     // Export functions
-    const exportToCSV = () => {
+    const exportToCSV = async () => {
       const flatData = sortedData.map((row: any) => {
         const result: Record<string, unknown> = {};
         columns.forEach((col: any) => {
@@ -151,6 +152,8 @@ export const TanStackDataTable = React.forwardRef<
         return result;
       });
 
+      // Dynamic import: papaparse is only fetched when the user actually exports.
+      const Papa = (await import("papaparse")).default;
       const csv = Papa.unparse(flatData);
       const link = document.createElement("a");
       link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
@@ -158,7 +161,7 @@ export const TanStackDataTable = React.forwardRef<
       link.click();
     };
 
-    const exportToExcel = () => {
+    const exportToExcel = async () => {
       const flatData = sortedData.map((row: any) => {
         const result: Record<string, unknown> = {};
         columns.forEach((col: any) => {
@@ -169,13 +172,15 @@ export const TanStackDataTable = React.forwardRef<
         return result;
       });
 
+      // Dynamic import: xlsx is a large dependency - fetched only on export.
+      const XLSX = await import("xlsx");
       const ws = XLSX.utils.json_to_sheet(flatData);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, exportTitle);
       XLSX.writeFile(wb, `${exportTitle.toLowerCase().replace(/\s+/g, "_")}_${Date.now()}.xlsx`);
     };
 
-    const copyToClipboard = () => {
+    const copyToClipboard = async () => {
       const flatData = sortedData.map((row: any) => {
         const result: Record<string, unknown> = {};
         columns.forEach((col: any) => {
@@ -186,6 +191,8 @@ export const TanStackDataTable = React.forwardRef<
         return result;
       });
 
+      // Dynamic import: papaparse is only fetched when the user actually copies.
+      const Papa = (await import("papaparse")).default;
       const csv = Papa.unparse(flatData);
       navigator.clipboard.writeText(csv);
       alert("Data copied to clipboard!");
@@ -409,7 +416,7 @@ export const TanStackDataTable = React.forwardRef<
               </thead>
               <tbody>
                 {paginatedData.map((row: any, rowIndex: number) => (
-                  <tr key={rowIndex} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+                  <tr key={row._id ?? rowIndex} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
                     {columns.map((column: any) => {
                       const columnId = column.id || column.accessorKey;
                       const value = row[columnId];
@@ -455,7 +462,7 @@ export const TanStackDataTable = React.forwardRef<
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {paginatedData.map((row: any, rowIndex: number) => (
               <div
-                key={rowIndex}
+                key={row._id ?? rowIndex}
                 className="glass rounded-2xl p-6 border border-white/20 hover:bg-white/80 transition-all hover-lift card-container bg-linear-to-br from-white/40 to-white/20"
               >
                 <div className="space-y-3">

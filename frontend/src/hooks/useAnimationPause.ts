@@ -2,17 +2,25 @@
  * useAnimationPause Hook
  * Pauses CSS animations and transitions when element is off-screen
  * Dramatically reduces CPU/GPU load on pages with many animated elements
- * 
+ *
  * Features:
  * - IntersectionObserver-based visibility tracking
- * - Applies animation-play-state: paused to all children when off-screen
- * - Supports nested animations and Framer Motion components
- * - Configurable threshold and rootMargin
- * - Optional scroll pause (pauses when scrolling fast)
+ * - Applies the pause class to the container; descendants are covered by the
+ *   `.animation-paused-by-visibility *` rule in index.css (no per-child DOM scans)
+ * - Stateless/imperative class toggling — scrolling never re-renders host components
+ * - One shared window scroll listener drives every subscribed element
  * - Respects prefers-reduced-motion preference
+ *
+ * Implementation notes:
+ * - The class is only toggled when the paused state actually changes, so there is
+ *   no querySelectorAll/class churn per frame.
+ * - `pauseOnScroll` uses a module-level shared listener with a fixed 300ms resume
+ *   delay (the previous default `scrollPauseTimeout`); no caller overrides it.
+ * - `pauseChildren` remains accepted for API compatibility but is no longer needed
+ *   because the CSS `*` rule pauses descendant animations automatically.
  */
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 interface UseAnimationPauseOptions {
   /**
@@ -34,14 +42,15 @@ interface UseAnimationPauseOptions {
   pauseOnScroll?: boolean;
 
   /**
-   * Scroll pause timeout in ms (when to resume after scroll ends)
-   * @default 300
+   * Scroll pause timeout in ms (when to resume after scroll ends).
+   * Reserved for API compatibility — the shared scroll listener uses 300ms.
    */
   scrollPauseTimeout?: number;
 
   /**
-   * Also apply to direct child elements (not just container)
-   * @default true
+   * Also apply to direct child elements (not just container).
+   * Reserved for API compatibility — descendants are paused via the CSS
+   * `.animation-paused-by-visibility *` rule.
    */
   pauseChildren?: boolean;
 
@@ -58,6 +67,43 @@ interface UseAnimationPauseOptions {
   pauseClassName?: string;
 }
 
+const SCROLL_RESUME_DELAY = 300;
+
+/** Shared scroll-pause state — one listener, zero React re-renders. */
+let scrollResumeTimer: ReturnType<typeof setTimeout> | null = null;
+let isScrollPaused = false;
+const scrollSubscribers = new Set<() => void>();
+
+const setScrollPaused = (paused: boolean) => {
+  if (isScrollPaused === paused) return;
+  isScrollPaused = paused;
+  scrollSubscribers.forEach((notify) => notify());
+};
+
+const handleSharedScroll = () => {
+  setScrollPaused(true);
+  if (scrollResumeTimer) clearTimeout(scrollResumeTimer);
+  scrollResumeTimer = setTimeout(() => {
+    scrollResumeTimer = null;
+    setScrollPaused(false);
+  }, SCROLL_RESUME_DELAY);
+};
+
+const subscribeToScroll = (notify: () => void): (() => void) => {
+  if (scrollSubscribers.size === 0) {
+    window.addEventListener("scroll", handleSharedScroll, { passive: true });
+  }
+  scrollSubscribers.add(notify);
+  return () => {
+    scrollSubscribers.delete(notify);
+    if (scrollSubscribers.size === 0 && scrollResumeTimer) {
+      clearTimeout(scrollResumeTimer);
+      scrollResumeTimer = null;
+      isScrollPaused = false;
+    }
+  };
+};
+
 /**
  * Hook to pause/resume animations based on element visibility
  * Returns ref to attach to animated container
@@ -69,123 +115,78 @@ export const useAnimationPause = (
     threshold = 0.05,
     rootMargin = "100px",
     pauseOnScroll = true,
-    scrollPauseTimeout = 300,
-    pauseChildren = true,
     respectReducedMotion = true,
     pauseClassName = "animation-paused-by-visibility",
   } = options;
 
   const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const prefersReducedMotionRef = useRef(false);
+  const isVisibleRef = useRef(true);
+  const reducedMotionRef = useRef(false);
+  const pausedRef = useRef(false);
+
+  // Imperative pause sync: toggles the class only on real state changes.
+  const syncPauseState = useCallback(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    // Reduced motion is handled globally by CSS; never force-pause here.
+    const reducedActive = respectReducedMotion && reducedMotionRef.current;
+    const shouldPause =
+      !reducedActive && (!isVisibleRef.current || (pauseOnScroll && isScrollPaused));
+
+    if (pausedRef.current === shouldPause) return;
+    pausedRef.current = shouldPause;
+    element.classList.toggle(pauseClassName, shouldPause);
+  }, [pauseClassName, pauseOnScroll, respectReducedMotion]);
 
   // Check prefers-reduced-motion preference
   useEffect(() => {
     if (!respectReducedMotion) return;
 
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    prefersReducedMotionRef.current = mediaQuery.matches;
+    reducedMotionRef.current = mediaQuery.matches;
 
     const handleChange = (e: MediaQueryListEvent) => {
-      prefersReducedMotionRef.current = e.matches;
+      reducedMotionRef.current = e.matches;
+      syncPauseState();
     };
 
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [respectReducedMotion]);
+  }, [respectReducedMotion, syncPauseState]);
 
-  // Apply pause CSS classes to element and children
-  const applyPauseClass = useCallback((element: HTMLElement | null, isPaused: boolean) => {
-    if (!element) return;
-
-    if (isPaused) {
-      element.classList.add(pauseClassName);
-      if (pauseChildren) {
-        element.querySelectorAll("[class*='animate-'], [style*='animation']").forEach((child) => {
-          (child as HTMLElement).classList.add(pauseClassName);
-        });
-      }
-    } else {
-      element.classList.remove(pauseClassName);
-      if (pauseChildren) {
-        element.querySelectorAll(`.${pauseClassName}`).forEach((child) => {
-          (child as HTMLElement).classList.remove(pauseClassName);
-        });
-      }
-    }
-  }, [pauseClassName, pauseChildren]);
-
-  // Update pause state based on visibility and scroll state
+  // IntersectionObserver for visibility tracking (updates a ref — no re-render)
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
 
-    // Don't pause if user prefers reduced motion (already paused globally)
-    if (prefersReducedMotionRef.current) {
-      applyPauseClass(element, false);
-      return;
-    }
-
-    // Pause if not visible OR currently scrolling
-    const shouldBePaused = !isVisible || isScrolling;
-    applyPauseClass(element, shouldBePaused);
-  }, [isVisible, isScrolling, applyPauseClass]);
-
-  // IntersectionObserver for visibility tracking
-  useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        isVisibleRef.current = entry.isIntersecting;
+        syncPauseState();
       },
       { threshold, rootMargin }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    observer.observe(element);
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
+      observer.disconnect();
     };
-  }, [threshold, rootMargin]);
+  }, [threshold, rootMargin, syncPauseState]);
 
-  // Scroll pause handler
+  // Shared scroll pause subscription (one window listener across all instances)
   useEffect(() => {
     if (!pauseOnScroll) return;
+    return subscribeToScroll(syncPauseState);
+  }, [pauseOnScroll, syncPauseState]);
 
-    const handleScroll = () => {
-      setIsScrolling(true);
+  // Sync once on mount in case the element starts off-screen or a scroll is active
+  useEffect(() => {
+    syncPauseState();
+  }, [syncPauseState]);
 
-      // Clear previous timeout
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-
-      // Resume after scroll ends
-      scrollTimeoutRef.current = setTimeout(() => {
-        setIsScrolling(false);
-      }, scrollPauseTimeout);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [pauseOnScroll, scrollPauseTimeout]);
-
-  return {
-    ref,
-    isVisible,
-    isScrolling,
-  };
+  return { ref };
 };
 
 /**
@@ -196,7 +197,6 @@ export const useGridAnimationPause = (
   options: Omit<UseAnimationPauseOptions, "pauseChildren"> = {}
 ) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(true);
 
   const {
     threshold = 0.05,
@@ -221,18 +221,12 @@ export const useGridAnimationPause = (
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [respectReducedMotion]);
 
-  // IntersectionObserver for container visibility
+  // IntersectionObserver for container visibility — classList only, no state
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (containerRef.current) {
-          if (entry.isIntersecting) {
-            containerRef.current.classList.remove(pauseClassName);
-            setIsVisible(true);
-          } else {
-            containerRef.current.classList.add(pauseClassName);
-            setIsVisible(false);
-          }
+          containerRef.current.classList.toggle(pauseClassName, !entry.isIntersecting);
         }
       },
       { threshold, rootMargin }
@@ -249,10 +243,7 @@ export const useGridAnimationPause = (
     };
   }, [threshold, rootMargin, pauseClassName]);
 
-  return {
-    containerRef,
-    isVisible,
-  };
+  return { containerRef };
 };
 
 /**

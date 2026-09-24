@@ -91,8 +91,7 @@ const HeroSection = memo(() => {
         ref={blobsContainerRef}
         className="absolute inset-0 -z-10 opacity-30 pointer-events-none animation-container"
         style={{ 
-          contain: "layout style paint",
-          willChange: "contents"
+          contain: "layout style paint"
         }}
       >
         {/* Pre-blurred radial gradient - no blur filter (80% paint cost reduction) */}
@@ -120,7 +119,6 @@ const HeroSection = memo(() => {
           {/* Left side - Content */}
           <div 
             className={`space-y-6 sm:space-y-8 order-2 lg:order-1 transition-smooth ${isInView ? "animate-slide-in-left" : "opacity-0"}`}
-            style={{ willChange: "transform, opacity" }}
           >
             <div className="space-y-4">
               <div 
@@ -132,14 +130,14 @@ const HeroSection = memo(() => {
               
               <h1 
                 className="text-responsive-h1 font-bold leading-tight text-gray-900 animate-fade-in" 
-                style={{ animationDelay: isInView ? "0.2s" : "0s", willChange: "opacity, transform" }}
+                style={{ animationDelay: isInView ? "0.2s" : "0s" }}
               >
                 Discover <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Premium</span> Products
               </h1>
               
               <p 
                 className="text-responsive-body text-gray-600 leading-relaxed max-w-xl animate-fade-in" 
-                style={{ animationDelay: isInView ? "0.3s" : "0s", willChange: "opacity, transform" }}
+                style={{ animationDelay: isInView ? "0.3s" : "0s" }}
               >
                 Explore our curated collection of high-quality products delivered with elegance. Experience shopping like never before with our seamless platform.
               </p>
@@ -174,7 +172,6 @@ const HeroSection = memo(() => {
           <div 
             className={`order-1 lg:order-2 flex justify-center lg:justify-end transition-smooth ${isInView ? "animate-slide-in-right" : "opacity-0"}`}
             style={{ 
-              willChange: "transform, opacity",
               contain: "layout style paint"
             }}
           >
@@ -194,6 +191,9 @@ const HeroSection = memo(() => {
                   <img 
                     src="/HeroSection.png" 
                     alt="Premium Products" 
+                    width={1536}
+                    height={1024}
+                    fetchPriority="high"
                     className="w-full h-full object-cover gpu-accelerate"
                     loading="eager"
                     decoding="async"

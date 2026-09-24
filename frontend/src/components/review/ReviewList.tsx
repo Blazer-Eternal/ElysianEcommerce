@@ -11,7 +11,7 @@ const ReviewList = ({ productId }: ReviewListProps) => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["reviews", productId],
-    queryFn: () => reviewService.getByProduct(productId),
+    queryFn: ({ signal }) => reviewService.getByProduct(productId, { signal }),
     retry: 1,
   });
 
@@ -128,7 +128,7 @@ const ReviewList = ({ productId }: ReviewListProps) => {
 
               {/* Review Comment */}
               {review.comment && (
-                <div className={`overflow-hidden transition-all duration-300 ${expandedReview === review._id ? "review-expanded" : "line-clamp-2"}`}>
+                <div className={`overflow-hidden transition-[max-height,opacity] duration-300 ${expandedReview === review._id ? "review-expanded" : "line-clamp-2"}`}>
                   <p className="text-sm leading-relaxed bg-linear-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent italic">
                     "{review.comment}"
                   </p>

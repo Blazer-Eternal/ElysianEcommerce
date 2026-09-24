@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { orderService } from "../services/orderService";
-import { useCart } from "../hooks/useCart";
+import { useCartActions } from "../hooks/useCart";
 import { ROUTES } from "../constants/routes";
 import Spinner from "../components/ui/Spinner";
 import { getErrorMessage } from "../utils/getErrorMessage";
 
 const PaymentSuccess = () => {
   const navigate = useNavigate();
-  const { refetch: refetchCart } = useCart();
+  const { refetch: refetchCart } = useCartActions();
   const [status, setStatus] = useState<"verifying" | "success" | "error">("verifying");
   const [message, setMessage] = useState("");
   const [orderId, setOrderId] = useState<string | null>(null);

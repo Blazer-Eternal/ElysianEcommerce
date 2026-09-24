@@ -4,7 +4,10 @@ import { productService } from "../../services/productService";
 import ProductGrid from "../../components/product/ProductGrid";
 import ProductFilters from "../../components/product/ProductFilters";
 import Pagination from "../../components/ui/Pagination";
-import type { ProductQueryParams } from "../../types/product.types";
+import type { Product, ProductQueryParams } from "../../types/product.types";
+
+// Stable reference: a fresh [] on every render would defeat ProductGrid's memo.
+const EMPTY_PRODUCTS: Product[] = [];
 
 const ProductList = () => {
   const [filters, setFilters] = useState<ProductQueryParams>({
@@ -17,7 +20,7 @@ const ProductList = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["products", filters],
-    queryFn: () => productService.getAll(filters),
+    queryFn: ({ signal }) => productService.getAll(filters, { signal }),
   });
 
   // Scroll to top whenever the page number changes, so the user actually
@@ -118,7 +121,7 @@ const ProductList = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
           <div className="mb-16 space-y-6">
             <div className="animate-fade-in-down gpu-accelerate" style={{ animationDelay: '0s', transform: "translateZ(0)" }}>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-gray-900 mb-4 leading-tight gpu-accelerate" style={{ willChange: "transform, opacity" }}>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-gray-900 mb-4 leading-tight gpu-accelerate">
                 Discover Our{' '}
                 <span className="bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient gpu-accelerate" style={{ backgroundSize: '200% 200%' }}>
                   Curated Collection
@@ -166,7 +169,7 @@ const ProductList = () => {
           <div className="mb-12 space-y-4 animate-fade-in-up gpu-accelerate" style={{ animationDelay: '0.4s', transform: "translateZ(0)" }}>
             <div className="flex items-center gap-4">
               <div className="h-1 w-8 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full" />
-              <h2 className="text-sm sm:text-base font-bold text-[#0e7c85] uppercase tracking-widest gpu-accelerate" style={{ willChange: "opacity" }}>
+              <h2 className="text-sm sm:text-base font-bold text-[#0e7c85] uppercase tracking-widest gpu-accelerate">
                 {data?.pagination?.total || 0} Items Available
               </h2>
             </div>
@@ -191,7 +194,7 @@ const ProductList = () => {
               ))}
             </div>
           ) : (
-            <ProductGrid products={data?.data || []} isLoading={isLoading} />
+            <ProductGrid products={data?.data ?? EMPTY_PRODUCTS} isLoading={isLoading} />
           )}
         </div>
 
@@ -220,8 +223,8 @@ const ProductList = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
             <div className="text-center py-20 animate-fade-in-up gpu-accelerate" style={{ transform: "translateZ(0)" }}>
               <div className="text-6xl mb-4">🔍</div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 gpu-accelerate" style={{ willChange: "opacity" }}>No Products Found</h3>
-              <p className="text-gray-600 text-lg mb-8 font-light max-w-md mx-auto gpu-accelerate" style={{ willChange: "opacity" }}>
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 gpu-accelerate">No Products Found</h3>
+              <p className="text-gray-600 text-lg mb-8 font-light max-w-md mx-auto gpu-accelerate">
                 Try adjusting your filters or search terms to find what you're looking for
               </p>
               <button

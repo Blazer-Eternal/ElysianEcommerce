@@ -49,8 +49,9 @@ const ManageCoupons = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin", "coupons"],
-    queryFn: () => couponService.getAll(),
+    queryKey: ["coupons"],
+    queryFn: ({ signal }) => couponService.getAll({ signal }),
+    staleTime: 5 * 60 * 1000,
   });
 
   const coupons = data?.data || [];
@@ -88,7 +89,7 @@ const ManageCoupons = () => {
       } else {
         await couponService.create(form);
       }
-      queryClient.invalidateQueries({ queryKey: ["admin", "coupons"] });
+      queryClient.invalidateQueries({ queryKey: ["coupons"] });
       setShowForm(false);
     } catch (err) {
       setError(getErrorMessage(err));
@@ -101,7 +102,7 @@ const ManageCoupons = () => {
     if (!confirm("Delete this coupon?")) return;
     try {
       await couponService.remove(id);
-      queryClient.invalidateQueries({ queryKey: ["admin", "coupons"] });
+      queryClient.invalidateQueries({ queryKey: ["coupons"] });
     } catch (err) {
       alert(getErrorMessage(err));
     }
@@ -191,7 +192,7 @@ const ManageCoupons = () => {
                     </div>
 
                     {/* Coupon Details Grid */}
-                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-white/20 border-b border-white/20">
+                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-white/20">
                       <div>
                         <p className="text-xs text-gray-600 font-medium">Min Order</p>
                         <p className="font-bold text-gray-900">{formatCurrency(coupon.min_order_amount)}</p>

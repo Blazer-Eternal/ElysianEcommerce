@@ -3,8 +3,8 @@ import type { ApiResponse } from "../types/pagination.types";
 import type { Review, CreateReviewPayload, UpdateReviewPayload } from "../types/review.types";
 
 export const reviewService = {
-  getByProduct: async (productId: string): Promise<ApiResponse<Review[]>> => {
-    const { data } = await axiosInstance.get(`/reviews/product/${productId}`);
+  getByProduct: async (productId: string, config?: { signal?: AbortSignal }): Promise<ApiResponse<Review[]>> => {
+    const { data } = await axiosInstance.get(`/reviews/product/${productId}`, { signal: config?.signal });
     return data;
   },
 

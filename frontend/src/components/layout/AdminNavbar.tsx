@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
-import logo from "../../assets/images/logo.png";
 
 const HomeIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -16,10 +15,11 @@ const AdminNavbar = () => {
         {/* Left - Logo */}
         <Link to={ROUTES.ADMIN_DASHBOARD} className="shrink-0 flex items-center gap-3 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
           <img 
-            src={logo} 
+            src="/logo-256.png" 
             alt="ElysianEcommerce Logo" 
+            width={256}
+            height={256}
             className="h-10 sm:h-12 w-auto object-contain"
-            style={{ willChange: "transform" }}
           />
           <div className="hidden sm:block">
             <p className="font-bold text-gray-900 text-sm">Admin Dashboard</p>
@@ -31,7 +31,7 @@ const AdminNavbar = () => {
         <Link 
           to={ROUTES.HOME}
           className="flex items-center gap-2 glass px-4 py-2.5 sm:px-6 sm:py-3 rounded-lg font-semibold text-sm sm:text-base text-gray-700 hover:bg-white/80 hover:text-[#0e7c85] transition-all duration-300 group gpu-accelerate"
-          style={{ transform: "translateZ(0)", willChange: "transform, background-color" }}
+          style={{ transform: "translateZ(0)" }}
         >
           <HomeIcon />
           <span className="hidden sm:inline">Back to Home</span>

@@ -8,7 +8,7 @@ import ReviewForm from "../../components/review/ReviewForm";
 import WishlistButton from "../../components/wishlist/WishlistButton";
 import Spinner from "../../components/ui/Spinner";
 import { useAuth } from "../../hooks/useAuth";
-import { useCart } from "../../hooks/useCart";
+import { useCartActions } from "../../hooks/useCart";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { ROUTES } from "../../constants/routes";
@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { isAuthenticated } = useAuth();
-  const { addItem } = useCart();
+  const { addItem } = useCartActions();
   const navigate = useNavigate();
 
   const [quantity, setQuantity] = useState(1);
@@ -28,7 +28,7 @@ const ProductDetail = () => {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["product", id],
-    queryFn: () => productService.getById(id as string),
+    queryFn: ({ signal }) => productService.getById(id as string, { signal }),
     enabled: !!id,
   });
 

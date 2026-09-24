@@ -24,7 +24,7 @@ const Profile = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["user", userId],
-    queryFn: () => userService.getById(userId),
+    queryFn: ({ signal }) => userService.getById(userId, { signal }),
     enabled: !!userId,
   });
 

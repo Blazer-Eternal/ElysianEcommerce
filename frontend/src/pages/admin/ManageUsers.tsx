@@ -24,7 +24,7 @@ const ManageUsers = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "users", page],
-    queryFn: () => userService.getAll(page, 12),
+    queryFn: ({ signal }) => userService.getAll(page, 12, { signal }),
   });
 
   const handleRoleChange = async (id: string, role: UserRole) => {
@@ -95,7 +95,7 @@ const ManageUsers = () => {
                       </div>
 
                       {/* User Details */}
-                      <div className="space-y-2 py-3 border-t border-white/20 border-b border-white/20">
+                      <div className="space-y-2 py-3 border-t border-b border-white/20">
                         {user.phone && (
                           <div>
                             <p className="text-xs text-gray-600 font-medium">Phone</p>

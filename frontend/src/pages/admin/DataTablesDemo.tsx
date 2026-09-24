@@ -24,7 +24,7 @@ const DataTablesDemo = () => {
   // Fetch products
   const { data: productsRes, isLoading: productsLoading, error: productsError } = useQuery({
     queryKey: ["products", "all"],
-    queryFn: () => productService.getAll({ limit: 100 }),
+    queryFn: ({ signal }) => productService.getAll({ limit: 100 }, { signal }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -35,8 +35,8 @@ const DataTablesDemo = () => {
 
   // Fetch categories
   const { data: categoriesRes, isLoading: categoriesLoading, error: categoriesError } = useQuery({
-    queryKey: ["categories", "all"],
-    queryFn: () => categoryService.getAll(),
+    queryKey: ["categories"],
+    queryFn: ({ signal }) => categoryService.getAll({ signal }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -47,8 +47,8 @@ const DataTablesDemo = () => {
 
   // Fetch orders
   const { data: ordersRes, isLoading: ordersLoading, error: ordersError } = useQuery({
-    queryKey: ["orders", "all"],
-    queryFn: () => orderService.getAll(1, 100),
+    queryKey: ["admin", "orders", "all"],
+    queryFn: ({ signal }) => orderService.getAll(1, 100, { signal }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -60,7 +60,7 @@ const DataTablesDemo = () => {
   // Fetch users
   const { data: usersRes, isLoading: usersLoading, error: usersError } = useQuery({
     queryKey: ["users", "all"],
-    queryFn: () => userService.getAll(1, 100),
+    queryFn: ({ signal }) => userService.getAll(1, 100, { signal }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -71,8 +71,8 @@ const DataTablesDemo = () => {
 
   // Fetch coupons
   const { data: couponsRes, isLoading: couponsLoading, error: couponsError } = useQuery({
-    queryKey: ["coupons", "all"],
-    queryFn: () => couponService.getAll(),
+    queryKey: ["coupons"],
+    queryFn: ({ signal }) => couponService.getAll({ signal }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -111,7 +111,7 @@ const DataTablesDemo = () => {
   const deleteCategoryMutation = useMutation({
     mutationFn: (id: string) => categoryService.remove(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories", "all"] });
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
       alert("Category deleted successfully!");
     },
     onError: () => {
@@ -123,7 +123,7 @@ const DataTablesDemo = () => {
   const deleteOrderMutation = useMutation({
     mutationFn: (id: string) => orderService.cancel(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders", "all"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "orders"] });
       alert("Order cancelled successfully!");
     },
     onError: () => {
@@ -147,7 +147,7 @@ const DataTablesDemo = () => {
   const deleteCouponMutation = useMutation({
     mutationFn: (id: string) => couponService.remove(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["coupons", "all"] });
+      queryClient.invalidateQueries({ queryKey: ["coupons"] });
       alert("Coupon deleted successfully!");
     },
     onError: () => {

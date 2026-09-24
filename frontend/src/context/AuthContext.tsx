@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
 import type { LoginPayload, SignupPayload } from "../types/user.types";
 import { authService } from "../services/authService";
 import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "../constants/config";
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (payload: LoginPayload) => {
+  const login = useCallback(async (payload: LoginPayload) => {
     const response = await authService.login(payload);
     const { token: newToken, user: newUser } = response.data;
 
@@ -53,32 +53,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     setToken(newToken);
     setUser(newUser);
-  };
+  }, []);
 
-  const signup = async (payload: SignupPayload) => {
+  const signup = useCallback(async (payload: SignupPayload) => {
     await authService.signup(payload);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     localStorage.removeItem(USER_STORAGE_KEY);
     setToken(null);
     setUser(null);
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        isLoading,
-        isAuthenticated: !!token,
-        login,
-        signup,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      token,
+      isLoading,
+      isAuthenticated: !!token,
+      login,
+      signup,
+      logout,
+    }),
+    [user, token, isLoading, login, signup, logout]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

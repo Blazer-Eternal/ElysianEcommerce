@@ -235,7 +235,7 @@ const About = () => {
         }
 
         .group-hover-grow {
-          transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: var(--transition-visual-props) 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .group:hover .group-hover-grow {
@@ -444,9 +444,9 @@ const About = () => {
 
                 {/* Animated Bottom Border */}
                 <div className="mt-6 flex items-center justify-center gap-3">
-                  <div className="h-1 w-3 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500 transition-all duration-500 group-hover:w-8" />
+                  <div className="h-1 w-8 -mr-5 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500 [clip-path:inset(0_20px_0_0_round_2px)] group-hover:[clip-path:inset(0_0_0_0_round_2px)] transition-[clip-path] duration-500" />
 
-                  <div className="h-0.5 flex-1 rounded-full bg-linear-to-r from-cyan-500/50 to-transparent transition-all duration-500 group-hover:from-teal-400/50" />
+                  <div className="h-0.5 flex-1 rounded-full bg-linear-to-r from-cyan-500/50 to-transparent transition-all duration-500 group-hover:from-teal-400/50 group-hover:translate-x-5" />
                 </div>
               </div>
             </div>

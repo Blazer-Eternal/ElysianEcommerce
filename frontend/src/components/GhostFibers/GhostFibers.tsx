@@ -442,7 +442,6 @@ const GhostFibers = ({
       width: "100%",
       height: "100%",
       contain: "strict",
-      willChange: "contents",
       transform: "translateZ(0)",
       backfaceVisibility: "hidden",
       perspective: "1000px"

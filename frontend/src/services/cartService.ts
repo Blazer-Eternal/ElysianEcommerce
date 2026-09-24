@@ -3,8 +3,8 @@ import type { ApiResponse } from "../types/pagination.types";
 import type { Cart, AddCartItemPayload, UpdateCartItemPayload } from "../types/cart.types";
 
 export const cartService = {
-  get: async (): Promise<ApiResponse<Cart>> => {
-    const { data } = await axiosInstance.get("/cart");
+  get: async (config?: { signal?: AbortSignal }): Promise<ApiResponse<Cart>> => {
+    const { data } = await axiosInstance.get("/cart", { signal: config?.signal });
     return data;
   },
 
