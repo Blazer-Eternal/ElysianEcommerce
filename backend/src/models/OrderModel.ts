@@ -81,6 +81,8 @@ const OrderSchema = new Schema<OrderInterface>({
     type: String,
     enum: Object.values(OrderStatusEnum),
     default: OrderStatusEnum.pending,
+    // Admin order filtering and status-based lookups.
+    index: true,
   },
   payment_status: {
     type: String,
@@ -95,7 +97,20 @@ const OrderSchema = new Schema<OrderInterface>({
   created_at: {
     type: Date,
     default: Date.now,
+    // Admin findAll() sorts all orders by created_at with no other filter.
+    index: true,
   },
 });
+
+/*
+ * Query-performance indexes:
+ *
+ * 1. { user_id: 1, created_at: -1 } - findByUser() ("my orders") filters on
+ *    user_id and sorts by created_at desc in the same query; the compound
+ *    serves both (and covers user_id-only equality as an index prefix).
+ *
+ * 2. status / created_at are field-level single-field indexes above.
+ */
+OrderSchema.index({ user_id: 1, created_at: -1 });
 
 export const OrderModel = model<OrderInterface>("Order", OrderSchema);

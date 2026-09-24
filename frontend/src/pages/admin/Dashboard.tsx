@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef } from "react";
+import { memo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
@@ -144,15 +144,14 @@ const Dashboard = memo(() => {
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  // PERF: this single query feeds three things - the order count, the recent
-  // orders list, and the total-revenue sum (useMemo below) - by fetching up to
-  // 100 full order documents. Backend should add an aggregate endpoint
-  // (e.g. GET /orders/stats -> { totalOrders, totalRevenue, recent }) so this is
-  // one small response instead of a heavy one. Do NOT mask the payload size with
-  // frontend caching; this is a backend work item.
-  const { data: ordersRes, isLoading: ordersLoading } = useQuery({
-    queryKey: ["admin", "orders", "all"],
-    queryFn: ({ signal }) => orderService.getAll(1, 100, { signal }),
+  // Backend aggregates all dashboard numbers (revenue, order count, status
+  // breakdown) in a single $facet round-trip - replaces the previous pattern
+  // of fetching up to 100 full order documents and summing them here. The key
+  // sits under the ["admin","orders"] prefix so existing status-change
+  // invalidations refresh these numbers too.
+  const { data: statsRes, isLoading: statsLoading } = useQuery({
+    queryKey: ["admin", "orders", "stats"],
+    queryFn: ({ signal }) => orderService.getStats({ signal }),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
@@ -164,21 +163,12 @@ const Dashboard = memo(() => {
     gcTime: 10 * 60 * 1000,
   });
 
-  // Memoize revenue calculation
-  const totalRevenue = useMemo(() => {
-    if (!ordersRes?.data) return 0;
-    return ordersRes.data.reduce((sum, order) => {
-      if (order.payment_status === "paid") {
-        return sum + order.total_amount;
-      }
-      return sum;
-    }, 0);
-  }, [ordersRes?.data]);
+  const totalRevenue = statsRes?.data.totalRevenue ?? 0;
 
-  const isLoading = productsLoading || ordersLoading || usersLoading;
+  const isLoading = productsLoading || statsLoading || usersLoading;
 
   const productTotal = productsRes?.pagination.total ?? "—";
-  const orderTotal = ordersRes?.pagination.total ?? "—";
+  const orderTotal = statsRes?.data.totalOrders ?? "—";
   const userTotal = usersRes?.pagination.total ?? "—";
 
   return (

@@ -317,6 +317,19 @@ export class OrderController {
     }
   }
 
+  // GET /orders/stats (admin) - every dashboard number is aggregated in the
+  // database in one round-trip, replacing the old fetch-100-orders-and-sum
+  // client-side approach.
+  static async getOrderStats(req: CustomRequestInterface, res: Response) {
+    try {
+      const stats = await new OrderServices().getStats();
+      return res.status(200).json({ success: true, data: stats });
+    } catch (error) {
+      console.error("getOrderStats error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
+
   static async updateOrderStatus(req: CustomRequestInterface, res: Response) {
     const id = req.params.id as string;
     const { status } = req.body;

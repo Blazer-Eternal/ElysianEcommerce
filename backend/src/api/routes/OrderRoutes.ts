@@ -21,6 +21,14 @@ orderRoutes.post(
   exceptionHandler(OrderController.verifyEsewaPayment)
 );
 
+// Registered before "/:id" so "stats" is never captured as an order id.
+orderRoutes.get(
+  "/stats",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(Guard.grantRole(RoleEnum.admin)),
+  exceptionHandler(OrderController.getOrderStats)
+);
+
 orderRoutes.get("/:id", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.getOrderById));
 
 orderRoutes.patch("/:id/cancel", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.cancelOrder));

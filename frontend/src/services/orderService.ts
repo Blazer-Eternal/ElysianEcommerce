@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 import type { ApiResponse, PaginatedResponse } from "../types/pagination.types";
-import type { Order, CreateOrderPayload, CreateOrderResponseData, OrderStatus, PaymentStatus } from "../types/order.types";
+import type { Order, CreateOrderPayload, CreateOrderResponseData, OrderStatus, PaymentStatus, OrderStats } from "../types/order.types";
 
 export const orderService = {
   create: async (payload: CreateOrderPayload): Promise<CreateOrderResponseData> => {
@@ -36,6 +36,13 @@ export const orderService = {
       params: { page, limit },
       signal: config?.signal,
     });
+    return data;
+  },
+
+  // Admin dashboard aggregates - a handful of numbers computed by the database
+  // instead of downloading full orders to sum in the browser.
+  getStats: async (config?: { signal?: AbortSignal }): Promise<ApiResponse<OrderStats>> => {
+    const { data } = await axiosInstance.get("/orders/stats", { signal: config?.signal });
     return data;
   },
 

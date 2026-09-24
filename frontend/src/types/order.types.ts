@@ -72,3 +72,13 @@ export interface UpdateOrderStatusPayload {
 export interface UpdatePaymentStatusPayload {
   payment_status: PaymentStatus;
 }
+
+// Response data of GET /orders/stats (admin dashboard aggregates, computed
+// by the database - not derived client-side from raw orders).
+export interface OrderStats {
+  totalRevenue: number;
+  totalOrders: number;
+  ordersByStatus: Record<OrderStatus, number>;
+  revenueLast30Days: number;
+  averageOrderValue: number;
+}

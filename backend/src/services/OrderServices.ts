@@ -2,6 +2,16 @@ import { OrderModel } from "../models/OrderModel";
 import { OrderInterface, InputOrderInterface, PaginationOptions } from "../intefaces";
 import { OrderStatusEnum, PaymentStatusEnum, PaymentMethodEnum } from "../enums/OrderEnums";
 
+// Aggregated dashboard numbers returned by getStats() - computed inside
+// MongoDB, never shipped as raw order documents.
+export interface OrderStats {
+  totalRevenue: number;
+  totalOrders: number;
+  ordersByStatus: Record<OrderStatusEnum, number>;
+  revenueLast30Days: number;
+  averageOrderValue: number;
+}
+
 export class OrderServices {
   public async findByUser(userId: string, options: PaginationOptions = {}) {
     const { page = 1, limit = 20 } = options;
@@ -44,6 +54,75 @@ export class OrderServices {
         hasNextPage: page * limit < total,
         hasPrevPage: page > 1,
       },
+    };
+  }
+
+  // Single-database-round-trip dashboard aggregates. All math happens inside
+  // MongoDB ($facet + $group) so the client receives only final numbers
+  // instead of up to 100 full Order documents to sum client-side.
+  public async getStats(): Promise<OrderStats> {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    // Money actually received: payment_status = paid (the exact condition the
+    // dashboard previously applied client-side; covers paid/shipped/delivered
+    // orders for eSewa as well as admin-marked COD payments).
+    const paid = { $eq: ["$payment_status", PaymentStatusEnum.paid] };
+
+    const [result] = await OrderModel.aggregate([
+      {
+        $facet: {
+          totals: [
+            {
+              $group: {
+                _id: null,
+                totalOrders: { $sum: 1 },
+                totalRevenue: { $sum: { $cond: [paid, "$total_amount", 0] } },
+                paidOrders: { $sum: { $cond: [paid, 1, 0] } },
+                revenueLast30Days: {
+                  $sum: {
+                    $cond: [
+                      { $and: [paid, { $gte: ["$created_at", thirtyDaysAgo] }] },
+                      "$total_amount",
+                      0,
+                    ],
+                  },
+                },
+              },
+            },
+          ],
+          byStatus: [{ $group: { _id: "$status", count: { $sum: 1 } } }],
+        },
+      },
+    ]);
+
+    const totals = result?.totals?.[0];
+    const totalOrders: number = totals?.totalOrders ?? 0;
+    const totalRevenue: number = totals?.totalRevenue ?? 0;
+    const paidOrders: number = totals?.paidOrders ?? 0;
+
+    // Every status key is always present (0 when the bucket is empty) so the
+    // response shape stays stable for the dashboard.
+    const ordersByStatus = Object.values(OrderStatusEnum).reduce(
+      (acc, status) => {
+        acc[status] = 0;
+        return acc;
+      },
+      {} as Record<OrderStatusEnum, number>
+    );
+    for (const bucket of result?.byStatus ?? []) {
+      if (bucket && bucket._id != null) {
+        ordersByStatus[bucket._id as OrderStatusEnum] = bucket.count;
+      }
+    }
+
+    return {
+      totalRevenue,
+      totalOrders,
+      ordersByStatus,
+      revenueLast30Days: totals?.revenueLast30Days ?? 0,
+      // Average value of the revenue-generating (paid) orders; 0 when none.
+      averageOrderValue: paidOrders > 0 ? Math.round((totalRevenue / paidOrders) * 100) / 100 : 0,
     };
   }
 
