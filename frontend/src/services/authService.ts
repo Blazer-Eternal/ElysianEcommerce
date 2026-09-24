@@ -5,7 +5,6 @@ import type {
   LoginPayload,
   ChangePasswordPayload,
   ForgotPasswordPayload,
-  ForgotPasswordResponseData,
   ResetPasswordPayload,
   AuthResponseData,
   User,
@@ -32,7 +31,9 @@ export const authService = {
     return data;
   },
 
-  forgotPassword: async (payload: ForgotPasswordPayload): Promise<ApiResponse<ForgotPasswordResponseData>> => {
+  forgotPassword: async (
+    payload: ForgotPasswordPayload
+  ): Promise<{ success: boolean; message: string }> => {
     const { data } = await axiosInstance.post("/auth/forgot-password", payload);
     return data;
   },

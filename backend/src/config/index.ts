@@ -5,7 +5,7 @@ export const jwtSecret: string = process.env.JWT_SECRET as string;
 export const port = process.env.PORT || 5000;
 export const environment = process.env.NODE_ENV || "development";
 
-const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+export const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 
 // eSewa v2 sandbox (test) credentials — publicly documented test values.
 // Swap these for real merchant credentials via env vars when going live.

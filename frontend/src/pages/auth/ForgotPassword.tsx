@@ -1,11 +1,10 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { authService } from "../../services/authService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { ROUTES } from "../../constants/routes";
 
 const ForgotPassword = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -19,17 +18,8 @@ const ForgotPassword = () => {
 
     try {
       const response = await authService.forgotPassword({ email });
-      setMessage(response.message || "If an account exists, a reset link has been generated.");
-
-      // TEMP: backend currently returns the raw reset token directly since no
-      // email service is wired up yet. Once email sending is implemented on
-      // the backend, this block (and resetToken in the response) goes away —
-      // the user will instead click a link from their inbox.
-      if (response.data?.resetToken) {
-        setTimeout(() => {
-          navigate(`${ROUTES.RESET_PASSWORD}?token=${response.data.resetToken}`);
-        }, 1500);
-      }
+      // Backend now emails a one-time reset link; the token is never in the response.
+      setMessage(response.message || "If an account exists, a reset link has been sent to it.");
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {

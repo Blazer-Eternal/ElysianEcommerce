@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 import type { ApiResponse, PaginatedResponse } from "../types/pagination.types";
-import type { User, Address, UserRole } from "../types/user.types";
+import type { User, Address } from "../types/user.types";
 
 export interface UpdateUserPayload {
   name?: string;
@@ -46,11 +46,6 @@ export const userService = {
       params: { page, limit },
       signal: config?.signal,
     });
-    return data;
-  },
-
-  assignRole: async (id: string, role: UserRole): Promise<ApiResponse<User>> => {
-    const { data } = await axiosInstance.patch(`/users/${id}/role`, { role });
     return data;
   },
 

@@ -37,6 +37,14 @@ export class UserController {
   static async updateUser(req: CustomRequestInterface, res: Response) {
     const id = req.params.id as string;
     const { name, email, phone } = req.body;
+
+    // Same owner-or-admin rule as getUserById and the address handlers.
+    // Without it, any authenticated user could rewrite anyone's profile
+    // (including swapping the admin's email for a password-reset takeover).
+    if (req.user?.id !== id && req.user?.role !== RoleEnum.admin) {
+      return res.status(403).json({ success: false, message: "You can only update your own profile" });
+    }
+
     try {
       const user = await new UserServices().findById(id);
       if (!user) return res.status(404).json({ success: false, message: "User not found" });
@@ -60,8 +68,36 @@ export class UserController {
         });
       }
 
+      // Single-vendor platform: admin is provisioned by the operator
+      // (seeder / DB), never promoted from the dashboard. Reject it here even
+      // though the validator would technically accept the value.
+      if (role === RoleEnum.admin) {
+        return res.status(403).json({
+          success: false,
+          message: "Admin role cannot be assigned. Admin access is provisioned by the platform operator.",
+        });
+      }
+
+      // Nobody may change their own role — otherwise the only admin could
+      // demote themselves and lock the whole panel. The UI hides this too,
+      // but the API is the source of truth.
+      if (req.user?.id === id) {
+        return res.status(403).json({ success: false, message: "You cannot change your own role" });
+      }
+
       const user = await new UserServices().findById(id);
       if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+      // Demoting the final admin would leave no way back into the panel.
+      if (user.role === RoleEnum.admin && role === RoleEnum.customer) {
+        const adminCount = await new UserServices().countByRole(RoleEnum.admin);
+        if (adminCount <= 1) {
+          return res.status(409).json({
+            success: false,
+            message: "Cannot demote the last admin account — the admin panel would become inaccessible.",
+          });
+        }
+      }
 
       const updatedUser = await new UserServices().update(id, { role });
 
@@ -78,8 +114,24 @@ export class UserController {
   static async deleteUser(req: CustomRequestInterface, res: Response) {
     const id = req.params.id as string;
     try {
+      // The UI already disables self-delete; enforce it on the API too.
+      if (req.user?.id === id) {
+        return res.status(403).json({ success: false, message: "You cannot delete your own account" });
+      }
+
       const user = await new UserServices().findById(id);
       if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+      // Deleting the final admin would permanently lock the admin panel.
+      if (user.role === RoleEnum.admin) {
+        const adminCount = await new UserServices().countByRole(RoleEnum.admin);
+        if (adminCount <= 1) {
+          return res.status(409).json({
+            success: false,
+            message: "Cannot delete the last admin account — the admin panel would become inaccessible.",
+          });
+        }
+      }
 
       await new UserServices().delete(id);
 

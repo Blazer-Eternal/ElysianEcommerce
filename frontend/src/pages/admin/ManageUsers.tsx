@@ -6,7 +6,6 @@ import Pagination from "../../components/ui/Pagination";
 import { formatDate } from "../../utils/formatDate";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { useAuth } from "../../hooks/useAuth";
-import type { UserRole } from "../../types/user.types";
 
 const DeleteIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -26,15 +25,6 @@ const ManageUsers = () => {
     queryKey: ["admin", "users", page],
     queryFn: ({ signal }) => userService.getAll(page, 12, { signal }),
   });
-
-  const handleRoleChange = async (id: string, role: UserRole) => {
-    try {
-      await userService.assignRole(id, role);
-      queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
-    } catch (err) {
-      alert(getErrorMessage(err));
-    }
-  };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this user? This cannot be undone.")) return;
@@ -108,23 +98,17 @@ const ManageUsers = () => {
                         </div>
                       </div>
 
-                      {/* Role Selection */}
+                      {/* Role (read-only): single-admin platform — roles are
+                          provisioned by the operator, never promoted here. The
+                          API also rejects role=admin, so no control is shown. */}
                       <div className="space-y-2">
                         <p className="text-xs text-gray-600 font-medium">Role</p>
-                        {user._id === currentUser?.id ? (
-                          <div className="px-3 py-2 bg-[#0e7c85]/10 rounded-lg border border-[#0e7c85]/20">
-                            <span className="text-sm font-semibold text-[#0e7c85] capitalize">{user.role} (You)</span>
-                          </div>
-                        ) : (
-                          <select
-                            value={user.role}
-                            onChange={(e) => handleRoleChange(user._id, e.target.value as UserRole)}
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85] cursor-pointer"
-                          >
-                            <option value="customer">Customer</option>
-                            <option value="admin">Admin</option>
-                          </select>
-                        )}
+                        <div className="px-3 py-2 bg-[#0e7c85]/10 rounded-lg border border-[#0e7c85]/20">
+                          <span className="text-sm font-semibold text-[#0e7c85] capitalize">
+                            {user.role}
+                            {user._id === currentUser?.id ? " (You)" : ""}
+                          </span>
+                        </div>
                       </div>
 
                       {/* Action Buttons */}

@@ -1,6 +1,7 @@
 import { UserModel } from "../models/UserModel";
 import { UserInterface, InputUserInterface, AddressInterface } from "../intefaces/UserInterface";
 import { PaginationOptions } from "../intefaces";
+import { RoleEnum } from "../enums/UserEnums";
 
 export class UserServices {
   public async findAll(options: PaginationOptions = {}) {
@@ -43,6 +44,11 @@ export class UserServices {
 
   public async delete(id: string): Promise<UserInterface | null> {
     return await UserModel.findByIdAndDelete(id);
+  }
+
+  // Feeds the last-admin guards in assignRole/deleteUser
+  public async countByRole(role: RoleEnum): Promise<number> {
+    return await UserModel.countDocuments({ role });
   }
 
   public async addAddress(userId: string, address: AddressInterface): Promise<UserInterface | null> {
