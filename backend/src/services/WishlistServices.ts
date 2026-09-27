@@ -4,7 +4,7 @@ import { WishlistInterface, InputWishlistInterface } from "../intefaces/Wishlist
 export class WishlistServices {
   public async findByUser(userId: string): Promise<WishlistInterface[]> {
     return await WishlistModel.find({ user_id: userId })
-      .populate("product_id", "name price images stock status rating_avg")
+      .populate("product_id", "name price images stock status rating_avg rating_count")
       .sort({ created_at: 1 });
   }
 

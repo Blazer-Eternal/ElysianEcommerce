@@ -3,6 +3,7 @@ import { CustomRequestInterface } from "../../intefaces";
 import { ReviewServices, ProductServices } from "../../services";
 import { RoleEnum } from "../../enums/UserEnums";
 import { ReviewSort } from "../../services/ReviewServices";
+import { ReviewInterface } from "../../intefaces/ReviewInterface";
 
 const REVIEW_SORTS: ReviewSort[] = ["recent", "oldest", "rating_desc", "rating_asc"];
 
@@ -42,11 +43,20 @@ export class ReviewController {
 
     try {
       const services = new ReviewServices();
-      const [list, stats, myReview] = await Promise.all([
+      const [list, stats, foundReview] = await Promise.all([
         services.findByProduct(productId, { page, limit, sort, rating }),
         services.getStats(productId),
-        services.findByUserAndProduct(userId, productId),
+        userId ? services.findByUserAndProduct(userId, productId) : Promise.resolve(null),
       ]);
+
+      // Never expose someone else's review as "mine" (guards against a token
+      // without a user id ever matching an arbitrary document).
+      let myReview: ReviewInterface | null = null;
+      if (foundReview && userId) {
+        const populated = foundReview.user_id as unknown as { _id?: unknown };
+        const ownerId = populated && populated._id !== undefined ? String(populated._id) : String(foundReview.user_id);
+        myReview = ownerId === userId ? foundReview : null;
+      }
 
       return res.status(200).json({
         success: true,

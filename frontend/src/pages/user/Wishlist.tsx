@@ -72,7 +72,7 @@ const Wishlist = () => {
 
   // Filter and sort items
   const filteredAndSortedItems = useMemo(() => {
-    let filtered = items.filter((item) => {
+    const filtered = items.filter((item) => {
       if (selectedCategory === "all") return true;
       const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
       if (product?.category_id) {
@@ -193,33 +193,6 @@ const Wishlist = () => {
             </div>
           </div>
         </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-          {[
-            { label: "Total Items", value: items.length, icon: "📦", color: "from-blue-100 to-cyan-100" },
-            { label: "Avg. Price", value: formatCurrency(items.reduce((sum, item) => {
-              const product = typeof item.product_id === "object" ? item.product_id as Product : null;
-              return sum + (product?.price || 0);
-            }, 0) / items.length), icon: "💰", color: "from-emerald-100 to-teal-100" },
-            { label: "Best Rated", value: Math.max(...items.map(item => {
-              const product = typeof item.product_id === "object" ? item.product_id as Product : null;
-              return product?.rating_avg || 0;
-            })).toFixed(1), icon: "⭐", color: "from-amber-100 to-orange-100" },
-            { label: "Value Potential", value: (items.length * 100).toString() + " pts", icon: "🎁", color: "from-pink-100 to-rose-100" },
-          ].map((stat, idx) => (
-            <div
-              key={idx}
-              className="group p-4 rounded-xl bg-white/70 backdrop-blur-md border border-white/50 hover:border-cyan-300 hover:bg-white hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-            >
-              <div className={`p-2.5 rounded-lg bg-gradient-to-br ${stat.color} w-fit mb-2 text-lg group-hover:scale-110 transition-transform duration-300`}>
-                {stat.icon}
-              </div>
-              <p className="text-xs text-gray-600 font-medium uppercase tracking-wide">{stat.label}</p>
-              <p className="text-xl font-bold text-gray-900 mt-1">{stat.value}</p>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Filter & Sort Section */}
@@ -258,7 +231,7 @@ const Wishlist = () => {
             name="sort"
             aria-label="Sort wishlist"
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
             className="px-4 py-2 rounded-lg border border-cyan-300 bg-white/70 backdrop-blur-sm text-gray-900 font-medium hover:border-cyan-500 hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
           >
             <option value="newest">Newest First</option>
@@ -327,7 +300,7 @@ const Wishlist = () => {
                       )}
 
                       {/* Stock Badge */}
-                      <div className="absolute top-3 right-3 glass rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md border border-white/60">
+                      <div className={`absolute left-3 ${discountPercent > 0 ? "top-14" : "top-3"} glass rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md border border-white/60`}>
                         {outOfStock ? (
                           <span className="text-red-600 font-bold">Out of Stock</span>
                         ) : product.stock && product.stock < 5 ? (
@@ -340,7 +313,7 @@ const Wishlist = () => {
                       </div>
 
                       {/* Wishlist Button */}
-                      <div className="absolute top-3 right-14 z-20 transform transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0">
+                      <div className="absolute top-3 right-3 z-20 transform transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0">
                         <div className="glass rounded-full p-2.5 hover:bg-white/90 transition-all duration-300 backdrop-blur-md border border-white/60 hover:border-white hover:scale-110 cursor-pointer">
                           <WishlistButton productId={product._id} />
                         </div>
@@ -377,7 +350,7 @@ const Wishlist = () => {
                         )}
 
                         {/* Rating Section */}
-                        {product.rating_avg && (
+                        {product.rating_avg > 0 && product.rating_count > 0 ? (
                           <div className="flex items-center gap-2 pt-1">
                             <StarRating
                               value={product.rating_avg}
@@ -387,14 +360,17 @@ const Wishlist = () => {
                               className="group-hover:scale-110 transition-transform duration-300"
                             />
                             <span className="text-xs text-gray-600 font-medium">
-                              {(product.rating_avg || 0).toFixed(1)} ({product.rating_count || 0})
+                              {product.rating_avg.toFixed(1)} ({product.rating_count}{" "}
+                              {product.rating_count === 1 ? "review" : "reviews"})
                             </span>
                           </div>
+                        ) : (
+                          <div className="text-xs text-gray-500 font-medium pt-1">No reviews yet</div>
                         )}
                       </div>
 
                       {/* Price & Action Section */}
-                      <div className="pt-4 border-t border-gradient-to-r from-transparent via-cyan-200/30 to-transparent mt-4 space-y-3">
+                      <div className="pt-4 mt-4 space-y-3">
                         {/* Price Display */}
                         <div className="flex items-baseline gap-2">
                           <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
@@ -440,38 +416,6 @@ const Wishlist = () => {
           })}
         </div>
       </div>
-
-      {/* Footer CTA Section */}
-      {filteredAndSortedItems.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-16 pt-12">
-          <div className="bg-gradient-to-r from-cyan-100/50 via-blue-100/30 to-cyan-100/50 rounded-2xl p-8 sm:p-12 backdrop-blur-sm border border-white/60 shadow-lg text-center space-y-4 animate-fade-in">
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">Ready to upgrade your style?</h3>
-            <p className="text-gray-700 max-w-lg mx-auto">
-              You have {filteredAndSortedItems.length} amazing items in your wishlist. Start your shopping journey today!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-              <button
-                onClick={() => {
-                  const firstProduct = filteredAndSortedItems[0];
-                  if (firstProduct) {
-                    const product = typeof firstProduct.product_id === "object" ? firstProduct.product_id as Product : null;
-                    if (product) handleAddToCart(product._id);
-                  }
-                }}
-                className="px-8 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#0e7c85] to-cyan-600 hover:from-[#0b6169] hover:to-cyan-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-              >
-                Quick Add First Item
-              </button>
-              <Link
-                to={ROUTES.PRODUCTS}
-                className="px-8 py-3 rounded-xl font-semibold text-[#0e7c85] bg-white hover:bg-gray-50 border border-cyan-300 hover:border-cyan-500 transition-all duration-300 hover:shadow-lg"
-              >
-                Continue Shopping
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* No items after filter */}
       {filteredAndSortedItems.length === 0 && items.length > 0 && (

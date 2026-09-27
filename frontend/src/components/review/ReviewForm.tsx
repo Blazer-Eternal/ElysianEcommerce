@@ -7,33 +7,24 @@ import type { Review } from "../../types/review.types";
 
 interface ReviewFormProps {
   productId: string;
-  /** The signed-in user's existing review, when they already left one. */
+  /** Set when the signed-in user has already reviewed — the form is replaced by a hint. */
   myReview?: Review | null;
   /** Called right after a brand-new review is published (so the list can jump to it). */
   onCreated?: () => void;
 }
 
+/**
+ * Create-only review form. Editing/deleting always happens through the ⋯ menu on
+ * the user's own review card, so there is only ever one place that writes a review.
+ */
 const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) => {
   const queryClient = useQueryClient();
-  const isEditMode = Boolean(myReview);
 
-  const [rating, setRating] = useState(myReview?.rating ?? 0);
-  const [comment, setComment] = useState(myReview?.comment ?? "");
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Keep the fields in sync when the stored review changes (created from this
-  // form, or edited via the ⋯ menu on the card). Adjusted during render rather
-  // than in an effect so a background refetch never causes a cascade of renders.
-  const contentKey = myReview ? `${myReview._id}|${myReview.rating}|${myReview.comment ?? ""}` : "";
-  const [syncedContentKey, setSyncedContentKey] = useState(contentKey);
-  if (syncedContentKey !== contentKey) {
-    setSyncedContentKey(contentKey);
-    setRating(myReview?.rating ?? 0);
-    setComment(myReview?.comment ?? "");
-    setError(null);
-  }
 
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: ["reviews", productId] });
@@ -52,25 +43,33 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
     setIsSubmitting(true);
 
     try {
-      if (isEditMode && myReview) {
-        await reviewService.update(myReview._id, { rating, comment: comment.trim() || undefined });
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
-      } else {
-        await reviewService.create({ product_id: productId, rating, comment: comment.trim() || undefined });
-        setSuccess(true);
-        setComment("");
-        setRating(0);
-        setTimeout(() => setSuccess(false), 3000);
-        onCreated?.();
-      }
+      await reviewService.create({ product_id: productId, rating, comment: comment.trim() || undefined });
+      setSuccess(true);
+      setComment("");
+      setRating(0);
+      onCreated?.();
       invalidate();
+      setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Already reviewed: no second form. The card's ⋯ menu is the edit path.
+  if (myReview) {
+    return (
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-purple-50/70 border border-purple-200/70 text-sm text-gray-700">
+        <span className="text-lg leading-none" aria-hidden="true">✅</span>
+        <p>
+          You already reviewed this product. Use the{" "}
+          <span className="font-bold text-purple-700">⋯</span> menu on your review below to edit
+          your rating or comment, or to delete it.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -88,13 +87,9 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         {/* Header */}
         <div>
           <h3 className="text-lg font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-            {isEditMode ? "✏️ Edit Your Review" : "✨ Share Your Experience"}
+            ✨ Share Your Experience
           </h3>
-          <p className="text-xs text-gray-600 mt-0.5">
-            {isEditMode
-              ? "Update your rating or comment — changes apply right away"
-              : "Help others decide"}
-          </p>
+          <p className="text-xs text-gray-600 mt-0.5">Help others decide</p>
         </div>
 
         {/* Error Alert */}
@@ -109,9 +104,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         {success && (
           <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium flex items-center gap-2">
             <span>🎉</span>
-            {isEditMode
-              ? "Your review has been updated successfully!"
-              : "Thank you! Your review submitted successfully!"}
+            Thank you! Your review submitted successfully!
           </div>
         )}
 
@@ -192,12 +185,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                <span>Saving...</span>
-              </>
-            ) : isEditMode ? (
-              <>
-                <span>💾</span>
-                <span>Save Changes</span>
+                <span>Submitting...</span>
               </>
             ) : (
               <>

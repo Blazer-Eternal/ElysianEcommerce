@@ -44,6 +44,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, []);
 
+  // Same-origin tabs share localStorage, so the most recent login is the session
+  // every tab uses — without this, a tab still showing "Admin Dashboard" would
+  // silently act under another account's token. Sync on cross-tab changes.
+  useEffect(() => {
+    const syncFromStorage = () => {
+      const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
+      const storedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (storedToken && storedUser) {
+        try {
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
+          return;
+        } catch {
+          localStorage.removeItem(TOKEN_STORAGE_KEY);
+          localStorage.removeItem(USER_STORAGE_KEY);
+        }
+      }
+      setToken(null);
+      setUser(null);
+    };
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === null || event.key === TOKEN_STORAGE_KEY || event.key === USER_STORAGE_KEY) {
+        syncFromStorage();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   const login = useCallback(async (payload: LoginPayload) => {
     const response = await authService.login(payload);
     const { token: newToken, user: newUser } = response.data;

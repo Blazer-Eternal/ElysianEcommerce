@@ -132,6 +132,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
   const queryClient = useQueryClient();
   const [expanded, setExpanded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuUp, setMenuUp] = useState(false);
   const [editing, setEditing] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [rating, setRating] = useState(review.rating);
@@ -170,7 +171,8 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
     },
   });
 
-  // Close the ⋯ menu when clicking anywhere outside it
+  // Close the ⋯ menu when clicking outside it, pressing Escape, or scrolling —
+  // the menu is positioned from the button's rect, so a scroll would strand it.
   useEffect(() => {
     if (!menuOpen) return;
     const handleMouseDown = (event: MouseEvent) => {
@@ -179,11 +181,16 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
     };
+    const handleViewportChange = () => setMenuOpen(false);
     document.addEventListener("mousedown", handleMouseDown);
     document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("scroll", handleViewportChange, true);
+    window.addEventListener("resize", handleViewportChange);
     return () => {
       document.removeEventListener("mousedown", handleMouseDown);
       document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("scroll", handleViewportChange, true);
+      window.removeEventListener("resize", handleViewportChange);
     };
   }, [menuOpen]);
 
@@ -295,10 +302,18 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
     <>
       <div
         onClick={() => setExpanded((value) => !value)}
-        className="relative p-6 bg-linear-to-br from-white via-blue-50/30 to-purple-50/20 border-2 border-purple-200/40 rounded-2xl hover:border-purple-300 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-purple-300/20 overflow-hidden group"
+        className={`group relative p-6 bg-linear-to-br from-white via-blue-50/30 to-purple-50/20 border-2 border-purple-200/40 rounded-2xl hover:border-purple-300 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-purple-300/20 ${
+          menuOpen ? "review-menu-open" : ""
+        }`}
       >
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-purple-300 to-pink-300 rounded-full blur-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
-        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-linear-to-br from-indigo-300 to-blue-300 rounded-full blur-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+        {/*
+          Glows live in their own clipped layer: the card itself must NOT clip
+          (overflow-hidden), otherwise the owner's ⋯ dropdown gets cut off.
+        */}
+        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-purple-300 to-pink-300 rounded-full blur-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-linear-to-br from-indigo-300 to-blue-300 rounded-full blur-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+        </div>
 
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-4 gap-3">
@@ -335,7 +350,17 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
                   aria-expanded={menuOpen}
                   onClick={(event) => {
                     event.stopPropagation();
-                    setMenuOpen((value) => !value);
+                    const willOpen = !menuOpen;
+                    if (willOpen) {
+                      // Open downward normally; flip up when the viewport has no
+                      // room below the button (last review in view).
+                      const rect = event.currentTarget.getBoundingClientRect();
+                      const spaceBelow = window.innerHeight - rect.bottom;
+                      const spaceAbove = rect.top;
+                      const MENU_HEIGHT = 116;
+                      setMenuUp(spaceBelow < MENU_HEIGHT && spaceAbove > spaceBelow);
+                    }
+                    setMenuOpen(willOpen);
                   }}
                   className={`w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:bg-purple-100 hover:text-purple-700 transition-all duration-200 ${
                     menuOpen ? "bg-purple-100 text-purple-700" : ""
@@ -350,32 +375,46 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
                   <div
                     role="menu"
                     onClick={(event) => event.stopPropagation()}
-                    className="absolute right-0 top-full mt-1 z-30 w-40 bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden py-1"
+                    className={`absolute right-0 z-40 w-44 review-menu-pop ${
+                      menuUp
+                        ? "bottom-full mb-2 origin-bottom-right"
+                        : "top-full mt-2 origin-top-right"
+                    }`}
                   >
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        startEditing();
-                      }}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
-                    >
-                      <span aria-hidden="true">✏️</span> Edit
-                    </button>
-                    <button
-                      type="button"
-                      role="menuitem"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        setMenuOpen(false);
-                        setError(null);
-                        setConfirmingDelete(true);
-                      }}
-                      className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                    >
-                      <span aria-hidden="true">🗑️</span> Delete
-                    </button>
+                    {/* Caret anchoring the menu to the ⋯ button */}
+                    <span
+                      aria-hidden="true"
+                      className={`absolute right-4 w-2.5 h-2.5 rotate-45 bg-white border-gray-200 ${
+                        menuUp ? "-bottom-[5px] border-b border-r" : "-top-[5px] border-t border-l"
+                      }`}
+                    />
+                    <div className="relative bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden py-1">
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          startEditing();
+                        }}
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
+                      >
+                        <span aria-hidden="true">✏️</span> Edit
+                      </button>
+                      <div className="h-px bg-gray-100 mx-3" />
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setMenuOpen(false);
+                          setError(null);
+                          setConfirmingDelete(true);
+                        }}
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        <span aria-hidden="true">🗑️</span> Delete
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -493,6 +532,13 @@ const ReviewList = ({
   const ownerIdOf = (review: Review) =>
     typeof review.user_id === "object" && review.user_id ? review.user_id._id : review.user_id;
 
+  // Only the author themselves — admins are NOT given edit rights over other
+  // people's reviews (the API would reject it anyway with 403).
+  const isOwnerOf = (review: Review) => {
+    const ownerId = ownerIdOf(review);
+    return Boolean(user?.id && ownerId && ownerId === user.id);
+  };
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -568,8 +614,21 @@ const ReviewList = ({
           opacity: 0;
           animation: slide-in-review 0.5s ease-out forwards;
         }
+        @keyframes menu-pop {
+          from { opacity: 0; transform: translateY(-6px) scale(0.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .review-menu-pop {
+          animation: menu-pop 0.16s ease-out both;
+        }
+        /* Lift the open card so its dropdown paints above the reviews below it */
+        .review-card:has(.review-menu-open) {
+          position: relative;
+          z-index: 30;
+        }
         @media (prefers-reduced-motion: reduce) {
           .review-card { animation: none; opacity: 1; }
+          .review-menu-pop { animation: none; }
         }
       `}</style>
 
@@ -595,7 +654,7 @@ const ReviewList = ({
             <ReviewCard
               review={review}
               productId={productId}
-              isOwner={Boolean(user?.id) && ownerIdOf(review) === user?.id}
+              isOwner={isOwnerOf(review)}
             />
           </div>
         ))}

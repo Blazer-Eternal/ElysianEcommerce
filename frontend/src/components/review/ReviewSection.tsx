@@ -72,7 +72,6 @@ const ReviewSection = ({ productId }: ReviewSectionProps) => {
       />
 
       <ReviewForm
-        key={data?.myReview?._id ?? "create"}
         productId={productId}
         myReview={data?.myReview ?? null}
         onCreated={() => {
