@@ -298,40 +298,92 @@ const ProductDetail = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
-            {/* Section Header with Icon */}
-            <div className="mb-12 animate-fade-in">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-pink-400 rounded-lg blur-lg opacity-50"></div>
-                  <div className="relative bg-linear-to-r from-purple-500 to-pink-500 rounded-lg p-3 text-white text-2xl shadow-lg">
-                    ⭐
+            {isAuthenticated ? (
+              <>
+                {/* Section Header with Icon */}
+                <div className="mb-12 animate-fade-in">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-pink-400 rounded-lg blur-lg opacity-50"></div>
+                      <div className="relative bg-linear-to-r from-purple-500 to-pink-500 rounded-lg p-3 text-white text-2xl shadow-lg">
+                        ⭐
+                      </div>
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
+                      Customer Reviews
+                    </h2>
+                  </div>
+                  <p className="text-gray-600 text-lg ml-16">See what others think about this product</p>
+                </div>
+
+                {/* Reviews Content Container */}
+                <div className="space-y-8">
+                  {/* Review Form Card */}
+                  <div className="animate-slide-in-left" style={{ animationDelay: '0.1s' }}>
+                    <ReviewForm productId={product._id} />
+                  </div>
+
+                  {/* Reviews List Container */}
+                  <div className="animate-slide-in-left" style={{ animationDelay: '0.2s' }}>
+                    <div className="relative">
+                      {/* Background Glow */}
+                      <div className="absolute -inset-2 bg-linear-to-r from-purple-200/20 via-pink-200/20 to-indigo-200/20 rounded-3xl blur-2xl -z-10"></div>
+                      <div className="relative bg-linear-to-br from-white/80 via-purple-50/40 to-blue-50/30 backdrop-blur-sm rounded-3xl p-8 border border-purple-200/30 shadow-2xl hover:shadow-2xl transition-shadow duration-500">
+                        <ReviewList productId={product._id} />
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
-                  Customer Reviews
-                </h2>
-              </div>
-              <p className="text-gray-600 text-lg ml-16">See what others think about this product</p>
-            </div>
+              </>
+            ) : (
+              /* Logged-out visitors: reviews stay hidden behind a login prompt */
+              <div className="animate-fade-in">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-pink-400 rounded-lg blur-lg opacity-50"></div>
+                    <div className="relative bg-linear-to-r from-purple-500 to-pink-500 rounded-lg p-3 text-white text-2xl shadow-lg">
+                      🔒
+                    </div>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black bg-linear-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent">
+                    Customer Reviews
+                  </h2>
+                </div>
 
-            {/* Reviews Content Container */}
-            <div className="space-y-8">
-              {/* Review Form Card */}
-              <div className="animate-slide-in-left" style={{ animationDelay: '0.1s' }}>
-                <ReviewForm productId={product._id} />
-              </div>
-
-              {/* Reviews List Container */}
-              <div className="animate-slide-in-left" style={{ animationDelay: '0.2s' }}>
-                <div className="relative">
+                <div className="relative mt-8">
                   {/* Background Glow */}
                   <div className="absolute -inset-2 bg-linear-to-r from-purple-200/20 via-pink-200/20 to-indigo-200/20 rounded-3xl blur-2xl -z-10"></div>
-                  <div className="relative bg-linear-to-br from-white/80 via-purple-50/40 to-blue-50/30 backdrop-blur-sm rounded-3xl p-8 border border-purple-200/30 shadow-2xl hover:shadow-2xl transition-shadow duration-500">
-                    <ReviewList productId={product._id} />
+                  <div className="relative bg-linear-to-br from-white/80 via-purple-50/40 to-blue-50/30 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-purple-200/30 shadow-2xl text-center">
+                    <div className="text-5xl mb-4">💬</div>
+                    <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
+                      Login to see &amp; post reviews
+                    </h3>
+                    <p className="text-gray-600 text-lg max-w-xl mx-auto mb-8">
+                      Customer reviews for this product are visible to members only. Please log in
+                      (or create a free account) to read what others think and to share your own
+                      experience.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                      <Link
+                        to={ROUTES.LOGIN}
+                        className="w-full sm:w-auto py-3 px-8 rounded-xl font-bold text-white bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                      >
+                        Login to View Reviews
+                      </Link>
+                      <Link
+                        to={ROUTES.REGISTER}
+                        className="w-full sm:w-auto py-3 px-8 rounded-xl font-bold text-purple-700 bg-white/80 border border-purple-300 hover:bg-white shadow-md hover:shadow-lg transition-all duration-300"
+                      >
+                        Create an Account
+                      </Link>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-6">
+                      Already have an account? Login to read and post reviews instantly.
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

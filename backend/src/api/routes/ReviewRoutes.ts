@@ -5,8 +5,12 @@ import { createReviewValidator, updateReviewValidator } from "../../validators/R
 
 const reviewRoutes = Router();
 
-// Public: view reviews for a product
-reviewRoutes.get("/product/:productId", exceptionHandler(ReviewController.getProductReviews));
+// Logged-in user only: view reviews for a product
+reviewRoutes.get(
+  "/product/:productId",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(ReviewController.getProductReviews)
+);
 
 // Logged-in user: create a review
 reviewRoutes.post(
