@@ -4,11 +4,85 @@ import { OrderModel } from "../models/OrderModel";
 import { OrderStatusEnum } from "../enums/OrderEnums";
 import { ReviewInterface, InputReviewInterface } from "../intefaces/ReviewInterface";
 
+export type ReviewSort = "recent" | "oldest" | "rating_desc" | "rating_asc";
+
+export interface ReviewQueryOptions {
+  page?: number;
+  limit?: number;
+  sort?: ReviewSort;
+  rating?: number;
+}
+
+export interface ReviewStats {
+  average: number;
+  count: number;
+  distribution: { star: number; count: number; percentage: number }[];
+}
+
+const REVIEW_SORTS: Record<ReviewSort, Record<string, 1 | -1>> = {
+  recent: { created_at: -1 },
+  oldest: { created_at: 1 },
+  rating_desc: { rating: -1, created_at: -1 },
+  rating_asc: { rating: 1, created_at: -1 },
+};
+
 export class ReviewServices {
-  public async findByProduct(productId: string): Promise<ReviewInterface[]> {
-    return await ReviewModel.find({ product_id: productId })
-      .populate("user_id", "name")
-      .sort({ created_at: -1 });
+  /**
+   * Returns one page of reviews for a product (newest-first by default),
+   * plus the pagination metadata needed to render page controls.
+   */
+  public async findByProduct(productId: string, options: ReviewQueryOptions = {}) {
+    const { page = 1, limit = 5, sort = "recent", rating } = options;
+
+    const filter: Record<string, unknown> = { product_id: productId };
+    if (rating) filter.rating = rating;
+
+    const skip = (page - 1) * limit;
+
+    const [reviews, total] = await Promise.all([
+      ReviewModel.find(filter)
+        .populate("user_id", "name")
+        .sort(REVIEW_SORTS[sort] ?? REVIEW_SORTS.recent)
+        .skip(skip)
+        .limit(limit),
+      ReviewModel.countDocuments(filter),
+    ]);
+
+    return {
+      reviews,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+        hasNextPage: page * limit < total,
+        hasPrevPage: page > 1,
+      },
+    };
+  }
+
+  /**
+   * Aggregate for the rating summary block: overall average, total count and
+   * the per-star breakdown (5 → 1) used to draw the progress bars.
+   * Always computed over every review, regardless of the list filter.
+   */
+  public async getStats(productId: string): Promise<ReviewStats> {
+    const reviews = await ReviewModel.find({ product_id: productId }).select("rating").lean();
+    const count = reviews.length;
+    const sum = reviews.reduce((total, review) => total + review.rating, 0);
+
+    return {
+      average: count > 0 ? Math.round((sum / count) * 10) / 10 : 0,
+      count,
+      distribution: [5, 4, 3, 2, 1].map((star) => {
+        const starCount = reviews.filter((review) => Math.round(review.rating) === star).length;
+        return {
+          star,
+          count: starCount,
+          percentage: count > 0 ? Math.round((starCount / count) * 100) : 0,
+        };
+      }),
+    };
   }
 
   public async findById(id: string): Promise<ReviewInterface | null> {
@@ -16,7 +90,7 @@ export class ReviewServices {
   }
 
   public async findByUserAndProduct(userId: string, productId: string): Promise<ReviewInterface | null> {
-    return await ReviewModel.findOne({ user_id: userId, product_id: productId });
+    return await ReviewModel.findOne({ user_id: userId, product_id: productId }).populate("user_id", "name");
   }
 
   // Checks if this user has a delivered order containing this product
@@ -36,7 +110,10 @@ export class ReviewServices {
   }
 
   public async update(id: string, reviewData: Partial<InputReviewInterface>): Promise<ReviewInterface | null> {
-    const updated = await ReviewModel.findByIdAndUpdate(id, reviewData, { returnDocument: "after" });
+    const updated = await ReviewModel.findByIdAndUpdate(id, reviewData, {
+      returnDocument: "after",
+      runValidators: true,
+    });
     if (updated) {
       await this.recalculateProductRating(updated.product_id.toString());
     }

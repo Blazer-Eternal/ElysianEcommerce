@@ -2,15 +2,61 @@ import { Response } from "express";
 import { CustomRequestInterface } from "../../intefaces";
 import { ReviewServices, ProductServices } from "../../services";
 import { RoleEnum } from "../../enums/UserEnums";
+import { ReviewSort } from "../../services/ReviewServices";
+
+const REVIEW_SORTS: ReviewSort[] = ["recent", "oldest", "rating_desc", "rating_asc"];
+
+const toPositiveInt = (value: unknown, fallback: number): number => {
+  const parsed = Number.parseInt(String(value), 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+};
+
+/** Mongoose/Zod failures are client mistakes, not server crashes. */
+const sendValidationError = (res: Response, error: unknown): void => {
+  const err = error as { name?: string; message?: string; errors?: Record<string, { message?: string }> };
+  if (err?.name === "ValidationError") {
+    const firstMessage = Object.values(err.errors || {})[0]?.message || err.message;
+    res.status(400).json({ success: false, message: firstMessage || "Invalid review data" });
+    return;
+  }
+  if (err?.name === "CastError") {
+    res.status(400).json({ success: false, message: "Invalid id provided" });
+    return;
+  }
+  res.status(500).json({ success: false, message: "Internal server error" });
+};
 
 export class ReviewController {
   static async getProductReviews(req: CustomRequestInterface, res: Response) {
     const productId = req.params.productId as string;
+    const userId = req.user?.id as string;
+
+    const page = toPositiveInt(req.query.page, 1);
+    const limit = Math.min(50, toPositiveInt(req.query.limit, 5));
+    const requestedSort = String(req.query.sort || "recent") as ReviewSort;
+    const sort = REVIEW_SORTS.includes(requestedSort) ? requestedSort : "recent";
+    const requestedRating = Number(req.query.rating);
+    const rating = Number.isInteger(requestedRating) && requestedRating >= 1 && requestedRating <= 5
+      ? requestedRating
+      : undefined;
+
     try {
-      const reviews = await new ReviewServices().findByProduct(productId);
-      return res.status(200).json({ success: true, data: reviews });
+      const services = new ReviewServices();
+      const [list, stats, myReview] = await Promise.all([
+        services.findByProduct(productId, { page, limit, sort, rating }),
+        services.getStats(productId),
+        services.findByUserAndProduct(userId, productId),
+      ]);
+
+      return res.status(200).json({
+        success: true,
+        data: list.reviews,
+        pagination: list.pagination,
+        stats,
+        myReview,
+      });
     } catch (error) {
-      return res.status(500).json({ success: false, message: "Internal server error" });
+      return sendValidationError(res, error);
     }
   }
 
@@ -41,7 +87,7 @@ export class ReviewController {
 
       return res.status(201).json({ success: true, message: "Review created successfully", data: review });
     } catch (error) {
-      return res.status(500).json({ success: false, message: "Internal server error" });
+      return sendValidationError(res, error);
     }
   }
 
@@ -62,7 +108,7 @@ export class ReviewController {
 
       return res.status(200).json({ success: true, message: "Review updated successfully", data: updatedReview });
     } catch (error) {
-      return res.status(500).json({ success: false, message: "Internal server error" });
+      return sendValidationError(res, error);
     }
   }
 
@@ -82,7 +128,7 @@ export class ReviewController {
 
       return res.status(200).json({ success: true, message: "Review deleted successfully" });
     } catch (error) {
-      return res.status(500).json({ success: false, message: "Internal server error" });
+      return sendValidationError(res, error);
     }
   }
 }

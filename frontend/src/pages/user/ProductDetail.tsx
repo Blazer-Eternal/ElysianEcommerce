@@ -3,8 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import ProductGallery from "../../components/product/ProductGallery";
-import ReviewList from "../../components/review/ReviewList";
-import ReviewForm from "../../components/review/ReviewForm";
+import ReviewSection from "../../components/review/ReviewSection";
+import StarRating from "../../components/ui/StarRating";
 import WishlistButton from "../../components/wishlist/WishlistButton";
 import Spinner from "../../components/ui/Spinner";
 import { useAuth } from "../../hooks/useAuth";
@@ -74,7 +74,6 @@ const ProductDetail = () => {
   const product = data.data;
   const category = typeof product.category_id === "object" ? product.category_id : null;
   const outOfStock = product.stock === 0;
-  const ratingPercentage = (product.rating_avg / 5) * 100;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -145,24 +144,7 @@ const ProductDetail = () => {
               {/* Rating Section */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1">
-                    <div className="flex gap-1">
-                      {[...Array(5)].map((_, i) => (
-                        <div key={i} className="relative">
-                          <svg className="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          {i < Math.round(product.rating_avg) && (
-                            <div className="absolute inset-0 overflow-hidden" style={{ width: `${(ratingPercentage - i * 20).toFixed(0)}%` }}>
-                              <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <StarRating value={product.rating_avg} size={20} />
                   <span className="text-lg font-bold text-gray-900">{product.rating_avg.toFixed(1)}</span>
                   <span className="text-sm text-gray-600">({product.rating_count} reviews)</span>
                 </div>
@@ -316,21 +298,13 @@ const ProductDetail = () => {
                   <p className="text-gray-600 text-lg ml-16">See what others think about this product</p>
                 </div>
 
-                {/* Reviews Content Container */}
-                <div className="space-y-8">
-                  {/* Review Form Card */}
-                  <div className="animate-slide-in-left" style={{ animationDelay: '0.1s' }}>
-                    <ReviewForm productId={product._id} />
-                  </div>
-
-                  {/* Reviews List Container */}
-                  <div className="animate-slide-in-left" style={{ animationDelay: '0.2s' }}>
-                    <div className="relative">
-                      {/* Background Glow */}
-                      <div className="absolute -inset-2 bg-linear-to-r from-purple-200/20 via-pink-200/20 to-indigo-200/20 rounded-3xl blur-2xl -z-10"></div>
-                      <div className="relative bg-linear-to-br from-white/80 via-purple-50/40 to-blue-50/30 backdrop-blur-sm rounded-3xl p-8 border border-purple-200/30 shadow-2xl hover:shadow-2xl transition-shadow duration-500">
-                        <ReviewList productId={product._id} />
-                      </div>
+                {/* Reviews Content Container: rating summary + review form + paginated list */}
+                <div className="animate-slide-in-left" style={{ animationDelay: '0.2s' }}>
+                  <div className="relative">
+                    {/* Background Glow */}
+                    <div className="absolute -inset-2 bg-linear-to-r from-purple-200/20 via-pink-200/20 to-indigo-200/20 rounded-3xl blur-2xl -z-10"></div>
+                    <div className="relative bg-linear-to-br from-white/80 via-purple-50/40 to-blue-50/30 backdrop-blur-sm rounded-3xl p-6 md:p-8 border border-purple-200/30 shadow-2xl hover:shadow-2xl transition-shadow duration-500">
+                      <ReviewSection productId={product._id} />
                     </div>
                   </div>
                 </div>
