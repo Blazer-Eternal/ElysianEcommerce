@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { ProductModel } from "../models/ProductModel";
+import { discountPercentBetween, discountPercentFor, mrpForPrice } from "./pricing";
 
 dotenv.config();
 
 /**
  * One-off backfill for products that were seeded before the storefront gained
  * MRP/discount support:
- *   - mrp  → 15% above the selling price (rounded), only when missing or below price.
+ *   - mrp  → recomputed from the tiered discount ladder (13-16% off premium
+ *     items, 5-7% off everyday ones) when it is missing, sits below the selling
+ *     price, or still carries the old flat 15% markup the seeder used to write.
  *   - key_benefits / how_to_use → initialised to [] so the API always returns arrays.
  *
  * Run with: npm run enrich:products
@@ -22,8 +25,18 @@ const enrichProducts = async () => {
     for (const product of products) {
       const set: Record<string, unknown> = {};
 
-      if (typeof product.mrp !== "number" || product.mrp < product.price) {
-        set.mrp = Math.round(product.price * 1.15);
+      const price = product.price;
+      const mrp = product.mrp;
+      const hasUsableMrp = typeof mrp === "number" && mrp > price;
+      // Signature of the old seeder: a flat 15% above the selling price.
+      const isLegacyFlatMrp = hasUsableMrp && mrp === Math.round(price * 1.15);
+      // Discount no longer matches what this price tier should advertise.
+      const isWrongTier =
+        hasUsableMrp &&
+        discountPercentBetween(price, mrp) !== discountPercentFor(price);
+
+      if (!hasUsableMrp || isLegacyFlatMrp || isWrongTier) {
+        set.mrp = mrpForPrice(price);
       }
       if (!Array.isArray(product.key_benefits)) set.key_benefits = [];
       if (!Array.isArray(product.how_to_use)) set.how_to_use = [];

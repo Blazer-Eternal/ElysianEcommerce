@@ -34,10 +34,17 @@ export interface Order {
   created_at: string;
 }
 
+export interface BuyNowItem {
+  product_id: string;
+  quantity: number;
+}
+
 export interface CreateOrderPayload {
   shipping_address: OrderShippingAddress;
   coupon_code?: string;
   payment_method: PaymentMethod;
+  /** Buy Now lines — omitted for a normal checkout, which uses the cart. */
+  items?: BuyNowItem[];
 }
 
 export interface EsewaPaymentFields {

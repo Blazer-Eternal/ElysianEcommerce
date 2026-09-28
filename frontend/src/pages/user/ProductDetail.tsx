@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import ProductGallery from "../../components/product/ProductGallery";
@@ -34,6 +34,10 @@ const ProductDetail = () => {
   const { isAuthenticated } = useAuth();
   const { addItem } = useCartActions();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Sent along at login so the customer lands back on this product afterwards.
+  const loginRedirectState = { state: { from: `${location.pathname}${location.search}` } };
 
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
@@ -47,9 +51,9 @@ const ProductDetail = () => {
     enabled: !!id,
   });
 
-  const handleAddToCart = async (redirect = false) => {
+  const handleAddToCart = async () => {
     if (!isAuthenticated) {
-      navigate(ROUTES.LOGIN);
+      navigate(ROUTES.LOGIN, loginRedirectState);
       return;
     }
     if (!id) return;
@@ -60,12 +64,24 @@ const ProductDetail = () => {
       await addItem(id, quantity);
       setAddSuccess(true);
       setTimeout(() => setAddSuccess(false), 2000);
-      if (redirect) navigate(ROUTES.CHECKOUT);
     } catch (err) {
       setAddError(getErrorMessage(err));
     } finally {
       setIsAdding(false);
     }
+  };
+
+  /**
+   * Buy Now never touches the cart: it hands the chosen product and quantity to
+   * the checkout page (?buyNow=<id>&qty=<n>), which orders them directly.
+   */
+  const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      navigate(ROUTES.LOGIN, loginRedirectState);
+      return;
+    }
+    if (!id) return;
+    navigate(`${ROUTES.CHECKOUT}?buyNow=${id}&qty=${quantity}`);
   };
 
   const handleShare = async () => {
@@ -181,14 +197,16 @@ const ProductDetail = () => {
             </div>
 
             {/* Brand line */}
-            <div className="mt-3 text-sm text-gray-600">
-              Brand:{" "}
-              <span className="text-[#0e7c85] font-medium">{brand || "Elysian"}</span>
-              <span className="text-gray-400 mx-2">|</span>
-              <Link to={ROUTES.PRODUCTS} className="text-[#0e7c85] hover:underline">
-                More {category?.name ?? "products"} from {brand || "Elysian"}
-              </Link>
-            </div>
+            {brand && (
+              <div className="mt-3 text-sm text-gray-600">
+                Brand:{" "}
+                <span className="text-[#0e7c85] font-medium">{brand}</span>
+                <span className="text-gray-400 mx-2">|</span>
+                <Link to={ROUTES.PRODUCTS} className="text-[#0e7c85] hover:underline">
+                  More {category?.name ?? "products"} from {brand}
+                </Link>
+              </div>
+            )}
 
             <hr className="my-4 border-gray-200" />
 
@@ -267,15 +285,15 @@ const ProductDetail = () => {
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => handleAddToCart(true)}
-                disabled={isAdding || outOfStock}
+                onClick={handleBuyNow}
+                disabled={outOfStock}
                 className="py-3.5 rounded-lg bg-[#28a3e8] hover:bg-[#1b8fd6] text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isAdding ? "Adding..." : "Buy Now"}
+                Buy Now
               </button>
               <button
                 type="button"
-                onClick={() => handleAddToCart(false)}
+                onClick={handleAddToCart}
                 disabled={isAdding || outOfStock}
                 className="py-3.5 rounded-lg bg-[#f26522] hover:bg-[#e05613] text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -353,7 +371,7 @@ const ProductDetail = () => {
           <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5 text-sm">
             <div>
               <p className="text-gray-500">Brand</p>
-              <p className="font-semibold text-gray-900">{brand || "Elysian"}</p>
+              <p className="font-semibold text-gray-900">{brand ?? "—"}</p>
             </div>
             <div>
               <p className="text-gray-500">SKU</p>

@@ -10,6 +10,18 @@ export const createOrderValidator = z.object({
   }),
   coupon_code: z.string().optional(),
   payment_method: z.enum(["cod", "esewa"]).default("cod"),
+  // Buy Now: order lines supplied directly instead of being read from the cart,
+  // so the product never touches the customer's cart. Omit it for a normal
+  // cart checkout.
+  items: z
+    .array(
+      z.object({
+        product_id: z.string().min(1, "Product ID is required"),
+        quantity: z.number().int().min(1, "Quantity must be at least 1"),
+      })
+    )
+    .min(1, "At least one item is required")
+    .optional(),
 });
 
 export const updateOrderStatusValidator = z.object({

@@ -162,7 +162,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   <span className="text-xs font-bold text-green-600">-{discount}%</span>
                 )}
               </div>
-              <p className="text-[11px] text-gray-500 mt-0.5">Inclusive of all taxes</p>
             </div>
 
             {/* Add to Cart */}

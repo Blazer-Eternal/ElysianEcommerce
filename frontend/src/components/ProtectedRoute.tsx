@@ -17,7 +17,13 @@ const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps)
   }
 
   if (!isAuthenticated) {
-    return <Navigate to={ROUTES.LOGIN} state={{ from: location.pathname }} replace />;
+    return (
+      <Navigate
+        to={ROUTES.LOGIN}
+        state={{ from: `${location.pathname}${location.search}` }}
+        replace
+      />
+    );
   }
 
   if (requireAdmin && user?.role !== "admin") {

@@ -1,18 +1,46 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { useCartState } from "../../hooks/useCart";
+import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { redirectToEsewa } from "../../utils/esewaRedirect";
 import { ROUTES } from "../../constants/routes";
+import Spinner from "../../components/ui/Spinner";
 import CouponInput from "../../components/coupon/CouponInput";
 import type { ApplyCouponResult } from "../../types/coupon.types";
 import type { Product } from "../../types/product.types";
 import type { OrderShippingAddress, PaymentMethod } from "../../types/order.types";
 
+/** One line shown in the order summary: a product plus how many are being bought. */
+interface CheckoutLine {
+  product: Product;
+  quantity: number;
+}
+
 const Checkout = () => {
   const { cart } = useCartState();
+  const [searchParams] = useSearchParams();
+
+  // Buy Now arrives as /checkout?buyNow=<productId>&qty=<n>. The item is
+  // ordered straight from here, so it is never placed in the cart.
+  const buyNowProductId = searchParams.get("buyNow");
+  const isBuyNow = Boolean(buyNowProductId);
+  const parsedQty = Number.parseInt(searchParams.get("qty") ?? "1", 10);
+  const buyNowQuantity = Number.isFinite(parsedQty) && parsedQty > 0 ? parsedQty : 1;
+
+  const {
+    data: buyNowData,
+    isLoading: isBuyNowLoading,
+    isError: isBuyNowError,
+  } = useQuery({
+    queryKey: ["product", buyNowProductId],
+    queryFn: ({ signal }) => productService.getById(buyNowProductId as string, { signal }),
+    enabled: isBuyNow,
+    staleTime: 60_000,
+  });
 
   const [address, setAddress] = useState<OrderShippingAddress>({
     street: "",
@@ -26,7 +54,37 @@ const Checkout = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (!cart || cart.items.length === 0) {
+  const buyNowProduct = isBuyNow ? buyNowData?.data ?? null : null;
+
+  if (isBuyNow && isBuyNowLoading) {
+    return (
+      <div className="min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 flex items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (isBuyNow && (isBuyNowError || !buyNowProduct)) {
+    return (
+      <div className="min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 flex items-center">
+        <div className="max-w-6xl mx-auto px-4 py-16 text-center animate-fade-in">
+          <div className="inline-block mb-6 p-4 rounded-2xl bg-linear-to-r from-red-500/10 to-red-400/10">
+            <p className="text-lg text-gray-600 font-medium">
+              We couldn&apos;t find the product you wanted to buy.
+            </p>
+          </div>
+          <Link
+            to={ROUTES.PRODUCTS}
+            className="inline-block px-8 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+          >
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isBuyNow && (!cart || cart.items.length === 0)) {
     return (
       <div className="min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 flex items-center">
         <div className="max-w-6xl mx-auto px-4 py-16 text-center animate-fade-in">
@@ -44,10 +102,18 @@ const Checkout = () => {
     );
   }
 
-  const subtotal = cart.items.reduce((sum, item) => {
-    const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
-    return sum + (product ? product.price * item.quantity : 0);
-  }, 0);
+  // Buy Now orders are built from the query string, cart checkouts from the cart.
+  const lines: CheckoutLine[] = isBuyNow
+    ? [{ product: buyNowProduct as Product, quantity: buyNowQuantity }]
+    : (cart?.items ?? [])
+        .map((item) => ({
+          product: typeof item.product_id === "object" ? item.product_id : null,
+          quantity: item.quantity,
+        }))
+        .filter((line): line is CheckoutLine => line.product !== null);
+
+  const subtotal = lines.reduce((sum, line) => sum + line.product.price * line.quantity, 0);
+  const exceedsStock = lines.some((line) => line.quantity > line.product.stock);
 
   const discount = appliedCoupon?.discount_amount || 0;
   const total = subtotal - discount;
@@ -55,6 +121,12 @@ const Checkout = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (exceedsStock) {
+      setError("The requested quantity is more than what is left in stock.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -62,12 +134,19 @@ const Checkout = () => {
         shipping_address: address,
         coupon_code: appliedCoupon?.code,
         payment_method: paymentMethod,
+        // Buy Now only: order these lines directly and leave the cart alone.
+        items: isBuyNow
+          ? lines.map((line) => ({
+              product_id: line.product._id,
+              quantity: line.quantity,
+            }))
+          : undefined,
       });
 
       // COD — order created, cart already cleared by backend, redirect to order detail
       if (paymentMethod === "cod") {
         if (response.data?._id) {
-          window.location.href = ROUTES.ORDER_DETAIL(response.data._id);
+          window.location.assign(ROUTES.ORDER_DETAIL(response.data._id));
         }
         return;
       }
@@ -291,17 +370,29 @@ const Checkout = () => {
 
                   {/* Items */}
                   <div className="space-y-3 mb-6 pb-6 border-b-3 border-cyan-200/50">
-                    {cart.items.map((item) => {
-                      const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
-                      if (!product) return null;
-                      return (
-                        <div key={product._id} className="flex justify-between text-sm group/item hover:bg-cyan-50/60 px-2 py-1.5 rounded-lg transition-all">
-                          <span className="text-gray-800 font-semibold">{product.name}</span>
-                          <span className="text-cyan-700 font-bold">{formatCurrency(product.price * item.quantity)}</span>
-                        </div>
-                      );
-                    })}
+                    {lines.map((line) => (
+                      <div key={line.product._id} className="flex justify-between text-sm group/item hover:bg-cyan-50/60 px-2 py-1.5 rounded-lg transition-all">
+                        <span className="text-gray-800 font-semibold">
+                          {line.product.name}
+                          {line.quantity > 1 && (
+                            <span className="text-gray-500 font-medium"> × {line.quantity}</span>
+                          )}
+                        </span>
+                        <span className="text-cyan-700 font-bold">{formatCurrency(line.product.price * line.quantity)}</span>
+                      </div>
+                    ))}
+                    {isBuyNow && (
+                      <p className="text-xs text-gray-600 font-medium leading-relaxed">
+                        Buying now — this item goes straight to your order and is not added to your cart.
+                      </p>
+                    )}
                   </div>
+
+                  {exceedsStock && (
+                    <div className="mb-6 rounded-2xl bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 text-sm font-semibold">
+                      Not enough stock — only {Math.min(...lines.map((l) => l.product.stock))} left.
+                    </div>
+                  )}
 
                   {/* Pricing */}
                   <div className="space-y-3 mb-6 pb-6 border-b-3 border-cyan-200/50">
@@ -330,7 +421,7 @@ const Checkout = () => {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || exceedsStock}
                     className="w-full relative py-5 px-6 rounded-2xl font-black text-lg text-white overflow-hidden transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <div className="absolute inset-0 bg-linear-to-r from-[#0e7c85] via-cyan-600 to-teal-500 group-hover:from-[#0a5f68] group-hover:via-[#0a9db2] group-hover:to-[#16a596] transition-all duration-300 rounded-2xl"></div>

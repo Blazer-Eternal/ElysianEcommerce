@@ -1,5 +1,6 @@
 import { Response } from "express";
 import * as crypto from "crypto";
+import mongoose from "mongoose";
 import { CustomRequestInterface } from "../../intefaces";
 import { OrderServices, CartServices, ProductServices, CouponServices, EsewaServices } from "../../services";
 import { RoleEnum } from "../../enums/UserEnums";
@@ -33,7 +34,7 @@ export class OrderController {
 
   static async createOrder(req: CustomRequestInterface, res: Response) {
     const userId = req.user?.id as string;
-    const { shipping_address, coupon_code, payment_method } = req.body;
+    const { shipping_address, coupon_code, payment_method, items } = req.body;
 
     try {
       // Validate payment method
@@ -41,32 +42,51 @@ export class OrderController {
         return res.status(400).json({ success: false, message: "Invalid payment method" });
       }
 
-      const cart = await new CartServices().findRawByUserId(userId);
-      if (!cart || cart.items.length === 0) {
-        return res.status(400).json({ success: false, message: "Your cart is empty" });
+      // Buy Now sends its own line items and skips the cart entirely; a normal
+      // checkout sends none and is built from the customer's cart.
+      const isBuyNow = Array.isArray(items) && items.length > 0;
+      let sourceLines: Array<{ productId: string; quantity: number }>;
+
+      if (isBuyNow) {
+        sourceLines = items.map((item: { product_id: string; quantity: number }) => ({
+          productId: item.product_id,
+          quantity: item.quantity,
+        }));
+      } else {
+        const cart = await new CartServices().findRawByUserId(userId);
+        if (!cart || cart.items.length === 0) {
+          return res.status(400).json({ success: false, message: "Your cart is empty" });
+        }
+        sourceLines = cart.items.map((cartItem) => ({
+          productId: cartItem.product_id.toString(),
+          quantity: cartItem.quantity,
+        }));
       }
 
       const orderItems: OrderItemInterface[] = [];
       let subtotal = 0;
 
       // Validate all products exist and have sufficient stock
-      for (const cartItem of cart.items) {
-        const product = await new ProductServices().findById(cartItem.product_id.toString());
-        if (!product) {
-          return res.status(404).json({ success: false, message: "One or more products in your cart no longer exist" });
+      for (const line of sourceLines) {
+        if (!mongoose.isValidObjectId(line.productId)) {
+          return res.status(400).json({ success: false, message: "One or more products are invalid" });
         }
-        if (product.stock < cartItem.quantity) {
+        const product = await new ProductServices().findById(line.productId);
+        if (!product) {
+          return res.status(404).json({ success: false, message: "One or more products no longer exist" });
+        }
+        if (product.stock < line.quantity) {
           return res.status(400).json({ success: false, message: `Only ${product.stock} units of '${product.name}' in stock` });
         }
 
         orderItems.push({
           product_id: product._id as any,
           product_name: product.name,
-          quantity: cartItem.quantity,
+          quantity: line.quantity,
           unit_price: product.price,
         });
 
-        subtotal += product.price * cartItem.quantity;
+        subtotal += product.price * line.quantity;
       }
 
       let discount = 0;
@@ -135,7 +155,10 @@ export class OrderController {
             payment_method: PaymentMethodEnum.cod,
           });
 
-          await new CartServices().clearCart(userId);
+          // A Buy Now order never touched the cart, so there is nothing to clear.
+          if (!isBuyNow) {
+            await new CartServices().clearCart(userId);
+          }
 
           return res.status(201).json({ 
             success: true, 
@@ -163,6 +186,9 @@ export class OrderController {
             discount,
             total_amount,
             payment_method: PaymentMethodEnum.esewa,
+            // Cart checkouts must clear the cart after payment; Buy Now orders
+            // must leave it untouched.
+            from_cart: !isBuyNow,
           };
 
           const preOrderToken = encodePreOrderToken(preOrderData);
@@ -258,8 +284,11 @@ export class OrderController {
         payment_method: PaymentMethodEnum.esewa,
       });
 
-      // Only clear cart AFTER successful order creation and payment verification
-      await new CartServices().clearCart(userId);
+      // Only clear cart AFTER successful order creation and payment verification.
+      // Tokens minted before buy-now existed have no flag and are cart checkouts.
+      if (preOrderData.from_cart !== false) {
+        await new CartServices().clearCart(userId);
+      }
 
       console.log(`[Order Creation] Order ${preOrderData.order_number} created successfully after eSewa payment verification`);
 
