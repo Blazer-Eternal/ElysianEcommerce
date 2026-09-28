@@ -83,7 +83,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             />
 
             {/* Stock Badge */}
-            <div className="absolute top-2 left-2 flex flex-col items-start gap-1.5">
+            <div className="absolute top-2 left-2">
               <div className="glass rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur-md">
                 {outOfStock ? (
                   <span className="text-red-600">Out of Stock</span>
@@ -93,11 +93,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   <span className="text-green-600">In Stock</span>
                 )}
               </div>
-              {discount > 0 && (
-                <div className="rounded-full bg-[#0e7c85] px-2.5 py-1 text-xs font-bold text-white shadow-md backdrop-blur-md">
-                  {discount}% off
-                </div>
-              )}
             </div>
 
             {/* Wishlist Button */}

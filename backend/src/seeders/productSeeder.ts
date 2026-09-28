@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { ProductModel } from "../models/ProductModel";
 import { CategoryModel } from "../models/CategoryModel";
 import { ProductStatusEnum } from "../enums/ProductEnums";
+import { PRODUCT_CONTENT } from "./productContent";
 import { mrpForPrice } from "./pricing";
 
 dotenv.config();
@@ -120,7 +121,10 @@ const seedProducts = async () => {
         name: item.name,
         slug: item.slug,
         brand: item.brand,
-        description: item.description,
+        // Long-form FAQ copy, benefits and usage steps (falls back to the one-liner).
+        description: PRODUCT_CONTENT[item.slug]?.description ?? item.description,
+        key_benefits: PRODUCT_CONTENT[item.slug]?.key_benefits ?? [],
+        how_to_use: PRODUCT_CONTENT[item.slug]?.how_to_use ?? [],
         sku: item.sku,
         price: item.price,
         cost_price: item.cost_price,

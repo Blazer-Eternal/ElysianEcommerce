@@ -324,12 +324,23 @@ const ProductDetail = () => {
               product.
             </div>
 
+            {/* FAQ copy: lines ending in "?" are the question bullets, the line
+                beneath each one is its answer (indented, no bullet). */}
             {descriptionLines.length > 1 ? (
-              <ul className="list-disc pl-5 space-y-2 text-sm text-gray-800 leading-relaxed">
-                {descriptionLines.map((line) => (
-                  <li key={line}>{line}</li>
-                ))}
-              </ul>
+              <div className="text-sm text-gray-800 leading-relaxed">
+                {descriptionLines.map((line, index) =>
+                  line.endsWith("?") ? (
+                    <p key={index} className="mt-4 flex gap-2 first:mt-0">
+                      <span aria-hidden="true" className="text-gray-400 select-none">•</span>
+                      <span className="font-medium text-gray-900">{line}</span>
+                    </p>
+                  ) : (
+                    <p key={index} className="pl-4 text-gray-700">
+                      {line}
+                    </p>
+                  )
+                )}
+              </div>
             ) : (
               <p className="text-sm text-gray-800 leading-relaxed">
                 {descriptionLines[0] || product.description}

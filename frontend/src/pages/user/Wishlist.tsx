@@ -255,7 +255,6 @@ const Wishlist = () => {
             const itemError = errorId?.id === product._id ? errorId.message : null;
             const isHovered = hoveredId === product._id;
             const imageUrl = product.images?.[0] || "/placeholder.svg";
-            const discountPercent = formatDiscount(product.price, getDisplayMrp(product));
 
             return (
               <div
@@ -290,17 +289,8 @@ const Wishlist = () => {
                         }`}
                       />
 
-                      {/* Discount Badge */}
-                      {discountPercent > 0 && (
-                        <div className="absolute top-3 left-3 animate-bounce" style={{ animationDelay: "0s" }}>
-                          <div className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
-                            -{discountPercent}%
-                          </div>
-                        </div>
-                      )}
-
                       {/* Stock Badge */}
-                      <div className={`absolute left-3 ${discountPercent > 0 ? "top-14" : "top-3"} glass rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md border border-white/60`}>
+                      <div className="absolute top-3 left-3 glass rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md border border-white/60">
                         {outOfStock ? (
                           <span className="text-red-600 font-bold">Out of Stock</span>
                         ) : product.stock && product.stock < 5 ? (
