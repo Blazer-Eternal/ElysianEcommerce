@@ -8,6 +8,14 @@ export interface InputProductInterface {
   sku: string;
   price: number;
   cost_price?: number;
+  /** Maximum retail price — the struck-through original price shown on the storefront. */
+  mrp?: number;
+  /** Displayed brand (e.g. "Dot & Key"); purely presentational. */
+  brand?: string;
+  /** Bullet points rendered in the "Product Benefits" section. */
+  key_benefits?: string[];
+  /** Bullet points rendered in the "How to Use" section. */
+  how_to_use?: string[];
   stock: number;
   category_id: Types.ObjectId;
   images: string[];

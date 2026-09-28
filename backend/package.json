@@ -12,7 +12,8 @@
     "start": "node dist/server.js",
     "seed:admin": "tsx src/seeders/adminSeeder.ts",
     "seed:categories": "ts-node-dev --transpile-only src/seeders/categorySeeder.ts",
-    "seed:products": "ts-node-dev --transpile-only src/seeders/productSeeder.ts"
+    "seed:products": "ts-node-dev --transpile-only src/seeders/productSeeder.ts",
+    "enrich:products": "tsx src/seeders/productEnrich.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

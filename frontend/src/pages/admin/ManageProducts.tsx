@@ -17,11 +17,23 @@ const emptyForm: CreateProductPayload = {
   sku: "",
   price: 0,
   cost_price: undefined,
+  mrp: undefined,
+  brand: "",
+  key_benefits: [],
+  how_to_use: [],
   stock: 0,
   category_id: "",
   images: [],
   status: "draft",
 };
+
+/** Textarea <-> string[] helpers — bullets are edited as newline-separated text. */
+const bulletsToText = (items?: string[]) => (items ?? []).join("\n");
+const textToBullets = (text: string): string[] =>
+  text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
 
 const EditIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -81,6 +93,10 @@ const ManageProducts = () => {
       sku: product.sku,
       price: product.price,
       cost_price: product.cost_price,
+      mrp: product.mrp,
+      brand: product.brand ?? "",
+      key_benefits: product.key_benefits ?? [],
+      how_to_use: product.how_to_use ?? [],
       stock: product.stock,
       category_id: typeof product.category_id === "object" ? product.category_id._id : product.category_id,
       images: product.images,
@@ -131,9 +147,9 @@ const ManageProducts = () => {
     }
   };
 
-  const getCategoryName = (categoryId: string | object | undefined) => {
+  const getCategoryName = (categoryId: string | { _id?: string } | undefined) => {
     if (!categoryId) return "Uncategorized";
-    const id = typeof categoryId === "object" ? (categoryId as any)._id : categoryId;
+    const id = typeof categoryId === "object" ? categoryId._id : categoryId;
     return categories.find((c) => c._id === id)?.name || "Uncategorized";
   };
 
@@ -451,6 +467,13 @@ const ManageProducts = () => {
           />
           <input
             type="text"
+            placeholder="Brand (e.g. Dot & Key)"
+            value={form.brand ?? ""}
+            onChange={(e) => setForm({ ...form, brand: e.target.value })}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+          />
+          <input
+            type="text"
             placeholder="SKU"
             required
             value={form.sku}
@@ -458,7 +481,7 @@ const ManageProducts = () => {
             className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
           />
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <input
               type="number"
               placeholder="Price"
@@ -471,12 +494,50 @@ const ManageProducts = () => {
             />
             <input
               type="number"
+              placeholder="MRP (optional)"
+              min={0}
+              step={0.01}
+              title="Original price shown struck-through. Leave empty if there is no discount."
+              value={form.mrp ?? ""}
+              onChange={(e) => setForm({ ...form, mrp: e.target.value ? Number(e.target.value) : undefined })}
+              className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            />
+            <input
+              type="number"
               placeholder="Cost price (optional)"
               min={0}
               step={0.01}
               value={form.cost_price ?? ""}
               onChange={(e) => setForm({ ...form, cost_price: e.target.value ? Number(e.target.value) : undefined })}
               className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="product-benefits" className="block text-sm font-medium text-gray-900 mb-1">
+              Product Benefits <span className="text-gray-400 font-normal">(one per line)</span>
+            </label>
+            <textarea
+              id="product-benefits"
+              placeholder={"Gently cleanses without over-drying\nBoosts skin barrier function"}
+              rows={3}
+              value={bulletsToText(form.key_benefits)}
+              onChange={(e) => setForm({ ...form, key_benefits: textToBullets(e.target.value) })}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="product-how-to-use" className="block text-sm font-medium text-gray-900 mb-1">
+              How to Use <span className="text-gray-400 font-normal">(one per line)</span>
+            </label>
+            <textarea
+              id="product-how-to-use"
+              placeholder={"Squeeze out a small amount\nApply to wet face\nRinse & pat dry"}
+              rows={3}
+              value={bulletsToText(form.how_to_use)}
+              onChange={(e) => setForm({ ...form, how_to_use: textToBullets(e.target.value) })}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
             />
           </div>
 

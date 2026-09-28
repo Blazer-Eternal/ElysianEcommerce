@@ -114,6 +114,9 @@ const seedProducts = async () => {
         sku: item.sku,
         price: item.price,
         cost_price: item.cost_price,
+        // MRP sits ~15% above the selling price so the storefront can show the
+        // struck-through original price and the discount percentage.
+        mrp: Math.round(item.price * 1.15),
         stock: item.stock,
         category_id: category._id,
         images: item.images,

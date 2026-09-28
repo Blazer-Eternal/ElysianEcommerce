@@ -8,6 +8,11 @@ export interface Product {
   sku: string;
   price: number;
   cost_price?: number;
+  /** Struck-through original price (MRP). Must be >= price to show a discount. */
+  mrp?: number;
+  brand?: string;
+  key_benefits?: string[];
+  how_to_use?: string[];
   stock: number;
   category_id: { _id: string; name: string; slug: string } | string;
   images: string[];
@@ -37,6 +42,10 @@ export interface CreateProductPayload {
   sku: string;
   price: number;
   cost_price?: number;
+  mrp?: number;
+  brand?: string;
+  key_benefits?: string[];
+  how_to_use?: string[];
   stock: number;
   category_id: string;
   images: string[];

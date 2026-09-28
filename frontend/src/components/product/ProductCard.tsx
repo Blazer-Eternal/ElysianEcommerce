@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, memo } from "react";
 import type { Product } from "../../types/product.types";
-import { formatCurrency } from "../../utils/formatCurrency";
+import { formatCurrency, formatDiscount, getDisplayMrp } from "../../utils/formatCurrency";
 import { ROUTES } from "../../constants/routes";
 import { useCartActions } from "../../hooks/useCart";
 import { useAnimationPause } from "../../hooks/useAnimationPause";
@@ -29,6 +29,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const outOfStock = product.stock === 0;
   const imageUrl = product.images?.[0] || "/placeholder.svg";
+
+  // MRP is the struck-through original price; cost_price only counts as MRP when it
+  // is above the selling price (otherwise it is an internal cost, not a discount).
+  const mrp = getDisplayMrp(product);
+  const discount = formatDiscount(product.price, mrp);
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -78,13 +83,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
             />
 
             {/* Stock Badge */}
-            <div className="absolute top-2 left-2 glass rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur-md">
-              {outOfStock ? (
-                <span className="text-red-600">Out of Stock</span>
-              ) : product.stock && product.stock < 5 ? (
-                <span className="text-orange-600">Only {product.stock} left</span>
-              ) : (
-                <span className="text-green-600">In Stock</span>
+            <div className="absolute top-2 left-2 flex flex-col items-start gap-1.5">
+              <div className="glass rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur-md">
+                {outOfStock ? (
+                  <span className="text-red-600">Out of Stock</span>
+                ) : product.stock && product.stock < 5 ? (
+                  <span className="text-orange-600">Only {product.stock} left</span>
+                ) : (
+                  <span className="text-green-600">In Stock</span>
+                )}
+              </div>
+              {discount > 0 && (
+                <div className="rounded-full bg-[#0e7c85] px-2.5 py-1 text-xs font-bold text-white shadow-md backdrop-blur-md">
+                  {discount}% off
+                </div>
               )}
             </div>
 
@@ -108,7 +120,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
 
           {/* Content Container */}
-          <div className="flex-1 p-4 flex flex-col justify-between">
+          <div className="flex-1 p-4 flex flex-col justify-between gap-3">
             {/* Product Name */}
             <div className="space-y-2">
               <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 group-hover:text-[#0e7c85] transition-colors duration-300">
@@ -125,7 +137,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                     emptyClassName="text-[#0e7c85]/30"
                   />
                   <span className="text-xs text-gray-600">
-                    ({product.rating_count} {product.rating_count === 1 ? "review" : "reviews"})
+                    Ratings {product.rating_count}
                   </span>
                 </div>
               ) : (
@@ -136,18 +148,31 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </div>
 
             {/* Price Container */}
-            <div className="pt-3 border-t border-white/40 mt-3">
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-base font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+            <div className="pt-3 border-t border-white/40">
+              <div className="flex items-baseline gap-2 flex-wrap">
+                <span className="text-xl font-extrabold text-[#0e7c85]">
                   {formatCurrency(product.price)}
                 </span>
-                {product.cost_price && product.cost_price < product.price && (
-                  <span className="text-xs text-gray-500 line-through">
-                    {formatCurrency(product.cost_price)}
+                {mrp && (
+                  <span className="text-sm text-gray-500 line-through">
+                    {formatCurrency(mrp)}
                   </span>
                 )}
+                {discount > 0 && (
+                  <span className="text-xs font-bold text-green-600">-{discount}%</span>
+                )}
               </div>
+              <p className="text-[11px] text-gray-500 mt-0.5">Inclusive of all taxes</p>
             </div>
+
+            {/* Add to Cart */}
+            <button
+              onClick={handleAddToCart}
+              disabled={outOfStock || isAdding}
+              className="w-full rounded-xl border border-[#0e7c85]/40 bg-white/70 px-3 py-2 text-sm font-bold text-[#0e7c85] transition-all duration-300 hover:bg-[#0e7c85] hover:border-[#0e7c85] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/70 disabled:hover:text-[#0e7c85]"
+            >
+              {isAdding ? "Adding..." : outOfStock ? "Out of Stock" : "Add to Cart"}
+            </button>
           </div>
         </div>
       </div>

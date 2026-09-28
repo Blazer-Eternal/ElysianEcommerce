@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCartActions } from "../../hooks/useCart";
 import type { Product } from "../../types/product.types";
-import { formatCurrency } from "../../utils/formatCurrency";
+import { formatCurrency, formatDiscount, getDisplayMrp } from "../../utils/formatCurrency";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { ROUTES } from "../../constants/routes";
 import Spinner from "../../components/ui/Spinner";
@@ -255,7 +255,7 @@ const Wishlist = () => {
             const itemError = errorId?.id === product._id ? errorId.message : null;
             const isHovered = hoveredId === product._id;
             const imageUrl = product.images?.[0] || "/placeholder.svg";
-            const discountPercent = product.cost_price ? Math.round(((product.cost_price - product.price) / product.cost_price) * 100) : 0;
+            const discountPercent = formatDiscount(product.price, getDisplayMrp(product));
 
             return (
               <div
@@ -372,13 +372,18 @@ const Wishlist = () => {
                       {/* Price & Action Section */}
                       <div className="pt-4 mt-4 space-y-3">
                         {/* Price Display */}
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="text-xl sm:text-2xl font-bold text-[#0e7c85]">
                             {formatCurrency(product.price)}
                           </span>
-                          {product.cost_price && product.cost_price > product.price && (
+                          {getDisplayMrp(product) && (
                             <span className="text-xs text-gray-500 line-through font-medium">
-                              {formatCurrency(product.cost_price)}
+                              {formatCurrency(getDisplayMrp(product) as number)}
+                            </span>
+                          )}
+                          {formatDiscount(product.price, getDisplayMrp(product)) > 0 && (
+                            <span className="text-xs font-bold text-green-600">
+                              -{formatDiscount(product.price, getDisplayMrp(product))}%
                             </span>
                           )}
                         </div>

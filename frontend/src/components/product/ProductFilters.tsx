@@ -52,7 +52,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
           name="minPrice"
           type="number"
           aria-label="Minimum price"
-          placeholder="Min price"
+          placeholder="Min price (Rs.)"
           value={filters.minPrice ?? ""}
           onChange={(e) =>
             onChange({
@@ -69,7 +69,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
           name="maxPrice"
           type="number"
           aria-label="Maximum price"
-          placeholder="Max price"
+          placeholder="Max price (Rs.)"
           value={filters.maxPrice ?? ""}
           onChange={(e) =>
             onChange({
