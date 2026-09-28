@@ -381,11 +381,6 @@ const Checkout = () => {
                         <span className="text-cyan-700 font-bold">{formatCurrency(line.product.price * line.quantity)}</span>
                       </div>
                     ))}
-                    {isBuyNow && (
-                      <p className="text-xs text-gray-600 font-medium leading-relaxed">
-                        Buying now — this item goes straight to your order and is not added to your cart.
-                      </p>
-                    )}
                   </div>
 
                   {exceedsStock && (
@@ -408,11 +403,15 @@ const Checkout = () => {
                     )}
                   </div>
 
-                  {/* Total */}
+                  {/* Total — label sits above the amount and both hug the same right edge as the
+                      rows above, so a long NPR figure (Rs. 2,14,000) never wraps inside this
+                      narrow summary column the way it did on one crowded line. */}
                   <div className="mb-8 p-5 rounded-2xl bg-linear-to-r from-cyan-200/40 to-teal-200/40 border-2 border-cyan-300/60">
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg font-black text-gray-900">Total</span>
-                      <span className="text-4xl font-black bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                    <div className="flex flex-col items-end text-right">
+                      <span className="text-xs font-black uppercase tracking-widest text-[#0e7c85]">
+                        Total
+                      </span>
+                      <span className="mt-1 text-2xl font-black leading-none whitespace-nowrap tracking-tight bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
                         {formatCurrency(total)}
                       </span>
                     </div>
