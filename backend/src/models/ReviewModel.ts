@@ -15,8 +15,12 @@ const ReviewSchema = new Schema<ReviewInterface>({
   rating: {
     type: Number,
     required: true,
-    min: 0.5,
+    min: 1,
     max: 5,
+    validate: {
+      validator: Number.isInteger,
+      message: "Rating must be a whole number of stars",
+    },
   },
   comment: {
     type: String,

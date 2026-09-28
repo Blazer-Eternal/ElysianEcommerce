@@ -9,8 +9,8 @@ interface StarPickerProps {
 }
 
 /**
- * Interactive rating widget: hovering/clicking the left half of a star selects
- * a half star (x.5), the right half selects the full star (x.0).
+ * Interactive rating widget: clicking a star selects that full star (1–5).
+ * Half stars are not selectable — only whole numbers.
  * Shows a live preview while hovering, like the review form has always done.
  */
 const StarPicker = ({ value, onChange, size = 24, disabled = false }: StarPickerProps) => {
@@ -27,10 +27,9 @@ const StarPicker = ({ value, onChange, size = 24, disabled = false }: StarPicker
 
     const starWidth = rect.width / 5;
     const starIndex = Math.floor(x / starWidth);
-    const isLeftHalf = x % starWidth < starWidth / 2;
-    const newRating = isLeftHalf ? starIndex + 0.5 : starIndex + 1;
+    const newRating = starIndex + 1;
 
-    return Math.max(0.5, Math.min(5, newRating));
+    return Math.max(1, Math.min(5, newRating));
   };
 
   const preview = hovered ?? value;
@@ -67,7 +66,7 @@ const StarPicker = ({ value, onChange, size = 24, disabled = false }: StarPicker
             className="relative inline-block"
             style={{ width: size, height: size }}
             role="radio"
-            aria-checked={value === starIndex || value === starIndex - 0.5}
+            aria-checked={value >= starIndex}
             aria-label={`${starIndex} star${starIndex > 1 ? "s" : ""}`}
           >
             <svg

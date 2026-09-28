@@ -165,17 +165,6 @@ const ProductList = () => {
 
         {/* Products Grid Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
-          {/* Section Header */}
-          <div className="mb-12 space-y-4 animate-fade-in-up gpu-accelerate" style={{ animationDelay: '0.4s', transform: "translateZ(0)" }}>
-            <div className="flex items-center gap-4">
-              <div className="h-1 w-8 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full" />
-              <h2 className="text-sm sm:text-base font-bold text-[#0e7c85] uppercase tracking-widest gpu-accelerate">
-                {data?.pagination?.total || 0} Items Available
-              </h2>
-            </div>
-            <p className="text-gray-600 font-light">Browse through our premium selection</p>
-          </div>
-
           {/* Loading State - Animated Skeleton */}
           {isLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>

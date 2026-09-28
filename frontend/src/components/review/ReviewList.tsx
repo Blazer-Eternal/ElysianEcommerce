@@ -228,11 +228,11 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
             <div className="flex items-center gap-3">
               <StarPicker value={rating} onChange={setRating} size={26} disabled={updateMutation.isPending} />
               <span className="text-xs font-bold text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-full">
-                {rating.toFixed(1)}/5
+                {rating}/5
               </span>
             </div>
             <p className="text-xs text-gray-500 mt-1.5">
-              Hover and click to select half or full stars
+              Hover and click to select a full star rating (1–5)
             </p>
           </div>
 

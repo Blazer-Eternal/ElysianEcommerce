@@ -1,23 +1,23 @@
 import { z } from "zod";
 
-// Ratings are half-star steps (0.5, 1, 1.5 … 5), matching the star picker UI.
-const halfStarRating = (message: string) =>
+// Ratings are whole stars only (1, 2, 3, 4, 5), matching the star picker UI.
+const wholeStarRating = (message: string) =>
   z
     .number()
-    .min(0.5, message)
+    .min(1, message)
     .max(5, message)
-    .refine((value) => Math.round(value * 2) / 2 === value, {
-      message: "Rating must be in half-star steps (e.g. 3.5)",
+    .refine((value) => Number.isInteger(value), {
+      message: "Rating must be a whole number of stars (e.g. 3)",
     });
 
 export const createReviewValidator = z.object({
   product_id: z.string().min(1, "Product ID is required"),
-  rating: halfStarRating("Rating must be between 0.5 and 5"),
+  rating: wholeStarRating("Rating must be between 1 and 5"),
   comment: z.string().max(1000, "Comment must be under 1000 characters").optional(),
 });
 
 export const updateReviewValidator = z.object({
-  rating: halfStarRating("Rating must be between 0.5 and 5").optional(),
+  rating: wholeStarRating("Rating must be between 1 and 5").optional(),
   comment: z.string().max(1000, "Comment must be under 1000 characters").optional(),
 });
 
