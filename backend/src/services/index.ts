@@ -14,4 +14,6 @@ export * from './WishlistServices'
 
 export * from './OrderServices'
 
+export * from './DashboardAnalyticsServices'
+
 export * from "./EsewaServices";

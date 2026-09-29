@@ -2,7 +2,7 @@ import { Response } from "express";
 import * as crypto from "crypto";
 import mongoose from "mongoose";
 import { CustomRequestInterface } from "../../intefaces";
-import { OrderServices, CartServices, ProductServices, CouponServices, EsewaServices } from "../../services";
+import { OrderServices, CartServices, ProductServices, CouponServices, EsewaServices, DashboardAnalyticsServices } from "../../services";
 import { RoleEnum } from "../../enums/UserEnums";
 import { OrderStatusEnum, PaymentStatusEnum, PaymentMethodEnum } from "../../enums/OrderEnums";
 import { OrderItemInterface } from "../../intefaces/OrderInterface";
@@ -355,6 +355,23 @@ export class OrderController {
       return res.status(200).json({ success: true, data: stats });
     } catch (error) {
       console.error("getOrderStats error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  // GET /orders/analytics?days=N (admin) - the charts on the admin dashboard
+  // (sales overview, top categories, top selling products, demand trends, AOV,
+  // activity feed). Every series is aggregated inside MongoDB and returned as
+  // zero-filled daily buckets, so the client just renders them.
+  static async getOrderAnalytics(req: CustomRequestInterface, res: Response) {
+    try {
+      const requested = parseInt(req.query.days as string, 10);
+      const days = Number.isFinite(requested) ? Math.min(Math.max(requested, 1), 365) : 30;
+
+      const analytics = await new DashboardAnalyticsServices().getOverview(days);
+      return res.status(200).json({ success: true, data: analytics });
+    } catch (error) {
+      console.error("getOrderAnalytics error:", error);
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }

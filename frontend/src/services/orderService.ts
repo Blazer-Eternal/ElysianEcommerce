@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 import type { ApiResponse, PaginatedResponse } from "../types/pagination.types";
-import type { Order, CreateOrderPayload, CreateOrderResponseData, OrderStatus, PaymentStatus, OrderStats } from "../types/order.types";
+import type { Order, CreateOrderPayload, CreateOrderResponseData, OrderStatus, PaymentStatus, OrderStats, DashboardAnalytics, OrderShippingAddress } from "../types/order.types";
 
 export const orderService = {
   create: async (payload: CreateOrderPayload): Promise<CreateOrderResponseData> => {
@@ -46,6 +46,17 @@ export const orderService = {
     return data;
   },
 
+  // Time-series analytics for the dashboard charts (sales overview, top
+  // categories/products, demand trends, AOV, activity feed) for the last
+  // `days` days plus the matching previous period for comparison.
+  getAnalytics: async (days = 30, config?: { signal?: AbortSignal }): Promise<ApiResponse<DashboardAnalytics>> => {
+    const { data } = await axiosInstance.get("/orders/analytics", {
+      params: { days },
+      signal: config?.signal,
+    });
+    return data;
+  },
+
   updateStatus: async (id: string, status: OrderStatus): Promise<ApiResponse<Order>> => {
     const { data } = await axiosInstance.patch(`/orders/${id}/status`, { status });
     return data;
@@ -56,7 +67,7 @@ export const orderService = {
     return data;
   },
 
-  updateShippingAddress: async (id: string, shipping_address: any): Promise<ApiResponse<Order>> => {
+  updateShippingAddress: async (id: string, shipping_address: OrderShippingAddress): Promise<ApiResponse<Order>> => {
     const { data } = await axiosInstance.patch(`/orders/${id}/shipping-address`, { shipping_address });
     return data;
   },

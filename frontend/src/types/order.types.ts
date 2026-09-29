@@ -89,3 +89,58 @@ export interface OrderStats {
   revenueLast30Days: number;
   averageOrderValue: number;
 }
+
+// ---- GET /orders/analytics (admin dashboard charts) ------------------------
+
+/** One zero-filled UTC day bucket. */
+export interface AnalyticsPoint {
+  date: string; // YYYY-MM-DD
+  revenue: number;
+  orders: number;
+  paidOrders: number;
+  units: number;
+  customers: number;
+  products: number;
+}
+
+export interface AnalyticsTotals {
+  revenue: number;
+  orders: number;
+  paidOrders: number;
+  units: number;
+  customers: number;
+  products: number;
+}
+
+export interface TopCategory {
+  category_id: string | null;
+  name: string;
+  units: number;
+  revenue: number;
+}
+
+export interface TopProduct {
+  product_id: string;
+  name: string | null;
+  image: string | null;
+  units: number;
+  revenue: number;
+}
+
+export interface ActivityItem {
+  id: string;
+  type: "order" | "user" | "review";
+  title: string;
+  subtitle: string;
+  at: string;
+}
+
+export interface DashboardAnalytics {
+  days: number;
+  current: AnalyticsPoint[];
+  previous: AnalyticsPoint[];
+  totals: { current: AnalyticsTotals; previous: AnalyticsTotals };
+  topCategories: TopCategory[];
+  topProducts: TopProduct[];
+  recentActivity: ActivityItem[];
+}

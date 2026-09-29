@@ -29,6 +29,14 @@ orderRoutes.get(
   exceptionHandler(OrderController.getOrderStats)
 );
 
+// Registered before "/:id" so "analytics" is never captured as an order id.
+orderRoutes.get(
+  "/analytics",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(Guard.grantRole(RoleEnum.admin)),
+  exceptionHandler(OrderController.getOrderAnalytics)
+);
+
 orderRoutes.get("/:id", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.getOrderById));
 
 orderRoutes.patch("/:id/cancel", exceptionHandler(Guard.grantAccess), exceptionHandler(OrderController.cancelOrder));
