@@ -111,13 +111,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     <div className="flex h-screen bg-linear-to-b from-[#eafcfd] to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-80 bg-linear-to-b from-white via-white to-[#f0f9fb] border-r border-[#e0f2f7] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-linear-to-b from-white via-white to-[#f0f9fb] border-r border-[#e0f2f7] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
-        {/* Sidebar Header */}
-        <div className="sticky top-0 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] p-6 space-y-6">
+        {/* Sidebar Header - pinned above the nav so items never paint over it */}
+        <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] shadow-[0_4px_12px_-6px_rgba(14,124,133,0.15)] p-6 space-y-6">
           {/* Logo Section */}
           <div className="flex items-center justify-between">
             <Link to={ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-3 group">
@@ -162,11 +162,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 {item.icon}
               </div>
               <span className="font-semibold text-base group-hover:text-[#0e7c85] transition-colors gpu-accelerate" style={{ willChange: "color" }}>{item.label}</span>
-              {index === 0 && (
-                <div className="ml-auto px-2 py-1 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white text-xs font-bold rounded-full gpu-accelerate" style={{ transform: "translateZ(0)" }}>
-                  Home
-                </div>
-              )}
             </Link>
           ))}
         </nav>

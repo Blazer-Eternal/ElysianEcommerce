@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from "react";
+import { memo, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
@@ -50,6 +50,15 @@ DashboardHeader.displayName = "DashboardHeader";
 const Dashboard = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [period, setPeriod] = useState<PeriodDays>(30);
+
+  // Start of the selected period (UTC midnight, today included). The customer
+  // activity feed is filtered against it so it can never show older events.
+  const activityCutoff = useMemo(() => {
+    const start = new Date();
+    start.setUTCHours(0, 0, 0, 0);
+    start.setUTCDate(start.getUTCDate() - (period - 1));
+    return start.getTime();
+  }, [period]);
 
   // Queries with optimized stale time
   const { data: productsRes, isLoading: productsLoading } = useQuery({
@@ -119,6 +128,16 @@ const Dashboard = memo(() => {
   const analytics = analyticsRes?.data;
   const currentPoints = analytics?.current ?? [];
   const totals = analytics?.totals;
+
+  // Activity restricted to the selected period (defensive re-check of the
+  // server-side window).
+  const activity = useMemo(
+    () =>
+      (analytics?.recentActivity ?? []).filter(
+        (item) => new Date(item.at).getTime() >= activityCutoff
+      ),
+    [analytics?.recentActivity, activityCutoff]
+  );
 
   const revenueChange = totals ? pctChange(totals.current.revenue, totals.previous.revenue) : null;
   const ordersChange = totals ? pctChange(totals.current.orders, totals.previous.orders) : null;
@@ -229,7 +248,7 @@ const Dashboard = memo(() => {
 
         {/* Merged order / signup / review feed */}
         <div className="max-w-7xl mx-auto animate-fade-in animation-delay-400ms">
-          <CustomerActivity activity={analytics?.recentActivity} isLoading={analyticsLoading} />
+          <CustomerActivity activity={activity} isLoading={analyticsLoading} periodDays={period} />
         </div>
       </div>
     </AdminLayout>

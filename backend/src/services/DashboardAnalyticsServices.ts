@@ -187,22 +187,24 @@ export class DashboardAnalyticsServices {
         { $group: { _id: { day: dayExpr }, count: { $sum: 1 } } },
       ]),
 
-      OrderModel.find()
+      // Activity feed queries are bounded to the current window so the feed
+      // only ever shows events inside the selected period.
+      OrderModel.find({ created_at: { $gte: windowStart, $lt: currentEnd } })
         .sort({ created_at: -1 })
-        .limit(5)
+        .limit(10)
         .populate("user_id", "name")
         .select("order_number user_id status total_amount created_at items.product_name")
         .lean(),
 
-      UserModel.find()
+      UserModel.find({ created_at: { $gte: windowStart, $lt: currentEnd } })
         .sort({ created_at: -1 })
-        .limit(3)
+        .limit(6)
         .select("name email created_at")
         .lean(),
 
-      ReviewModel.find()
+      ReviewModel.find({ created_at: { $gte: windowStart, $lt: currentEnd } })
         .sort({ created_at: -1 })
-        .limit(3)
+        .limit(6)
         .populate("user_id", "name")
         .populate("product_id", "name")
         .select("user_id product_id rating created_at")

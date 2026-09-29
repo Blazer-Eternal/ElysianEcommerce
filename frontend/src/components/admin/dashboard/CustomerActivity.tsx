@@ -8,6 +8,8 @@ import type { ActivityItem } from "../../../types/order.types";
 interface CustomerActivityProps {
   activity: ActivityItem[] | undefined;
   isLoading: boolean;
+  /** Selected period length - only events inside it are shown. */
+  periodDays?: number;
 }
 
 const TYPE_STYLES: Record<ActivityItem["type"], { icon: ReactNode; className: string }> = {
@@ -17,7 +19,7 @@ const TYPE_STYLES: Record<ActivityItem["type"], { icon: ReactNode; className: st
 };
 
 /** Merged feed of recent orders, registrations and reviews. */
-const CustomerActivity = memo(({ activity, isLoading }: CustomerActivityProps) => (
+const CustomerActivity = memo(({ activity, isLoading, periodDays }: CustomerActivityProps) => (
   <DashboardPanel title="Customer Activity" icon={<ActivityIcon size={18} />} className="h-full">
     {isLoading ? (
       <div className="space-y-3">
@@ -26,7 +28,10 @@ const CustomerActivity = memo(({ activity, isLoading }: CustomerActivityProps) =
         ))}
       </div>
     ) : !activity || activity.length === 0 ? (
-      <PanelEmpty message="No activity yet" hint="Orders, sign-ups and reviews will stream in here." />
+      <PanelEmpty
+        message={periodDays ? `No activity in the last ${periodDays} days` : "No activity yet"}
+        hint="Orders, sign-ups and reviews from this period will stream in here."
+      />
     ) : (
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
         {activity.map((item) => {
