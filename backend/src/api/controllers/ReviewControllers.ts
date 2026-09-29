@@ -70,6 +70,26 @@ export class ReviewController {
     }
   }
 
+  static async getAllReviews(req: CustomRequestInterface, res: Response) {
+    const page = toPositiveInt(req.query.page, 1);
+    const limit = Math.min(50, toPositiveInt(req.query.limit, 10));
+    const requestedSort = String(req.query.sort || "recent") as ReviewSort;
+    const sort = REVIEW_SORTS.includes(requestedSort) ? requestedSort : "recent";
+
+    try {
+      const services = new ReviewServices();
+      const list = await services.findAll({ page, limit, sort });
+
+      return res.status(200).json({
+        success: true,
+        data: list.reviews,
+        pagination: list.pagination,
+      });
+    } catch (error) {
+      return sendValidationError(res, error);
+    }
+  }
+
   static async createReview(req: CustomRequestInterface, res: Response) {
     const userId = req.user?.id as string;
     const { product_id, rating, comment } = req.body;

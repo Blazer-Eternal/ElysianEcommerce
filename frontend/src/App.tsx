@@ -36,6 +36,7 @@ const ManageCoupons = lazy(() => import("./pages/admin/ManageCoupons"));
 const ManageOrders = lazy(() => import("./pages/admin/ManageOrders"));
 const AdminOrderDetail = lazy(() => import("./pages/admin/AdminOrderDetail"));
 const ManageUsers = lazy(() => import("./pages/admin/ManageUsers"));
+const ManageReviews = lazy(() => import("./pages/admin/ManageReviews"));
 const DataTablesDemo = lazy(() => import("./pages/admin/DataTablesDemo"));
 
 // Info Pages
@@ -283,6 +284,16 @@ function App() {
           <ProtectedRoute requireAdmin>
             <AdminLayout>
               <ManageUsers />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.ADMIN_REVIEWS}
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <ManageReviews />
             </AdminLayout>
           </ProtectedRoute>
         }

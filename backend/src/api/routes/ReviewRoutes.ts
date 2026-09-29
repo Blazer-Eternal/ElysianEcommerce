@@ -2,8 +2,17 @@ import { Router } from "express";
 import { ReviewController } from "../controllers/ReviewControllers";
 import { exceptionHandler, Guard, Validator } from "../../middleware";
 import { createReviewValidator, updateReviewValidator } from "../../validators/ReviewValidator";
+import { RoleEnum } from "../../enums/UserEnums";
 
 const reviewRoutes = Router();
+
+// Admin only: get all reviews across all products
+reviewRoutes.get(
+  "/admin/all",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(Guard.grantRole(RoleEnum.admin)),
+  exceptionHandler(ReviewController.getAllReviews)
+);
 
 // Logged-in user only: view reviews for a product
 reviewRoutes.get(

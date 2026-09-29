@@ -85,6 +85,38 @@ export class ReviewServices {
     };
   }
 
+  /**
+   * Returns all reviews across all products (admin moderation view),
+   * with user and product data populated, plus pagination metadata.
+   */
+  public async findAll(options: ReviewQueryOptions = {}) {
+    const { page = 1, limit = 10, sort = "recent" } = options;
+
+    const skip = (page - 1) * limit;
+
+    const [reviews, total] = await Promise.all([
+      ReviewModel.find()
+        .populate("user_id", "name")
+        .populate("product_id", "name")
+        .sort(REVIEW_SORTS[sort] ?? REVIEW_SORTS.recent)
+        .skip(skip)
+        .limit(limit),
+      ReviewModel.countDocuments(),
+    ]);
+
+    return {
+      reviews,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+        hasNextPage: page * limit < total,
+        hasPrevPage: page > 1,
+      },
+    };
+  }
+
   public async findById(id: string): Promise<ReviewInterface | null> {
     return await ReviewModel.findById(id);
   }

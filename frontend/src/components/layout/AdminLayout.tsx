@@ -43,6 +43,12 @@ const UserIcon = () => (
   </svg>
 );
 
+const ReviewIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+  </svg>
+);
+
 const DataTablesIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-7-10h-2v2h2v-2zm-2 4h-2v2h2v-2zm4-4h-2v2h2v-2zm-2 4h-2v2h2v-2zm4-4h-2v2h2v-2zm-2 4h-2v2h2v-2z"/>
@@ -92,6 +98,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { label: "Coupons", route: ROUTES.ADMIN_COUPONS, icon: <CouponIcon /> },
     { label: "Orders", route: ROUTES.ADMIN_ORDERS, icon: <OrderIcon /> },
     { label: "Users", route: ROUTES.ADMIN_USERS, icon: <UserIcon /> },
+    { label: "Reviews", route: ROUTES.ADMIN_REVIEWS, icon: <ReviewIcon /> },
     { label: "Data Tables", route: ROUTES.ADMIN_DATA_TABLES, icon: <DataTablesIcon /> },
   ];
 
