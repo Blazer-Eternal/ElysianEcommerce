@@ -117,7 +117,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
         {/* Sidebar Header - pinned above the nav so items never paint over it */}
-        <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] shadow-[0_4px_12px_-6px_rgba(14,124,133,0.15)] p-6 space-y-6">
+        <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] shadow-[0_4px_12px_-6px_rgba(14,124,133,0.15)] p-6">
           {/* Logo Section */}
           <div className="flex items-center justify-between">
             <Link to={ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-3 group">
@@ -138,9 +138,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <CloseIcon />
             </button>
           </div>
-
-          {/* Admin Menu Label */}
-          <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">Admin Menu</div>
         </div>
 
         {/* Sidebar Navigation */}
@@ -209,21 +206,17 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col w-full overflow-hidden animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
-        {/* Top Bar */}
-        <div className="bg-white/50 backdrop-blur-xl border-b border-[#e0f2f7] sticky top-0 z-40 gpu-accelerate" style={{ contain: "layout style paint" }}>
+        {/* Top Bar - only carries the mobile sidebar toggle */}
+        <div className="bg-white/50 backdrop-blur-xl border-b border-[#e0f2f7] sticky top-0 z-40 gpu-accelerate lg:hidden" style={{ contain: "layout style paint" }}>
           <div className="flex items-center justify-between px-6 py-4 gpu-accelerate" style={{ willChange: "background-color" }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden text-[#0e7c85] hover:text-[#1a6b94] transition-colors gpu-accelerate"
+              className="text-[#0e7c85] hover:text-[#1a6b94] transition-colors gpu-accelerate"
               style={{ transform: "translateZ(0)" }}
             >
               <MenuIcon />
             </button>
             <div className="flex-1" />
-            <div className="text-right gpu-accelerate">
-              <p className="text-sm text-gray-600">Welcome back</p>
-              <p className="text-lg font-bold text-gray-900">{user?.name?.split(" ")[0] || "Admin"}</p>
-            </div>
           </div>
         </div>
 

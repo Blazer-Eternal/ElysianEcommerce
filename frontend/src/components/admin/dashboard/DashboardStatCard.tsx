@@ -3,41 +3,51 @@ import Sparkline from "./Sparkline";
 
 interface DashboardStatCardProps {
   label: string;
+  /** Lifetime figure shown in big type (e.g. total revenue ever recorded). */
   value: string | number;
   icon: ReactNode;
   /** `from-* to-*` gradient classes for the icon tile. */
   iconBg: string;
   /** Stroke color for the mini sparkline. */
   sparkColor: string;
-  /** Percent change vs the previous period; null = no previous data. */
-  changePct: number | null;
+  /** Metric total accumulated during the selected period. */
+  periodValue: number;
+  /** Metric total from the immediately preceding period of the same length. */
+  previousValue: number;
   /** Daily series feeding the sparkline. */
   series: number[];
   periodDays: number;
 }
 
+/** Scales the headline number down for long figures so nothing gets clipped. */
+const valueSizeClass = (text: string): string => {
+  if (text.length <= 8) return "text-2xl sm:text-3xl";
+  if (text.length <= 13) return "text-xl sm:text-2xl";
+  return "text-lg sm:text-xl";
+};
+
 /**
- * Top-row KPI card (Total Sales / Orders / Customers / Products) with a
- * period-over-period change badge and a mini trend line - mirrors the
- * reference dashboard's stat tiles.
+ * Top-row KPI card (Total Revenue / Orders / Customers / Products): lifetime
+ * total on the headline, the selected period compared against the previous
+ * period underneath, and a sparkline of the daily series for that period.
  */
 const DashboardStatCard = memo(
-  ({ label, value, icon, iconBg, sparkColor, changePct, series, periodDays }: DashboardStatCardProps) => {
-    const isNew = changePct === null;
-    const isUp = (changePct ?? 0) > 0;
-    const isDown = (changePct ?? 0) < 0;
+  ({ label, value, icon, iconBg, sparkColor, periodValue, previousValue, series, periodDays }: DashboardStatCardProps) => {
+    const delta = periodValue - previousValue;
+    const isUp = delta > 0;
+    const isDown = delta < 0;
+    // Percentage only means something when the previous period had activity;
+    // otherwise fall back to the absolute change so the badge is never empty.
+    const pct = previousValue > 0 ? (delta / previousValue) * 100 : null;
+    const magnitude = pct === null ? `${Math.abs(delta)}` : `${Math.abs(pct).toFixed(0)}%`;
 
-    const badgeClass = isNew
-      ? "text-[#0e7c85]"
-      : isUp
-        ? "text-green-600"
-        : isDown
-          ? "text-red-500"
-          : "text-gray-500";
+    const badgeClass = isUp ? "text-green-600" : isDown ? "text-red-500" : "text-gray-500";
+    const badgeText = delta === 0 ? "0" : `${isUp ? "▲" : "▼"} ${magnitude}`;
 
-    const badgeText = isNew
-      ? "New"
-      : `${isUp ? "▲" : isDown ? "▼" : ""} ${Math.abs(changePct ?? 0).toFixed(0)}%`;
+    const valueText = String(value);
+    const comparisonTitle =
+      `${periodValue} during the last ${periodDays} days vs ` +
+      `${previousValue} during the previous ${periodDays} days.`;
 
     return (
       <div className="glass rounded-2xl border border-white/20 p-5 sm:p-6 card-container hover-lift transition-smooth">
@@ -49,15 +59,24 @@ const DashboardStatCard = memo(
 
         <p className="mt-4 text-xs font-semibold text-gray-500 uppercase tracking-wide">{label}</p>
 
-        <div className="flex items-end justify-between gap-3 mt-1">
-          <div className="min-w-0">
-            <p className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">{value}</p>
-            <p className="flex items-center gap-1.5 mt-1.5 whitespace-nowrap">
-              <span className={`text-xs font-bold ${badgeClass}`}>{badgeText}</span>
-              <span className="text-xs text-gray-400">vs. last {periodDays} days</span>
-            </p>
-          </div>
-          <Sparkline data={series} color={sparkColor} className="w-20 h-10 shrink-0" />
+        <p
+          className={`mt-1 font-bold text-gray-900 tracking-tight tabular-nums ${valueSizeClass(valueText)}`}
+          title={valueText}
+        >
+          {valueText}
+        </p>
+
+        <div className="flex items-end justify-between gap-3 mt-2">
+          <p
+            className="flex items-center gap-1.5 min-w-0 whitespace-nowrap"
+            title={comparisonTitle}
+          >
+            <span className={`text-xs font-bold ${badgeClass}`}>{badgeText}</span>
+            <span className="text-[11px] text-gray-400 truncate">vs. previous {periodDays} days</span>
+          </p>
+          <span title={`Daily ${label.toLowerCase()} over the last ${periodDays} days`} className="shrink-0">
+            <Sparkline data={series} color={sparkColor} className="w-20 h-10" />
+          </span>
         </div>
       </div>
     );

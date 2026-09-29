@@ -24,13 +24,6 @@ import {
   PeopleIcon,
 } from "../../components/admin/dashboard/icons";
 
-// Period-over-period percent change; null means "no previous data" (badge
-// falls back to "New").
-const pctChange = (current: number, previous: number): number | null => {
-  if (previous > 0) return ((current - previous) / previous) * 100;
-  return current > 0 ? null : 0;
-};
-
 // Memoized Header Component
 const DashboardHeader = memo(({ period, onPeriodChange }: { period: PeriodDays; onPeriodChange: (days: PeriodDays) => void }) => (
   <div className="max-w-7xl mx-auto flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between animate-fade-in">
@@ -118,7 +111,7 @@ const Dashboard = memo(() => {
 
   const totalRevenue = statsRes?.data.totalRevenue ?? 0;
 
-  const isLoading = productsLoading || statsLoading || usersLoading;
+  const isLoading = productsLoading || statsLoading || usersLoading || analyticsLoading;
 
   const productTotal = productsRes?.pagination.total ?? "—";
   const orderTotal = statsRes?.data.totalOrders ?? "—";
@@ -139,10 +132,9 @@ const Dashboard = memo(() => {
     [analytics?.recentActivity, activityCutoff]
   );
 
-  const revenueChange = totals ? pctChange(totals.current.revenue, totals.previous.revenue) : null;
-  const ordersChange = totals ? pctChange(totals.current.orders, totals.previous.orders) : null;
-  const customersChange = totals ? pctChange(totals.current.customers, totals.previous.customers) : null;
-  const productsChange = totals ? pctChange(totals.current.products, totals.previous.products) : null;
+  // Period-over-period totals backing the KPI comparison badges.
+  const currentTotals = totals?.current;
+  const previousTotals = totals?.previous;
 
   return (
     <AdminLayout>
@@ -150,17 +142,18 @@ const Dashboard = memo(() => {
         {/* Header + period selector (drives every chart below) */}
         <DashboardHeader period={period} onPeriodChange={setPeriod} />
 
-        {/* KPI row: Total Sales / Orders / Customers / Products */}
+        {/* KPI row: Total Revenue / Orders / Customers / Products */}
         {!isLoading ? (
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-responsive">
             <div className="animate-fade-in animation-delay-100ms">
               <DashboardStatCard
-                label="Total Sales"
+                label="Total Revenue"
                 value={formatCurrency(totalRevenue)}
                 icon={<BagIcon size={20} />}
                 iconBg="from-[#0e7c85] to-cyan-600"
                 sparkColor="#0e7c85"
-                changePct={revenueChange}
+                periodValue={currentTotals?.revenue ?? 0}
+                previousValue={previousTotals?.revenue ?? 0}
                 series={currentPoints.map((point) => point.revenue)}
                 periodDays={period}
               />
@@ -172,7 +165,8 @@ const Dashboard = memo(() => {
                 icon={<CartIcon size={20} />}
                 iconBg="from-blue-500 to-blue-600"
                 sparkColor="#3b82f6"
-                changePct={ordersChange}
+                periodValue={currentTotals?.orders ?? 0}
+                previousValue={previousTotals?.orders ?? 0}
                 series={currentPoints.map((point) => point.orders)}
                 periodDays={period}
               />
@@ -184,7 +178,8 @@ const Dashboard = memo(() => {
                 icon={<PeopleIcon size={20} />}
                 iconBg="from-purple-500 to-purple-600"
                 sparkColor="#8b5cf6"
-                changePct={customersChange}
+                periodValue={currentTotals?.customers ?? 0}
+                previousValue={previousTotals?.customers ?? 0}
                 series={currentPoints.map((point) => point.customers)}
                 periodDays={period}
               />
@@ -196,7 +191,8 @@ const Dashboard = memo(() => {
                 icon={<BoxIcon size={20} />}
                 iconBg="from-amber-500 to-amber-600"
                 sparkColor="#f59e0b"
-                changePct={productsChange}
+                periodValue={currentTotals?.products ?? 0}
+                previousValue={previousTotals?.products ?? 0}
                 series={currentPoints.map((point) => point.products)}
                 periodDays={period}
               />
