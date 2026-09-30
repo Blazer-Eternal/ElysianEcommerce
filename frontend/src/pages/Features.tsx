@@ -116,12 +116,11 @@ const Features = () => {
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6 relative z-10">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 animate-fade-in-up">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
             Why Shop With <span className="bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-pulse">Us</span>
           </h1>
           <p
-            className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto animate-fade-in-up"
-            style={{ animationDelay: '0.1s' }}
+            className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto"
           >
             Everything we do is built around getting this right — delivering excellence in every interaction.
           </p>
@@ -134,8 +133,7 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group relative animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="group relative"
             >
               {/* Gradient Background Animation */}
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.1), rgba(6,182,212,0.05), rgba(20,184,166,0.1))" }} />
@@ -170,7 +168,7 @@ const Features = () => {
       {/* Additional Info */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 animate-fade-in-up">
+          <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
               Quality Assurance
             </h2>
@@ -197,7 +195,7 @@ const Features = () => {
             </ul>
           </div>
 
-          <div className="glass rounded-3xl p-8 sm:p-12 space-y-8 border border-white/40 hover:border-[#0e7c85]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20 animate-fade-in-up" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
+          <div className="glass rounded-3xl p-8 sm:p-12 space-y-8 border border-white/40 hover:border-[#0e7c85]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/20" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
             <style>{`
               @keyframes gradient-shift {
                 0%, 100% { background-position: 0% 50%; }
@@ -270,7 +268,7 @@ const Features = () => {
 
       {/* CTA */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-8">
-        <div className="relative group animate-fade-in-up">
+        <div className="relative group">
           {/* Gradient background glow */}
           <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/20 via-cyan-500/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-2xl" />
 

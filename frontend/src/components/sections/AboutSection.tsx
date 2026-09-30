@@ -51,11 +51,6 @@ const AboutSection = () => {
           100% { background-position: 1000px 0; }
         }
 
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
         .animate-gradient {
           background-size: 200% 200%;
           animation: gradient-shift 6s ease infinite;
@@ -82,12 +77,12 @@ const AboutSection = () => {
 
       {/* Decorative blobs */}
       <div className="absolute top-0 left-1/4 w-80 h-80 bg-linear-to-br from-cyan-300/20 to-teal-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10 animate-float-slow" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-linear-to-br from-[#0e7c85]/20 to-cyan-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10" style={{ animationDelay: '-2s' }} />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-linear-to-br from-[#0e7c85]/20 to-cyan-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
           {/* Left side - Content */}
-          <div className="space-y-8 sm:space-y-10 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <div className="space-y-8 sm:space-y-10">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 glass px-5 py-2.5 rounded-full text-sm font-bold text-[#0e7c85] backdrop-blur-xl border border-white/60 group">
                 <span className="relative flex h-2 w-2">
@@ -115,7 +110,6 @@ const AboutSection = () => {
                 <div
                   key={index}
                   className="group/benefit flex items-start gap-4 p-3 rounded-lg hover:bg-white/50 transition-all duration-300 cursor-default"
-                  style={{ animationDelay: `${0.2 + index * 0.1}s` }}
                 >
                   <div className="mt-0.5 h-6 w-6 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-500 flex items-center justify-center text-white shrink-0 group-hover/benefit:scale-110 group-hover/benefit:shadow-lg group-hover/benefit:shadow-[#0e7c85]/50 transition-all duration-300 transform">
                     <CheckIcon />
@@ -139,7 +133,7 @@ const AboutSection = () => {
           </div>
 
           {/* Right side - Stats */}
-          <div className="space-y-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div className="space-y-6">
             {/* Main Stats Card */}
             <div className="glass rounded-3xl p-8 sm:p-12 backdrop-blur-2xl border border-white/70 hover:border-[#0e7c85]/80 transition-all duration-500 group space-y-8 group-hover-lift">
               <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:text-[#0e7c85] transition-colors duration-300">
@@ -151,7 +145,6 @@ const AboutSection = () => {
                   <div
                     key={index}
                     className="group/stat p-4 rounded-xl hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10 transition-all duration-400 cursor-default"
-                    style={{ animationDelay: `${0.3 + index * 0.1}s` }}
                   >
                     <div className="space-y-3">
                       <div className={`text-5xl sm:text-6xl font-black`}>

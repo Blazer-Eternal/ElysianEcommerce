@@ -118,7 +118,7 @@ const Wishlist = () => {
           <div className="flex justify-center">
             <div className="relative w-24 h-24">
               <div className="absolute inset-0 bg-gradient-to-br from-pink-200 to-rose-200 rounded-full blur-2xl opacity-50 animate-pulse"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-pink-500 animate-bounce" style={{ animationDelay: "0s" }}>
+              <div className="absolute inset-0 flex items-center justify-center text-pink-500 animate-bounce">
                 <HeartIcon />
               </div>
               <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center shadow-lg">
@@ -245,7 +245,7 @@ const Wishlist = () => {
       {/* Products Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 auto-rows-max">
-          {filteredAndSortedItems.map((item, index) => {
+          {filteredAndSortedItems.map((item) => {
             const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
             if (!product) return null;
 
@@ -262,7 +262,6 @@ const Wishlist = () => {
                 onMouseEnter={() => setHoveredId(product._id)}
                 onMouseLeave={() => setHoveredId(null)}
                 className="group h-full animate-fade-in"
-                style={{ animationDelay: `${index * 50}ms` }}
               >
                 <div className="relative h-full rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-105 transform-gpu will-animate">
                   {/* Background Gradient Glow */}

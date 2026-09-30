@@ -63,14 +63,10 @@ const OrderHistory = () => {
 
       {/* Orders Grid */}
       <div className="space-y-4">
-        {orders.map((order, index) => (
+        {orders.map((order) => (
           <div
             key={order._id}
             className="animate-fade-in"
-            style={{
-              animationDelay: `${index * 75}ms`,
-              animation: "fadeIn 0.6s ease-out forwards",
-            }}
           >
             <OrderCard order={order} />
           </div>

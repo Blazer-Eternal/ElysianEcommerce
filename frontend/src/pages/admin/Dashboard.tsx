@@ -145,7 +145,7 @@ const Dashboard = memo(() => {
         {/* KPI row: Total Revenue / Orders / Customers / Products */}
         {!isLoading ? (
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-responsive">
-            <div className="animate-fade-in animation-delay-100ms">
+            <div className="animate-fade-in">
               <DashboardStatCard
                 label="Total Revenue"
                 value={formatCurrency(totalRevenue)}
@@ -158,7 +158,7 @@ const Dashboard = memo(() => {
                 periodDays={period}
               />
             </div>
-            <div className="animate-fade-in animation-delay-200ms">
+            <div className="animate-fade-in">
               <DashboardStatCard
                 label="Total Orders"
                 value={orderTotal}
@@ -171,7 +171,7 @@ const Dashboard = memo(() => {
                 periodDays={period}
               />
             </div>
-            <div className="animate-fade-in animation-delay-300ms">
+            <div className="animate-fade-in">
               <DashboardStatCard
                 label="Total Customers"
                 value={userTotal}
@@ -184,7 +184,7 @@ const Dashboard = memo(() => {
                 periodDays={period}
               />
             </div>
-            <div className="animate-fade-in animation-delay-400ms">
+            <div className="animate-fade-in">
               <DashboardStatCard
                 label="Total Products"
                 value={productTotal}
@@ -207,7 +207,7 @@ const Dashboard = memo(() => {
         )}
 
         {/* Sales Overview (this vs last period) + category donut */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in animation-delay-100ms">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
           <div className="lg:col-span-2">
             <SalesOverview
               current={currentPoints}
@@ -223,7 +223,7 @@ const Dashboard = memo(() => {
         </div>
 
         {/* Newest products table + newest orders feed */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in animation-delay-200ms">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
           <div className="lg:col-span-2">
             <RecentProducts
               products={recentProductsRes?.data}
@@ -234,7 +234,7 @@ const Dashboard = memo(() => {
         </div>
 
         {/* Best sellers, daily demand and average order value */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in animation-delay-300ms">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
           <TopSellingProducts products={analytics?.topProducts ?? []} isLoading={analyticsLoading} />
           <ProductDemandTrends current={currentPoints} isLoading={analyticsLoading} />
           {totals && (
@@ -243,7 +243,7 @@ const Dashboard = memo(() => {
         </div>
 
         {/* Merged order / signup / review feed */}
-        <div className="max-w-7xl mx-auto animate-fade-in animation-delay-400ms">
+        <div className="max-w-7xl mx-auto animate-fade-in">
           <CustomerActivity activity={activity} isLoading={analyticsLoading} periodDays={period} />
         </div>
       </div>

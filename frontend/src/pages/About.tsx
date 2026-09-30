@@ -186,11 +186,6 @@ const About = () => {
           }
         }
 
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
         .animate-gradient {
           background-size: 200% 200%;
           animation: gradient-shift 6s ease infinite;
@@ -213,21 +208,6 @@ const About = () => {
           );
           background-size: 1000px 100%;
           animation: shimmer 3s infinite;
-        }
-
-        .animate-slide-in-left {
-          animation: slide-in-left 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-slide-in-right {
-          animation: slide-in-right 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-scale-in {
-          animation: scale-in 0.8s ease-out forwards;
-          opacity: 0;
         }
 
         .animate-blob-rotate {
@@ -257,8 +237,7 @@ const About = () => {
       <div className="relative z-10 pt-12 pb-8 sm:pt-24 sm:pb-16">
         <div className="mx-auto max-w-5xl space-y-8 px-4 text-center sm:px-6">
           <h1
-            className="animate-fade-in-up text-4xl leading-tight font-black text-gray-900 sm:text-5xl lg:text-7xl"
-            style={{ animationDelay: "0s" }}
+            className=" text-4xl leading-tight font-black text-gray-900 sm:text-5xl lg:text-7xl"
           >
             About{" "}
             <span
@@ -270,8 +249,7 @@ const About = () => {
           </h1>
 
           <p
-            className="animate-fade-in-up mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-600 sm:text-xl"
-            style={{ animationDelay: "0.1s" }}
+            className=" mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-600 sm:text-xl"
           >
             We believe that exceptional shopping experiences matter. That's
             why we built ElysianEcommerce with care, using the latest
@@ -279,8 +257,7 @@ const About = () => {
           </p>
 
           <div
-            className="animate-fade-in-up flex justify-center gap-4"
-            style={{ animationDelay: "0.2s" }}
+            className=" flex justify-center gap-4"
           >
             <div className="h-1 w-12 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500" />
             <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
@@ -293,8 +270,7 @@ const About = () => {
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
           <div
-            className="animate-slide-in-left space-y-8"
-            style={{ animationDelay: "0.3s" }}
+            className=" space-y-8"
           >
             <div>
               <h2 className="mb-6 bg-linear-to-r from-gray-900 via-gray-700 to-gray-800 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
@@ -331,8 +307,7 @@ const About = () => {
 
           {/* Right Stats Card */}
           <div
-            className="animate-slide-in-right"
-            style={{ animationDelay: "0.3s" }}
+            className=""
           >
             <div className="glass group animate-glow-pulse space-y-6 rounded-3xl border border-white/60 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/30 sm:p-12" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
               <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">
@@ -388,22 +363,19 @@ const About = () => {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
           <h2
-            className="animate-fade-in-up text-4xl font-bold text-gray-900 sm:text-5xl"
-            style={{ animationDelay: "0.4s" }}
+            className=" text-4xl font-bold text-gray-900 sm:text-5xl"
           >
             Our Core Values
           </h2>
 
           <p
-            className="animate-fade-in-up mx-auto max-w-2xl text-lg font-light text-gray-600"
-            style={{ animationDelay: "0.5s" }}
+            className=" mx-auto max-w-2xl text-lg font-light text-gray-600"
           >
             Everything we do is guided by these principles
           </p>
 
           <div
-            className="animate-fade-in-up flex justify-center gap-2"
-            style={{ animationDelay: "0.6s" }}
+            className=" flex justify-center gap-2"
           >
             <div className="h-1 w-12 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500" />
             <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
@@ -414,8 +386,7 @@ const About = () => {
           {values.map((value, index) => (
             <div
               key={index}
-              className="group relative animate-scale-in"
-              style={{ animationDelay: `${0.6 + index * 0.15}s` }}
+              className="group relative"
             >
               {/* Animated Gradient Background */}
               <div className="absolute inset-0 rounded-3xl opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.2), rgba(6,182,212,0.1), rgba(20,184,166,0.2))" }} />
@@ -458,22 +429,19 @@ const About = () => {
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
           <h2
-            className="animate-fade-in-up text-4xl font-bold text-gray-900 sm:text-5xl"
-            style={{ animationDelay: "1.2s" }}
+            className=" text-4xl font-bold text-gray-900 sm:text-5xl"
           >
             Our Journey
           </h2>
 
           <p
-            className="animate-fade-in-up text-lg font-light text-gray-600"
-            style={{ animationDelay: "1.3s" }}
+            className=" text-lg font-light text-gray-600"
           >
             Key moments in our growth
           </p>
 
           <div
-            className="animate-fade-in-up flex justify-center gap-2"
-            style={{ animationDelay: "1.4s" }}
+            className=" flex justify-center gap-2"
           >
             <div className="h-1 w-12 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500" />
             <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
@@ -484,8 +452,7 @@ const About = () => {
           {milestones.map((milestone, index) => (
             <div
               key={index}
-              className="group relative animate-fade-in-up"
-              style={{ animationDelay: `${1.4 + index * 0.15}s` }}
+              className="group relative"
             >
               {/* Glow Background */}
               <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#0e7c85]/10 to-cyan-500/10 opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100" />
@@ -525,8 +492,7 @@ const About = () => {
       {/* Final CTA Section */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6">
         <div
-          className="group relative animate-fade-in-up"
-          style={{ animationDelay: "2s" }}
+          className="group relative"
         >
           {/* Glowing Background */}
           <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />

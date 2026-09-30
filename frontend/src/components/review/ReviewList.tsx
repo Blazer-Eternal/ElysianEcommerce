@@ -606,14 +606,6 @@ const ReviewList = ({
   return (
     <div className="space-y-5">
       <style>{`
-        @keyframes slide-in-review {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .review-card {
-          opacity: 0;
-          animation: slide-in-review 0.5s ease-out forwards;
-        }
         @keyframes menu-pop {
           from { opacity: 0; transform: translateY(-6px) scale(0.96); }
           to { opacity: 1; transform: translateY(0) scale(1); }
@@ -627,7 +619,6 @@ const ReviewList = ({
           z-index: 30;
         }
         @media (prefers-reduced-motion: reduce) {
-          .review-card { animation: none; opacity: 1; }
           .review-menu-pop { animation: none; }
         }
       `}</style>
@@ -645,11 +636,10 @@ const ReviewList = ({
       </div>
 
       <div className="space-y-4">
-        {reviews.map((review, index) => (
+        {reviews.map((review) => (
           <div
             key={review._id}
             className="review-card"
-            style={{ animationDelay: `${index * 0.07}s` }}
           >
             <ReviewCard
               review={review}

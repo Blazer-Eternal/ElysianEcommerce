@@ -39,10 +39,10 @@ const OrderProgressTimeline = memo(({ localStatus }: { localStatus: OrderStatus 
   return (
     <div className="glass rounded-xl p-8 border border-white/20 card-container">
       <h2 className="text-xl font-bold text-gray-900 mb-6 animate-fade-in">Order Progress</h2>
-      <p className="text-sm text-gray-600 mb-8 animate-fade-in animation-delay-100ms">Keep the customer order status up to date.</p>
+      <p className="text-sm text-gray-600 mb-8 animate-fade-in">Keep the customer order status up to date.</p>
 
       {/* Horizontal Timeline */}
-      <div className="flex items-center justify-between gap-2 animate-fade-in animation-delay-200ms">
+      <div className="flex items-center justify-between gap-2 animate-fade-in">
         {TIMELINE_STATUSES.map((status, index) => {
           const isCompleted = index <= currentStatusIndex;
           const isCurrent = index === currentStatusIndex && currentStatusIndex < TIMELINE_STATUSES.length - 1;
@@ -96,7 +96,7 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
 
     <div className="space-y-6">
       {items.map((item: any, index: number) => (
-        <div key={item._id ?? index} className="flex gap-6 pb-6 border-b border-white/20 last:border-0 animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+        <div key={item._id ?? index} className="flex gap-6 pb-6 border-b border-white/20 last:border-0 animate-fade-in">
           {/* Item Image */}
           {item.product_id && typeof item.product_id === "object" && (item.product_id as any).images?.[0] ? (
             <img

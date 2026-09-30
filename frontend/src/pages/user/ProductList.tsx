@@ -21,6 +21,7 @@ const ProductList = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["products", filters],
     queryFn: ({ signal }) => productService.getAll(filters, { signal }),
+    staleTime: 5 * 60 * 1000, // catalog page — avoid re-hitting the API on back/forward nav
   });
 
   // Scroll to top whenever the page number changes, so the user actually
@@ -81,21 +82,6 @@ const ProductList = () => {
           66% { transform: rotate(240deg) scale(0.9); }
         }
 
-        .animate-fade-in-down {
-          animation: fade-in-down 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-slide-in-left {
-          animation: slide-in-left 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
         .animate-gradient {
           background-size: 200% 200%;
           animation: gradient-shift 6s ease infinite;
@@ -120,7 +106,7 @@ const ProductList = () => {
         {/* Hero Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
           <div className="mb-16 space-y-6">
-            <div className="animate-fade-in-down gpu-accelerate" style={{ animationDelay: '0s', transform: "translateZ(0)" }}>
+            <div className="animate-fade-in gpu-accelerate" style={{ transform: "translateZ(0)" }}>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-gray-900 mb-4 leading-tight gpu-accelerate">
                 Discover Our{' '}
                 <span className="bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient gpu-accelerate" style={{ backgroundSize: '200% 200%' }}>
@@ -129,18 +115,18 @@ const ProductList = () => {
               </h1>
             </div>
 
-            <p className="text-lg sm:text-xl text-gray-700 max-w-2xl animate-fade-in-up font-light leading-relaxed gpu-accelerate" style={{ animationDelay: '0.1s', transform: "translateZ(0)" }}>
+            <p className="text-lg sm:text-xl text-gray-700 max-w-2xl font-light leading-relaxed gpu-accelerate" style={{ animationDelay: '0.1s', transform: "translateZ(0)" }}>
               Premium quality products handpicked just for you. Explore our exclusive collection featuring the best deals, latest trends, and bestselling items across all categories.
             </p>
 
-            <div className="flex gap-3 animate-fade-in-up gpu-accelerate" style={{ animationDelay: '0.2s', transform: "translateZ(0)" }}>
+            <div className="flex gap-3 gpu-accelerate" style={{ animationDelay: '0.2s', transform: "translateZ(0)" }}>
               <div className="h-1 w-12 bg-linear-to-r from-[#0e7c85] to-cyan-500 rounded-full" />
               <div className="h-1 w-3 bg-linear-to-r from-cyan-500 to-teal-400 rounded-full opacity-70" />
             </div>
           </div>
 
           {/* Filters Section */}
-          <div className="animate-fade-in-up gpu-accelerate" style={{ animationDelay: '0.3s', transform: "translateZ(0)" }}>
+          <div className=" gpu-accelerate" style={{ animationDelay: '0.3s', transform: "translateZ(0)" }}>
             <div className="group relative animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
               {/* Glow Background */}
               <div className="absolute inset-0 rounded-3xl bg-linear-to-r from-[#0e7c85]/20 via-cyan-500/20 to-teal-400/20 opacity-0 group-hover:opacity-100 transition-all duration-700 blur-2xl gpu-accelerate" style={{ transform: "translateZ(0)" }} />
@@ -190,7 +176,7 @@ const ProductList = () => {
         {/* Pagination Section */}
         {data?.pagination && !isLoading && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
-            <div className="flex justify-center animate-fade-in-up gpu-accelerate" style={{ animationDelay: '0.5s', transform: "translateZ(0)" }}>
+            <div className="flex justify-center gpu-accelerate" style={{ animationDelay: '0.5s', transform: "translateZ(0)" }}>
               <div className="group relative gpu-accelerate" style={{ contain: "layout style paint" }}>
                 {/* Glow */}
                 <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#0e7c85]/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl gpu-accelerate" style={{ transform: "translateZ(0)" }} />
@@ -210,7 +196,7 @@ const ProductList = () => {
         {/* Empty State */}
         {!isLoading && (!data?.data || data.data.length === 0) && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
-            <div className="text-center py-20 animate-fade-in-up gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+            <div className="text-center py-20 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
               <div className="text-6xl mb-4">🔍</div>
               <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 gpu-accelerate">No Products Found</h3>
               <p className="text-gray-600 text-lg mb-8 font-light max-w-md mx-auto gpu-accelerate">

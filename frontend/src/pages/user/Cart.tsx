@@ -212,7 +212,7 @@ const Cart = () => {
           </div>
 
           {/* Cart Summary Column */}
-          <div className="md:col-span-1 animate-fade-in animation-delay-300">
+          <div className="md:col-span-1 animate-fade-in">
             <div className="sticky top-24">
               
               <CartSummary cart={cart} />

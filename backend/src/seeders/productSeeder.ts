@@ -29,6 +29,19 @@ interface ProductSeed {
 const img = (seed: string, n = 1) =>
   Array.from({ length: n }, (_, i) => `https://picsum.photos/seed/${seed}-${i + 1}/600/600`);
 
+// picsum.photos 302-redirects seed URLs to its CDN. Following the redirect once
+// at seed time stores the direct URL, so every product image costs the browser
+// a single request instead of an extra round-trip on first view.
+const resolveImageUrl = async (url: string): Promise<string> => {
+  if (!url.startsWith("https://picsum.photos/")) return url;
+  try {
+    const res = await fetch(url, { redirect: "follow" });
+    return res.url && res.url !== url ? res.url : url;
+  } catch {
+    return url; // network hiccup — keep the redirecting URL rather than lose the image
+  }
+};
+
 const productData: ProductSeed[] = [
   // Mobile Phones
   { name: "iPhone 15 Pro", slug: "iphone-15-pro", brand: "Apple", description: "Apple's flagship smartphone with A17 Pro chip and titanium design", sku: "IPH15PRO-256-BLK", price: 214000, cost_price: 192000, stock: 50, category_slug: "mobile-phones", images: img("iphone15pro", 2), status: ProductStatusEnum.active },
@@ -108,6 +121,16 @@ const seedProducts = async () => {
     let updatedCount = 0;
     let skippedCount = 0;
 
+    // Resolve every unique seed URL once (in parallel) before the upsert loop,
+    // so products are written with direct, redirect-free image URLs.
+    const directUrl = new Map<string, string>();
+    const uniqueUrls = [...new Set(productData.flatMap((p) => p.images))];
+    await Promise.all(
+      uniqueUrls.map(async (url) => {
+        directUrl.set(url, await resolveImageUrl(url));
+      })
+    );
+
     for (const item of productData) {
       const category = await CategoryModel.findOne({ slug: item.category_slug });
 
@@ -133,7 +156,7 @@ const seedProducts = async () => {
         mrp: mrpForPrice(item.price),
         stock: item.stock,
         category_id: category._id,
-        images: item.images,
+        images: item.images.map((url) => directUrl.get(url) ?? url),
         status: item.status,
       };
 

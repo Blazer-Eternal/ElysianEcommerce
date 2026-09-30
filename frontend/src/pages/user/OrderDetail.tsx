@@ -117,7 +117,7 @@ const OrderDetail = () => {
       </div>
 
       {/* Timeline */}
-      <div className="mb-8 animate-fade-in" style={{ animationDelay: "100ms" }}>
+      <div className="mb-8 animate-fade-in">
         <OrderTimeline 
           status={order.payment_status === "paid" ? "paid" : order.status} 
         />
@@ -128,7 +128,7 @@ const OrderDetail = () => {
         {/* Left Column - Items */}
         <div className="lg:col-span-2 space-y-6">
           {/* Items Section */}
-          <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
+          <div className="animate-fade-in">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Order Items</h2>
             <div className="space-y-3">
               {order.items.map((item, idx) => (
@@ -156,7 +156,7 @@ const OrderDetail = () => {
           </div>
 
           {/* Shipping Address */}
-          <div className="animate-fade-in" style={{ animationDelay: "300ms" }}>
+          <div className="animate-fade-in">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-gray-900">Shipping Address</h2>
               {(order.status === "pending" || order.status === "paid") && (
@@ -279,7 +279,7 @@ const OrderDetail = () => {
         {/* Right Column - Summary */}
         <div className="space-y-6">
           {/* Price Breakdown */}
-          <div className="animate-fade-in" style={{ animationDelay: "400ms" }}>
+          <div className="animate-fade-in">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
             <div className="bg-linear-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 space-y-4 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300">
               <div className="flex items-center justify-between pb-4 border-b border-white/40">
@@ -311,7 +311,7 @@ const OrderDetail = () => {
           </div>
 
           {/* Payment Status */}
-          <div className="animate-fade-in" style={{ animationDelay: "500ms" }}>
+          <div className="animate-fade-in">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Payment</h2>
             <div className="bg-linear-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 rounded-xl p-6 hover:shadow-lg hover:shadow-cyan-200/20 transition-all duration-300 space-y-4">
               <div className="flex items-center justify-between pb-4 border-b border-white/40">
@@ -356,7 +356,7 @@ const OrderDetail = () => {
 
           {/* Cancel Button */}
           {order.status === "pending" && (
-            <div className="animate-fade-in" style={{ animationDelay: "600ms" }}>
+            <div className="animate-fade-in">
               <button
                 onClick={handleCancel}
                 className="w-full px-4 py-3 bg-red-50 text-red-600 font-semibold rounded-xl border border-red-200 hover:bg-red-100 hover:border-red-300 transition-all duration-300 active:scale-95"

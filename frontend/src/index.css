@@ -25,7 +25,7 @@
       box-shadow, text-shadow, outline-color, fill, stroke, opacity, visibility,
       transform, translate, scale, rotate, filter, backdrop-filter;
     --animation-duration-blob: 7s;
-    --animation-duration-fade: 600ms;
+    --animation-duration-fade: 300ms;
     
     /* Easing functions for smooth animations */
     --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
@@ -289,27 +289,6 @@
   }
 
   .animate-scale-in-paused {
-    animation-play-state: paused;
-  }
-
-  /* Fade In Up Animation - Transform Only */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px) translateZ(0);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) translateZ(0);
-    }
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp var(--animation-duration-fade) var(--ease-out) forwards;
-    opacity: 0;
-  }
-
-  .animate-fade-in-up-paused {
     animation-play-state: paused;
   }
 

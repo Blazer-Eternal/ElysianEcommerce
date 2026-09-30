@@ -49,6 +49,7 @@ const ProductDetail = () => {
     queryKey: ["product", id],
     queryFn: ({ signal }) => productService.getById(id as string, { signal }),
     enabled: !!id,
+    staleTime: 5 * 60 * 1000, // catalog detail — review mutations still invalidate ["product", id]
   });
 
   const handleAddToCart = async () => {

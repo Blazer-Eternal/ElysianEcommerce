@@ -190,11 +190,6 @@ const Values = () => {
           }
         }
 
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
         .animate-gradient {
           background-size: 200% 200%;
           animation: gradient-shift 6s ease infinite;
@@ -206,16 +201,6 @@ const Values = () => {
 
         .animate-glow-pulse {
           animation: glow-pulse 3s ease-in-out infinite;
-        }
-
-        .animate-slide-in-left {
-          animation: slide-in-left 0.8s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-slide-in-right {
-          animation: slide-in-right 0.8s ease-out forwards;
-          opacity: 0;
         }
 
         .animate-shimmer {
@@ -251,7 +236,7 @@ const Values = () => {
       {/* Hero Section */}
       <div className="relative z-10 pt-12 pb-8 sm:pt-32 sm:pb-16">
         <div className="mx-auto max-w-5xl space-y-8 px-4 text-center sm:px-6">
-          <h1 className="animate-fade-in-up text-5xl leading-tight font-black text-gray-900 sm:text-6xl lg:text-7xl">
+          <h1 className=" text-5xl leading-tight font-black text-gray-900 sm:text-6xl lg:text-7xl">
             Our{" "}
             <span
               className="animate-gradient bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent"
@@ -262,8 +247,7 @@ const Values = () => {
           </h1>
 
           <p
-            className="animate-fade-in-up mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-700 sm:text-2xl"
-            style={{ animationDelay: "0.1s" }}
+            className=" mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-700 sm:text-2xl"
           >
             We don't just build an ecommerce platform—we build a community
             rooted in integrity, innovation, and customer excellence. Discover
@@ -271,8 +255,7 @@ const Values = () => {
           </p>
 
           <div
-            className="animate-fade-in-up flex justify-center gap-4"
-            style={{ animationDelay: "0.2s" }}
+            className=" flex justify-center gap-4"
           >
             <div className="h-1 w-12 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500" />
             <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
@@ -284,15 +267,13 @@ const Values = () => {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
           <h2
-            className="animate-fade-in-up text-4xl font-bold text-gray-900 sm:text-5xl"
-            style={{ animationDelay: "0.3s" }}
+            className=" text-4xl font-bold text-gray-900 sm:text-5xl"
           >
             Six Pillars of Our Philosophy
           </h2>
 
           <p
-            className="animate-fade-in-up mx-auto max-w-2xl text-lg font-light text-gray-600"
-            style={{ animationDelay: "0.4s" }}
+            className=" mx-auto max-w-2xl text-lg font-light text-gray-600"
           >
             Each value isn't just words on a wall—it's woven into our DNA
           </p>
@@ -302,8 +283,7 @@ const Values = () => {
           {coreValues.map((value, index) => (
             <div
               key={index}
-              className="group relative animate-fade-in-up"
-              style={{ animationDelay: `${0.4 + index * 0.1}s` }}
+              className="group relative"
             >
               {/* Glow Background */}
               <div className="absolute inset-0 rounded-3xl opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.2), rgba(6,182,212,0.1), rgba(20,184,166,0.2))" }} />
@@ -352,15 +332,13 @@ const Values = () => {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
           <h2
-            className="animate-fade-in-up text-4xl font-bold text-gray-900 sm:text-5xl"
-            style={{ animationDelay: "1s" }}
+            className=" text-4xl font-bold text-gray-900 sm:text-5xl"
           >
             Our Promises to You
           </h2>
 
           <p
-            className="animate-fade-in-up mx-auto max-w-2xl text-lg font-light text-gray-600"
-            style={{ animationDelay: "1.1s" }}
+            className=" mx-auto max-w-2xl text-lg font-light text-gray-600"
           >
             Commitments we stand behind, every single day
           </p>
@@ -370,8 +348,7 @@ const Values = () => {
           {promises.map((promise, index) => (
             <div
               key={index}
-              className="group relative animate-fade-in-up"
-              style={{ animationDelay: `${1.1 + index * 0.08}s` }}
+              className="group relative"
             >
               {/* Hover Glow */}
               <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#0e7c85]/20 to-cyan-500/20 opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100" />
@@ -406,8 +383,7 @@ const Values = () => {
       {/* Our Tech Stack */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div
-          className="group relative animate-fade-in-up"
-          style={{ animationDelay: "1.8s" }}
+          className="group relative"
         >
           {/* Glow Background */}
           <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />
@@ -432,8 +408,7 @@ const Values = () => {
                 {techStack.map((tech, index) => (
                   <div
                     key={index}
-                    className="group/tech relative animate-fade-in-up text-center"
-                    style={{ animationDelay: `${1.8 + index * 0.1}s` }}
+                    className="group/tech relative text-center"
                   >
                     {/* Hover Background */}
                     <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-[#0e7c85]/20 to-cyan-500/20 opacity-0 blur-lg transition-all duration-300 group-hover/tech:opacity-100" />
@@ -461,8 +436,7 @@ const Values = () => {
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left - Content */}
           <div
-            className="animate-slide-in-left space-y-8"
-            style={{ animationDelay: "2.2s" }}
+            className=" space-y-8"
           >
             <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl">
               Why{" "}
@@ -513,8 +487,7 @@ const Values = () => {
 
           {/* Right - Stats */}
           <div
-            className="animate-slide-in-right"
-            style={{ animationDelay: "2.2s" }}
+            className=""
           >
             <div className="glass group animate-glow-pulse space-y-8 rounded-3xl border border-white/70 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-12" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,251,252,0.92) 100%)" }}>
               <h3 className="text-3xl font-bold text-gray-900">
@@ -562,8 +535,7 @@ const Values = () => {
       {/* Final CTA */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6">
         <div
-          className="group relative animate-fade-in-up"
-          style={{ animationDelay: "2.8s" }}
+          className="group relative"
         >
           {/* Glow */}
           <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />

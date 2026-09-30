@@ -4,19 +4,6 @@
  */
 
 export {
-  useInViewAnimation,
-  useStaggeredAnimation,
-  useScrollAnimation,
-  useParallax,
-  useFadeIn,
-  useSlideIn,
-  useScaleIn,
-  useDebounceResize,
-  useViewportSize,
-  usePrefersReducedMotion,
-} from "./useInViewAnimation";
-
-export {
   useAnimationPause,
   useGridAnimationPause,
   useAnimationResume,
@@ -29,5 +16,3 @@ export {
   useAspectRatioPreserver,
   useSmoothLoading,
 } from "./useOptimizedLoading";
-
-export type { } from "./useInViewAnimation";

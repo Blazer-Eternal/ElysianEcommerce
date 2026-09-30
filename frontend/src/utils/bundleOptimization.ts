@@ -166,7 +166,6 @@ export const VITE_BUILD_OPTIMIZATION = {
           vendor: ["axios", "ogl"],
 
           // Feature chunks
-          animations: ["./src/components/animations"],
           utils: ["./src/utils"],
           hooks: ["./src/hooks"],
         },

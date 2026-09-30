@@ -201,7 +201,7 @@ const Checkout = () => {
           {/* Left Column - Forms */}
           <div className="lg:col-span-2 space-y-6 sm:space-y-8">
             {/* Shipping Address */}
-            <div className="group relative rounded-3xl overflow-hidden animate-fade-in animation-delay-100 hover:shadow-2xl transition-all duration-500">
+            <div className="group relative rounded-3xl overflow-hidden animate-fade-in hover:shadow-2xl transition-all duration-500">
               <div className="absolute inset-0 bg-linear-to-br from-cyan-50/80 via-white/70 to-teal-50/60 -z-10"></div>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-cyan-200/10 via-transparent to-teal-200/10 transition-opacity duration-500 -z-10"></div>
 
@@ -286,7 +286,7 @@ const Checkout = () => {
             </div>
 
             {/* Coupon */}
-            <div className="group relative rounded-3xl overflow-hidden animate-fade-in animation-delay-200 hover:shadow-2xl transition-all duration-500">
+            <div className="group relative rounded-3xl overflow-hidden animate-fade-in hover:shadow-2xl transition-all duration-500">
               <div className="absolute inset-0 bg-linear-to-br from-purple-50/80 via-white/70 to-pink-50/60 -z-10"></div>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-purple-200/10 via-transparent to-pink-200/10 transition-opacity duration-500 -z-10"></div>
 
@@ -307,7 +307,7 @@ const Checkout = () => {
             </div>
 
             {/* Payment Method */}
-            <div className="group relative rounded-3xl overflow-hidden animate-fade-in animation-delay-300 hover:shadow-2xl transition-all duration-500">
+            <div className="group relative rounded-3xl overflow-hidden animate-fade-in hover:shadow-2xl transition-all duration-500">
               <div className="absolute inset-0 bg-linear-to-br from-orange-50/80 via-white/70 to-amber-50/60 -z-10"></div>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-orange-200/10 via-transparent to-amber-200/10 transition-opacity duration-500 -z-10"></div>
 
@@ -356,7 +356,7 @@ const Checkout = () => {
 
           {/* Right Column - Order Summary */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 animate-fade-in animation-delay-400">
+            <div className="sticky top-24 animate-fade-in">
               <div className="group relative rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500">
                 <div className="absolute inset-0 bg-linear-to-br from-cyan-100/80 via-white/80 to-teal-50/60 -z-10"></div>
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-cyan-200/15 via-transparent to-teal-200/15 transition-opacity duration-500 -z-10"></div>
