@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MessageIcon } from "../../components/icons";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
@@ -113,7 +114,7 @@ const ProductDetail = () => {
     return (
       <div className="max-w-6xl mx-auto px-4 py-16 text-center">
         <p className="text-gray-600 mb-4">Product not found.</p>
-        <Link to={ROUTES.PRODUCTS} className="underline text-[#0e7c85]">
+        <Link to={ROUTES.PRODUCTS} className="underline text-brand">
           Back to Products
         </Link>
       </div>
@@ -141,13 +142,13 @@ const ProductDetail = () => {
       <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Breadcrumb */}
         <nav className="mb-4 flex flex-wrap items-center gap-2 text-sm text-gray-500">
-          <Link to={ROUTES.HOME} className="hover:text-[#0e7c85]">Home</Link>
+          <Link to={ROUTES.HOME} className="hover:text-brand">Home</Link>
           <span>/</span>
-          <Link to={ROUTES.PRODUCTS} className="hover:text-[#0e7c85]">Products</Link>
+          <Link to={ROUTES.PRODUCTS} className="hover:text-brand">Products</Link>
           {category && (
             <>
               <span>/</span>
-              <Link to={ROUTES.PRODUCTS} className="hover:text-[#0e7c85]">{category.name}</Link>
+              <Link to={ROUTES.PRODUCTS} className="hover:text-brand">{category.name}</Link>
             </>
           )}
           <span>/</span>
@@ -169,7 +170,7 @@ const ProductDetail = () => {
                 type="button"
                 onClick={handleShare}
                 aria-label="Share this product"
-                className="p-1.5 rounded-full hover:bg-gray-100 hover:text-[#0e7c85] transition-colors"
+                className="p-1.5 rounded-full hover:bg-gray-100 hover:text-brand transition-colors"
               >
                 <ShareIcon />
               </button>
@@ -189,7 +190,7 @@ const ProductDetail = () => {
             {/* Ratings */}
             <div className="mt-3 flex items-center gap-2">
               <StarRating value={product.rating_avg} size={16} />
-              <a href="#reviews" className="text-sm text-[#0e7c85] font-medium hover:underline">
+              <a href="#reviews" className="text-sm text-brand font-medium hover:underline">
                 Ratings {product.rating_count}
               </a>
               {category && (
@@ -201,9 +202,9 @@ const ProductDetail = () => {
             {brand && (
               <div className="mt-3 text-sm text-gray-600">
                 Brand:{" "}
-                <span className="text-[#0e7c85] font-medium">{brand}</span>
+                <span className="text-brand font-medium">{brand}</span>
                 <span className="text-gray-400 mx-2">|</span>
-                <Link to={ROUTES.PRODUCTS} className="text-[#0e7c85] hover:underline">
+                <Link to={ROUTES.PRODUCTS} className="text-brand hover:underline">
                   More {category?.name ?? "products"} from {brand}
                 </Link>
               </div>
@@ -250,7 +251,7 @@ const ProductDetail = () => {
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={outOfStock}
                   aria-label="Decrease quantity"
-                  className="w-9 h-9 rounded-md border border-gray-300 bg-gray-50 text-xl text-gray-600 flex items-center justify-center hover:border-[#0e7c85] hover:text-[#0e7c85] disabled:opacity-40 transition-colors"
+                  className="w-9 h-9 rounded-md border border-gray-300 bg-gray-50 text-xl text-gray-600 flex items-center justify-center hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
                 >
                   −
                 </button>
@@ -260,7 +261,7 @@ const ProductDetail = () => {
                   onClick={() => setQuantity((q) => Math.min(product.stock || 1, q + 1))}
                   disabled={outOfStock}
                   aria-label="Increase quantity"
-                  className="w-9 h-9 rounded-md border border-gray-300 bg-gray-50 text-xl text-gray-600 flex items-center justify-center hover:border-[#0e7c85] hover:text-[#0e7c85] disabled:opacity-40 transition-colors"
+                  className="w-9 h-9 rounded-md border border-gray-300 bg-gray-50 text-xl text-gray-600 flex items-center justify-center hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
                 >
                   +
                 </button>
@@ -426,7 +427,7 @@ const ProductDetail = () => {
               <ReviewSection productId={product._id} />
             ) : (
               <div className="text-center py-6">
-                <div className="text-4xl mb-3">💬</div>
+                <div className="mb-3 text-gray-400"><MessageIcon size={36} /></div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   Login to see &amp; post reviews
                 </h3>
@@ -438,13 +439,13 @@ const ProductDetail = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <Link
                     to={ROUTES.LOGIN}
-                    className="w-full sm:w-auto py-3 px-8 rounded-lg font-semibold text-white bg-[#0e7c85] hover:bg-[#0b6870] transition-colors"
+                    className="w-full sm:w-auto py-3 px-8 rounded-lg font-semibold text-white bg-brand hover:bg-[#0b6870] transition-colors"
                   >
                     Login to View Reviews
                   </Link>
                   <Link
                     to={ROUTES.REGISTER}
-                    className="w-full sm:w-auto py-3 px-8 rounded-lg font-semibold text-[#0e7c85] bg-white border border-[#0e7c85]/40 hover:bg-[#0e7c85]/5 transition-colors"
+                    className="w-full sm:w-auto py-3 px-8 rounded-lg font-semibold text-brand bg-white border border-brand/40 hover:bg-brand/5 transition-colors"
                   >
                     Create an Account
                   </Link>

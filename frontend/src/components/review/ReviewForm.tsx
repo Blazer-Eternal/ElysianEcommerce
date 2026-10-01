@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { CheckIcon, SendIcon, XIcon } from "../icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { reviewService } from "../../services/reviewService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -60,11 +61,11 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
   // Already reviewed: no second form. The card's ⋯ menu is the edit path.
   if (myReview) {
     return (
-      <div className="flex items-start gap-3 p-4 rounded-2xl bg-purple-50/70 border border-purple-200/70 text-sm text-gray-700">
-        <span className="text-lg leading-none" aria-hidden="true">✅</span>
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-brand/5 border border-gray-200 text-sm text-gray-700">
+        <CheckIcon size={18} className="mt-0.5 shrink-0 text-emerald-600" />
         <p>
           You already reviewed this product. Use the{" "}
-          <span className="font-bold text-purple-700">⋯</span> menu on your review below to edit
+          <span className="font-bold text-brand">⋯</span> menu on your review below to edit
           your rating or comment, or to delete it.
         </p>
       </div>
@@ -83,11 +84,11 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         }
       `}</style>
 
-      <div className="review-form-container space-y-4 p-6 bg-linear-to-br from-white via-purple-50/50 to-blue-50/30 rounded-2xl border-2 border-purple-300/60 shadow-lg hover:shadow-xl transition-all duration-300">
+      <div className="review-form-container space-y-4 p-6 bg-white rounded-2xl border border-gray-200 shadow-sm transition-all duration-300">
         {/* Header */}
         <div>
-          <h3 className="text-lg font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-            ✨ Share Your Experience
+          <h3 className="text-lg font-bold text-gray-900">
+            Share Your Experience
           </h3>
           <p className="text-xs text-gray-600 mt-0.5">Help others decide</p>
         </div>
@@ -95,7 +96,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         {/* Error Alert */}
         {error && (
           <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium flex items-center gap-2">
-            <span>❌</span>
+            <XIcon size={16} className="shrink-0" />
             {error}
           </div>
         )}
@@ -103,7 +104,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         {/* Success Alert */}
         {success && (
           <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium flex items-center gap-2">
-            <span>🎉</span>
+            <CheckIcon size={16} className="shrink-0" />
             Thank you! Your review submitted successfully!
           </div>
         )}
@@ -147,7 +148,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
             maxLength={1000}
             rows={3}
             placeholder="Tell us about your experience... (optional)"
-            className="w-full p-3 border-2 border-purple-200/60 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-300/50 transition-all duration-300 resize-none text-sm"
+            className="w-full p-3 border-2 border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition-all duration-300 resize-none text-sm"
           />
           <div className="flex justify-between items-center mt-1.5">
             <span className="text-xs text-gray-500">Character count:</span>
@@ -161,12 +162,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-2.5 px-4 font-bold text-white rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-md hover:shadow-lg"
-          style={{
-            background: isSubmitting
-              ? "linear-gradient(135deg, #a78bfa 0%, #818cf8 100%)"
-              : "linear-gradient(135deg, #ec4899 0%, #d946ef 50%, #a855f7 100%)",
-          }}
+          className="w-full py-2.5 px-4 font-bold text-white bg-brand hover:bg-brand-dark rounded-lg transition-all duration-300 transform hover:scale-105 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none shadow-md hover:shadow-lg"
         >
           <div className="flex items-center justify-center gap-2 text-sm">
             {isSubmitting ? (
@@ -189,7 +185,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
               </>
             ) : (
               <>
-                <span>📤</span>
+                <SendIcon size={16} />
                 <span>Publish Review</span>
               </>
             )}

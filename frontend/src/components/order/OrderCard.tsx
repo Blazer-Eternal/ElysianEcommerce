@@ -13,10 +13,10 @@ const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <Link
       to={ROUTES.ORDER_DETAIL(order._id)}
-      className="group relative block overflow-hidden rounded-2xl bg-linear-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/60 p-6 transition-all duration-500 hover:from-white/90 hover:to-white/60 hover:border-white/80 hover:shadow-2xl hover:shadow-cyan-200/30 active:scale-95"
+      className="group relative block overflow-hidden rounded-2xl bg-white border border-gray-200 p-6 transition-all duration-500 hover:bg-white hover:border-gray-300 hover:shadow-2xl active:scale-95"
     >
       {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-linear-to-br from-[#0e7c85]/5 via-transparent to-cyan-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-linear-to-br from-brand/5 via-transparent to-cyan-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="relative z-10">
         {/* Header Section */}
@@ -36,21 +36,18 @@ const OrderCard = ({ order }: OrderCardProps) => {
         {/* Footer Section */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-linear-to-br from-[#0e7c85]/20 to-cyan-600/20 text-xs font-semibold text-[#0e7c85]">
+            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-linear-to-br from-brand/20 to-cyan-600/20 text-xs font-semibold text-brand">
               {order.items.length}
             </span>
             <span className="text-sm text-gray-600">
               item{order.items.length !== 1 ? "s" : ""}
             </span>
           </div>
-          <span className="font-bold text-lg bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+          <span className="font-bold text-lg text-brand">
             {formatCurrency(order.total_amount)}
           </span>
         </div>
       </div>
-
-      {/* Animated border glow on hover */}
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none border border-gradient-to-r from-[#0e7c85]/20 via-transparent to-cyan-600/20" />
     </Link>
   );
 };

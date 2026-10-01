@@ -113,7 +113,7 @@ const Navbar = () => {
                 <span className="relative inline-flex">
                   <BagIcon />
                   {itemCount > 0 && (
-                    <span className="absolute -top-1.5 -right-4 w-5 h-5 text-[10px] rounded-full flex items-center justify-center font-bold bg-[#0e7c85] text-white">
+                    <span className="absolute -top-1.5 -right-4 w-5 h-5 text-[10px] rounded-full flex items-center justify-center font-bold bg-brand text-white">
                       {itemCount > 99 ? '99+' : itemCount}
                     </span>
                   )}
@@ -137,7 +137,7 @@ const Navbar = () => {
                 {/* Desktop Dropdown Card - anchored to the full-width nav, flush at the far-right viewport edge (20px inset).
                     Translucent white + light backdrop blur keeps it dull so it doesn't pull focus from the hero (only rendered while open). */}
                 {userMenuOpen && (
-                  <div className="hidden md:block absolute top-full right-5 mt-1 z-50 w-32 whitespace-nowrap rounded-lg border border-white/50 bg-white/75 shadow-md backdrop-blur-sm py-1">
+                  <div className="hidden md:block absolute top-full right-5 mt-1 z-50 w-32 whitespace-nowrap rounded-lg border border-gray-200 bg-white shadow-md py-1">
                     {user?.name && (
                       <div className="px-3 py-2 border-b border-gray-100/70 text-gray-500 text-xs font-medium truncate">
                         {user.name}
@@ -145,7 +145,7 @@ const Navbar = () => {
                     )}
                     {accountMenuItems.map((item) => {
                       if (item.admin && user?.role !== "admin") return null;
-                      const baseClass = `block w-full text-left px-3 py-1 text-sm transition-colors ${item.red ? "text-red-500 hover:bg-red-50/60" : "text-gray-600 hover:bg-white/90"}`;
+                      const baseClass = `block w-full text-left px-3 py-1 text-sm transition-colors ${item.red ? "text-red-500 hover:bg-red-50/60" : "text-gray-600 hover:bg-white"}`;
                       const onClick = () => setUserMenuOpen(false);
                       if (item.action) {
                         return (
@@ -181,7 +181,7 @@ const Navbar = () => {
               <Link to={ROUTES.LOGIN} className="text-xs sm:text-sm text-gray-700 hover:accent-text gpu-accelerate" style={{ transform: "translateZ(0)" }}>Login</Link>
               <Link
                 to={ROUTES.REGISTER}
-                className="text-xs sm:text-sm bg-[#0e7c85] text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full hover:bg-[#0b6169] transition-colors whitespace-nowrap gpu-accelerate"
+                className="text-xs sm:text-sm bg-brand text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full hover:bg-brand-dark transition-colors whitespace-nowrap gpu-accelerate"
                 style={{ transform: "translateZ(0)" }}
               >
                 Register
@@ -206,14 +206,14 @@ const Navbar = () => {
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-        <div className="sm:hidden glass-strong border-t border-white/60 px-3 py-3 space-y-1 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
-          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+        <div className="sm:hidden glass-strong border-t border-gray-200 px-3 py-3 space-y-1 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
+          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             Products
           </Link>
-          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             Features
           </Link>
-          <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#0e7c85] gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+          <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             About
           </Link>
         </div>
@@ -221,7 +221,7 @@ const Navbar = () => {
 
       {/* Mobile Account Panel - full-width stacked rows, matches Vercel ref divider + uniform spacing */}
       {userMenuOpen && isAuthenticated && (
-        <div ref={mobilePanelRef} className="sm:hidden glass-strong border-t border-white/60 px-3 py-3 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
+        <div ref={mobilePanelRef} className="sm:hidden glass-strong border-t border-gray-200 px-3 py-3 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
           {/* Rows use `flex items-center min-h-[44px]` so every row is exactly 44px with a vertically centered label:
               neutralizes the touch rule's uneven effect (buttons center their label under min-height, links top-align it),
               which was making the gap above Logout visibly larger than the rest */}
@@ -232,7 +232,7 @@ const Navbar = () => {
           )}
           {accountMenuItems.map((item) => {
             if (item.admin && user?.role !== "admin") return null;
-            const baseClass = `flex items-center w-full min-h-[44px] text-left py-2 border-b border-gray-100 last:border-b-0 gpu-accelerate transition-colors ${item.red ? "text-red-600 hover:text-red-700" : "text-gray-700 hover:text-[#0e7c85]"}`;
+            const baseClass = `flex items-center w-full min-h-[44px] text-left py-2 border-b border-gray-100 last:border-b-0 gpu-accelerate transition-colors ${item.red ? "text-red-600 hover:text-red-700" : "text-gray-700 hover:text-brand"}`;
             const onClick = () => setUserMenuOpen(false);
             if (item.action) {
               return (

@@ -1,10 +1,12 @@
+import { HeartIcon, SproutIcon, TargetIcon, TrendUpIcon, UsersIcon, ZapIcon } from "../components/icons";
+
 const Values = () => {
   const coreValues = [
     {
       title: "Integrity & Transparency",
       description:
         "We believe in honest communication and transparent practices. Every price you see is what you pay, with no hidden fees or surprise charges. Our commitment to transparency extends to our supply chain, product sourcing, and customer service policies.",
-      icon: "🎯",
+      icon: <TargetIcon size={28} />,
       details: [
         "No hidden charges or surprise fees",
         "Clear return and refund policies",
@@ -16,7 +18,7 @@ const Values = () => {
       title: "Customer-First Excellence",
       description:
         "Our customers are at the heart of everything we do. We don't just sell products; we build relationships. Every decision is made with your satisfaction in mind, from product curation to post-purchase support.",
-      icon: "💝",
+      icon: <HeartIcon size={28} />,
       details: [
         "24/7 dedicated customer support",
         "Personalized shopping experiences",
@@ -28,7 +30,7 @@ const Values = () => {
       title: "Innovation & Technology",
       description:
         "Smart, intuitive technology that adapts to you. We continuously innovate to provide seamless, secure, and delightful shopping experiences.",
-      icon: "⚡",
+      icon: <ZapIcon size={28} />,
       details: [
         "Personalized recommendations",
         "Real-time inventory updates",
@@ -40,7 +42,7 @@ const Values = () => {
       title: "Sustainability & Ethics",
       description:
         "We're committed to reducing our environmental footprint and supporting ethical practices. From eco-friendly packaging to fair trade partnerships, we believe business should be a force for good.",
-      icon: "🌱",
+      icon: <SproutIcon size={28} />,
       details: [
         "Eco-friendly packaging solutions",
         "Carbon-neutral shipping options",
@@ -52,7 +54,7 @@ const Values = () => {
       title: "Diversity & Inclusion",
       description:
         "We celebrate diversity in all its forms. Our platform is designed to be accessible to everyone, with inclusive product selections and a welcoming community that respects all backgrounds and perspectives.",
-      icon: "🤝",
+      icon: <UsersIcon size={28} />,
       details: [
         "Inclusive product categories",
         "Accessible website design (WCAG compliant)",
@@ -64,7 +66,7 @@ const Values = () => {
       title: "Continuous Improvement",
       description:
         "We never settle. Our culture of continuous learning and improvement drives us to enhance every aspect of the platform. Your feedback directly shapes our roadmap and priorities.",
-      icon: "📈",
+      icon: <TrendUpIcon size={28} />,
       details: [
         "Regular feature updates",
         "User feedback integration",
@@ -78,7 +80,7 @@ const Values = () => {
     {
       title: "Quality Guarantee",
       content:
-        "Every product undergoes rigorous quality checks before reaching you. We partner only with verified sellers and manufacturers who meet our strict standards. If something doesn't meet expectations, we make it right—guaranteed.",
+        "Every product is checked before it reaches you. We partner only with verified sellers and manufacturers who meet our standards. If something doesn't meet expectations, we make it right, guaranteed.",
     },
     {
       title: "Fair Pricing",
@@ -117,47 +119,8 @@ const Values = () => {
   ];
 
   return (
-    <div className="relative space-y-32 overflow-hidden pb-20 sm:pb-40">
+    <div className="relative space-y-24 overflow-hidden pb-20 sm:pb-32">
       <style>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes gradient-shift {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-        }
-
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
-        @keyframes glow-pulse {
-          0%, 100% {
-            box-shadow: 0 0 20px rgba(14, 124, 133, 0.3);
-          }
-          50% {
-            box-shadow:
-              0 0 40px rgba(14, 124, 133, 0.6),
-              0 0 60px rgba(6, 182, 212, 0.3);
-          }
-        }
 
         @keyframes slide-in-left {
           from {
@@ -181,39 +144,6 @@ const Values = () => {
           }
         }
 
-        @keyframes shimmer {
-          0% {
-            background-position: -1000px 0;
-          }
-          100% {
-            background-position: 1000px 0;
-          }
-        }
-
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient-shift 6s ease infinite;
-        }
-
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-
-        .animate-glow-pulse {
-          animation: glow-pulse 3s ease-in-out infinite;
-        }
-
-        .animate-shimmer {
-          background-image: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,0.3),
-            transparent
-          );
-          background-size: 1000px 100%;
-          animation: shimmer 3s infinite;
-        }
-
         .group-hover-lift {
           transition: var(--transition-visual-props) 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -223,23 +153,13 @@ const Values = () => {
         }
       `}</style>
 
-      {/* Decorative Background Blobs */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-0 left-1/4 h-96 w-96 animate-float rounded-full opacity-30 mix-blend-multiply" style={{ background: "radial-gradient(circle, rgba(34,211,238,0.55) 0%, rgba(20,184,166,0.28) 35%, transparent 70%)" }} />
-
-        <div
-          className="absolute right-1/3 bottom-32 h-96 w-96 animate-float rounded-full opacity-30 mix-blend-multiply"
-          style={{ animationDelay: "-2s", background: "radial-gradient(circle, rgba(14,124,133,0.55) 0%, rgba(34,211,238,0.28) 35%, transparent 70%)" }}
-        />
-      </div>
-
       {/* Hero Section */}
-      <div className="relative z-10 pt-12 pb-8 sm:pt-32 sm:pb-16">
+      <div className="relative z-10 pt-12 pb-8 sm:pt-24 sm:pb-16">
         <div className="mx-auto max-w-5xl space-y-8 px-4 text-center sm:px-6">
-          <h1 className=" text-5xl leading-tight font-black text-gray-900 sm:text-6xl lg:text-7xl">
+          <h1 className="text-5xl leading-tight font-black text-gray-900 sm:text-6xl lg:text-7xl">
             Our{" "}
             <span
-              className="animate-gradient bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent"
+              className="text-brand"
               style={{ backgroundSize: "200% 200%" }}
             >
               Core Values
@@ -247,17 +167,16 @@ const Values = () => {
           </h1>
 
           <p
-            className=" mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-700 sm:text-2xl"
+            className="mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-700 sm:text-2xl"
           >
-            We don't just build an ecommerce platform—we build a community
-            rooted in integrity, innovation, and customer excellence. Discover
-            what drives us every single day.
+            These six principles decide how we source products, set prices, and handle returns. They are
+            the reason customers come back.
           </p>
 
           <div
-            className=" flex justify-center gap-4"
+            className="flex justify-center gap-4"
           >
-            <div className="h-1 w-12 rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500" />
+            <div className="h-1 w-12 rounded-full bg-linear-to-r from-brand to-cyan-500" />
             <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
           </div>
         </div>
@@ -267,15 +186,15 @@ const Values = () => {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
           <h2
-            className=" text-4xl font-bold text-gray-900 sm:text-5xl"
+            className="text-4xl font-bold text-gray-900 sm:text-5xl"
           >
             Six Pillars of Our Philosophy
           </h2>
 
           <p
-            className=" mx-auto max-w-2xl text-lg font-light text-gray-600"
+            className="mx-auto max-w-2xl text-lg font-light text-gray-600"
           >
-            Each value isn't just words on a wall—it's woven into our DNA
+            The standards behind every order we ship
           </p>
         </div>
 
@@ -285,18 +204,16 @@ const Values = () => {
               key={index}
               className="group relative"
             >
-              {/* Glow Background */}
-              <div className="absolute inset-0 rounded-3xl opacity-0 blur-2xl transition-all duration-500 group-hover:opacity-100" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.2), rgba(6,182,212,0.1), rgba(20,184,166,0.2))" }} />
 
               {/* Card */}
-              <div className="group-hover-lift glass relative h-full overflow-hidden rounded-3xl border border-white/60 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-10" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
+              <div className="group-hover-lift glass relative h-full overflow-hidden rounded-3xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 hover:shadow-2xl sm:p-10">
                 {/* Icon */}
                 <div className="mb-6 inline-block transform text-6xl transition-all duration-500 group-hover:rotate-12 group-hover:scale-125">
                   {value.icon}
                 </div>
 
                 {/* Title */}
-                <h3 className="mb-4 text-2xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-[#0e7c85]">
+                <h3 className="mb-4 text-2xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
                   {value.title}
                 </h3>
 
@@ -312,15 +229,15 @@ const Values = () => {
                       key={i}
                       className="flex items-start gap-3 text-gray-600 transition-colors duration-300 group-hover:text-gray-700"
                     >
-                      <span className="mt-1 font-bold text-[#0e7c85]">✓</span>
+                      <span className="mt-1 font-bold text-brand">✓</span>
                       <span className="text-sm font-medium">{detail}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Bottom Accent */}
-                <div className="mt-8 border-t border-white/30 pt-6 transition-colors duration-300 group-hover:border-[#0e7c85]/30">
-                  <div className="h-1 w-full rounded-full bg-linear-to-r from-[#0e7c85] to-cyan-500 [clip-path:inset(0_calc(100%-48px)_0_0_round_2px)] group-hover:[clip-path:inset(0_0_0_0_round_2px)] transition-[clip-path] duration-500" />
+                <div className="mt-8 border-t border-gray-200 pt-6 transition-colors duration-300 group-hover:border-brand/30">
+                  <div className="h-1 w-full rounded-full bg-linear-to-r from-brand to-cyan-500 [clip-path:inset(0_calc(100%-48px)_0_0_round_2px)] group-hover:[clip-path:inset(0_0_0_0_round_2px)] transition-[clip-path] duration-500" />
                 </div>
               </div>
             </div>
@@ -332,13 +249,13 @@ const Values = () => {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
           <h2
-            className=" text-4xl font-bold text-gray-900 sm:text-5xl"
+            className="text-4xl font-bold text-gray-900 sm:text-5xl"
           >
             Our Promises to You
           </h2>
 
           <p
-            className=" mx-auto max-w-2xl text-lg font-light text-gray-600"
+            className="mx-auto max-w-2xl text-lg font-light text-gray-600"
           >
             Commitments we stand behind, every single day
           </p>
@@ -350,18 +267,17 @@ const Values = () => {
               key={index}
               className="group relative"
             >
-              {/* Hover Glow */}
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#0e7c85]/20 to-cyan-500/20 opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-brand/20 to-cyan-500/20 opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100" />
 
               {/* Card */}
-              <div className="group-hover-lift glass relative h-full rounded-2xl border border-white/60 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-xl hover:shadow-cyan-500/30" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(240,249,251,0.78) 100%)" }}>
+              <div className="group-hover-lift glass relative h-full rounded-2xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 hover:shadow-xl">
                 {/* Number Badge */}
-                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-[#0e7c85]/30 to-cyan-500/30 text-lg font-bold text-[#0e7c85] transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
+                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-brand/30 to-cyan-500/30 text-lg font-bold text-brand transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
                   {index + 1}
                 </div>
 
                 {/* Title */}
-                <h3 className="mb-4 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-[#0e7c85]">
+                <h3 className="mb-4 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
                   {promise.title}
                 </h3>
 
@@ -371,7 +287,7 @@ const Values = () => {
                 </p>
 
                 {/* Arrow */}
-                <div className="mt-6 transform text-[#0e7c85] opacity-0 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-100">
+                <div className="mt-6 transform text-brand opacity-0 transition-all duration-300 group-hover:translate-x-2 group-hover:opacity-100">
                   →
                 </div>
               </div>
@@ -385,16 +301,14 @@ const Values = () => {
         <div
           className="group relative"
         >
-          {/* Glow Background */}
-          <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />
 
           {/* Card */}
-          <div className="glass relative rounded-3xl border border-white/70 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(240,249,251,0.85) 100%)" }}>
+          <div className="glass relative rounded-3xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 group-hover:shadow-2xl sm:p-16">
             <div className="space-y-8">
               <div className="space-y-4 text-center">
                 <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl">
                   Built on Modern{" "}
-                  <span className="bg-linear-to-r from-[#0e7c85] to-cyan-500 bg-clip-text text-transparent">
+                  <span className="text-brand">
                     Technology
                   </span>
                 </h2>
@@ -411,11 +325,11 @@ const Values = () => {
                     className="group/tech relative text-center"
                   >
                     {/* Hover Background */}
-                    <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-[#0e7c85]/20 to-cyan-500/20 opacity-0 blur-lg transition-all duration-300 group-hover/tech:opacity-100" />
+                    <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-brand/20 to-cyan-500/20 opacity-0 blur-lg transition-all duration-300 group-hover/tech:opacity-100" />
 
                     {/* Content */}
-                    <div className="relative rounded-2xl border border-white/40 p-6 transition-all duration-300 group-hover/tech:border-[#0e7c85]/50 group-hover/tech:bg-white/70 group-hover/tech:shadow-lg group-hover/tech:shadow-cyan-500/30">
-                      <p className="mb-2 text-lg font-bold text-gray-900 transition-colors duration-300 group-hover/tech:text-[#0e7c85]">
+                    <div className="relative rounded-2xl border border-gray-200 p-6 transition-all duration-300 group-hover/tech:border-brand/50 group-hover/tech:bg-white group-hover/tech:shadow-lg group-hover/tech:">
+                      <p className="mb-2 text-lg font-bold text-gray-900 transition-colors duration-300 group-hover/tech:text-brand">
                         {tech.name}
                       </p>
 
@@ -436,32 +350,32 @@ const Values = () => {
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left - Content */}
           <div
-            className=" space-y-8"
+            className="space-y-8"
           >
             <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl">
               Why{" "}
-              <span className="bg-linear-to-r from-[#0e7c85] to-cyan-500 bg-clip-text text-transparent">
+              <span className="text-brand">
                 ElysianEcommerce
               </span>{" "}
               Stands Apart
             </h2>
 
             <div className="space-y-6">
-              <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10">
-                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-[#0e7c85]">
-                  🎨 Design-Driven Excellence
+              <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10">
+                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                  Design-Driven Excellence
                 </h3>
 
                 <p className="font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
-                  Every pixel is purposeful. Our glass-morphism design, smooth
-                  animations, and intuitive UX create an unforgettable
-                  shopping journey that feels premium and modern.
+                  Clean layouts, readable type, and a checkout that never gets
+                  in your way. Everything is built to load fast and work on any
+                  screen, from phone to desktop.
                 </p>
               </div>
 
-              <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10">
-                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-[#0e7c85]">
-                  🛡️ Security First
+              <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10">
+                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                  Security First
                 </h3>
 
                 <p className="font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
@@ -471,9 +385,9 @@ const Values = () => {
                 </p>
               </div>
 
-              <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10">
-                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-[#0e7c85]">
-                  ⚡ Performance Optimized
+              <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10">
+                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                  Performance Optimized
                 </h3>
 
                 <p className="font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
@@ -489,7 +403,7 @@ const Values = () => {
           <div
             className=""
           >
-            <div className="glass group animate-glow-pulse space-y-8 rounded-3xl border border-white/70 p-8 transition-all duration-500 hover:border-[#0e7c85]/80 hover:shadow-2xl hover:shadow-cyan-500/40 sm:p-12" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,251,252,0.92) 100%)" }}>
+            <div className="glass group  space-y-8 rounded-3xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 hover:shadow-2xl sm:p-12">
               <h3 className="text-3xl font-bold text-gray-900">
                 Our Core Beliefs
               </h3>
@@ -497,32 +411,32 @@ const Values = () => {
               <div className="space-y-8">
                 {[
                   {
-                    quote: "Elegance in Simplicity",
-                    author: "Beautiful design, effortless experience",
+                    quote: "Say What the Product Is",
+                    author: "Honest descriptions, real photos, no fine print",
                   },
                   {
-                    quote: "Innovation Without Compromise",
-                    author: "Pushing boundaries thoughtfully",
+                    quote: "Prices Without Surprises",
+                    author: "The price you see is the price you pay",
                   },
                   {
-                    quote: "Crafted with Intention",
-                    author: "Every detail matters",
+                    quote: "Returns Without Excuses",
+                    author: "30 days to change your mind",
                   },
                   {
-                    quote: "Inspire Everyday",
-                    author: "Making shopping feel magical",
+                    quote: "Support That Answers",
+                    author: "Real people, 24/7",
                   },
                 ].map((item, index) => (
                   <div
                     key={index}
-                    className="group/stat rounded-xl p-4 transition-all duration-300 hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10"
+                    className="group/stat rounded-xl p-4 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10"
                   >
-                    <div className="bg-linear-to-r from-[#0e7c85] to-cyan-500 bg-clip-text text-2xl font-black text-transparent">
-                      "{item.quote}"
+                    <div className="text-xl font-bold text-gray-900">
+                      {item.quote}
                     </div>
 
-                    <div className="mt-3 font-light text-gray-700 italic">
-                      — {item.author}
+                    <div className="mt-2 text-sm text-gray-600">
+                      {item.author}
                     </div>
                   </div>
                 ))}
@@ -537,19 +451,12 @@ const Values = () => {
         <div
           className="group relative"
         >
-          {/* Glow */}
-          <div className="absolute inset-0 rounded-3xl opacity-0 blur-3xl transition-all duration-700 group-hover:opacity-100" style={{ background: "linear-gradient(to right, rgba(14,124,133,0.3), rgba(6,182,212,0.3), rgba(20,184,166,0.3))" }} />
 
           {/* Card */}
-          <div className="glass-strong relative overflow-hidden rounded-3xl border border-white/70 p-8 text-center transition-all duration-500 group-hover:border-[#0e7c85]/80 group-hover:shadow-2xl group-hover:shadow-cyan-500/40 sm:p-16" style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,251,252,0.92) 100%)" }}>
-            {/* Shimmer on hover */}
-            <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <div className="animate-shimmer absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent" />
-            </div>
-
+          <div className="glass-strong relative overflow-hidden rounded-3xl border border-gray-200 p-8 text-center transition-all duration-500 group-hover:border-brand/80 group-hover:shadow-2xl sm:p-16">
             {/* Content */}
             <div className="relative z-10 space-y-6">
-              <h2 className="bg-linear-to-r from-gray-900 via-[#0e7c85] to-gray-900 bg-clip-text text-4xl font-bold text-transparent sm:text-5xl">
+              <h2 className="text-4xl font-bold sm:text-5xl text-gray-900">
                 Join Our Community Today
               </h2>
 
@@ -562,7 +469,7 @@ const Values = () => {
               <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">
                 <a
                   href="/products"
-                  className="group/btn relative overflow-hidden rounded-2xl bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 px-10 py-4 text-lg font-bold text-white shadow-xl transition-all duration-500 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 hover:shadow-2xl hover:shadow-cyan-500/60"
+                  className="group/btn relative overflow-hidden rounded-2xl bg-linear-to-r from-brand via-cyan-500 to-teal-400 px-10 py-4 text-lg font-bold text-white shadow-xl transition-all duration-500 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 hover:shadow-2xl"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Explore Products
@@ -572,12 +479,11 @@ const Values = () => {
                     </span>
                   </span>
 
-                  <div className="absolute inset-0 translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-500 group-hover/btn:translate-x-0" />
                 </a>
 
                 <a
                   href="/about"
-                  className="group/btn relative overflow-hidden rounded-2xl border border-white/60 bg-white/40 px-10 py-4 text-lg font-bold text-[#0e7c85] transition-all duration-500 hover:border-[#0e7c85]/50 hover:bg-white/80 hover:shadow-lg"
+                  className="group/btn relative overflow-hidden rounded-2xl border border-gray-200 bg-white px-10 py-4 text-lg font-bold text-brand transition-all duration-500 hover:border-brand/50 hover:bg-white hover:shadow-lg"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Back to About

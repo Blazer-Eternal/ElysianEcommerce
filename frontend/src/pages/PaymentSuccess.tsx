@@ -90,7 +90,7 @@ const PaymentSuccess = () => {
         {status === "success" && (
           <>
             <div className="w-14 h-14 rounded-full bg-[#eafcfd] flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl text-[#0e7c85]">✓</span>
+              <span className="text-2xl text-brand">✓</span>
             </div>
             <h1 className="font-semibold text-lg mb-1">Payment Successful</h1>
             <p className="text-sm text-gray-600">{message}</p>
@@ -109,20 +109,20 @@ const PaymentSuccess = () => {
               {showRetry && (
                 <button
                   onClick={() => navigate(ROUTES.CHECKOUT)}
-                  className="w-full px-4 py-2 bg-[#0e7c85] text-white rounded-lg text-sm font-semibold hover:bg-[#0a5f68] transition-colors"
+                  className="w-full px-4 py-2 bg-brand text-white rounded-lg text-sm font-semibold hover:bg-[#0a5f68] transition-colors"
                 >
                   Try Again
                 </button>
               )}
               <Link 
                 to={ROUTES.ORDER_HISTORY} 
-                className="block px-4 py-2 border-2 border-[#0e7c85] text-[#0e7c85] rounded-lg text-sm font-semibold hover:bg-[#0e7c85]/5 transition-colors"
+                className="block px-4 py-2 border-2 border-brand text-brand rounded-lg text-sm font-semibold hover:bg-brand/5 transition-colors"
               >
                 View My Orders
               </Link>
               <Link 
                 to={ROUTES.HOME} 
-                className="block text-sm text-[#0e7c85] hover:underline"
+                className="block text-sm text-brand hover:underline"
               >
                 Back to Home
               </Link>

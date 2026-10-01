@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { CoinsIcon, GiftIcon, HeartIcon, ZapIcon } from "../../components/icons";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCartActions } from "../../hooks/useCart";
@@ -16,12 +17,6 @@ const AddToCartIcon = () => (
     <circle cx="9" cy="21" r="1" />
     <circle cx="20" cy="21" r="1" />
     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-  </svg>
-);
-
-const HeartIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   </svg>
 );
 
@@ -117,8 +112,7 @@ const Wishlist = () => {
           {/* Animated Heart Icon */}
           <div className="flex justify-center">
             <div className="relative w-24 h-24">
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-200 to-rose-200 rounded-full blur-2xl opacity-50 animate-pulse"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-pink-500 animate-bounce">
+              <div className="absolute inset-0 flex items-center justify-center text-pink-500 ">
                 <HeartIcon />
               </div>
               <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center shadow-lg">
@@ -129,7 +123,7 @@ const Wishlist = () => {
 
           {/* Text Content */}
           <div className="space-y-4">
-            <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-slate-900 via-cyan-800 to-cyan-600 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
               Your Wishlist is Empty
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
@@ -141,13 +135,13 @@ const Wishlist = () => {
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
             <Link
               to={ROUTES.PRODUCTS}
-              className="px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-[#0e7c85] to-cyan-600 hover:from-[#0b6169] hover:to-cyan-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 transform active:scale-95"
+              className="px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-brand to-cyan-600 hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 transform active:scale-95"
             >
               Explore Products →
             </Link>
             <Link
               to={ROUTES.HOME}
-              className="px-8 py-3.5 rounded-xl font-semibold text-[#0e7c85] bg-white/80 backdrop-blur-sm border border-cyan-200 hover:bg-white hover:border-cyan-400 transition-all duration-300 hover:shadow-lg"
+              className="px-8 py-3.5 rounded-xl font-semibold text-brand bg-white border border-cyan-200 hover:bg-white hover:border-cyan-400 transition-all duration-300 hover:shadow-lg"
             >
               Go Home
             </Link>
@@ -156,13 +150,13 @@ const Wishlist = () => {
           {/* Features Grid */}
           <div className="grid grid-cols-3 gap-4 pt-8">
             {[
-              { icon: "🎁", label: "Curated Selection" },
-              { icon: "💰", label: "Best Prices" },
-              { icon: "⚡", label: "Quick Checkout" },
+              { icon: <GiftIcon size={22} />, label: "Curated Selection" },
+              { icon: <CoinsIcon size={22} />, label: "Best Prices" },
+              { icon: <ZapIcon size={22} />, label: "Quick Checkout" },
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="p-3 rounded-lg bg-white/50 backdrop-blur-sm border border-white/80 hover:bg-white hover:border-cyan-200 transition-all duration-300 group cursor-pointer"
+                className="p-3 rounded-lg bg-white border border-gray-200 hover:bg-white hover:border-cyan-200 transition-all duration-300 group cursor-pointer"
               >
                 <div className="text-2xl mb-1 group-hover:scale-125 transition-transform duration-300">{feature.icon}</div>
                 <p className="text-xs text-gray-600 font-medium">{feature.label}</p>
@@ -180,11 +174,11 @@ const Wishlist = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-12 animate-fade-in">
         <div className="space-y-2 mb-8">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-gradient-to-br from-pink-100 to-rose-100 rounded-lg">
+            <div className="p-3 bg-brand/10 rounded-lg">
               <HeartIcon />
             </div>
             <div>
-              <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-slate-900 via-cyan-800 to-cyan-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
                 My Wishlist
               </h1>
               <p className="text-gray-600 text-base sm:text-lg mt-1">
@@ -204,8 +198,8 @@ const Wishlist = () => {
               onClick={() => setSelectedCategory("all")}
               className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                 selectedCategory === "all"
-                  ? "bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white shadow-lg -translate-y-0.5"
-                  : "bg-white/50 backdrop-blur-sm border border-white/80 text-gray-700 hover:bg-white hover:border-cyan-300"
+                  ? "bg-gradient-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
+                  : "bg-white border border-gray-200 text-gray-700 hover:bg-white hover:border-cyan-300"
               }`}
             >
               All Items
@@ -216,8 +210,8 @@ const Wishlist = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                   selectedCategory === category
-                    ? "bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white shadow-lg -translate-y-0.5"
-                    : "bg-white/50 backdrop-blur-sm border border-white/80 text-gray-700 hover:bg-white hover:border-cyan-300"
+                    ? "bg-gradient-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
+                    : "bg-white border border-gray-200 text-gray-700 hover:bg-white hover:border-cyan-300"
                 }`}
               >
                 {category}
@@ -232,7 +226,7 @@ const Wishlist = () => {
             aria-label="Sort wishlist"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            className="px-4 py-2 rounded-lg border border-cyan-300 bg-white/70 backdrop-blur-sm text-gray-900 font-medium hover:border-cyan-500 hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+            className="px-4 py-2 rounded-lg border border-cyan-300 bg-white text-gray-900 font-medium hover:border-cyan-500 hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
           >
             <option value="newest">Newest First</option>
             <option value="price-low">Price: Low to High</option>
@@ -264,11 +258,10 @@ const Wishlist = () => {
                 className="group h-full animate-fade-in"
               >
                 <div className="relative h-full rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-105 transform-gpu will-animate">
-                  {/* Background Gradient Glow */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/50 to-blue-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
 
                   {/* Card Container */}
-                  <div className="glass h-full rounded-2xl overflow-hidden hover:bg-white/90 transition-all duration-300 flex flex-col shadow-md hover:shadow-xl border border-white/40 hover:border-cyan-200/60">
+                  <div className="glass h-full rounded-2xl overflow-hidden hover:bg-white transition-all duration-300 flex flex-col shadow-md hover:shadow-xl border border-gray-200 hover:border-cyan-200/60">
                     {/* Image Container */}
                     <div className="relative overflow-hidden bg-gradient-to-br from-[#eafcfd] via-[#d7f4f6] to-[#c5eef0] aspect-square group">
                       <img
@@ -289,7 +282,7 @@ const Wishlist = () => {
                       />
 
                       {/* Stock Badge */}
-                      <div className="absolute top-3 left-3 glass rounded-full px-3 py-1.5 text-xs font-semibold backdrop-blur-md border border-white/60">
+                      <div className="absolute top-3 left-3 glass rounded-full px-3 py-1.5 text-xs font-semibold border border-gray-200">
                         {outOfStock ? (
                           <span className="text-red-600 font-bold">Out of Stock</span>
                         ) : product.stock && product.stock < 5 ? (
@@ -303,7 +296,7 @@ const Wishlist = () => {
 
                       {/* Wishlist Button */}
                       <div className="absolute top-3 right-3 z-20 transform transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0">
-                        <div className="glass rounded-full p-2.5 hover:bg-white/90 transition-all duration-300 backdrop-blur-md border border-white/60 hover:border-white hover:scale-110 cursor-pointer">
+                        <div className="glass rounded-full p-2.5 hover:bg-white transition-all duration-300 border border-gray-200 hover:border-gray-300 hover:scale-110 cursor-pointer">
                           <WishlistButton productId={product._id} />
                         </div>
                       </div>
@@ -312,7 +305,7 @@ const Wishlist = () => {
                       <button
                         onClick={() => handleAddToCart(product._id)}
                         disabled={outOfStock || isAdding}
-                        className={`absolute bottom-4 right-4 glass rounded-full p-3 transition-all duration-300 flex items-center justify-center text-white bg-gradient-to-r from-[#0e7c85] to-cyan-600 hover:from-[#0b6169] hover:to-cyan-700 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transform will-animate group-hover:scale-110 ${
+                        className={`absolute bottom-4 right-4 glass rounded-full p-3 transition-all duration-300 flex items-center justify-center text-white bg-gradient-to-r from-brand to-cyan-600 hover:from-brand-dark hover:to-cyan-700 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transform will-animate group-hover:scale-110 ${
                           isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                         }`}
                         title="Add to Cart"
@@ -326,7 +319,7 @@ const Wishlist = () => {
                       <div className="space-y-3">
                         {/* Product Name */}
                         <Link to={ROUTES.PRODUCT_DETAIL(product._id)}>
-                          <h3 className="font-bold text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-[#0e7c85] transition-colors duration-300 hover:underline decoration-cyan-400">
+                          <h3 className="font-bold text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-brand transition-colors duration-300 hover:underline decoration-cyan-400">
                             {product.name}
                           </h3>
                         </Link>
@@ -362,7 +355,7 @@ const Wishlist = () => {
                       <div className="pt-4 mt-4 space-y-3">
                         {/* Price Display */}
                         <div className="flex items-baseline gap-2 flex-wrap">
-                          <span className="text-xl sm:text-2xl font-bold text-[#0e7c85]">
+                          <span className="text-xl sm:text-2xl font-bold text-brand">
                             {formatCurrency(product.price)}
                           </span>
                           {getDisplayMrp(product) && (
@@ -388,7 +381,7 @@ const Wishlist = () => {
                         <button
                           onClick={() => handleAddToCart(product._id)}
                           disabled={outOfStock || isAdding}
-                          className="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0e7c85] to-cyan-600 text-white hover:from-[#0b6169] hover:to-cyan-700 hover:shadow-lg hover:-translate-y-0.5 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0 transform active:scale-95"
+                          className="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-lg hover:-translate-y-0.5 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0 transform active:scale-95"
                         >
                           <AddToCartIcon />
                           {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
@@ -397,7 +390,7 @@ const Wishlist = () => {
                         {/* Secondary Action */}
                         <Link
                           to={ROUTES.PRODUCT_DETAIL(product._id)}
-                          className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center text-[#0e7c85] border border-cyan-300 bg-white/50 hover:bg-white hover:border-cyan-500 hover:shadow-md"
+                          className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center text-brand border border-cyan-300 bg-white hover:bg-white hover:border-cyan-500 hover:shadow-md"
                         >
                           View Details
                         </Link>
@@ -418,7 +411,7 @@ const Wishlist = () => {
             <p className="text-xl text-gray-600">No items in {selectedCategory} category</p>
             <button
               onClick={() => setSelectedCategory("all")}
-              className="px-6 py-2.5 rounded-lg font-semibold text-[#0e7c85] bg-white border border-cyan-300 hover:bg-cyan-50 transition-all duration-300"
+              className="px-6 py-2.5 rounded-lg font-semibold text-brand bg-white border border-cyan-300 hover:bg-cyan-50 transition-all duration-300"
             >
               View All Items
             </button>

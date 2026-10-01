@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState, memo } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import type { Product } from "../../types/product.types";
 import { formatCurrency, formatDiscount, getDisplayMrp } from "../../utils/formatCurrency";
 import { ROUTES } from "../../constants/routes";
@@ -24,8 +24,18 @@ const AddToCartIcon = () => (
 const ProductCard = ({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+  const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { addItem } = useCartActions();
   const { ref } = useAnimationPause({ threshold: 0.05, rootMargin: "100px", pauseOnScroll: true });
+
+  // Clear any pending success-message timer when the card unmounts.
+  useEffect(
+    () => () => {
+      if (successTimer.current) clearTimeout(successTimer.current);
+    },
+    []
+  );
 
   const outOfStock = product.stock === 0;
   const imageUrl = product.images?.[0] || "/placeholder.svg";
@@ -41,6 +51,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
     setIsAdding(true);
     try {
       await addItem(product._id, 1);
+      setJustAdded(true);
+      if (successTimer.current) clearTimeout(successTimer.current);
+      successTimer.current = setTimeout(() => setJustAdded(false), 3000);
     } catch (error) {
       console.error("Failed to add to cart:", error);
     } finally {
@@ -60,7 +73,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="glass rounded-2xl overflow-hidden hover:bg-white/80 transition-all duration-300 h-full flex flex-col shadow-md hover:shadow-xl hover:-translate-y-1 gpu-accelerate" style={{ backfaceVisibility: "hidden" }}>
+        <div className="glass rounded-2xl overflow-hidden hover:bg-white transition-all duration-300 h-full flex flex-col shadow-md hover:shadow-xl hover:-translate-y-1 gpu-accelerate" style={{ backfaceVisibility: "hidden" }}>
           {/* Image Container */}
           <div className="relative overflow-hidden bg-linear-to-br from-[#eafcfd] to-[#d7f4f6] aspect-square">
             {/* Product Image */}
@@ -84,7 +97,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
             {/* Stock Badge */}
             <div className="absolute top-2 left-2">
-              <div className="glass rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur-md">
+              <div className="glass rounded-full px-2.5 py-1 text-xs font-semibold">
                 {outOfStock ? (
                   <span className="text-red-600">Out of Stock</span>
                 ) : product.stock && product.stock < 5 ? (
@@ -97,7 +110,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
             {/* Wishlist Button */}
             <div className="absolute top-2 right-2 z-20">
-              <div className="glass rounded-full p-2 backdrop-blur-md hover:bg-white/80 transition-all duration-300 flex items-center justify-center">
+              <div className="glass rounded-full p-2 hover:bg-white transition-all duration-300 flex items-center justify-center">
                 <WishlistButton productId={product._id} />
               </div>
             </div>
@@ -106,7 +119,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <button
               onClick={handleAddToCart}
               disabled={outOfStock || isAdding}
-              className={`absolute bottom-2 right-2 glass rounded-full p-2 backdrop-blur-md transition-all duration-300 flex items-center justify-center text-[#0e7c85] group-hover:bg-[#0e7c85] group-hover:text-white disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`absolute bottom-2 right-2 glass rounded-full p-2 transition-all duration-300 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-white disabled:opacity-50 disabled:cursor-not-allowed ${
                 isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
               }`}
             >
@@ -118,7 +131,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div className="flex-1 p-4 flex flex-col justify-between gap-3">
             {/* Product Name */}
             <div className="space-y-2">
-              <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 group-hover:text-[#0e7c85] transition-colors duration-300">
+              <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 group-hover:text-brand transition-colors duration-300">
                 {product.name}
               </h3>
 
@@ -128,8 +141,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
                   <StarRating
                     value={product.rating_avg}
                     size={16}
-                    filledClassName="text-[#0e7c85]"
-                    emptyClassName="text-[#0e7c85]/30"
+                    filledClassName="text-brand"
+                    emptyClassName="text-brand/30"
                   />
                   <span className="text-xs text-gray-600">
                     Ratings {product.rating_count}
@@ -143,9 +156,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </div>
 
             {/* Price Container */}
-            <div className="pt-3 border-t border-white/40">
+            <div className="pt-3 border-t border-gray-200">
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className="text-xl font-extrabold text-[#0e7c85]">
+                <span className="text-xl font-extrabold text-brand">
                   {formatCurrency(product.price)}
                 </span>
                 {mrp && (
@@ -160,13 +173,38 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </div>
 
             {/* Add to Cart */}
-            <button
-              onClick={handleAddToCart}
-              disabled={outOfStock || isAdding}
-              className="w-full rounded-xl border border-[#0e7c85]/40 bg-white/70 px-3 py-2 text-sm font-bold text-[#0e7c85] transition-all duration-300 hover:bg-[#0e7c85] hover:border-[#0e7c85] hover:text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white/70 disabled:hover:text-[#0e7c85]"
-            >
-              {isAdding ? "Adding..." : outOfStock ? "Out of Stock" : "Add to Cart"}
-            </button>
+            <div className="relative">
+              {/* Success feedback */}
+              {justAdded && (
+                <div
+                  role="status"
+                  className="absolute bottom-full left-0 right-0 z-20 mb-2 flex items-center justify-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-2.5 py-1.5 text-center text-xs font-bold text-green-700 shadow-md animate-scale-in"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-green-600" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  <span>Successfully added to cart</span>
+                </div>
+              )}
+
+              <button
+                onClick={handleAddToCart}
+                disabled={outOfStock || isAdding}
+                className={`w-full rounded-xl border px-3 py-2 text-sm font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  justAdded
+                    ? "border-green-500 bg-green-600 text-white disabled:hover:bg-green-600 disabled:hover:text-white"
+                    : "border-brand/40 bg-white text-brand hover:bg-brand hover:border-brand hover:text-white disabled:hover:bg-white disabled:hover:text-brand"
+                }`}
+              >
+                {isAdding
+                  ? "Adding..."
+                  : outOfStock
+                  ? "Out of Stock"
+                  : justAdded
+                  ? "✓ Added!"
+                  : "Add to Cart"}
+              </button>
+            </div>
           </div>
         </div>
       </div>

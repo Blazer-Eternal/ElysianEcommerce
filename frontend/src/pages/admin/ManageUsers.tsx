@@ -45,7 +45,7 @@ const ManageUsers = () => {
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
-              <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider mb-2">Admin Panel</div>
+              <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Users</h1>
               <p className="text-gray-600 mt-2">View and manage customer accounts and their roles.</p>
             </div>
@@ -66,12 +66,12 @@ const ManageUsers = () => {
                 {users.map((user) => (
                   <div
                     key={user._id}
-                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-white/20"
+                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
                   >
                     {/* User Avatar Background */}
-                    <div className="relative overflow-hidden bg-linear-to-br from-[#0e7c85]/10 to-cyan-600/10 h-48 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                      <div className="text-[#0e7c85]/60 group-hover:text-[#0e7c85] transition-colors">
-                        <div className="flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 text-white text-2xl font-bold">
+                    <div className="relative overflow-hidden bg-linear-to-br from-brand/10 to-cyan-600/10 h-48 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                      <div className="text-brand/60 group-hover:text-brand transition-colors">
+                        <div className="flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-brand to-cyan-600 text-white text-2xl font-bold">
                           {user.name?.charAt(0).toUpperCase() || "U"}
                         </div>
                       </div>
@@ -85,7 +85,7 @@ const ManageUsers = () => {
                       </div>
 
                       {/* User Details */}
-                      <div className="space-y-2 py-3 border-t border-b border-white/20">
+                      <div className="space-y-2 py-3 border-t border-b border-gray-200">
                         {user.phone && (
                           <div>
                             <p className="text-xs text-gray-600 font-medium">Phone</p>
@@ -103,8 +103,8 @@ const ManageUsers = () => {
                           API also rejects role=admin, so no control is shown. */}
                       <div className="space-y-2">
                         <p className="text-xs text-gray-600 font-medium">Role</p>
-                        <div className="px-3 py-2 bg-[#0e7c85]/10 rounded-lg border border-[#0e7c85]/20">
-                          <span className="text-sm font-semibold text-[#0e7c85] capitalize">
+                        <div className="px-3 py-2 bg-brand/10 rounded-lg border border-brand/20">
+                          <span className="text-sm font-semibold text-brand capitalize">
                             {user.role}
                             {user._id === currentUser?.id ? " (You)" : ""}
                           </span>

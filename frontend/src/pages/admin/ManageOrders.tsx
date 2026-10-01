@@ -105,7 +105,7 @@ const ManageOrders = () => {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider mb-2">Admin Panel</div>
+            <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Orders</h1>
             <p className="text-gray-600 mt-2">View and manage all customer orders.</p>
           </div>
@@ -116,17 +116,17 @@ const ManageOrders = () => {
               <p className="text-gray-600">Loading orders...</p>
             </div>
           ) : orders.length === 0 ? (
-            <div className="text-center py-12 glass rounded-xl p-6 border border-white/20">
+            <div className="text-center py-12 glass rounded-xl p-6 border border-gray-200">
               <p className="text-gray-600 text-lg">No orders found.</p>
             </div>
           ) : (
             <>
-              <div className="glass rounded-xl overflow-hidden border border-white/20">
+              <div className="glass rounded-xl overflow-hidden border border-gray-200">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     {/* Table Header */}
                     <thead>
-                      <tr className="border-b border-white/20 bg-linear-to-r from-[#0e7c85]/5 to-cyan-600/5">
+                      <tr className="border-b border-gray-200 bg-linear-to-r from-brand/5 to-cyan-600/5">
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Order #</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Customer</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Items</th>
@@ -142,12 +142,12 @@ const ManageOrders = () => {
                     {/* Table Body */}
                     <tbody className="divide-y divide-white/20">
                       {orders.map((order) => (
-                        <tr key={order._id} className="hover:bg-linear-to-r hover:from-[#0e7c85]/5 hover:to-cyan-600/5 transition-colors">
+                        <tr key={order._id} className="hover:bg-linear-to-r hover:from-brand/5 hover:to-cyan-600/5 transition-colors">
                           {/* Order Number */}
                           <td className="px-6 py-4">
                             <Link
                               to={`/admin/orders/${order._id}`}
-                              className="text-sm font-bold text-[#0e7c85] hover:text-[#1a6b94] transition-colors"
+                              className="text-sm font-bold text-brand hover:text-brand-dark transition-colors"
                             >
                               #{order.order_number}
                             </Link>
@@ -172,7 +172,7 @@ const ManageOrders = () => {
 
                           {/* Total */}
                           <td className="px-6 py-4">
-                            <span className="text-sm font-bold text-[#0e7c85]">
+                            <span className="text-sm font-bold text-brand">
                               {formatCurrency(order.total_amount)}
                             </span>
                           </td>
@@ -198,7 +198,7 @@ const ManageOrders = () => {
                             <select
                               value={order.status}
                               onChange={(e) => handleStatusChange(order._id, e.target.value as OrderStatus)}
-                              className="px-3 py-1 border border-gray-300 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+                              className="px-3 py-1 border border-gray-300 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brand"
                             >
                               {ORDER_STATUSES.map((s) => (
                                 <option key={s} value={s}>
@@ -218,7 +218,7 @@ const ManageOrders = () => {
                             <select
                               value={order.payment_status}
                               onChange={(e) => handlePaymentStatusChange(order._id, e.target.value as PaymentStatus)}
-                              className="px-3 py-1 border border-gray-300 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+                              className="px-3 py-1 border border-gray-300 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brand"
                             >
                               {PAYMENT_STATUSES.map((s) => (
                                 <option key={s} value={s}>

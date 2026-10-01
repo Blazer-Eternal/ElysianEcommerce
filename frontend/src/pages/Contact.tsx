@@ -32,12 +32,12 @@ const Contact = () => {
   };
 
   return (
-    <div className="space-y-20 pb-20 sm:pb-32">
+    <div className="space-y-24 pb-20 sm:pb-32">
       {/* Hero Section */}
-      <div className="pt-12 sm:pt-20 pb-8 sm:pb-12">
+      <div className="pt-12 pb-8 sm:pt-24 sm:pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
-            Get in <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Touch</span>
+            Get in <span className="text-brand">Touch</span>
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
             We'd love to hear from you. Whether you have a question or feedback, don't hesitate to reach out.
@@ -51,16 +51,16 @@ const Contact = () => {
           {/* Contact Info */}
           <div className="lg:col-span-1 space-y-6">
             <div>
-              <p className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wide mb-2">Contact Info</p>
+              <p className="text-sm font-semibold text-brand uppercase tracking-wide mb-2">Contact Info</p>
               <p className="text-gray-600 leading-relaxed">
                 Have a question or feedback? We're here to help. Reach out through any of the methods below.
               </p>
             </div>
 
             {/* Location */}
-            <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
+            <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white">
                   <LocationIcon />
                 </div>
                 <div>
@@ -72,9 +72,9 @@ const Contact = () => {
             </div>
 
             {/* Phone */}
-            <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
+            <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white">
                   <PhoneIcon />
                 </div>
                 <div>
@@ -86,9 +86,9 @@ const Contact = () => {
             </div>
 
             {/* Email */}
-            <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white/80 transition-all duration-300">
+            <div className="glass rounded-2xl p-6 space-y-4 hover:bg-white transition-all duration-300">
               <div className="flex items-start gap-4">
-                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white">
+                <div className="shrink-0 w-12 h-12 rounded-lg bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white">
                   <EmailIcon />
                 </div>
                 <div>
@@ -109,9 +109,9 @@ const Contact = () => {
               </p>
 
               {submitted && (
-                <div className="mb-6 glass bg-linear-to-r from-[#eafcfd] to-[#d7f4f6] border-l-4 border-[#0e7c85] rounded-lg px-6 py-4">
-                  <p className="text-[#0e7c85] font-semibold">✓ Message Received!</p>
-                  <p className="text-[#0e7c85] text-sm mt-1">We'll get back to you within 24 hours.</p>
+                <div className="mb-6 glass bg-linear-to-r from-[#eafcfd] to-[#d7f4f6] border-l-4 border-brand rounded-lg px-6 py-4">
+                  <p className="text-brand font-semibold">✓ Message Received!</p>
+                  <p className="text-brand text-sm mt-1">We'll get back to you within 24 hours.</p>
                 </div>
               )}
 
@@ -127,7 +127,7 @@ const Contact = () => {
                       required
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0e7c85] transition-all duration-300"
+                      className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300"
                     />
                   </div>
                   <div>
@@ -140,7 +140,7 @@ const Contact = () => {
                       required
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0e7c85] transition-all duration-300"
+                      className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300"
                     />
                   </div>
                 </div>
@@ -154,7 +154,7 @@ const Contact = () => {
                     placeholder="+977 98X-XXX-XXXX"
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0e7c85] transition-all duration-300"
+                    className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300"
                   />
                 </div>
 
@@ -168,13 +168,13 @@ const Contact = () => {
                     rows={5}
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0e7c85] transition-all duration-300 resize-none"
+                    className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300 resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold py-3 rounded-lg hover:from-[#0b6169] hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                  className="w-full bg-linear-to-r from-brand to-cyan-600 text-white font-semibold py-3 rounded-lg hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg"
                 >
                   Send Message
                 </button>
@@ -207,10 +207,10 @@ const Contact = () => {
               a: "Yes! We ship worldwide. Shipping costs and delivery times vary by location.",
             },
           ].map((item, i) => (
-            <details key={i} className="glass rounded-lg p-6 hover:bg-white/80 transition-all duration-300 cursor-pointer group">
+            <details key={i} className="glass rounded-lg p-6 hover:bg-white transition-all duration-300 cursor-pointer group">
               <summary className="font-semibold text-gray-900 flex items-center justify-between">
                 {item.q}
-                <span className="text-[#0e7c85] group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-brand group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-gray-600 mt-4 leading-relaxed">{item.a}</p>
             </details>

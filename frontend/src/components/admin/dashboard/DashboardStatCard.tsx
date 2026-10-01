@@ -50,7 +50,7 @@ const DashboardStatCard = memo(
       `${previousValue} during the previous ${periodDays} days.`;
 
     return (
-      <div className="glass rounded-2xl border border-white/20 p-5 sm:p-6 card-container hover-lift transition-smooth">
+      <div className="glass rounded-2xl border border-gray-200 p-5 sm:p-6 card-container hover-lift transition-smooth">
         <div className="flex items-start justify-between gap-3">
           <div className={`w-11 h-11 rounded-xl bg-linear-to-br ${iconBg} flex items-center justify-center text-white gpu-accelerate`}>
             {icon}

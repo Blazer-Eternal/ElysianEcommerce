@@ -78,7 +78,7 @@ const ManageReviews = () => {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider mb-2">Admin Panel</div>
+            <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Reviews</h1>
             <p className="text-gray-600 mt-2">View and moderate all customer reviews across your store.</p>
           </div>
@@ -89,17 +89,17 @@ const ManageReviews = () => {
               <p className="text-gray-600">Loading reviews...</p>
             </div>
           ) : reviews.length === 0 ? (
-            <div className="text-center py-12 glass rounded-xl p-6 border border-white/20">
+            <div className="text-center py-12 glass rounded-xl p-6 border border-gray-200">
               <p className="text-gray-600 text-lg">No reviews found.</p>
             </div>
           ) : (
             <>
-              <div className="glass rounded-xl overflow-hidden border border-white/20">
+              <div className="glass rounded-xl overflow-hidden border border-gray-200">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     {/* Table Header */}
                     <thead>
-                      <tr className="border-b border-white/20 bg-linear-to-r from-[#0e7c85]/5 to-cyan-600/5">
+                      <tr className="border-b border-gray-200 bg-linear-to-r from-brand/5 to-cyan-600/5">
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Product Name</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Customer Name</th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Rating</th>
@@ -112,7 +112,7 @@ const ManageReviews = () => {
                     {/* Table Body */}
                     <tbody className="divide-y divide-white/20">
                       {reviews.map((review) => (
-                        <tr key={review._id} className="hover:bg-linear-to-r hover:from-[#0e7c85]/5 hover:to-cyan-600/5 transition-colors">
+                        <tr key={review._id} className="hover:bg-linear-to-r hover:from-brand/5 hover:to-cyan-600/5 transition-colors">
                           {/* Product Name */}
                           <td className="px-6 py-4">
                             <span className="text-sm font-semibold text-gray-900">
@@ -123,7 +123,7 @@ const ManageReviews = () => {
                           {/* Customer Name */}
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                              <div className="w-8 h-8 rounded-full bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
                                 {getCustomerName(review).charAt(0).toUpperCase()}
                               </div>
                               <span className="text-sm font-medium text-gray-900">

@@ -15,7 +15,7 @@ const Cancellations = () => {
 
       <h2>After cancellation</h2>
       <p>
-        Cancelled orders are not deleted — they remain visible in your order history for your records.
+        Cancelled orders are not deleted. They remain visible in your order history for your records.
         Any stock reserved for the order is released back into inventory immediately.
       </p>
 

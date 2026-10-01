@@ -10,7 +10,7 @@ const HomeIcon = () => (
 
 const AdminNavbar = () => {
   return (
-    <div className="glass-nav sticky top-0 z-40 border-b border-white/60 animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)", backfaceVisibility: "hidden" }}>
+    <div className="glass-nav sticky top-0 z-40 border-b border-gray-200 animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)", backfaceVisibility: "hidden" }}>
       <div className="max-w-full mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4" style={{ contain: "layout style" }}>
         {/* Left - Logo */}
         <Link to={ROUTES.ADMIN_DASHBOARD} className="shrink-0 flex items-center gap-3 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
@@ -30,7 +30,7 @@ const AdminNavbar = () => {
         {/* Right - Back to Home Button */}
         <Link 
           to={ROUTES.HOME}
-          className="flex items-center gap-2 glass px-4 py-2.5 sm:px-6 sm:py-3 rounded-lg font-semibold text-sm sm:text-base text-gray-700 hover:bg-white/80 hover:text-[#0e7c85] transition-all duration-300 group gpu-accelerate"
+          className="flex items-center gap-2 glass px-4 py-2.5 sm:px-6 sm:py-3 rounded-lg font-semibold text-sm sm:text-base text-gray-700 hover:bg-white hover:text-brand transition-all duration-300 group gpu-accelerate"
           style={{ transform: "translateZ(0)" }}
         >
           <HomeIcon />

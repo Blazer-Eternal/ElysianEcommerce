@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { AlertIcon, BanknoteIcon, CheckIcon, CreditCardIcon, MapPinIcon, TicketIcon } from "../../components/icons";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useCartState } from "../../hooks/useCart";
@@ -75,7 +76,7 @@ const Checkout = () => {
           </div>
           <Link
             to={ROUTES.PRODUCTS}
-            className="inline-block px-8 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="inline-block px-8 py-3 bg-linear-to-r from-brand to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             Continue Shopping
           </Link>
@@ -88,12 +89,12 @@ const Checkout = () => {
     return (
       <div className="min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 flex items-center">
         <div className="max-w-6xl mx-auto px-4 py-16 text-center animate-fade-in">
-          <div className="inline-block mb-6 p-4 rounded-2xl bg-linear-to-r from-[#0e7c85]/10 to-cyan-600/10">
+          <div className="inline-block mb-6 p-4 rounded-2xl bg-linear-to-r from-brand/10 to-cyan-600/10">
             <p className="text-lg text-gray-600 font-medium">Your cart is empty</p>
           </div>
           <Link
             to={ROUTES.PRODUCTS}
-            className="inline-block px-8 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="inline-block px-8 py-3 bg-linear-to-r from-brand to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
           >
             Continue Shopping
           </Link>
@@ -168,21 +169,17 @@ const Checkout = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 py-8 sm:py-12 overflow-hidden">
-      {/* Animated gradient blobs */}
+    <div className="relative min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 py-8 sm:py-16 overflow-hidden">
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-0 right-1/3 w-96 h-96 bg-linear-to-br from-cyan-300/40 via-cyan-200/20 to-transparent rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-lg h-lg bg-linear-to-tr from-[#0e7c85]/30 via-teal-200/20 to-transparent rounded-full blur-3xl animate-float animation-delay-3000"></div>
-        <div className="absolute top-1/3 right-0 w-80 h-80 bg-linear-to-l from-cyan-400/20 to-transparent rounded-full blur-3xl animate-float animation-delay-5000"></div>
       </div>
 
       <div className="max-w-5xl mx-auto px-4 animate-fade-in">
         {/* Header - Enhanced */}
         <div className="mb-10 sm:mb-14 text-center">
-          <div className="inline-block mb-4 px-4 py-2 rounded-full bg-linear-to-r from-cyan-100/60 to-teal-100/60 border border-cyan-200/40 backdrop-blur">
-            <p className="text-xs sm:text-sm font-bold text-[#0e7c85] uppercase tracking-widest">✨ Secure Checkout</p>
+          <div className="inline-block mb-4 px-4 py-2 rounded-full bg-linear-to-r from-cyan-100/60 to-teal-100/60 border border-cyan-200/40">
+            <p className="text-xs sm:text-sm font-bold text-brand uppercase tracking-widest">Secure Checkout</p>
           </div>
-          <h1 className="text-5xl sm:text-6xl font-black bg-linear-to-r from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent mb-3">
+          <h1 className="text-5xl sm:text-6xl font-black mb-3 text-brand">
             Complete Your Order
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">Fast, secure, and trusted checkout process</p>
@@ -191,8 +188,8 @@ const Checkout = () => {
         {/* Error Alert */}
         {error && (
           <div className="mb-6 animate-shake">
-            <div className="rounded-2xl bg-linear-to-r from-red-500/10 via-red-400/5 to-red-500/10 border-2 border-red-300/50 text-red-800 px-6 py-4 text-sm font-semibold shadow-xl backdrop-blur">
-              <span className="inline-flex items-center gap-2"><span className="text-xl">⚠️</span>{error}</span>
+            <div className="rounded-2xl bg-linear-to-r from-red-500/10 via-red-400/5 to-red-500/10 border-2 border-red-300/50 text-red-800 px-6 py-4 text-sm font-semibold shadow-xl">
+              <span className="inline-flex items-center gap-2"><AlertIcon size={18} className="shrink-0" />{error}</span>
             </div>
           </div>
         )}
@@ -205,9 +202,9 @@ const Checkout = () => {
               <div className="absolute inset-0 bg-linear-to-br from-cyan-50/80 via-white/70 to-teal-50/60 -z-10"></div>
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-cyan-200/10 via-transparent to-teal-200/10 transition-opacity duration-500 -z-10"></div>
 
-              <div className="relative p-7 sm:p-10 border border-cyan-200/60 group-hover:border-cyan-300/80 transition-all duration-300 rounded-3xl backdrop-blur-md">
-                <h2 className="text-2xl font-black text-transparent bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text mb-8 flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-linear-to-br from-cyan-400 to-teal-500 text-white font-bold text-lg shadow-lg">📍</span>
+              <div className="relative p-7 sm:p-10 border border-cyan-200/60 group-hover:border-cyan-300/80 transition-all duration-300 rounded-3xl">
+                <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-brand text-white shadow-lg"><MapPinIcon size={20} /></span>
                   Shipping Address
                 </h2>
 
@@ -223,7 +220,7 @@ const Checkout = () => {
                       required
                       value={address.street}
                       onChange={(e) => setAddress({ ...address, street: e.target.value })}
-                      className="w-full border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white/80 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
+                      className="w-full border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
                     />
                     <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-cyan-400/0 via-cyan-400/0 to-transparent opacity-0 group-hover/input:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                   </div>
@@ -239,7 +236,7 @@ const Checkout = () => {
                       required
                       value={address.city}
                       onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white/80 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
+                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
                     />
                     <input
                       id="state"
@@ -251,7 +248,7 @@ const Checkout = () => {
                       required
                       value={address.state}
                       onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white/80 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
+                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
                     />
                   </div>
 
@@ -266,7 +263,7 @@ const Checkout = () => {
                       required
                       value={address.zip}
                       onChange={(e) => setAddress({ ...address, zip: e.target.value })}
-                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white/80 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
+                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
                     />
                     <input
                       id="country"
@@ -278,7 +275,7 @@ const Checkout = () => {
                       required
                       value={address.country}
                       onChange={(e) => setAddress({ ...address, country: e.target.value })}
-                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white/80 focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
+                      className="border-2 border-cyan-200/50 rounded-2xl px-5 py-4 text-base bg-white focus:bg-white focus:border-cyan-500 focus:ring-4 focus:ring-cyan-200/30 transition-all duration-300 placeholder-gray-400 font-medium"
                     />
                   </div>
                 </div>
@@ -287,19 +284,19 @@ const Checkout = () => {
 
             {/* Coupon */}
             <div className="group relative rounded-3xl overflow-hidden animate-fade-in hover:shadow-2xl transition-all duration-500">
-              <div className="absolute inset-0 bg-linear-to-br from-purple-50/80 via-white/70 to-pink-50/60 -z-10"></div>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-purple-200/10 via-transparent to-pink-200/10 transition-opacity duration-500 -z-10"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-gray-50/80 via-white/70 to-gray-50/60 -z-10"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-gray-100/60 via-transparent to-gray-100/40 transition-opacity duration-500 -z-10"></div>
 
-              <div className="relative p-7 sm:p-10 border border-purple-200/60 group-hover:border-purple-300/80 transition-all duration-300 rounded-3xl backdrop-blur-md">
-                <h2 className="text-2xl font-black text-transparent bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text mb-6 flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-linear-to-br from-purple-400 to-pink-500 text-white font-bold text-lg shadow-lg">🎟️</span>
+              <div className="relative p-7 sm:p-10 border border-gray-200/80 group-hover:border-gray-300 transition-all duration-300 rounded-3xl">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-brand text-white shadow-lg"><TicketIcon size={20} /></span>
                   Apply Coupon
                 </h2>
                 <CouponInput orderAmount={subtotal} onApplied={setAppliedCoupon} />
                 {appliedCoupon && (
-                  <div className="mt-5 p-4 rounded-2xl bg-linear-to-r from-green-100/80 via-emerald-100/60 to-green-50/80 border-2 border-green-300/60 animate-pulse-glow">
+                  <div className="mt-5 p-4 rounded-2xl bg-linear-to-r from-green-100/80 via-emerald-100/60 to-green-50/80 border-2 border-green-300/60">
                     <p className="text-sm font-bold text-green-700 flex items-center gap-2">
-                      <span className="text-lg">✨</span>Coupon <span className="text-emerald-600 font-black">{appliedCoupon.code}</span> applied! You saved <span className="text-emerald-600 font-black">{formatCurrency(appliedCoupon.discount_amount)}</span>
+                      <CheckIcon size={16} className="shrink-0" />Coupon <span className="text-emerald-700 font-black">{appliedCoupon.code}</span> applied! You saved <span className="text-emerald-700 font-black">{formatCurrency(appliedCoupon.discount_amount)}</span>
                     </p>
                   </div>
                 )}
@@ -308,12 +305,12 @@ const Checkout = () => {
 
             {/* Payment Method */}
             <div className="group relative rounded-3xl overflow-hidden animate-fade-in hover:shadow-2xl transition-all duration-500">
-              <div className="absolute inset-0 bg-linear-to-br from-orange-50/80 via-white/70 to-amber-50/60 -z-10"></div>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-orange-200/10 via-transparent to-amber-200/10 transition-opacity duration-500 -z-10"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-gray-50/80 via-white/70 to-gray-50/60 -z-10"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-gray-100/60 via-transparent to-gray-100/40 transition-opacity duration-500 -z-10"></div>
 
-              <div className="relative p-7 sm:p-10 border border-orange-200/60 group-hover:border-orange-300/80 transition-all duration-300 rounded-3xl backdrop-blur-md">
-                <h2 className="text-2xl font-black text-transparent bg-linear-to-r from-orange-600 to-amber-600 bg-clip-text mb-8 flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-linear-to-br from-orange-400 to-amber-500 text-white font-bold text-lg shadow-lg">💳</span>
+              <div className="relative p-7 sm:p-10 border border-gray-200/80 group-hover:border-gray-300 transition-all duration-300 rounded-3xl">
+                <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-brand text-white shadow-lg"><CreditCardIcon size={20} /></span>
                   Payment Method
                 </h2>
 
@@ -322,13 +319,12 @@ const Checkout = () => {
                   <button
                     type="button"
                     onClick={() => setPaymentMethod("cod")}
-                    className={`relative group/btn rounded-2xl p-6 text-left transition-all duration-300 border-3 transform hover:scale-105 active:scale-95 ${paymentMethod === "cod"
-                        ? "border-cyan-500 bg-linear-to-br from-cyan-100 to-cyan-50 shadow-xl"
-                        : "border-gray-300/50 bg-white/60 hover:border-cyan-400 hover:shadow-lg"
+                    className={`relative group/btn rounded-2xl p-6 text-left transition-all duration-300 border-2 transform hover:scale-105 active:scale-95 ${paymentMethod === "cod"
+                        ? "border-brand bg-brand/5 shadow-xl"
+                        : "border-gray-300/70 bg-white hover:border-brand/60 hover:shadow-lg"
                       }`}
                   >
-                    <div className={`absolute inset-0 rounded-2xl bg-linear-to-r from-cyan-400 to-teal-400 opacity-0 ${paymentMethod === "cod" ? "opacity-5" : ""} transition-opacity -z-10`}></div>
-                    <div className="text-3xl mb-2">💵</div>
+                    <BanknoteIcon size={28} className="mb-2 text-gray-600" />
                     <p className="font-bold text-base text-gray-900">Cash on Delivery</p>
                     <p className="text-sm text-gray-600 mt-2">Pay when your order arrives</p>
                   </button>
@@ -339,7 +335,7 @@ const Checkout = () => {
                     onClick={() => setPaymentMethod("esewa")}
                     className={`relative group/btn rounded-2xl p-6 text-left transition-all duration-300 border-3 transform hover:scale-105 active:scale-95 ${paymentMethod === "esewa"
                         ? "border-green-500 bg-linear-to-br from-green-100 to-green-50 shadow-xl"
-                        : "border-gray-300/50 bg-white/60 hover:border-green-400 hover:shadow-lg"
+                        : "border-gray-300/50 bg-white hover:border-green-400 hover:shadow-lg"
                       }`}
                   >
                     <div className={`absolute inset-0 rounded-2xl bg-linear-to-r from-green-400 to-emerald-400 opacity-0 ${paymentMethod === "esewa" ? "opacity-5" : ""} transition-opacity -z-10`}></div>
@@ -361,9 +357,9 @@ const Checkout = () => {
                 <div className="absolute inset-0 bg-linear-to-br from-cyan-100/80 via-white/80 to-teal-50/60 -z-10"></div>
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-br from-cyan-200/15 via-transparent to-teal-200/15 transition-opacity duration-500 -z-10"></div>
 
-                <div className="relative p-7 sm:p-8 border-3 border-cyan-200/70 group-hover:border-cyan-400 transition-all duration-300 rounded-3xl backdrop-blur-md">
-                  <h2 className="text-2xl font-black text-transparent bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text mb-8">
-                    📦 Order Summary
+                <div className="relative p-7 sm:p-8 border-3 border-cyan-200/70 group-hover:border-cyan-400 transition-all duration-300 rounded-3xl">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-8">
+                    Order Summary
                   </h2>
 
                   {/* Items */}
@@ -383,7 +379,7 @@ const Checkout = () => {
 
                   {exceedsStock && (
                     <div className="mb-6 rounded-2xl bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 text-sm font-semibold">
-                      Not enough stock — only {Math.min(...lines.map((l) => l.product.stock))} left.
+                      Not enough stock: only {Math.min(...lines.map((l) => l.product.stock))} left.
                     </div>
                   )}
 
@@ -394,7 +390,7 @@ const Checkout = () => {
                       <span className="font-bold text-gray-900">{formatCurrency(subtotal)}</span>
                     </div>
                     {discount > 0 && (
-                      <div className="flex justify-between text-sm animate-pulse-glow">
+                      <div className="flex justify-between text-sm ">
                         <span className="text-emerald-700 font-black">Discount</span>
                         <span className="font-black text-emerald-600">-{formatCurrency(discount)}</span>
                       </div>
@@ -406,10 +402,10 @@ const Checkout = () => {
                       narrow summary column the way it did on one crowded line. */}
                   <div className="mb-8 p-5 rounded-2xl bg-linear-to-r from-cyan-200/40 to-teal-200/40 border-2 border-cyan-300/60">
                     <div className="flex flex-col items-end text-right">
-                      <span className="text-xs font-black uppercase tracking-widest text-[#0e7c85]">
+                      <span className="text-xs font-black uppercase tracking-widest text-brand">
                         Total
                       </span>
-                      <span className="mt-1 text-2xl font-black leading-none whitespace-nowrap tracking-tight bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                      <span className="mt-1 text-2xl font-black leading-none whitespace-nowrap tracking-tight text-brand">
                         {formatCurrency(total)}
                       </span>
                     </div>
@@ -421,24 +417,17 @@ const Checkout = () => {
                     disabled={isSubmitting || exceedsStock}
                     className="w-full relative py-5 px-6 rounded-2xl font-black text-lg text-white overflow-hidden transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <div className="absolute inset-0 bg-linear-to-r from-[#0e7c85] via-cyan-600 to-teal-500 group-hover:from-[#0a5f68] group-hover:via-[#0a9db2] group-hover:to-[#16a596] transition-all duration-300 rounded-2xl"></div>
-                    <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-2xl overflow-hidden">
-                      <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-transform duration-700"></div>
-                    </div>
+                    <div className="absolute inset-0 bg-linear-to-r from-brand via-cyan-600 to-teal-500 group-hover:from-[#0a5f68] group-hover:via-[#0a9db2] group-hover:to-[#16a596] transition-all duration-300 rounded-2xl"></div>
                     <span className="relative flex items-center justify-center gap-3">
                       {isSubmitting ? (
                         <>
-                          <span className="inline-block w-5 h-5 border-3 border-white/40 border-t-white rounded-full animate-spin"></span>
+                          <span className="inline-block w-5 h-5 border-3 border-gray-200 border-t-white rounded-full animate-spin"></span>
                           {paymentMethod === "esewa" ? "Redirecting to eSewa..." : "Processing..."}
                         </>
                       ) : paymentMethod === "esewa" ? (
-                        <>
-                          <span>🚀 Pay with eSewa</span>
-                        </>
+                        <span>Pay with eSewa</span>
                       ) : (
-                        <>
-                          <span>✅ Place Order</span>
-                        </>
+                        <span>Place Order</span>
                       )}
                     </span>
                   </button>
@@ -468,18 +457,6 @@ const Checkout = () => {
           75% { transform: translateX(8px); }
         }
 
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          25% { transform: translateY(-20px) rotate(5deg); }
-          50% { transform: translateY(-40px) rotate(0deg); }
-          75% { transform: translateY(-20px) rotate(-5deg); }
-        }
-
-        @keyframes pulseGlow {
-          0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
-          50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.8); }
-        }
-
         .animate-fade-in {
           animation: fadeIn 0.6s ease-out forwards;
           opacity: 0;
@@ -489,20 +466,6 @@ const Checkout = () => {
           animation: shake 0.5s ease-in-out;
         }
 
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-
-        .animate-pulse-glow {
-          animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        .animation-delay-100 { animation-delay: 0.1s; }
-        .animation-delay-200 { animation-delay: 0.2s; }
-        .animation-delay-300 { animation-delay: 0.3s; }
-        .animation-delay-400 { animation-delay: 0.4s; }
-        .animation-delay-3000 { animation-delay: 3s; }
-        .animation-delay-5000 { animation-delay: 5s; }
       `}</style>
     </div>
   );

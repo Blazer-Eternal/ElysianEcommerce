@@ -174,7 +174,7 @@ const DataTablesDemo = () => {
           const category = info.getValue() as any;
           const categoryName = typeof category === "object" ? category?.name : "—";
           return (
-            <span className="inline-block px-2 py-1 bg-[#0e7c85]/20 text-[#0e7c85] rounded text-xs font-semibold">
+            <span className="inline-block px-2 py-1 bg-brand/20 text-brand rounded text-xs font-semibold">
               {categoryName}
             </span>
           );
@@ -255,7 +255,7 @@ const DataTablesDemo = () => {
             <div className="flex items-center gap-2">
               {isMainCategory && (
                 <span className="text-xl" title="Main Category">
-                  ⭐
+                  ★
                 </span>
               )}
               <span className="font-semibold text-gray-900">{info.getValue()}</span>
@@ -353,7 +353,7 @@ const DataTablesDemo = () => {
           const user = info.getValue() as any;
           const userName = typeof user === "object" ? user?.name : "—";
           return (
-            <span className="inline-block px-2 py-1 bg-[#0e7c85]/20 text-[#0e7c85] rounded text-xs font-semibold">
+            <span className="inline-block px-2 py-1 bg-brand/20 text-brand rounded text-xs font-semibold">
               {userName}
             </span>
           );
@@ -563,7 +563,7 @@ const DataTablesDemo = () => {
           const used = info.getValue() as number;
           const limit = (info.row?.original?.usage_limit) as number | null;
           return (
-            <span className="inline-block px-2 py-1 bg-[#0e7c85]/20 text-[#0e7c85] rounded text-xs font-semibold">
+            <span className="inline-block px-2 py-1 bg-brand/20 text-brand rounded text-xs font-semibold">
               {used}{limit ? ` / ${limit}` : ""}
             </span>
           );
@@ -682,7 +682,7 @@ const DataTablesDemo = () => {
       <div className="w-full px-6 py-8 space-y-8">
         {/* Header */}
         <div className="space-y-2">
-          <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider">
+          <div className="text-sm font-semibold text-brand uppercase tracking-wider">
             DATA MANAGEMENT
           </div>
           <h1 className="text-4xl font-bold text-gray-900">DataTables</h1>
@@ -697,65 +697,65 @@ const DataTablesDemo = () => {
             onClick={() => setActiveTab("products")}
             className={`px-6 py-3 font-semibold transition-colors relative ${
               activeTab === "products"
-                ? "text-[#0e7c85]"
+                ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
             Products
             {activeTab === "products" && (
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0e7c85]"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-brand"></div>
             )}
           </button>
           <button
             onClick={() => setActiveTab("categories")}
             className={`px-6 py-3 font-semibold transition-colors relative ${
               activeTab === "categories"
-                ? "text-[#0e7c85]"
+                ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
             Categories
             {activeTab === "categories" && (
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0e7c85]"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-brand"></div>
             )}
           </button>
           <button
             onClick={() => setActiveTab("orders")}
             className={`px-6 py-3 font-semibold transition-colors relative ${
               activeTab === "orders"
-                ? "text-[#0e7c85]"
+                ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
             Orders
             {activeTab === "orders" && (
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0e7c85]"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-brand"></div>
             )}
           </button>
           <button
             onClick={() => setActiveTab("users")}
             className={`px-6 py-3 font-semibold transition-colors relative ${
               activeTab === "users"
-                ? "text-[#0e7c85]"
+                ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
             Users
             {activeTab === "users" && (
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0e7c85]"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-brand"></div>
             )}
           </button>
           <button
             onClick={() => setActiveTab("coupons")}
             className={`px-6 py-3 font-semibold transition-colors relative ${
               activeTab === "coupons"
-                ? "text-[#0e7c85]"
+                ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
             Coupons
             {activeTab === "coupons" && (
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0e7c85]"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-brand"></div>
             )}
           </button>
         </div>
@@ -764,9 +764,9 @@ const DataTablesDemo = () => {
         {activeTab === "products" && (
           <>
             {productsLoading ? (
-              <div className="glass rounded-2xl p-12 border border-white/20 text-center">
+              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
                 <div className="inline-block">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0e7c85]"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading products...</p>
               </div>
@@ -777,7 +777,7 @@ const DataTablesDemo = () => {
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-white/20">
+              <div className="glass rounded-2xl p-6 border border-gray-200">
                 <TanStackDataTable
                   data={products}
                   columns={productColumns}
@@ -801,9 +801,9 @@ const DataTablesDemo = () => {
         {activeTab === "categories" && (
           <>
             {categoriesLoading ? (
-              <div className="glass rounded-2xl p-12 border border-white/20 text-center">
+              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
                 <div className="inline-block">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0e7c85]"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading categories...</p>
               </div>
@@ -814,7 +814,7 @@ const DataTablesDemo = () => {
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-white/20">
+              <div className="glass rounded-2xl p-6 border border-gray-200">
                 <TanStackDataTable
                   data={categories}
                   columns={categoryColumns}
@@ -839,9 +839,9 @@ const DataTablesDemo = () => {
         {activeTab === "orders" && (
           <>
             {ordersLoading ? (
-              <div className="glass rounded-2xl p-12 border border-white/20 text-center">
+              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
                 <div className="inline-block">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0e7c85]"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading orders...</p>
               </div>
@@ -852,7 +852,7 @@ const DataTablesDemo = () => {
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-white/20">
+              <div className="glass rounded-2xl p-6 border border-gray-200">
                 <TanStackDataTable
                   data={orders}
                   columns={orderColumns}
@@ -877,9 +877,9 @@ const DataTablesDemo = () => {
         {activeTab === "users" && (
           <>
             {usersLoading ? (
-              <div className="glass rounded-2xl p-12 border border-white/20 text-center">
+              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
                 <div className="inline-block">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0e7c85]"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading users...</p>
               </div>
@@ -890,7 +890,7 @@ const DataTablesDemo = () => {
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-white/20">
+              <div className="glass rounded-2xl p-6 border border-gray-200">
                 <TanStackDataTable
                   data={users}
                   columns={userColumns}
@@ -914,9 +914,9 @@ const DataTablesDemo = () => {
         {activeTab === "coupons" && (
           <>
             {couponsLoading ? (
-              <div className="glass rounded-2xl p-12 border border-white/20 text-center">
+              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
                 <div className="inline-block">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#0e7c85]"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading coupons...</p>
               </div>
@@ -927,7 +927,7 @@ const DataTablesDemo = () => {
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-white/20">
+              <div className="glass rounded-2xl p-6 border border-gray-200">
                 <TanStackDataTable
                   data={coupons}
                   columns={couponColumns}

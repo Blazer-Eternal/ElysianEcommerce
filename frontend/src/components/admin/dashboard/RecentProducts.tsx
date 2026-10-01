@@ -30,7 +30,7 @@ const RecentProducts = memo(({ products, isLoading }: RecentProductsProps) => (
     action={
       <Link
         to={ROUTES.ADMIN_PRODUCTS}
-        className="text-xs font-semibold text-[#0e7c85] hover:underline shrink-0"
+        className="text-xs font-semibold text-brand hover:underline shrink-0"
       >
         View All
       </Link>
@@ -61,7 +61,7 @@ const RecentProducts = memo(({ products, isLoading }: RecentProductsProps) => (
             {products.map((product) => {
               const badge = stockBadge(product.stock);
               return (
-                <tr key={product._id} className="transition-fast hover:bg-white/70">
+                <tr key={product._id} className="transition-fast hover:bg-white">
                   <td className="py-3 pr-4">
                     <div className="flex items-center gap-3 min-w-0">
                       <span className="shrink-0 w-10 h-10 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center text-gray-400">
@@ -82,7 +82,7 @@ const RecentProducts = memo(({ products, isLoading }: RecentProductsProps) => (
                     </div>
                   </td>
                   <td className="py-3 pr-4 hidden sm:table-cell">
-                    <span className="inline-block px-2 py-0.5 rounded bg-[#0e7c85]/10 text-[#0e7c85] text-xs font-semibold">
+                    <span className="inline-block px-2 py-0.5 rounded bg-brand/10 text-brand text-xs font-semibold">
                       {categoryName(product)}
                     </span>
                   </td>

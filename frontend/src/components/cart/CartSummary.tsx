@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { InfoIcon, LockIcon, ZapIcon } from "../icons";
 import { useAnimationPause } from "../../hooks/useAnimationPause";
 import type { Cart } from "../../types/cart.types";
 import type { Product } from "../../types/product.types";
@@ -29,30 +30,26 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
       <div className="absolute inset-0 bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 -z-10"></div>
 
       {/* Content */}
-      <div className="relative p-5 border border-cyan-200/60 rounded-2xl bg-white/80 backdrop-blur-sm hover:border-cyan-300 transition-all duration-300">
+      <div className="relative p-5 border border-cyan-200/60 rounded-2xl bg-white hover:border-cyan-300 transition-all duration-300">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-[#0e7c85]">
+          <h2 className="text-xl font-bold text-brand">
             Order Summary
           </h2>
-          <div className="text-2xl">📦</div>
         </div>
 
         {/* Items breakdown */}
         <div className="space-y-2 mb-4 pb-4 border-b border-cyan-200/50">
           <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-cyan-50/50 transition-all duration-200">
-            <span className="font-semibold text-gray-700 text-sm flex items-center gap-1.5">
-              <span className="text-base">📊</span>
-              Items
-            </span>
-            <span className="inline-flex items-center justify-center min-w-7 h-7 bg-linear-to-r from-cyan-100 to-teal-100 text-[#0e7c85] font-bold text-sm rounded-full border border-cyan-300/50">
+            <span className="font-semibold text-gray-700 text-sm">Items</span>
+            <span className="inline-flex items-center justify-center min-w-7 h-7 bg-linear-to-r from-cyan-100 to-teal-100 text-brand font-bold text-sm rounded-full border border-cyan-300/50">
               {itemCount}
             </span>
           </div>
 
           <div className="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-cyan-50/50 transition-all duration-200">
             <span className="font-semibold text-gray-700 text-sm">Subtotal</span>
-            <span className="text-base font-bold text-[#0e7c85]">
+            <span className="text-base font-bold text-brand">
               {formatCurrency(subtotal)}
             </span>
           </div>
@@ -61,7 +58,7 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
         {/* Info callout */}
         <div className="mb-4 p-2.5 rounded-lg bg-blue-50/80 border-l-3 border-cyan-400">
           <p className="text-xs text-gray-700 font-medium flex items-start gap-1.5">
-            <span className="text-sm mt-0.5 shrink-0">ℹ️</span>
+            <InfoIcon size={14} className="mt-0.5 shrink-0" />
             <span>Shipping costs & coupon discounts calculated at checkout</span>
           </p>
         </div>
@@ -69,20 +66,20 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
         {/* CTA Button */}
         <Link
           to={ROUTES.CHECKOUT}
-          className="block w-full py-3 px-4 rounded-xl font-bold text-sm text-white text-center bg-linear-to-r from-[#0e7c85] to-cyan-600 hover:from-[#0a5f68] hover:to-[#0a9db2] transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+          className="block w-full py-3 px-4 rounded-xl font-bold text-sm text-white text-center bg-linear-to-r from-brand to-cyan-600 hover:from-[#0a5f68] hover:to-[#0a9db2] transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
         >
           Proceed to Checkout
         </Link>
 
         {/* Footer badges */}
         <div className="mt-3 flex items-center justify-center gap-3 text-xs font-semibold text-gray-600">
-          <span className="flex items-center gap-0.5">
-            <span>🔒</span>
+          <span className="flex items-center gap-1">
+            <LockIcon size={13} />
             Secure
           </span>
           <span className="w-0.5 h-0.5 rounded-full bg-gray-400"></span>
-          <span className="flex items-center gap-0.5">
-            <span>⚡</span>
+          <span className="flex items-center gap-1">
+            <ZapIcon size={13} />
             Fast
           </span>
         </div>

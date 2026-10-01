@@ -10,12 +10,12 @@ const PaymentFailure = () => {
         </div>
         <h1 className="font-semibold text-lg mb-1">Payment Failed</h1>
         <p className="text-sm text-gray-600">
-          Your eSewa payment was not completed. Your order has been kept as pending — you can try paying
+          Your eSewa payment was not completed. Your order has been kept as pending. You can try paying
           again from your order history, or choose Cash on Delivery instead.
         </p>
         <Link
           to={ROUTES.ORDER_HISTORY}
-          className="inline-block mt-4 bg-[#0e7c85] text-white text-sm px-5 py-2 rounded-full hover:bg-[#0b6169] transition-colors"
+          className="inline-block mt-4 bg-brand text-white text-sm px-5 py-2 rounded-full hover:bg-brand-dark transition-colors"
         >
           View My Orders
         </Link>

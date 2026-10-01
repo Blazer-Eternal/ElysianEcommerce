@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { EyeIcon, TrashIcon } from "../icons";
 import { Link } from "react-router-dom";
 import type { CartItem as CartItemType } from "../../types/cart.types";
 import type { Product } from "../../types/product.types";
@@ -54,7 +55,7 @@ const CartItem = ({ item }: CartItemProps) => {
       {/* Border gradient effect */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-r from-cyan-300/20 via-transparent to-teal-300/20 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
 
-      <div className="relative p-4 sm:p-6 border border-cyan-100/60 group-hover:border-cyan-200/80 transition-all duration-300 rounded-2xl shadow-sm group-hover:shadow-lg backdrop-blur-sm gpu-accelerate">
+      <div className="relative p-4 sm:p-6 border border-cyan-100/60 group-hover:border-cyan-200/80 transition-all duration-300 rounded-2xl shadow-sm group-hover:shadow-lg gpu-accelerate">
         
         <div className="flex gap-4 sm:gap-6">
           {/* Product Image */}
@@ -76,7 +77,7 @@ const CartItem = ({ item }: CartItemProps) => {
             </div>
             {/* Hover badge */}
             <div className="absolute -top-2 -right-2 w-8 h-8 bg-linear-to-br from-cyan-400 to-teal-500 rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-sm font-bold shadow-lg">
-              👁️
+              <EyeIcon size={16} />
             </div>
           </Link>
 
@@ -89,7 +90,7 @@ const CartItem = ({ item }: CartItemProps) => {
               <div className="min-w-0">
                 <Link
                   to={ROUTES.PRODUCT_DETAIL(product._id)}
-                  className="font-bold text-base sm:text-lg text-gray-900 hover:text-transparent hover:bg-linear-to-r hover:from-cyan-600 hover:to-teal-600 hover:bg-clip-text transition-all duration-300 line-clamp-2"
+                  className="font-bold text-base sm:text-lg text-gray-900 transition-all duration-300 line-clamp-2 hover:text-brand"
                 >
                   {product.name}
                 </Link>
@@ -97,7 +98,7 @@ const CartItem = ({ item }: CartItemProps) => {
                 {/* flex-wrap + nowrap pill: on narrow screens the pill can't fit beside the price, so it moves
                     to its own line WHOLE (single-line text) instead of being crushed into two stacked words */}
                 <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <span className="text-lg sm:text-xl font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                  <span className="text-lg sm:text-xl font-bold text-brand">
                     {formatCurrency(product.price)}
                   </span>
                   <span className="text-xs px-2 py-1 bg-linear-to-r from-green-100 to-emerald-100 text-green-700 font-semibold rounded-full whitespace-nowrap shrink-0">
@@ -109,7 +110,7 @@ const CartItem = ({ item }: CartItemProps) => {
               {/* Price Total */}
               <div className="shrink-0 text-right">
                 <p className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Total</p>
-                <p className="text-2xl sm:text-3xl font-black bg-linear-to-br from-[#0e7c85] via-cyan-600 to-teal-500 bg-clip-text text-transparent">
+                <p className="text-2xl sm:text-3xl font-black r text-brand">
                   {formatCurrency(product.price * item.quantity)}
                 </p>
               </div>
@@ -142,7 +143,8 @@ const CartItem = ({ item }: CartItemProps) => {
                 disabled={isUpdating}
                 className="remove-btn ml-auto px-2 sm:px-3 py-1.5 text-xs font-bold text-white bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-lg rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 shadow-md whitespace-nowrap"
               >
-                🗑️ Remove
+                <TrashIcon size={12} className="inline-block align-[-1px] mr-1" />
+                Remove
               </button>
             </div>
           </div>

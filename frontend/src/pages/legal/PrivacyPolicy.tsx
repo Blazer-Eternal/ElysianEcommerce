@@ -14,8 +14,8 @@ const PrivacyPolicy = () => {
 
       <h2>How we use your information</h2>
       <p>
-        Your information is used to process transactions, communicate with you about your orders, and
-        — with your consent — send you updates about products and offers. We do not sell your personal
+        Your information is used to process transactions, communicate with you about your orders, and,
+        with your consent, send you updates about products and offers. We do not sell your personal
         information to third parties.
       </p>
 

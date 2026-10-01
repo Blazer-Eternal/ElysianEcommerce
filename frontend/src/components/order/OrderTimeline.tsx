@@ -33,7 +33,7 @@ const OrderTimeline = ({ status }: OrderTimelineProps) => {
                   isCompleted && !isCurrent
                     ? "bg-green-500 text-white shadow-lg shadow-green-500/50"
                     : isCurrent
-                      ? "bg-[#0e7c85] text-white shadow-lg shadow-cyan-500/50 ring-2 ring-cyan-200"
+                      ? "bg-brand text-white shadow-lg ring-2 ring-cyan-200"
                       : "bg-gray-200 text-gray-400"
                 }`}
               >

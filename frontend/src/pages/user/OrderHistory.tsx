@@ -40,7 +40,7 @@ const OrderHistory = () => {
           </div>
           <Link
             to={ROUTES.PRODUCTS}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-cyan-200/50 transition-all duration-300 active:scale-95"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-brand to-cyan-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 active:scale-95"
           >
             <span>Browse Products</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,7 +58,7 @@ const OrderHistory = () => {
       <div className="mb-12 animate-fade-in">
         <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">My Orders</h1>
         <p className="text-lg text-gray-600">Track and manage your orders</p>
-        <div className="h-1 w-20 bg-linear-to-r from-[#0e7c85] to-cyan-600 rounded-full mt-4" />
+        <div className="h-1 w-20 bg-linear-to-r from-brand to-cyan-600 rounded-full mt-4" />
       </div>
 
       {/* Orders Grid */}

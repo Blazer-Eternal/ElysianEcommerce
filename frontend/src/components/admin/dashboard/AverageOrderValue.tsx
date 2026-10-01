@@ -33,7 +33,7 @@ const AverageOrderValue = memo(({ current, totals, isLoading }: AverageOrderValu
     previousAov > 0 ? ((aov - previousAov) / previousAov) * 100 : aov > 0 ? null : 0;
   const isUp = (changePct ?? 0) > 0;
   const isDown = (changePct ?? 0) < 0;
-  const badgeClass = changePct === null ? "text-[#0e7c85]" : isUp ? "text-green-600" : isDown ? "text-red-500" : "text-gray-500";
+  const badgeClass = changePct === null ? "text-brand" : isUp ? "text-green-600" : isDown ? "text-red-500" : "text-gray-500";
   const badgeText = changePct === null ? "New" : `${isUp ? "▲" : isDown ? "▼" : ""} ${Math.abs(changePct).toFixed(0)}%`;
 
   const data = current.map((point) => ({

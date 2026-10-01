@@ -28,7 +28,7 @@ import {
 const DashboardHeader = memo(({ period, onPeriodChange }: { period: PeriodDays; onPeriodChange: (days: PeriodDays) => void }) => (
   <div className="max-w-7xl mx-auto flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between animate-fade-in">
     <div className="space-y-1.5">
-      <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider">ADMINISTRATION</div>
+      <div className="text-sm font-semibold text-brand uppercase tracking-wider">ADMINISTRATION</div>
       <h1 className="text-responsive-h2 font-bold text-gray-900">Dashboard</h1>
       <p className="text-responsive-body text-gray-600">
         Here's an overview of your store's performance and key metrics.
@@ -150,7 +150,7 @@ const Dashboard = memo(() => {
                 label="Total Revenue"
                 value={formatCurrency(totalRevenue)}
                 icon={<BagIcon size={20} />}
-                iconBg="from-[#0e7c85] to-cyan-600"
+                iconBg="from-brand to-cyan-600"
                 sparkColor="#0e7c85"
                 periodValue={currentTotals?.revenue ?? 0}
                 previousValue={previousTotals?.revenue ?? 0}
@@ -163,8 +163,8 @@ const Dashboard = memo(() => {
                 label="Total Orders"
                 value={orderTotal}
                 icon={<CartIcon size={20} />}
-                iconBg="from-blue-500 to-blue-600"
-                sparkColor="#3b82f6"
+                iconBg="from-brand to-brand-dark"
+                sparkColor="#0e7c85"
                 periodValue={currentTotals?.orders ?? 0}
                 previousValue={previousTotals?.orders ?? 0}
                 series={currentPoints.map((point) => point.orders)}
@@ -176,8 +176,8 @@ const Dashboard = memo(() => {
                 label="Total Customers"
                 value={userTotal}
                 icon={<PeopleIcon size={20} />}
-                iconBg="from-purple-500 to-purple-600"
-                sparkColor="#8b5cf6"
+                iconBg="from-brand to-cyan-700"
+                sparkColor="#0b6169"
                 periodValue={currentTotals?.customers ?? 0}
                 previousValue={previousTotals?.customers ?? 0}
                 series={currentPoints.map((point) => point.customers)}

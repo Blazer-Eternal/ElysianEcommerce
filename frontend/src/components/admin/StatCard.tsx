@@ -5,10 +5,10 @@ interface StatCardProps {
   bgColor?: string;
 }
 
-const StatCard = ({ label, value, icon, bgColor = "from-[#0e7c85] to-cyan-600" }: StatCardProps) => {
+const StatCard = ({ label, value, icon, bgColor = "from-brand to-cyan-600" }: StatCardProps) => {
   return (
     <div 
-      className="glass rounded-2xl p-6 sm:p-8 hover:bg-white/80 transition-all duration-300 group animation-container gpu-accelerate"
+      className="glass rounded-2xl p-6 sm:p-8 hover:bg-white transition-all duration-300 group animation-container gpu-accelerate"
       style={{ contain: "layout style paint", transform: "translateZ(0)" }}
     >
       <div className="flex items-start justify-between">

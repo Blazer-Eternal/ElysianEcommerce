@@ -27,7 +27,7 @@ const ProductsSection = () => {
   const products = response?.data ?? EMPTY_PRODUCTS;
 
   return (
-    <div className="py-10 sm:py-14 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
+    <div className="py-12 sm:py-16 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-9 sm:mb-11">
@@ -37,7 +37,7 @@ const ProductsSection = () => {
           </div>
           <Link
             to={ROUTES.PRODUCTS}
-            className="hidden sm:inline-block text-sm font-semibold text-[#0e7c85] hover:text-[#0b6169] transition-colors"
+            className="hidden sm:inline-block text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
           >
             View all products →
           </Link>
@@ -88,7 +88,7 @@ const ProductsSection = () => {
         <div className="sm:hidden mt-8 flex justify-center">
           <Link
             to={ROUTES.PRODUCTS}
-            className="inline-block text-sm font-semibold text-[#0e7c85] hover:text-[#0b6169] transition-colors"
+            className="inline-block text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
           >
             View all products →
           </Link>

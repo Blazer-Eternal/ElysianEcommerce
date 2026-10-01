@@ -30,7 +30,7 @@ const RecentOrders = memo(({ orders, isLoading }: RecentOrdersProps) => (
     action={
       <Link
         to={ROUTES.ADMIN_ORDERS}
-        className="text-xs font-semibold text-[#0e7c85] hover:underline shrink-0"
+        className="text-xs font-semibold text-brand hover:underline shrink-0"
       >
         View All
       </Link>
@@ -55,9 +55,9 @@ const RecentOrders = memo(({ orders, isLoading }: RecentOrdersProps) => (
           return (
             <li
               key={order._id}
-              className="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-white/70 transition-fast hover:border-[#0e7c85]/25"
+              className="flex items-center gap-3 p-3 rounded-xl bg-white border border-gray-200 transition-fast hover:border-brand/25"
             >
-              <span className="shrink-0 w-10 h-10 rounded-lg bg-[#0e7c85]/10 text-[#0e7c85] flex items-center justify-center">
+              <span className="shrink-0 w-10 h-10 rounded-lg bg-brand/10 text-brand flex items-center justify-center">
                 <CartIcon size={18} />
               </span>
 

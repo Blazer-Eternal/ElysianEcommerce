@@ -37,7 +37,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         placeholder="Search products..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full border rounded-lg px-3 py-2 bg-white/70"
+        className="w-full border rounded-lg px-3 py-2 bg-white"
       />
 
       <div className="flex flex-wrap gap-3">
@@ -61,7 +61,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
               page: 1,
             })
           }
-          className="border rounded-lg px-3 py-2 text-sm w-28 bg-white/70"
+          className="border rounded-lg px-3 py-2 text-sm w-28 bg-white"
         />
 
         <input
@@ -78,7 +78,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
               page: 1,
             })
           }
-          className="border rounded-lg px-3 py-2 text-sm w-28 bg-white/70"
+          className="border rounded-lg px-3 py-2 text-sm w-28 bg-white"
         />
 
         <label htmlFor="in-stock-only" className="flex items-center gap-1.5 text-sm">
@@ -101,7 +101,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
             const [sortBy, sortOrder] = e.target.value.split(":");
             onChange({ ...filters, sortBy, sortOrder: sortOrder as "asc" | "desc", page: 1 });
           }}
-          className="border rounded-lg px-3 py-2 text-sm bg-white/70"
+          className="border rounded-lg px-3 py-2 text-sm bg-white"
         >
           <option value="created_at:asc">Oldest First</option>
           <option value="created_at:desc">Newest First</option>

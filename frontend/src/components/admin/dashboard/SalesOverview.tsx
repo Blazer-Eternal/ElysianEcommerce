@@ -47,7 +47,7 @@ const LegendToggle = memo(
       title={`${label}: ${formatCurrency(total)} - ${hiddenHint}`}
       className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-all duration-200 ${
         active
-          ? "border-gray-200 bg-white/70 hover:border-[#0e7c85]/40"
+          ? "border-gray-200 bg-white hover:border-brand/40"
           : "border-dashed border-gray-200 bg-transparent opacity-60 hover:opacity-100"
       }`}
     >

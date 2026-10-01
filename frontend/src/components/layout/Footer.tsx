@@ -25,7 +25,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/60 bg-white/50 backdrop-blur-md">
+    <footer className="border-t border-gray-200 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
         {/* Main footer content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-6">
@@ -37,13 +37,13 @@ const Footer = () => {
             </p>
             {/* Social links */}
             <div className="flex gap-3 pt-2">
-              <a href="#" className="glass rounded-lg p-2 text-gray-600 hover:text-[#0e7c85] transition-colors">
+              <a href="#" className="glass rounded-lg p-2 text-gray-600 hover:text-brand transition-colors">
                 <FacebookIcon />
               </a>
-              <a href="#" className="glass rounded-lg p-2 text-gray-600 hover:text-[#0e7c85] transition-colors">
+              <a href="#" className="glass rounded-lg p-2 text-gray-600 hover:text-brand transition-colors">
                 <TwitterIcon />
               </a>
-              <a href="#" className="glass rounded-lg p-2 text-gray-600 hover:text-[#0e7c85] transition-colors">
+              <a href="#" className="glass rounded-lg p-2 text-gray-600 hover:text-brand transition-colors">
                 <InstagramIcon />
               </a>
             </div>
@@ -54,22 +54,22 @@ const Footer = () => {
             <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">Company</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to={ROUTES.ABOUT} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.ABOUT} className="text-gray-600 hover:text-brand transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.CONTACT} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.CONTACT} className="text-gray-600 hover:text-brand transition-colors">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.FEATURES} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.FEATURES} className="text-gray-600 hover:text-brand transition-colors">
                   Features
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.PRODUCTS} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.PRODUCTS} className="text-gray-600 hover:text-brand transition-colors">
                   Products
                 </Link>
               </li>
@@ -81,22 +81,22 @@ const Footer = () => {
             <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">Support</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to={ROUTES.SHIPPING_POLICY} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.SHIPPING_POLICY} className="text-gray-600 hover:text-brand transition-colors">
                   Shipping Policy
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.REFUND_POLICY} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.REFUND_POLICY} className="text-gray-600 hover:text-brand transition-colors">
                   Refund Policy
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.PRIVACY_POLICY} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.PRIVACY_POLICY} className="text-gray-600 hover:text-brand transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.TERMS_OF_SERVICE} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.TERMS_OF_SERVICE} className="text-gray-600 hover:text-brand transition-colors">
                   Terms of Service
                 </Link>
               </li>
@@ -108,17 +108,17 @@ const Footer = () => {
             <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">Legal</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to={ROUTES.CANCELLATIONS} className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <Link to={ROUTES.CANCELLATIONS} className="text-gray-600 hover:text-brand transition-colors">
                   Cancellations
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <a href="#" className="text-gray-600 hover:text-brand transition-colors">
                   Cookie Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-[#0e7c85] transition-colors">
+                <a href="#" className="text-gray-600 hover:text-brand transition-colors">
                   Disclaimer
                 </a>
               </li>

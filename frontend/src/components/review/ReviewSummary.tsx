@@ -13,14 +13,14 @@ const pluralize = (count: number) => `${count} ${count === 1 ? "Rating" : "Ratin
 const ReviewSummary = ({ stats, activeFilter = null, onStarFilter }: ReviewSummaryProps) => {
   if (!stats) {
     return (
-      <div className="p-6 rounded-2xl bg-white/70 border border-purple-100 animate-pulse h-40" aria-hidden="true" />
+      <div className="p-6 rounded-2xl bg-white border border-gray-200 animate-pulse h-40" aria-hidden="true" />
     );
   }
 
   const { average, count, distribution } = stats;
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 md:gap-10 p-6 rounded-2xl bg-white/80 border border-purple-100 shadow-sm">
+    <div className="flex flex-col md:flex-row gap-6 md:gap-10 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
       {/* Overall score */}
       <div className="flex flex-col items-center md:items-start justify-center min-w-[150px]">
         <div className="flex items-end gap-1">
@@ -48,14 +48,14 @@ const ReviewSummary = ({ stats, activeFilter = null, onStarFilter }: ReviewSumma
               aria-label={`Filter reviews with ${star} star${star > 1 ? "s" : ""}`}
               title={onStarFilter ? `Show ${star}-star reviews` : undefined}
               className={`flex items-center gap-3 px-2 py-1 rounded-lg transition-colors duration-200 ${
-                onStarFilter ? "hover:bg-purple-50 cursor-pointer" : "cursor-default"
-              } ${isActive ? "bg-purple-100 ring-1 ring-purple-300" : ""}`}
+                onStarFilter ? "hover:bg-brand/5 cursor-pointer" : "cursor-default"
+              } ${isActive ? "bg-brand/10 ring-1 ring-brand/40" : ""}`}
             >
               <StarRating value={star} size={16} className="w-[88px] shrink-0" />
               <span className="flex-1 h-2.5 rounded-full bg-gray-200 overflow-hidden">
                 <span
                   className={`block h-full rounded-full transition-all duration-500 ${
-                    isActive ? "bg-purple-500" : "bg-yellow-400"
+                    isActive ? "bg-brand" : "bg-yellow-400"
                   }`}
                   style={{ width: `${barWidth}%` }}
                 />
@@ -74,7 +74,7 @@ const ReviewSummary = ({ stats, activeFilter = null, onStarFilter }: ReviewSumma
           <button
             type="button"
             onClick={() => onStarFilter(null)}
-            className="text-xs font-semibold text-purple-600 bg-purple-100 hover:bg-purple-200 rounded-full px-3 py-1.5 transition-colors"
+            className="text-xs font-semibold text-brand bg-brand/10 hover:bg-brand/20 rounded-full px-3 py-1.5 transition-colors"
           >
             Clear {activeFilter}★ filter ✕
           </button>

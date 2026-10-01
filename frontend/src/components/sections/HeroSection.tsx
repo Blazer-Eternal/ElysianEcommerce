@@ -86,32 +86,13 @@ const HeroSection = memo(() => {
         {isInView && <GhostFibers {...ghostFibersProps} />}
       </div>
 
-      {/* Animated background gradient overlay - GPU Accelerated & Paused Off-Screen */}
-      <div 
+      <div
         ref={blobsContainerRef}
         className="absolute inset-0 -z-10 opacity-30 pointer-events-none animation-container"
         style={{ 
           contain: "layout style paint"
         }}
       >
-        {/* Pre-blurred radial gradient - no blur filter (80% paint cost reduction) */}
-        <div 
-          className="absolute top-0 left-0 w-96 h-96 rounded-full animate-blob gpu-accelerate will-animate"
-          style={{ 
-            background: "radial-gradient(circle, rgba(191,219,254,0.55) 0%, rgba(165,243,252,0.28) 35%, transparent 70%)",
-            transform: "translateZ(0)",
-            contain: "layout style paint"
-          }}
-        />
-        {/* Pre-blurred radial gradient - no blur filter (80% paint cost reduction) */}
-        <div 
-          className="absolute top-1/2 right-0 w-96 h-96 rounded-full animate-blob animation-delay-2000 gpu-accelerate will-animate"
-          style={{ 
-            background: "radial-gradient(circle, rgba(165,243,252,0.55) 0%, rgba(94,234,212,0.28) 35%, transparent 70%)",
-            transform: "translateZ(0)",
-            contain: "layout style paint"
-          }}
-        />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
@@ -122,24 +103,25 @@ const HeroSection = memo(() => {
           >
             <div className="space-y-4">
               <div 
-                className="inline-block glass px-4 py-2 rounded-full text-sm font-medium text-[#0e7c85] animate-fade-in gpu-accelerate" 
+                className="inline-block glass px-4 py-2 rounded-full text-sm font-medium text-brand animate-fade-in gpu-accelerate" 
                 style={{ animationDelay: isInView ? "0.1s" : "0s", transform: "translateZ(0)" }}
               >
-                ✨ Welcome to Excellence
+                Free returns within 30 days
               </div>
               
               <h1 
                 className="text-responsive-h1 font-bold leading-tight text-gray-900 animate-fade-in" 
                 style={{ animationDelay: isInView ? "0.2s" : "0s" }}
               >
-                Discover <span className="bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">Premium</span> Products
+                Discover <span className="text-brand">Premium</span> Products
               </h1>
               
               <p 
                 className="text-responsive-body text-gray-600 leading-relaxed max-w-xl animate-fade-in" 
                 style={{ animationDelay: isInView ? "0.3s" : "0s" }}
               >
-                Explore our curated collection of high-quality products delivered with elegance. Experience shopping like never before with our seamless platform.
+                Quality products at fair prices, with cash on delivery, eSewa payments, and 30-day
+                returns.
               </p>
             </div>
 
@@ -147,7 +129,7 @@ const HeroSection = memo(() => {
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link
                 to={ROUTES.PRODUCTS}
-                className="glass-strong px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-900 hover:bg-white/90 hover-lift flex items-center justify-center sm:justify-start gap-2 group text-center transition-smooth gpu-accelerate"
+                className="glass-strong px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-900 hover:bg-white hover-lift flex items-center justify-center sm:justify-start gap-2 group text-center transition-smooth gpu-accelerate"
                 style={{ transform: "translateZ(0)" }}
               >
                 Shop Now
@@ -156,7 +138,7 @@ const HeroSection = memo(() => {
               
               <Link
                 to={ROUTES.FEATURES}
-                className="glass px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-700 hover:bg-white/70 transition-smooth text-center hover-lift gpu-accelerate"
+                className="glass px-8 py-3 sm:py-4 rounded-xl font-semibold text-gray-700 hover:bg-white transition-smooth text-center hover-lift gpu-accelerate"
                 style={{ transform: "translateZ(0)" }}
               >
                 Learn More
@@ -176,15 +158,6 @@ const HeroSection = memo(() => {
             }}
           >
             <div className="relative w-96 sm:w-full max-w-md card-container">
-              {/* Decorative elements - GPU accelerated & contained */}
-              <div 
-                className="absolute -inset-8 bg-linear-to-br from-[#0e7c85]/10 to-cyan-300/10 rounded-3xl blur-2xl gpu-accelerate pointer-events-none" 
-                style={{ 
-                  contain: "layout style paint",
-                  transform: "translateZ(0)"
-                }}
-              />
-              
               {/* Image without border - Lazy loading optimization */}
               <div className="relative z-10 will-animate" style={{ contain: "layout style paint" }}>
                 <div className="aspect-square rounded-3xl flex items-center justify-center overflow-hidden shadow-lg">

@@ -104,7 +104,7 @@ const ManageCategories = () => {
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
-              <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider mb-2">Admin Panel</div>
+              <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Categories</h1>
               <p className="text-gray-600 mt-2">Add, edit and manage product categories.</p>
             </div>
@@ -122,7 +122,7 @@ const ManageCategories = () => {
                   title="Grid View"
                   className={`flex items-center justify-center p-2 rounded-l-md transition-all duration-200 ${
                     viewMode === "grid"
-                      ? "bg-white text-[#0e7c85] shadow-md"
+                      ? "bg-white text-brand shadow-md"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
@@ -138,7 +138,7 @@ const ManageCategories = () => {
                   title="List View"
                   className={`flex items-center justify-center p-2 rounded-r-md transition-all duration-200 ${
                     viewMode === "list"
-                      ? "bg-white text-[#0e7c85] shadow-md"
+                      ? "bg-white text-brand shadow-md"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
@@ -165,7 +165,7 @@ const ManageCategories = () => {
               <p className="text-gray-600 mb-4">No categories yet. Create one to get started.</p>
               <button
                 onClick={openCreateForm}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0e7c85] text-white rounded-lg hover:bg-[#1a6b94] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-dark transition-colors"
               >
                 <span>+</span> Create First Category
               </button>
@@ -176,15 +176,15 @@ const ManageCategories = () => {
                 {categories.map((category) => (
                   <div
                     key={category._id}
-                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-white/20"
+                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
                   >
                     {/* Category Info */}
                     <div className="p-5 sm:p-6 space-y-3">
                       <div>
-                        <h3 className="font-bold text-gray-900 text-lg line-clamp-2 hover:text-[#0e7c85]">
+                        <h3 className="font-bold text-gray-900 text-lg line-clamp-2 hover:text-brand">
                           {category.name}
                         </h3>
-                        <p className="text-xs text-[#0e7c85] font-semibold mt-1 uppercase tracking-wider">
+                        <p className="text-xs text-brand font-semibold mt-1 uppercase tracking-wider">
                           {getParentName(category.parent_id)}
                         </p>
                       </div>
@@ -195,15 +195,15 @@ const ManageCategories = () => {
                       )}
 
                       {/* Slug */}
-                      <div className="text-xs text-gray-600 py-2 border-t border-b border-white/20">
-                        <span className="font-medium">Slug:</span> <span className="font-mono text-[#0e7c85]">{category.slug}</span>
+                      <div className="text-xs text-gray-600 py-2 border-t border-b border-gray-200">
+                        <span className="font-medium">Slug:</span> <span className="font-mono text-brand">{category.slug}</span>
                       </div>
 
                       {/* Action Buttons */}
                       <div className="flex gap-2 pt-2">
                         <button
                           onClick={() => openEditForm(category)}
-                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#0e7c85]/10 hover:bg-[#0e7c85]/20 text-[#0e7c85] rounded-lg transition-all duration-200 font-medium text-sm"
+                          className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-brand/10 hover:bg-brand/20 text-brand rounded-lg transition-all duration-200 font-medium text-sm"
                         >
                           <EditIcon />
                           Edit
@@ -227,28 +227,28 @@ const ManageCategories = () => {
                 {categories.map((category) => (
                   <div
                     key={category._id}
-                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-white/20 p-4 sm:p-6"
+                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-200 p-4 sm:p-6"
                   >
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
                       {/* Category Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                           <div>
-                            <h3 className="font-bold text-gray-900 text-base sm:text-lg hover:text-[#0e7c85]">
+                            <h3 className="font-bold text-gray-900 text-base sm:text-lg hover:text-brand">
                               {category.name}
                             </h3>
-                            <p className="text-xs text-[#0e7c85] font-semibold mt-1 uppercase tracking-wider">
+                            <p className="text-xs text-brand font-semibold mt-1 uppercase tracking-wider">
                               {getParentName(category.parent_id)}
                             </p>
                           </div>
                         </div>
 
                         {/* Category Details */}
-                        <div className="py-3 border-t border-b border-white/20">
+                        <div className="py-3 border-t border-b border-gray-200">
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             <div>
                               <p className="text-xs text-gray-600 font-medium">Slug</p>
-                              <p className="font-mono text-[#0e7c85] text-sm">{category.slug}</p>
+                              <p className="font-mono text-brand text-sm">{category.slug}</p>
                             </div>
                           </div>
                         </div>
@@ -263,7 +263,7 @@ const ManageCategories = () => {
                       <div className="w-full sm:w-auto flex gap-2 pt-2 sm:pt-0">
                         <button
                           onClick={() => openEditForm(category)}
-                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-[#0e7c85]/10 hover:bg-[#0e7c85]/20 text-[#0e7c85] rounded-lg transition-all duration-200 font-medium text-sm"
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-brand/10 hover:bg-brand/20 text-brand rounded-lg transition-all duration-200 font-medium text-sm"
                         >
                           <EditIcon />
                           <span className="hidden sm:inline">Edit</span>
@@ -296,7 +296,7 @@ const ManageCategories = () => {
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
           <input
             type="text"
@@ -304,12 +304,12 @@ const ManageCategories = () => {
             required
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
           <select
             value={form.parent_id || ""}
             onChange={(e) => setForm({ ...form, parent_id: e.target.value || null })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           >
             <option value="">No parent (top-level)</option>
             {allCategories
@@ -325,13 +325,13 @@ const ManageCategories = () => {
             rows={3}
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <button
             type="submit"
             disabled={isSaving}
-            className="w-full bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-linear-to-r from-brand to-cyan-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSaving ? "Saving..." : editingId ? "Update Category" : "Create Category"}
           </button>

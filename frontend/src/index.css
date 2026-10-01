@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand: #0e7c85;
+  --color-brand-dark: #0b6169;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+}
+
 /* ========================================
    PERFORMANCE CRITICAL OPTIMIZATIONS
    ======================================== */
@@ -41,8 +47,7 @@
 
   body {
     color: rgb(31 41 55);
-    background: linear-gradient(135deg, #eafcfd 0%, #d7f4f6 40%, #bcecef 100%);
-    background-attachment: fixed;
+    background: #f3f9fa;
     min-height: 100vh;
     
     /* Performance optimizations */
@@ -116,40 +121,19 @@
 }
 
 @layer utilities {
-  /* Glass Morphism Effects - Replaced backdrop-blur with gradients for performance */
-  .glass {
-    background: linear-gradient(135deg, rgba(255,255,255,0.75) 0%, rgba(240,249,251,0.65) 100%);
-    border: 1px solid rgb(255 255 255 / 0.8);
-    contain: layout style paint;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    box-shadow: 0 4px 20px rgba(14,124,133,0.04);
-  }
-
-  .glass-strong {
-    background: linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(245,252,253,0.88) 100%);
-    border: 1px solid rgb(255 255 255 / 0.9);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    box-shadow: 0 4px 24px rgba(14,124,133,0.06);
+  /* Flat surfaces: solid white cards with neutral borders (formerly glass) */
+  .glass,
+  .glass-strong,
+  .glass-light {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
   }
 
   .glass-nav {
-    background: linear-gradient(to bottom, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.85) 100%);
-    border-bottom: 1px solid rgb(255 255 255 / 0.7);
-    contain: layout style;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 4px 12px rgba(14,124,133,0.05);
-  }
-
-  /* Reduced blur variant for performance when not critical */
-  .glass-light {
-    background: linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(240,249,251,0.75) 100%);
-    border: 1px solid rgb(255 255 255 / 0.8);
-    contain: layout style paint;
-    transform: translateZ(0);
-    box-shadow: 0 2px 12px rgba(14,124,133,0.03);
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
   }
 
   /* Accent Colors */
@@ -164,33 +148,6 @@
   /* ========================================
      SMOOTH, OPTIMIZED ANIMATIONS
      ======================================== */
-
-  /* Blob Animation - Highly Optimized GPU-Accelerated Transform Only */
-  @keyframes blob {
-    0%, 100% {
-      transform: translate(0, 0) scale(1) translateZ(0);
-      animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-    }
-    33% {
-      transform: translate(30px, -50px) scale(1.1) translateZ(0);
-    }
-    66% {
-      transform: translate(-20px, 20px) scale(0.9) translateZ(0);
-    }
-  }
-
-  .animate-blob {
-    animation: blob var(--animation-duration-blob) infinite;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    will-change: transform;
-    contain: layout style paint;
-  }
-
-  /* Paused state for off-screen blobs */
-  .animate-blob-paused {
-    animation-play-state: paused;
-  }
 
   /* Fade In Animation - Transform Only */
   @keyframes fadeIn {
@@ -252,26 +209,6 @@
     animation-play-state: paused;
   }
 
-  /* Slide In from Top - Transform Only */
-  @keyframes slideInTop {
-    from {
-      opacity: 0;
-      transform: translateY(-20px) translateZ(0);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) translateZ(0);
-    }
-  }
-
-  .animate-slide-in-top {
-    animation: slideInTop var(--animation-duration-fade) var(--ease-out) forwards;
-  }
-
-  .animate-slide-in-top-paused {
-    animation-play-state: paused;
-  }
-
   /* Scale In - Transform Only */
   @keyframes scaleIn {
     from {
@@ -286,10 +223,6 @@
 
   .animate-scale-in {
     animation: scaleIn var(--animation-duration-fade) var(--ease-out) forwards;
-  }
-
-  .animate-scale-in-paused {
-    animation-play-state: paused;
   }
 
   /* Pulse Animation - Optimized (Opacity only) */
@@ -307,10 +240,6 @@
     will-change: opacity;
   }
 
-  .animate-pulse-paused {
-    animation-play-state: paused;
-  }
-
   /* Smooth Loading Skeleton - Optimized Background Gradient */
   @keyframes shimmer {
     0% {
@@ -319,18 +248,6 @@
     100% {
       background-position: 1000px 0;
     }
-  }
-
-  .animate-shimmer {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 1000px 100%;
-    animation: shimmer 2s infinite;
-    will-change: background-position;
-    contain: layout style paint;
-  }
-
-  .animate-shimmer-paused {
-    animation-play-state: paused;
   }
 
   /* Animation Pause Classes - Pauses all animations and transitions */
@@ -351,28 +268,8 @@
     animation-delay: 200ms;
   }
 
-  .animation-delay-300ms {
-    animation-delay: 300ms;
-  }
-
   .animation-delay-400ms {
     animation-delay: 400ms;
-  }
-
-  .animation-delay-500ms {
-    animation-delay: 500ms;
-  }
-
-  .animation-delay-1000ms {
-    animation-delay: 1s;
-  }
-
-  .animation-delay-2000ms {
-    animation-delay: 2s;
-  }
-
-  .animation-delay-4000ms {
-    animation-delay: 4s;
   }
 
   /* ========================================
@@ -611,16 +508,6 @@
     transform: translateY(-4px) translateZ(0);
   }
 
-  .hover-glow {
-    transition: transform var(--transition-base) var(--ease-in-out);
-    transform: translateZ(0);
-    box-shadow: 0 0 10px rgba(14, 124, 133, 0.15);
-  }
-
-  .hover-glow:hover {
-    transform: scale(1.02) translateZ(0);
-  }
-
   /* Loading skeleton - GPU accelerated */
   .skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -629,10 +516,6 @@
     border-radius: 0.5rem;
     transform: translateZ(0);
     contain: layout style paint;
-  }
-
-  .skeleton-paused {
-    animation-play-state: paused;
   }
 
   /* Animation containment - isolates repaints to container */

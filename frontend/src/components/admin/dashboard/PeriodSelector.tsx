@@ -19,7 +19,7 @@ const PeriodSelector = memo(({ value, onChange }: PeriodSelectorProps) => (
       value={value}
       onChange={(event) => onChange(Number(event.target.value) as PeriodDays)}
       aria-label="Analytics period"
-      className="appearance-none glass border border-white/40 rounded-xl pl-9 pr-9 py-2.5 text-sm font-semibold text-gray-700 cursor-pointer transition-fast focus:outline-none focus:ring-2 focus:ring-[#0e7c85]/30 hover:border-[#0e7c85]/30"
+      className="appearance-none glass border border-gray-200 rounded-xl pl-9 pr-9 py-2.5 text-sm font-semibold text-gray-700 cursor-pointer transition-fast focus:outline-none focus:ring-2 focus:ring-brand/30 hover:border-brand/30"
     >
       {PERIOD_OPTIONS.map((days) => (
         <option key={days} value={days}>

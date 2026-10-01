@@ -1,33 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
-
-const TruckIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/>
-    <polygon points="16 8 20 8 23 11 23 16 21 18 21 19 1 19 1 18 3 16"/>
-    <circle cx="5.5" cy="18.5" r="2.5"/>
-    <circle cx="18.5" cy="18.5" r="2.5"/>
-  </svg>
-);
-
-const HeadsetIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-    <path d="M14 7a4 4 0 0 1 4 4"/>
-  </svg>
-);
-
-const StarIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-  </svg>
-);
-
-const ShieldIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-  </svg>
-);
+import { HeadsetIcon, ShieldIcon, StarIcon, TruckIcon } from "../icons";
 
 interface Feature {
   id: string;
@@ -75,10 +48,10 @@ const WhyChooseUsSection = () => {
           </div>
           <Link
             to={ROUTES.FEATURES}
-            className="hidden sm:inline-block text-sm font-semibold text-[#0e7c85] hover:text-[#0b6169] transition-colors relative group"
+            className="hidden sm:inline-block text-sm font-semibold text-brand hover:text-brand-dark transition-colors relative group"
           >
             See all features
-            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#0e7c85] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-brand origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
           </Link>
         </div>
 
@@ -98,7 +71,7 @@ const WhyChooseUsSection = () => {
               }}
             >
               {/* Animated background gradient on hover */}
-              <div className="absolute inset-0 bg-linear-to-br from-[#0e7c85]/5 to-cyan-100/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-brand/5 to-cyan-100/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
               {/* Animated border effect */}
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -121,13 +94,13 @@ const WhyChooseUsSection = () => {
                     willChange: "transform, opacity"
                   }}
                 >
-                  <div className="text-[#0e7c85] group-hover:text-[#0a5a62] transition-colors duration-500">
+                  <div className="text-brand group-hover:text-[#0a5a62] transition-colors duration-500">
                     {feature.icon}
                   </div>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 transition-colors duration-300 group-hover:text-[#0e7c85]">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 transition-colors duration-300 group-hover:text-brand">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed transition-colors duration-300 group-hover:text-gray-700">
@@ -135,11 +108,11 @@ const WhyChooseUsSection = () => {
                 </p>
 
                 {/* Animated underline */}
-                <div className="mt-4 h-0.5 bg-linear-to-r from-[#0e7c85] to-cyan-400 w-12 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-full"></div>
+                <div className="mt-4 h-0.5 bg-linear-to-r from-brand to-cyan-400 w-12 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-full"></div>
               </div>
 
               {/* Hover lift effect */}
-              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/40 rounded-2xl opacity-0 group-hover:opacity-5 transition-all duration-500 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-white group-hover:bg-white rounded-2xl opacity-0 group-hover:opacity-5 transition-all duration-500 pointer-events-none"></div>
             </div>
           ))}
         </div>
@@ -148,10 +121,10 @@ const WhyChooseUsSection = () => {
         <div className="sm:hidden mt-8">
           <Link
             to={ROUTES.FEATURES}
-            className="inline-block text-sm font-semibold text-[#0e7c85] hover:text-[#0b6169] transition-colors relative group"
+            className="inline-block text-sm font-semibold text-brand hover:text-brand-dark transition-colors relative group"
           >
             See all features
-            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#0e7c85] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+            <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-brand origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
           </Link>
         </div>
       </div>

@@ -44,7 +44,7 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
     return (
       <div className="border rounded p-3 bg-green-50 flex items-center justify-between text-sm">
         <div>
-          <span className="font-medium">{applied.code}</span> applied —{" "}
+          <span className="font-medium">{applied.code}</span> applied:{" "}
           <span className="text-green-700">-{formatCurrency(applied.discount_amount)}</span>
         </div>
         <button onClick={handleRemove} className="text-xs text-red-600 hover:underline">

@@ -13,8 +13,8 @@ interface CustomerActivityProps {
 }
 
 const TYPE_STYLES: Record<ActivityItem["type"], { icon: ReactNode; className: string }> = {
-  order: { icon: <CartIcon size={16} />, className: "bg-[#0e7c85]/10 text-[#0e7c85]" },
-  user: { icon: <PeopleIcon size={16} />, className: "bg-purple-100 text-purple-600" },
+  order: { icon: <CartIcon size={16} />, className: "bg-brand/10 text-brand" },
+  user: { icon: <PeopleIcon size={16} />, className: "bg-brand/10 text-brand" },
   review: { icon: <StarIcon size={16} />, className: "bg-amber-100 text-amber-600" },
 };
 

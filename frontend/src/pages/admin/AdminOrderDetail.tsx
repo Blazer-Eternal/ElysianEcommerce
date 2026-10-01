@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, memo, useMemo, useCallback } from "react";
+import { AlertIcon, BanknoteIcon, BoxIcon, CreditCardIcon, PencilIcon } from "../../components/icons";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { orderService } from "../../services/orderService";
@@ -37,7 +38,7 @@ const OrderProgressTimeline = memo(({ localStatus }: { localStatus: OrderStatus 
   const currentStatusIndex = useMemo(() => getStatusIndex(localStatus), [localStatus, getStatusIndex]);
 
   return (
-    <div className="glass rounded-xl p-8 border border-white/20 card-container">
+    <div className="glass rounded-xl p-8 border border-gray-200 card-container">
       <h2 className="text-xl font-bold text-gray-900 mb-6 animate-fade-in">Order Progress</h2>
       <p className="text-sm text-gray-600 mb-8 animate-fade-in">Keep the customer order status up to date.</p>
 
@@ -54,7 +55,7 @@ const OrderProgressTimeline = memo(({ localStatus }: { localStatus: OrderStatus 
                 className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center font-bold transition-smooth gpu-accelerate ${
                   isCompleted
                     ? isCurrent
-                      ? "bg-[#0e7c85] text-white scale-125"
+                      ? "bg-brand text-white scale-125"
                       : "bg-green-500 text-white"
                     : "bg-gray-200 text-gray-400"
                 }`}
@@ -90,13 +91,13 @@ OrderProgressTimeline.displayName = "OrderProgressTimeline";
 
 // Memoized Order Items Component
 const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
-  <div className="glass rounded-xl p-8 border border-white/20 card-container">
+  <div className="glass rounded-xl p-8 border border-gray-200 card-container">
     <h2 className="text-xl font-bold text-gray-900 mb-6">Ordered Items</h2>
     <p className="text-sm text-gray-600 mb-6">Items included in this order.</p>
 
     <div className="space-y-6">
       {items.map((item: any, index: number) => (
-        <div key={item._id ?? index} className="flex gap-6 pb-6 border-b border-white/20 last:border-0 animate-fade-in">
+        <div key={item._id ?? index} className="flex gap-6 pb-6 border-b border-gray-200 last:border-0 animate-fade-in">
           {/* Item Image */}
           {item.product_id && typeof item.product_id === "object" && (item.product_id as any).images?.[0] ? (
             <img
@@ -110,7 +111,7 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
             />
           ) : (
             <div className="w-24 h-24 rounded-lg bg-gray-200 flex items-center justify-center text-gray-400 text-2xl shrink-0">
-              📦
+              <BoxIcon size={24} className="text-gray-500" />
             </div>
           )}
 
@@ -124,7 +125,7 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
               </div>
               <div>
                 <p className="text-xs text-gray-600 font-medium">Unit Price</p>
-                <p className="text-lg font-bold text-[#0e7c85]">{formatCurrency(item.unit_price)}</p>
+                <p className="text-lg font-bold text-brand">{formatCurrency(item.unit_price)}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-600 font-medium">Total</p>
@@ -137,10 +138,10 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
     </div>
 
     {/* Order Total */}
-    <div className="mt-6 pt-6 border-t border-white/20 flex justify-end">
+    <div className="mt-6 pt-6 border-t border-gray-200 flex justify-end">
       <div className="text-center">
         <p className="text-sm text-gray-600 font-medium mb-1">Order Total</p>
-        <p className="text-4xl font-bold text-[#0e7c85]">{formatCurrency(totalAmount)}</p>
+        <p className="text-4xl font-bold text-brand">{formatCurrency(totalAmount)}</p>
       </div>
     </div>
   </div>
@@ -149,14 +150,14 @@ OrderedItemsSection.displayName = "OrderedItemsSection";
 
 // Memoized Customer Info Component
 const CustomerInfoSection = memo(({ user }: any) => (
-  <div className="glass rounded-xl p-8 border border-white/20 card-container">
+  <div className="glass rounded-xl p-8 border border-gray-200 card-container">
     <h2 className="text-lg font-bold text-gray-900 mb-6">Customer</h2>
 
     {typeof user === "object" && (
       <div className="space-y-4 animate-fade-in">
         {/* Customer Avatar */}
-        <div className="flex items-center gap-4 pb-4 border-b border-white/20">
-          <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white text-xl font-bold shrink-0">
+        <div className="flex items-center gap-4 pb-4 border-b border-gray-200">
+          <div className="w-12 h-12 rounded-full bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white text-xl font-bold shrink-0">
             {user.name?.charAt(0).toUpperCase() || "C"}
           </div>
           <div>
@@ -186,15 +187,15 @@ CustomerInfoSection.displayName = "CustomerInfoSection";
 
 // Memoized Delivery Address Component
 const DeliveryAddressSection = memo(({ address, onEdit, canEdit }: any) => (
-  <div className="glass rounded-xl p-8 border border-white/20 card-container">
+  <div className="glass rounded-xl p-8 border border-gray-200 card-container">
     <div className="flex items-center justify-between mb-6">
       <h2 className="text-lg font-bold text-gray-900">Delivery Address</h2>
       {canEdit && (
         <button
           onClick={onEdit}
-          className="text-sm px-3 py-1.5 bg-[#0e7c85]/10 text-[#0e7c85] font-semibold rounded-lg hover:bg-[#0e7c85]/20 transition-smooth"
+          className="text-sm px-3 py-1.5 bg-brand/10 text-brand font-semibold rounded-lg hover:bg-brand/20 transition-smooth"
         >
-          ✏️ Edit
+          <PencilIcon size={14} className="inline align-[-2px] mr-1" />Edit
         </button>
       )}
     </div>
@@ -217,11 +218,11 @@ DeliveryAddressSection.displayName = "DeliveryAddressSection";
 
 // Memoized Payment Summary Component
 const PaymentSummarySection = memo(({ order }: any) => (
-  <div className="glass rounded-xl p-8 border border-white/20 card-container">
+  <div className="glass rounded-xl p-8 border border-gray-200 card-container">
     <h2 className="text-lg font-bold text-gray-900 mb-6">Payment Summary</h2>
 
     <div className="space-y-3 animate-fade-in">
-      <div className="flex justify-between pb-3 border-b border-white/20">
+      <div className="flex justify-between pb-3 border-b border-gray-200">
         <p className="text-sm text-gray-600">Items ({order.items.length})</p>
         <p className="text-sm font-semibold text-gray-900">
           {formatCurrency(order.subtotal || order.total_amount)}
@@ -230,7 +231,7 @@ const PaymentSummarySection = memo(({ order }: any) => (
 
       {/* Discount/Coupon Applied */}
       {order.discount && order.discount > 0 && (
-        <div className="flex justify-between pb-3 border-b border-white/20 bg-green-50 -mx-2 px-2 py-2 rounded">
+        <div className="flex justify-between pb-3 border-b border-gray-200 bg-green-50 -mx-2 px-2 py-2 rounded">
           <p className="text-sm text-gray-600">
             Discount Applied
             {order.coupon_id && typeof order.coupon_id === "object" && (
@@ -243,14 +244,14 @@ const PaymentSummarySection = memo(({ order }: any) => (
         </div>
       )}
 
-      <div className="flex justify-between pt-2 pb-3 border-b border-white/20">
+      <div className="flex justify-between pt-2 pb-3 border-b border-gray-200">
         <p className="text-sm font-semibold text-gray-900">Total Amount</p>
-        <p className="text-lg font-bold text-[#0e7c85]">
+        <p className="text-lg font-bold text-brand">
           {formatCurrency(order.total_amount)}
         </p>
       </div>
 
-      <div className="flex justify-between pb-3 border-b border-white/20">
+      <div className="flex justify-between pb-3 border-b border-gray-200">
         <p className="text-sm text-gray-600">Payment Status</p>
         <span
           className={`px-3 py-1 rounded-full text-xs font-bold transition-smooth ${
@@ -276,12 +277,12 @@ const PaymentSummarySection = memo(({ order }: any) => (
         >
           {order.payment_method === "esewa" ? (
             <>
-              <span>💳</span>
+              <CreditCardIcon size={16} />
               <span>eSewa</span>
             </>
           ) : (
             <>
-              <span>💵</span>
+              <BanknoteIcon size={16} />
               <span>COD</span>
             </>
           )}
@@ -296,7 +297,7 @@ PaymentSummarySection.displayName = "PaymentSummarySection";
 const CouponDetailsSection = memo(({ coupon, discount }: any) => {
   if (!coupon || discount === 0) {
     return (
-      <div className="glass rounded-xl p-8 border border-white/20 card-container">
+      <div className="glass rounded-xl p-8 border border-gray-200 card-container">
         <h2 className="text-lg font-bold text-gray-900 mb-6">Coupon Applied</h2>
         <p className="text-sm text-gray-500 italic">No coupon applied to this order</p>
       </div>
@@ -307,8 +308,8 @@ const CouponDetailsSection = memo(({ coupon, discount }: any) => {
   if (!couponData) return null;
 
   return (
-    <div className="glass rounded-xl p-8 border border-white/20 card-container bg-linear-to-br from-green-50/40 to-emerald-50/40">
-      <h2 className="text-lg font-bold text-gray-900 mb-6">✨ Coupon Applied</h2>
+    <div className="glass rounded-xl p-8 border border-gray-200 card-container bg-linear-to-br from-green-50/40 to-emerald-50/40">
+      <h2 className="text-lg font-bold text-gray-900 mb-6">Coupon Applied</h2>
 
       <div className="space-y-4 animate-fade-in">
         {/* Coupon Code */}
@@ -377,14 +378,14 @@ const UpdateStatusSection = memo(({ order, newStatus, onStatusChange, onUpdateSt
     (newStatus === "shipped" || newStatus === "delivered");
 
   return (
-    <div className="glass rounded-xl p-8 border border-white/20 card-container">
+    <div className="glass rounded-xl p-8 border border-gray-200 card-container">
       <h2 className="text-lg font-bold text-gray-900 mb-4">Update Order Status</h2>
       <p className="text-sm text-gray-600 mb-4">The customer will see the latest order status.</p>
 
       {order.payment_method === "esewa" && order.payment_status !== "paid" && (
         <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="text-xs text-yellow-800 font-semibold">
-            ⚠️ Payment not verified. Cannot mark as shipped/delivered until payment is confirmed.
+            <AlertIcon size={14} className="inline align-[-2px] mr-1" />Payment not verified. Cannot mark as shipped/delivered until payment is confirmed.
           </p>
         </div>
       )}
@@ -392,7 +393,7 @@ const UpdateStatusSection = memo(({ order, newStatus, onStatusChange, onUpdateSt
       <select
         value={newStatus}
         onChange={onStatusChange}
-        className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth mb-4"
+        className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-smooth mb-4"
       >
         <option value="">Select new status...</option>
         {availableStatuses.map((status) => (
@@ -405,7 +406,7 @@ const UpdateStatusSection = memo(({ order, newStatus, onStatusChange, onUpdateSt
       <button
         onClick={onUpdateStatus}
         disabled={!newStatus || isSaving || isShippingDisabled}
-        className="w-full bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white py-3 rounded-lg hover:shadow-lg transition-smooth duration-200 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-linear-to-r from-brand to-cyan-600 text-white py-3 rounded-lg hover:shadow-lg transition-smooth duration-200 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSaving ? "Saving..." : "Save Status"}
       </button>
@@ -419,7 +420,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
   if (!isOpen || !address) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in">
       <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-scale-in">
         <h3 className="text-2xl font-bold text-gray-900 mb-6">Edit Shipping Address</h3>
         
@@ -433,7 +434,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
               autoComplete="street-address"
               value={address.street}
               onChange={(e) => onChange("street", e.target.value)}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-smooth"
             />
           </div>
 
@@ -447,7 +448,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
                 autoComplete="address-level2"
                 value={address.city}
                 onChange={(e) => onChange("city", e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-smooth"
               />
             </div>
             <div>
@@ -459,7 +460,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
                 autoComplete="address-level1"
                 value={address.state}
                 onChange={(e) => onChange("state", e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-smooth"
               />
             </div>
           </div>
@@ -474,7 +475,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
                 autoComplete="postal-code"
                 value={address.zip}
                 onChange={(e) => onChange("zip", e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-smooth"
               />
             </div>
             <div>
@@ -486,7 +487,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
                 autoComplete="country-name"
                 value={address.country}
                 onChange={(e) => onChange("country", e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0e7c85] focus:border-transparent transition-smooth"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-smooth"
               />
             </div>
           </div>
@@ -502,7 +503,7 @@ const EditAddressModal = memo(({ isOpen, address, onClose, onChange, onSave, isS
           <button
             onClick={onSave}
             disabled={isSaving}
-            className="flex-1 px-4 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white font-semibold rounded-lg hover:shadow-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-3 bg-linear-to-r from-brand to-cyan-600 text-white font-semibold rounded-lg hover:shadow-lg transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSaving ? "Saving..." : "Save Address"}
           </button>
@@ -610,7 +611,7 @@ const AdminOrderDetail = () => {
             <p className="text-gray-600 mb-4">Order not found.</p>
             <button
               onClick={() => navigate(ROUTES.ADMIN_ORDERS)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#0e7c85] text-white rounded-lg hover:bg-[#1a6b94] transition-smooth"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-dark transition-smooth"
             >
               <BackIcon />
               Back to Orders
@@ -630,12 +631,12 @@ const AdminOrderDetail = () => {
             <div>
               <button
                 onClick={() => navigate(ROUTES.ADMIN_ORDERS)}
-                className="flex items-center gap-2 text-[#0e7c85] hover:text-[#1a6b94] transition-smooth mb-4 font-semibold"
+                className="flex items-center gap-2 text-brand hover:text-brand-dark transition-smooth mb-4 font-semibold"
               >
                 <BackIcon />
                 Back to Orders
               </button>
-              <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider mb-2">Order Details</div>
+              <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Order Details</div>
               <h1 className="text-responsive-h2 font-bold text-gray-900">Order #{order.order_number}</h1>
               <p className="text-gray-600 mt-2">Placed on {formatDate(order.created_at)}</p>
             </div>

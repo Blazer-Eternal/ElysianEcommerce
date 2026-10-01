@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { AlertIcon, MessageIcon, PencilIcon, SearchIcon, TrashIcon, XIcon } from "../icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../hooks/useAuth";
 import { reviewService } from "../../services/reviewService";
@@ -80,11 +81,11 @@ const Dropdown = ({ icon, title, selectedLabel, options, onSelect }: DropdownPro
         }}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:border-purple-300 hover:text-purple-700 transition-colors"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:border-brand/60 hover:text-brand transition-colors"
       >
         <span className="text-gray-400">{icon}</span>
         <span>
-          {title}: <span className="font-semibold text-purple-700">{selectedLabel}</span>
+          {title}: <span className="font-semibold text-brand">{selectedLabel}</span>
         </span>
         <svg
           className={`w-3.5 h-3.5 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
@@ -111,7 +112,7 @@ const Dropdown = ({ icon, title, selectedLabel, options, onSelect }: DropdownPro
                 onSelect(option.value);
                 setOpen(false);
               }}
-              className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
+              className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-brand/5 hover:text-brand transition-colors"
             >
               {option.label}
             </button>
@@ -210,12 +211,12 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
   if (editing) {
     return (
       <div
-        className="p-6 bg-linear-to-br from-white via-purple-50/50 to-blue-50/40 border-2 border-purple-300 rounded-2xl shadow-lg"
+        className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
           <h4 className="font-bold text-gray-900">Edit your review</h4>
-          <span className="text-xs font-semibold text-purple-600 bg-purple-100 rounded-full px-2.5 py-1">
+          <span className="text-xs font-semibold text-brand bg-brand/10 rounded-full px-2.5 py-1">
             Editing
           </span>
         </div>
@@ -250,7 +251,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
               maxLength={1000}
               rows={3}
               placeholder="Tell us about your experience... (optional)"
-              className="w-full p-3 border-2 border-purple-200/60 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-300/50 transition-all duration-300 resize-none text-sm"
+              className="w-full p-3 border-2 border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition-all duration-300 resize-none text-sm"
             />
             <div className="flex justify-between items-center mt-1.5">
               <span className="text-xs text-gray-500">Character count:</span>
@@ -266,7 +267,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
 
           {error && (
             <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium">
-              ❌ {error}
+              <XIcon size={14} className="inline align-[-2px] mr-1" />{error}
             </div>
           )}
 
@@ -276,7 +277,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
               size="sm"
               onClick={saveEdit}
               isLoading={updateMutation.isPending}
-              className="bg-linear-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700"
+              className="bg-linear-to-r from-brand to-brand-dark text-white hover:from-brand-dark hover:to-brand-dark"
             >
               Save Changes
             </Button>
@@ -302,31 +303,23 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
     <>
       <div
         onClick={() => setExpanded((value) => !value)}
-        className={`group relative p-6 bg-linear-to-br from-white via-blue-50/30 to-purple-50/20 border-2 border-purple-200/40 rounded-2xl hover:border-purple-300 transition-all duration-300 cursor-pointer hover:shadow-xl hover:shadow-purple-300/20 ${
+        className={`group relative p-6 bg-white border border-gray-200 rounded-2xl hover:border-brand/60 transition-all duration-300 cursor-pointer hover:shadow-md ${
           menuOpen ? "review-menu-open" : ""
         }`}
       >
-        {/*
-          Glows live in their own clipped layer: the card itself must NOT clip
-          (overflow-hidden), otherwise the owner's ⋯ dropdown gets cut off.
-        */}
-        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-linear-to-br from-purple-300 to-pink-300 rounded-full blur-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-linear-to-br from-indigo-300 to-blue-300 rounded-full blur-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
-        </div>
 
         <div className="relative z-10">
           <div className="flex items-start justify-between mb-4 gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2 flex-wrap">
-                <div className="w-10 h-10 shrink-0 rounded-full bg-linear-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold shadow-lg">
+                <div className="w-10 h-10 shrink-0 rounded-full bg-linear-to-br from-brand to-brand flex items-center justify-center text-white font-bold shadow-lg">
                   {authorName.charAt(0).toUpperCase()}
                 </div>
                 <div>
                   <p className="font-bold text-gray-900">
                     {authorName}
                     {isOwner && (
-                      <span className="ml-2 text-[10px] font-bold uppercase tracking-wide text-purple-600 bg-purple-100 rounded-full px-2 py-0.5 align-middle">
+                      <span className="ml-2 text-[10px] font-bold uppercase tracking-wide text-brand bg-brand/10 rounded-full px-2 py-0.5 align-middle">
                         You
                       </span>
                     )}
@@ -362,8 +355,8 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
                     }
                     setMenuOpen(willOpen);
                   }}
-                  className={`w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:bg-purple-100 hover:text-purple-700 transition-all duration-200 ${
-                    menuOpen ? "bg-purple-100 text-purple-700" : ""
+                  className={`w-9 h-9 flex items-center justify-center rounded-full text-gray-500 hover:bg-brand/10 hover:text-brand transition-all duration-200 ${
+                    menuOpen ? "bg-brand/10 text-brand" : ""
                   }`}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -396,9 +389,9 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
                           event.stopPropagation();
                           startEditing();
                         }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-brand/5 hover:text-brand transition-colors"
                       >
-                        <span aria-hidden="true">✏️</span> Edit
+                        <PencilIcon size={14} className="inline-block align-[-2px] mr-1" />Edit
                       </button>
                       <div className="h-px bg-gray-100 mx-3" />
                       <button
@@ -412,7 +405,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
                         }}
                         className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
                       >
-                        <span aria-hidden="true">🗑️</span> Delete
+                        <TrashIcon size={14} className="inline-block align-[-2px] mr-1" />Delete
                       </button>
                     </div>
                   </div>
@@ -440,15 +433,15 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
           )}
 
           {review.comment && review.comment.length > 100 && !expanded && (
-            <p className="text-xs text-purple-600 font-semibold mt-2">→ Click to expand</p>
+            <p className="text-xs text-brand font-semibold mt-2">→ Click to expand</p>
           )}
           {expanded && review.comment && review.comment.length > 100 && (
-            <p className="text-xs text-purple-600 font-semibold mt-2">→ Click to collapse</p>
+            <p className="text-xs text-brand font-semibold mt-2">→ Click to collapse</p>
           )}
 
           {error && (
             <div className="mt-3 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-medium">
-              ❌ {error}
+              <XIcon size={14} className="inline align-[-2px] mr-1" />{error}
             </div>
           )}
         </div>
@@ -555,7 +548,7 @@ const ReviewList = ({
   if (isError) {
     return (
       <div className="p-6 bg-linear-to-br from-red-50 to-rose-50 border-2 border-red-200 rounded-2xl text-center">
-        <span className="text-2xl mb-2 block">⚠️</span>
+        <AlertIcon size={28} className="mb-2 block text-amber-500" />
         <p className="text-red-700 font-semibold">Error loading reviews</p>
         <p className="text-red-600 text-sm mt-1">Please try again later</p>
       </div>
@@ -574,9 +567,9 @@ const ReviewList = ({
           onSortChange={onSortChange}
           onRatingFilterChange={onRatingFilterChange}
         />
-        <div className="text-center py-16 px-6 bg-linear-to-br from-purple-50/50 via-pink-50/30 to-indigo-50/50 rounded-3xl border-2 border-dashed border-purple-200/50 hover:border-purple-300 transition-all duration-300">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-purple-200 to-pink-200 mb-6">
-            <span className="text-4xl">{filtered ? "🔍" : "💬"}</span>
+        <div className="text-center py-16 px-6 bg-gray-50/60 rounded-3xl border border-dashed border-gray-300 hover:border-brand/60 transition-all duration-300">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-brand/10 mb-6">
+            <span className="text-4xl text-gray-300">{filtered ? <SearchIcon size={40} /> : <MessageIcon size={40} />}</span>
           </div>
           <p className="text-gray-900 font-bold text-lg mb-2">
             {filtered ? `No ${ratingFilter}-star reviews yet` : "No reviews yet"}
@@ -590,7 +583,7 @@ const ReviewList = ({
             <button
               type="button"
               onClick={() => onRatingFilterChange(null)}
-              className="mt-4 text-sm font-semibold text-purple-600 bg-purple-100 hover:bg-purple-200 rounded-full px-4 py-2 transition-colors"
+              className="mt-4 text-sm font-semibold text-brand bg-brand/10 hover:bg-brand/20 rounded-full px-4 py-2 transition-colors"
             >
               Show all reviews
             </button>
@@ -631,8 +624,8 @@ const ReviewList = ({
       />
 
       {/* Refetch indicator */}
-      <div className={`h-0.5 w-full rounded-full overflow-hidden transition-opacity duration-300 ${isFetching ? "opacity-100 bg-purple-200" : "opacity-0"}`}>
-        <div className="h-full w-1/3 bg-purple-500 rounded-full animate-pulse" />
+      <div className={`h-0.5 w-full rounded-full overflow-hidden transition-opacity duration-300 ${isFetching ? "opacity-100 bg-brand/20" : "opacity-0"}`}>
+        <div className="h-full w-1/3 bg-brand rounded-full animate-pulse" />
       </div>
 
       <div className="space-y-4">
@@ -664,7 +657,7 @@ const ReviewList = ({
               onClick={() => onPageChange(pagination.page - 1)}
               disabled={!pagination.hasPrevPage || isFetching}
               aria-label="Previous page"
-              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-purple-50 hover:text-purple-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
+              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-brand/5 hover:text-brand disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
             >
               ‹
             </button>
@@ -683,8 +676,8 @@ const ReviewList = ({
                   aria-current={item === pagination.page ? "page" : undefined}
                   className={`min-w-[2rem] px-2 py-1.5 text-sm font-semibold rounded-lg border transition-colors ${
                     item === pagination.page
-                      ? "bg-linear-to-r from-purple-600 to-pink-600 text-white border-transparent shadow-md"
-                      : "border-gray-200 text-gray-600 hover:bg-purple-50 hover:text-purple-700"
+                      ? "bg-linear-to-r from-brand to-brand-dark text-white border-transparent shadow-md"
+                      : "border-gray-200 text-gray-600 hover:bg-brand/5 hover:text-brand"
                   } disabled:opacity-40 disabled:cursor-not-allowed`}
                 >
                   {item}
@@ -697,7 +690,7 @@ const ReviewList = ({
               onClick={() => onPageChange(pagination.page + 1)}
               disabled={!pagination.hasNextPage || isFetching}
               aria-label="Next page"
-              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-purple-50 hover:text-purple-700 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
+              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-brand/5 hover:text-brand disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
             >
               ›
             </button>

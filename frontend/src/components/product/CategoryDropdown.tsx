@@ -85,7 +85,7 @@ const CategoryDropdown = ({ categories, selectedId, onSelect }: CategoryDropdown
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="border rounded-lg px-3 py-2 text-sm bg-white/70 flex items-center gap-2 min-w-40 justify-between"
+          className="border rounded-lg px-3 py-2 text-sm bg-white flex items-center gap-2 min-w-40 justify-between"
         >
           <span className="truncate">{label}</span>
           <ChevronDown />

@@ -117,7 +117,7 @@ const ManageCoupons = () => {
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
-              <div className="text-sm font-semibold text-[#0e7c85] uppercase tracking-wider mb-2">Admin Panel</div>
+              <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Coupons</h1>
               <p className="text-gray-600 mt-2">Create and manage discount coupons for your store.</p>
             </div>
@@ -139,7 +139,7 @@ const ManageCoupons = () => {
               <p className="text-gray-600 mb-4">No coupons yet. Create one to get started.</p>
               <button
                 onClick={openCreateForm}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0e7c85] text-white rounded-lg hover:bg-[#1a6b94] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-dark transition-colors"
               >
                 <span>+</span> Create First Coupon
               </button>
@@ -149,17 +149,17 @@ const ManageCoupons = () => {
               {coupons.map((coupon) => (
                 <div
                   key={coupon._id}
-                  className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-white/20"
+                  className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
                 >
                   {/* Coupon Header */}
-                  <div className="relative overflow-hidden bg-linear-to-br from-[#0e7c85]/10 to-cyan-600/10 p-6 flex items-start justify-between group-hover:scale-105 transition-transform duration-300">
+                  <div className="relative overflow-hidden bg-linear-to-br from-brand/10 to-cyan-600/10 p-6 flex items-start justify-between group-hover:scale-105 transition-transform duration-300">
                     <div>
-                      <div className="text-4xl font-bold text-[#0e7c85] mb-1">
+                      <div className="text-4xl font-bold text-brand mb-1">
                         {coupon.discount_type === "percentage" ? `${coupon.value}%` : formatCurrency(coupon.value)}
                       </div>
                       <p className="text-sm text-gray-600">Discount</p>
                     </div>
-                    <div className="text-[#0e7c85]/30 group-hover:text-[#0e7c85]/60 transition-colors">
+                    <div className="text-brand/30 group-hover:text-brand/60 transition-colors">
                       <CouponIcon />
                     </div>
                   </div>
@@ -192,7 +192,7 @@ const ManageCoupons = () => {
                     </div>
 
                     {/* Coupon Details Grid */}
-                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-white/20">
+                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-gray-200">
                       <div>
                         <p className="text-xs text-gray-600 font-medium">Min Order</p>
                         <p className="font-bold text-gray-900">{formatCurrency(coupon.min_order_amount)}</p>
@@ -218,7 +218,7 @@ const ManageCoupons = () => {
                     <div className="flex gap-2 pt-2">
                       <button
                         onClick={() => openEditForm(coupon)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-[#0e7c85]/10 hover:bg-[#0e7c85]/20 text-[#0e7c85] rounded-lg transition-all duration-200 font-medium text-sm"
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-brand/10 hover:bg-brand/20 text-brand rounded-lg transition-all duration-200 font-medium text-sm"
                       >
                         <EditIcon />
                         Edit
@@ -250,13 +250,13 @@ const ManageCoupons = () => {
             required
             value={form.code}
             onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <select
             value={form.discount_type}
             onChange={(e) => setForm({ ...form, discount_type: e.target.value as DiscountType })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           >
             <option value="percentage">Percentage Discount</option>
             <option value="fixed">Fixed Amount Discount</option>
@@ -271,7 +271,7 @@ const ManageCoupons = () => {
             step={0.01}
             value={form.value}
             onChange={(e) => setForm({ ...form, value: Number(e.target.value) })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <input
@@ -281,7 +281,7 @@ const ManageCoupons = () => {
             step={0.01}
             value={form.min_order_amount}
             onChange={(e) => setForm({ ...form, min_order_amount: Number(e.target.value) })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <input
@@ -289,7 +289,7 @@ const ManageCoupons = () => {
             required
             value={form.expiry_date}
             onChange={(e) => setForm({ ...form, expiry_date: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <input
@@ -298,7 +298,7 @@ const ManageCoupons = () => {
             min={1}
             value={form.usage_limit ?? ""}
             onChange={(e) => setForm({ ...form, usage_limit: e.target.value ? Number(e.target.value) : null })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0e7c85]"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <label className="flex items-center gap-2 text-sm cursor-pointer">
@@ -306,7 +306,7 @@ const ManageCoupons = () => {
               type="checkbox"
               checked={form.is_active}
               onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
-              className="w-4 h-4 accent-[#0e7c85] cursor-pointer"
+              className="w-4 h-4 accent-brand cursor-pointer"
             />
             <span className="font-medium">Active</span>
           </label>
@@ -314,7 +314,7 @@ const ManageCoupons = () => {
           <button
             type="submit"
             disabled={isSaving}
-            className="w-full bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-linear-to-r from-brand to-cyan-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSaving ? "Saving..." : editingId ? "Update Coupon" : "Create Coupon"}
           </button>

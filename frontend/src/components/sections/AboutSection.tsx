@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
+import { GemIcon, HeartIcon, PenToolIcon, StarIcon, TargetIcon } from "../icons";
 
 const CheckIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -9,10 +10,10 @@ const CheckIcon = () => (
 
 const AboutSection = () => {
   const stats = [
-    { label: "Excellence & Care", value: "✨", color: "from-[#0e7c85]" },
-    { label: "Beautiful Experience", value: "❤️", color: "from-cyan-500" },
-    { label: "Thoughtful Design", value: "🎨", color: "from-teal-400" },
-    { label: "Premium Always", value: "💎", color: "from-blue-500" },
+    { label: "Excellence & Care", value: <StarIcon size={36} />, color: "from-brand" },
+    { label: "Beautiful Experience", value: <HeartIcon size={36} />, color: "from-cyan-500" },
+    { label: "Thoughtful Design", value: <PenToolIcon size={36} />, color: "from-teal-400" },
+    { label: "Premium Always", value: <GemIcon size={36} />, color: "from-blue-500" },
   ];
 
   const benefits = [
@@ -23,47 +24,12 @@ const AboutSection = () => {
   ];
 
   return (
-    <div className="py-10 sm:py-16 relative overflow-hidden">
+    <div className="py-12 sm:py-16 relative overflow-hidden">
       <style>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes gradient-shift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
 
         @keyframes float-slow {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
-        }
-
-        @keyframes shimmer {
-          0% { background-position: -1000px 0; }
-          100% { background-position: 1000px 0; }
-        }
-
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient-shift 6s ease infinite;
-        }
-
-        .animate-float-slow {
-          animation: float-slow 4s ease-in-out infinite;
-        }
-
-        .animate-shimmer {
-          background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-          background-size: 1000px 100%;
-          animation: shimmer 3s infinite;
         }
 
         .group-hover-lift {
@@ -75,26 +41,22 @@ const AboutSection = () => {
         }
       `}</style>
 
-      {/* Decorative blobs */}
-      <div className="absolute top-0 left-1/4 w-80 h-80 bg-linear-to-br from-cyan-300/20 to-teal-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10 animate-float-slow" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-linear-to-br from-[#0e7c85]/20 to-cyan-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -z-10" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
           {/* Left side - Content */}
           <div className="space-y-8 sm:space-y-10">
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 glass px-5 py-2.5 rounded-full text-sm font-bold text-[#0e7c85] backdrop-blur-xl border border-white/60 group">
+              <div className="inline-flex items-center gap-2 glass px-5 py-2.5 rounded-full text-sm font-bold text-brand border border-gray-200 group">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0e7c85] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0e7c85]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand"></span>
                 </span>
                 About ElysianEcommerce
               </div>
 
               <h2 className="text-4xl sm:text-5xl lg:text-5xl font-black text-gray-900 leading-tight">
                 Your Trusted Online{' '}
-                <span className="bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 bg-clip-text text-transparent animate-gradient" style={{ backgroundSize: '200% 200%' }}>
+                <span className="text-brand" style={{ backgroundSize: '200% 200%' }}>
                   Shopping Partner
                 </span>
               </h2>
@@ -109,9 +71,9 @@ const AboutSection = () => {
               {benefits.map((benefit, index) => (
                 <div
                   key={index}
-                  className="group/benefit flex items-start gap-4 p-3 rounded-lg hover:bg-white/50 transition-all duration-300 cursor-default"
+                  className="group/benefit flex items-start gap-4 p-3 rounded-lg hover:bg-white transition-all duration-300 cursor-default"
                 >
-                  <div className="mt-0.5 h-6 w-6 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-500 flex items-center justify-center text-white shrink-0 group-hover/benefit:scale-110 group-hover/benefit:shadow-lg group-hover/benefit:shadow-[#0e7c85]/50 transition-all duration-300 transform">
+                  <div className="mt-0.5 h-6 w-6 rounded-full bg-linear-to-br from-brand to-cyan-500 flex items-center justify-center text-white shrink-0 group-hover/benefit:scale-110 group-hover/benefit:shadow-lg group-hover/benefit:shadow-brand/50 transition-all duration-300 transform">
                     <CheckIcon />
                   </div>
                   <span className="text-gray-700 font-medium text-base sm:text-lg group-hover/benefit:text-gray-900 transition-colors duration-300">{benefit}</span>
@@ -122,21 +84,20 @@ const AboutSection = () => {
             {/* CTA */}
             <Link
               to={ROUTES.ABOUT}
-              className="inline-block group/cta relative px-8 py-4 rounded-2xl font-bold text-white bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/50 overflow-hidden text-lg"
+              className="inline-block group/cta relative px-8 py-4 rounded-2xl font-bold text-white bg-linear-to-r from-brand via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-xl hover:shadow-2xl overflow-hidden text-lg"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 Learn more about us
                 <span className="transform group-hover/cta:translate-x-2 transition-transform duration-300">→</span>
               </span>
-              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent translate-x-full group-hover/cta:translate-x-0 transition-transform duration-500 animate-shimmer" />
             </Link>
           </div>
 
           {/* Right side - Stats */}
           <div className="space-y-6">
             {/* Main Stats Card */}
-            <div className="glass rounded-3xl p-8 sm:p-12 backdrop-blur-2xl border border-white/70 hover:border-[#0e7c85]/80 transition-all duration-500 group space-y-8 group-hover-lift">
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:text-[#0e7c85] transition-colors duration-300">
+            <div className="glass rounded-3xl p-8 sm:p-12 border border-gray-200 hover:border-brand/80 transition-all duration-500 group space-y-8 group-hover-lift">
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:text-brand transition-colors duration-300">
                 What We Bring
               </h3>
 
@@ -144,7 +105,7 @@ const AboutSection = () => {
                 {stats.map((stat, index) => (
                   <div
                     key={index}
-                    className="group/stat p-4 rounded-xl hover:bg-linear-to-br hover:from-[#0e7c85]/10 hover:to-cyan-500/10 transition-all duration-400 cursor-default"
+                    className="group/stat p-4 rounded-xl hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10 transition-all duration-400 cursor-default"
                   >
                     <div className="space-y-3">
                       <div className={`text-5xl sm:text-6xl font-black`}>
@@ -170,19 +131,18 @@ const AboutSection = () => {
             </div>
 
             {/* Mission Card */}
-            <div className="group relative glass rounded-3xl p-8 sm:p-10 backdrop-blur-2xl border border-white/60 hover:border-[#0e7c85]/80 bg-linear-to-br from-[#0e7c85]/8 to-cyan-200/8 hover:from-[#0e7c85]/15 hover:to-cyan-200/15 transition-all duration-500 group-hover-lift overflow-hidden">
-              {/* Glow on hover */}
-              <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-[#0e7c85]/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10" />
+            <div className="group relative glass rounded-3xl p-8 sm:p-10 border border-gray-200 hover:border-brand/80 bg-linear-to-br from-brand/8 to-cyan-200/8 hover:from-brand/15 hover:to-cyan-200/15 transition-all duration-500 group-hover-lift overflow-hidden">
+              <div className="absolute inset-0 rounded-3xl bg-linear-to-br from-brand/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10" />
 
               <div className="relative z-10 space-y-4">
-                <p className="text-lg font-bold text-[#0e7c85] group-hover:text-cyan-600 transition-colors duration-300">🎯 Our Mission</p>
+                <p className="text-lg font-bold text-brand group-hover:text-cyan-600 transition-colors duration-300"><TargetIcon size={18} className="inline-block align-[-3px] mr-1.5" />Our Mission</p>
                 <p className="text-gray-700 leading-relaxed font-light group-hover:text-gray-800 transition-colors duration-300">
-                  To revolutionize online shopping by providing quality products, exceptional service, and an unforgettable user experience.
+                  To make online shopping straightforward: honest product descriptions, fair prices, deliveries you can track, and returns that actually work.
                 </p>
               </div>
 
               {/* Animated bottom accent */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-linear-to-r from-[#0e7c85] via-cyan-500 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-linear-to-r from-brand via-cyan-500 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
           </div>
         </div>

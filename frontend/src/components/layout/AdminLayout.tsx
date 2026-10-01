@@ -125,7 +125,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <img src="/logo-256.png" alt="Logo" width={256} height={256} className="h-10 w-auto object-contain" />
               </div>
               <div>
-                <div className="text-lg font-bold bg-linear-to-r from-[#0e7c85] to-cyan-600 bg-clip-text text-transparent">
+                <div className="text-lg font-bold text-brand">
                   Elysian
                 </div>
                 <div className="text-xs text-gray-500 font-semibold">Admin Panel</div>
@@ -147,48 +147,48 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               key={item.route}
               to={item.route}
               onClick={() => setSidebarOpen(false)}
-              className="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-linear-to-r hover:from-[#0e7c85]/5 hover:to-cyan-600/5 hover:text-[#0e7c85] transition-all duration-200 group relative overflow-hidden gpu-accelerate"
+              className="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-linear-to-r hover:from-brand/5 hover:to-cyan-600/5 hover:text-brand transition-all duration-200 group relative overflow-hidden gpu-accelerate"
               style={{
                 animation: `fadeInLeft 0.3s ease-out ${index * 0.05}s both`,
                 transform: "translateZ(0)",
                 willChange: "background-color, transform"
               }}
             >
-              <div className="absolute inset-0 bg-linear-to-r from-[#0e7c85]/0 to-cyan-600/0 group-hover:from-[#0e7c85]/10 group-hover:to-cyan-600/10 transition-all -z-10 gpu-accelerate" style={{ transform: "translateZ(0)" }} />
-              <div className="text-gray-500 group-hover:text-[#0e7c85] transition-colors text-2xl shrink-0 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+              <div className="absolute inset-0 bg-linear-to-r from-brand/0 to-cyan-600/0 group-hover:from-brand/10 group-hover:to-cyan-600/10 transition-all -z-10 gpu-accelerate" style={{ transform: "translateZ(0)" }} />
+              <div className="text-gray-500 group-hover:text-brand transition-colors text-2xl shrink-0 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
                 {item.icon}
               </div>
-              <span className="font-semibold text-base group-hover:text-[#0e7c85] transition-colors gpu-accelerate" style={{ willChange: "color" }}>{item.label}</span>
+              <span className="font-semibold text-base group-hover:text-brand transition-colors gpu-accelerate" style={{ willChange: "color" }}>{item.label}</span>
             </Link>
           ))}
         </nav>
 
         {/* Divider */}
-        <div className="mx-4 my-6 h-px linear-to-r from-transparent via-[#0e7c85]/20 to-transparent" />
+        <div className="mx-4 my-6 h-px linear-to-r from-transparent via-brand/20 to-transparent" />
 
         {/* Sidebar Footer - User Profile & Logout */}
         <div className="px-4 py-6 space-y-4">
           {/* User Profile */}
-          <div className="glass rounded-xl p-4 bg-linear-to-br from-[#0e7c85]/5 to-cyan-600/5 border border-[#0e7c85]/10">
+          <div className="glass rounded-xl p-4 bg-linear-to-br from-brand/5 to-cyan-600/5 border border-brand/10">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#0e7c85] to-cyan-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
+              <div className="w-12 h-12 rounded-full bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
                 {user?.name?.charAt(0).toUpperCase() || "A"}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-gray-900 truncate">{user?.name || "Admin"}</p>
-                <p className="text-xs text-[#0e7c85] truncate">{user?.email || "admin@elysian.com"}</p>
+                <p className="text-xs text-brand truncate">{user?.email || "admin@elysian.com"}</p>
               </div>
             </div>
             <div className="text-xs text-gray-600">
               <span className="font-semibold">Role: </span>
-              <span className="capitalize font-bold text-[#0e7c85]">{user?.role || "Administrator"}</span>
+              <span className="capitalize font-bold text-brand">{user?.role || "Administrator"}</span>
             </div>
           </div>
 
           {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-[#0e7c85] to-cyan-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 font-semibold group"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-brand to-cyan-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 font-semibold group"
           >
             <LogoutIcon />
             <span>Logout</span>
@@ -197,7 +197,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           {/* Back to Home Link */}
           <Link
             to={ROUTES.HOME}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-[#0e7c85]/20 text-[#0e7c85] rounded-xl hover:bg-[#0e7c85]/5 transition-all duration-200 font-semibold text-sm"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-brand/20 text-brand rounded-xl hover:bg-brand/5 transition-all duration-200 font-semibold text-sm"
           >
             ← Visit Website
           </Link>
@@ -207,11 +207,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col w-full overflow-hidden animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
         {/* Top Bar - only carries the mobile sidebar toggle */}
-        <div className="bg-white/50 backdrop-blur-xl border-b border-[#e0f2f7] sticky top-0 z-40 gpu-accelerate lg:hidden" style={{ contain: "layout style paint" }}>
+        <div className="bg-white border-b border-[#e0f2f7] sticky top-0 z-40 gpu-accelerate lg:hidden" style={{ contain: "layout style paint" }}>
           <div className="flex items-center justify-between px-6 py-4 gpu-accelerate" style={{ willChange: "background-color" }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-[#0e7c85] hover:text-[#1a6b94] transition-colors gpu-accelerate"
+              className="text-brand hover:text-brand-dark transition-colors gpu-accelerate"
               style={{ transform: "translateZ(0)" }}
             >
               <MenuIcon />

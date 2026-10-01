@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { HeartFilledIcon, HeartIcon } from "../icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useWishlist } from "../../hooks/useWishlist";
@@ -48,7 +49,7 @@ const WishlistButton = ({ productId, className = "" }: WishlistButtonProps) => {
       aria-label={active ? "Remove from wishlist" : "Add to wishlist"}
       title={active ? "Remove from wishlist" : "Add to wishlist"}
     >
-      {active ? "❤️" : "🤍"}
+      {active ? <HeartFilledIcon size={18} /> : <HeartIcon size={18} />}
     </button>
   );
 };

@@ -29,7 +29,7 @@ const RefundPolicy = () => {
       <h2>Late or missing refunds</h2>
       <p>
         If you haven't received a refund yet, first check your bank account again, then contact your
-        card provider — it can take a few business days for a refund to post. If you've done this and
+        card provider, as it can take a few business days for a refund to post. If you've done this and
         still haven't received your refund, please{" "}
         <Link to={ROUTES.CONTACT}>contact us</Link>.
       </p>
