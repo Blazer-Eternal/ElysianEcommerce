@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -12,7 +12,7 @@ const UserIcon = () => (
 );
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,6 +23,59 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const from = (location.state as { from?: string })?.from || ROUTES.HOME;
+  const [googleError, setGoogleError] = useState<string | null>(null);
+  const googleButtonRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    let attempts = 0;
+
+    const init = () => {
+      const g = (window as any).google;
+      if (!g?.accounts?.id) {
+        attempts += 1;
+        if (!cancelled && attempts < 50) setTimeout(init, 100);
+        return;
+      }
+      if (cancelled) return;
+
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
+      if (!clientId || clientId.startsWith("YOUR_")) {
+        setGoogleError("Google sign-in is not configured yet.");
+        return;
+      }
+
+      g.accounts.id.initialize({
+        client_id: clientId,
+        locale: "en",
+        callback: async (response: { credential: string }) => {
+          setGoogleError(null);
+          try {
+            await googleLogin(response.credential);
+            navigate(from, { replace: true });
+          } catch (err) {
+            setGoogleError(getErrorMessage(err));
+          }
+        },
+      });
+
+      if (googleButtonRef.current) {
+        g.accounts.id.renderButton(googleButtonRef.current, {
+          theme: "outline",
+          size: "large",
+          width: 320,
+          text: "signin_with",
+          shape: "pill",
+        });
+      }
+    };
+
+    init();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -142,6 +195,19 @@ const Login = () => {
               {isSubmitting ? "Logging in..." : "Login"}
             </button>
           </form>
+
+          {/* Continue with Google — directly under the Login button */}
+          <div className="mt-6">
+            {googleError && (
+              <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm animate-shake">
+                {googleError}
+              </div>
+            )}
+            <div className="flex justify-center" ref={googleButtonRef} />
+            <p className="text-xs text-gray-500 text-center mt-2">
+              Sign in with your verified Google/Gmail account.
+            </p>
+          </div>
 
           <p className="text-sm text-gray-600 text-center mt-6">
             New to ElysianEcommerce?{" "}

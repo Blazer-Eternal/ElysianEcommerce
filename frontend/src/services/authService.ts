@@ -26,6 +26,11 @@ export const authService = {
     return data;
   },
 
+  googleLogin: async (credential: string): Promise<ApiResponse<AuthResponseData>> => {
+    const { data } = await axiosInstance.post("/auth/google/login", { credential });
+    return data;
+  },
+
   signup: async (payload: SignupPayload): Promise<ApiResponse<Pick<User, "_id" | "name" | "email" | "role">>> => {
     const { data } = await axiosInstance.post("/auth/signup", payload);
     return data;

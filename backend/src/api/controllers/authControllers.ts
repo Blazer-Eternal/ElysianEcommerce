@@ -460,4 +460,67 @@ export class AuthController {
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }
+
+  // "Continue with Google" login: verifies the Google ID token and, if the
+  // email belongs to a verified Google account matching an existing user,
+  // issues the same JWT as a normal login.
+  public static async googleLogin(req: CustomRequestInterface, res: Response): Promise<Response> {
+    const { credential } = req.body;
+
+    try {
+      let payload;
+      try {
+        const ticket = await googleOAuthClient.verifyIdToken({
+          idToken: credential,
+          audience: googleClientId,
+        });
+        payload = ticket.getPayload();
+      } catch {
+        return res.status(401).json({ success: false, message: "Google authentication failed. Please try again." });
+      }
+
+      if (!payload || !payload.email || !payload.email_verified) {
+        return res.status(403).json({
+          success: false,
+          message: "A verified Google/Gmail account is required.",
+        });
+      }
+
+      const user = await new UserServices().findone(payload.email.toLowerCase());
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "No account found for this Google email. Please register first.",
+        });
+      }
+
+      const token = jwt.sign(
+        {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: (user.role || "").toLowerCase().trim(),
+        },
+        jwtSecret,
+        { expiresIn: "24h" }
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: "Login successful!",
+        data: {
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: (user.role || "").toLowerCase().trim(),
+          },
+        },
+      });
+    } catch (error) {
+      console.error("googleLogin error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
 }

@@ -70,6 +70,7 @@ const Register = () => {
 
       g.accounts.id.initialize({
         client_id: clientId,
+        locale: "en",
         callback: async (response: { credential: string }) => {
           setGoogleError(null);
           setGoogleInfo(null);
