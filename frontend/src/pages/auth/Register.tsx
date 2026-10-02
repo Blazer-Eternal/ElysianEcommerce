@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { ROUTES } from "../../constants/routes";
+import { authService } from "../../services/authService";
 
 const UserIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
@@ -36,6 +37,102 @@ const Register = () => {
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // Google sign-up flow state
+  const [googleStep, setGoogleStep] = useState<"idle" | "otp" | "done">("idle");
+  const [googleEmail, setGoogleEmail] = useState("");
+  const [googleOtp, setGoogleOtp] = useState("");
+  const [googleError, setGoogleError] = useState<string | null>(null);
+  const [googleInfo, setGoogleInfo] = useState<string | null>(null);
+  const [googleBusy, setGoogleBusy] = useState(false);
+  const googleButtonRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (googleStep !== "idle") return;
+
+    let cancelled = false;
+    let attempts = 0;
+
+    const init = () => {
+      const g = (window as any).google;
+      if (!g?.accounts?.id) {
+        attempts += 1;
+        if (!cancelled && attempts < 50) setTimeout(init, 100);
+        return;
+      }
+      if (cancelled) return;
+
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
+      if (!clientId || clientId.startsWith("YOUR_")) {
+        setGoogleError("Google sign-in is not configured yet.");
+        return;
+      }
+
+      g.accounts.id.initialize({
+        client_id: clientId,
+        callback: async (response: { credential: string }) => {
+          setGoogleError(null);
+          setGoogleInfo(null);
+          setGoogleBusy(true);
+          try {
+            const res = await authService.googleInitiate(response.credential);
+            setGoogleEmail(res.data.email);
+            setGoogleInfo(res.message ?? null);
+            setGoogleStep("otp");
+          } catch (err) {
+            setGoogleError(getErrorMessage(err));
+          } finally {
+            setGoogleBusy(false);
+          }
+        },
+      });
+
+      if (googleButtonRef.current) {
+        g.accounts.id.renderButton(googleButtonRef.current, {
+          theme: "outline",
+          size: "large",
+          width: 320,
+          text: "signup_with",
+          shape: "pill",
+        });
+      }
+    };
+
+    init();
+    return () => {
+      cancelled = true;
+    };
+  }, [googleStep]);
+
+  const handleGoogleVerify = async () => {
+    setGoogleError(null);
+    setGoogleInfo(null);
+    setGoogleBusy(true);
+    try {
+      const res = await authService.googleVerify(googleEmail, googleOtp);
+      setGoogleInfo(res.message ?? null);
+      setGoogleStep("done");
+      setTimeout(() => navigate(ROUTES.LOGIN), 2000);
+    } catch (err) {
+      setGoogleError(getErrorMessage(err));
+    } finally {
+      setGoogleBusy(false);
+    }
+  };
+
+  const handleGoogleResend = async () => {
+    setGoogleError(null);
+    setGoogleInfo(null);
+    setGoogleBusy(true);
+    try {
+      const res = await authService.googleResend(googleEmail);
+      setGoogleInfo(res.message ?? null);
+    } catch (err) {
+      setGoogleError(getErrorMessage(err));
+    } finally {
+      setGoogleBusy(false);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -90,6 +187,83 @@ const Register = () => {
           <div className="mb-2 text-sm font-semibold text-brand tracking-widest">WELCOME</div>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Create account</h1>
           <div className="h-1 w-16 bg-linear-to-r from-brand to-cyan-500 rounded-full mb-8"></div>
+
+          {/* Google sign-up */}
+          {googleStep === "idle" && (
+            <div className="mb-8">
+              {googleError && (
+                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm animate-shake">
+                  {googleError}
+                </div>
+              )}
+              <div className="flex justify-center" ref={googleButtonRef} />
+              <p className="text-xs text-gray-500 text-center mt-2">
+                Use a verified Google/Gmail account. We'll email you a one-time code.
+              </p>
+              <div className="flex items-center gap-3 my-6">
+                <div className="h-px flex-1 bg-gray-200"></div>
+                <span className="text-xs text-gray-400 uppercase tracking-wider">or register with email</span>
+                <div className="h-px flex-1 bg-gray-200"></div>
+              </div>
+            </div>
+          )}
+
+          {googleStep === "otp" && (
+            <div className="mb-8 space-y-4 border border-gray-200 rounded-xl p-6 bg-gray-50">
+              <h2 className="text-lg font-semibold text-gray-900">Verify your Google account</h2>
+              <p className="text-sm text-gray-600">
+                Enter the 6-digit code sent to <span className="font-medium">{googleEmail}</span>.
+              </p>
+              {googleError && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm animate-shake">
+                  {googleError}
+                </div>
+              )}
+              {googleInfo && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                  {googleInfo}
+                </div>
+              )}
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={6}
+                value={googleOtp}
+                onChange={(e) => setGoogleOtp(e.target.value.replace(/\D/g, ""))}
+                placeholder="6-digit code"
+                className="w-full bg-white border-b-2 border-gray-300 px-4 py-3 text-center text-xl tracking-[0.5em] focus:outline-none focus:border-brand transition-all duration-300"
+              />
+              <button
+                type="button"
+                onClick={handleGoogleVerify}
+                disabled={googleBusy || googleOtp.length !== 6}
+                className="w-full bg-linear-to-r from-brand to-brand-dark text-white font-semibold py-3 rounded-full hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {googleBusy ? "Verifying..." : "Verify & create account"}
+              </button>
+              <button
+                type="button"
+                onClick={handleGoogleResend}
+                disabled={googleBusy}
+                className="w-full text-sm text-brand font-semibold hover:text-brand-dark disabled:opacity-50"
+              >
+                Resend code
+              </button>
+              <button
+                type="button"
+                onClick={() => { setGoogleStep("idle"); setGoogleOtp(""); setGoogleError(null); setGoogleInfo(null); }}
+                className="w-full text-xs text-gray-500 hover:text-gray-700"
+              >
+                Use a different account
+              </button>
+            </div>
+          )}
+
+          {googleStep === "done" && (
+            <div className="mb-8 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+              {googleInfo || "Account created! Redirecting to login..."}
+            </div>
+          )}
 
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm animate-shake">

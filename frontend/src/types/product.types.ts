@@ -28,6 +28,8 @@ export interface ProductQueryParams {
   search?: string;
   minPrice?: number;
   maxPrice?: number;
+  /** Encoded price buckets, e.g. "0-5000,200000-" — see constants/priceRanges. */
+  priceRanges?: string;
   category_id?: string;
   status?: string;
   inStock?: boolean;

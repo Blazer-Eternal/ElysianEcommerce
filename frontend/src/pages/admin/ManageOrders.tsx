@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { orderService } from "../../services/orderService";
 import { couponService } from "../../services/couponService";
 import AdminLayout from "../../components/layout/AdminLayout";
 import Pagination from "../../components/ui/Pagination";
+import ViewToggle, { type ViewMode } from "../../components/ui/ViewToggle";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { formatDate } from "../../utils/formatDate";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { ORDER_STATUS_LABELS } from "../../constants/orderStatus";
 import type { OrderStatus, PaymentStatus } from "../../types/order.types";
 
 const ORDER_STATUSES: OrderStatus[] = ["pending", "paid", "shipped", "delivered", "cancelled"];
 const PAYMENT_STATUSES: PaymentStatus[] = ["unpaid", "paid", "refunded"];
+const PAGE_SIZE = 6;
 
 const ViewIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -23,10 +26,16 @@ const ViewIcon = () => (
 const ManageOrders = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState<OrderStatus | "all">("all");
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin", "orders", page],
-    queryFn: ({ signal }) => orderService.getAll(page, 15, { signal }),
+    queryKey: ["admin", "orders", page, statusFilter],
+    queryFn: ({ signal }) =>
+      orderService.getAll(page, PAGE_SIZE, {
+        signal,
+        status: statusFilter === "all" ? undefined : statusFilter,
+      }),
   });
 
   // Fetch coupons to create a lookup map
@@ -39,7 +48,7 @@ const ManageOrders = () => {
   // Create a map of coupon ID to coupon code
   const couponMap = new Map<string, string>();
   if (couponsRes?.data) {
-    couponsRes.data.forEach((coupon: any) => {
+    couponsRes.data.forEach((coupon) => {
       couponMap.set(coupon._id, coupon.code);
     });
   }
@@ -66,6 +75,21 @@ const ManageOrders = () => {
       alert(getErrorMessage(err));
     }
   };
+
+  const handleFilterChange = (value: OrderStatus | "all") => {
+    setStatusFilter(value);
+    setPage(1);
+  };
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    const scrollContainer = document.querySelector(".overflow-auto");
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [page]);
 
   const orders = data?.data || [];
 
@@ -104,22 +128,55 @@ const ManageOrders = () => {
       <div className="w-full px-4 sm:px-6 py-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Orders</h1>
-            <p className="text-gray-600 mt-2">View and manage all customer orders.</p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Orders</h1>
+              <p className="text-gray-600 mt-2">View and manage all customer orders.</p>
+            </div>
+            <ViewToggle viewMode={viewMode} onChange={setViewMode} />
           </div>
 
-          {/* Orders Table */}
+          {/* Status Filter Bar */}
+          <div className="flex flex-wrap items-center gap-2 mb-8">
+            <span className="text-xs font-bold text-gray-900 uppercase tracking-wider mr-1">Status:</span>
+            <button
+              onClick={() => handleFilterChange("all")}
+              className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
+                statusFilter === "all"
+                  ? "bg-black text-white shadow-md"
+                  : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-100"
+              }`}
+            >
+              All
+            </button>
+            {ORDER_STATUSES.map((status) => (
+              <button
+                key={status}
+                onClick={() => handleFilterChange(status)}
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
+                  statusFilter === status
+                    ? "bg-black text-white shadow-md"
+                    : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-100"
+                }`}
+              >
+                {ORDER_STATUS_LABELS[status]}
+              </button>
+            ))}
+          </div>
+
+          {/* Orders Table / Grid */}
           {isLoading ? (
             <div className="text-center py-12">
               <p className="text-gray-600">Loading orders...</p>
             </div>
           ) : orders.length === 0 ? (
             <div className="text-center py-12 glass rounded-xl p-6 border border-gray-200">
-              <p className="text-gray-600 text-lg">No orders found.</p>
+              <p className="text-gray-600 text-lg">
+                {statusFilter === "all" ? "No orders found." : `No ${statusFilter} orders found.`}
+              </p>
             </div>
-          ) : (
+          ) : viewMode === "list" ? (
             <>
               <div className="glass rounded-xl overflow-hidden border border-gray-200">
                 <div className="overflow-x-auto">
@@ -255,14 +312,96 @@ const ManageOrders = () => {
                   </table>
                 </div>
               </div>
-
-              {/* Pagination */}
-              {data?.pagination && (
-                <div className="mt-8">
-                  <Pagination pagination={data.pagination} onPageChange={setPage} />
-                </div>
-              )}
             </>
+          ) : (
+            /* Grid View */
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {orders.map((order) => (
+                <div
+                  key={order._id}
+                  className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
+                >
+                  {/* Order Header */}
+                  <div className="bg-linear-to-br from-brand/10 to-cyan-600/10 p-6 flex items-start justify-between">
+                    <div>
+                      <Link
+                        to={`/admin/orders/${order._id}`}
+                        className="text-lg font-bold text-brand hover:text-brand-dark transition-colors"
+                      >
+                        #{order.order_number}
+                      </Link>
+                      <p className="text-sm text-gray-600 mt-1">{formatDate(order.created_at)}</p>
+                    </div>
+                    <div className="flex flex-col gap-2 items-end">
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${getStatusBadgeColor(order.status)}`}>
+                        {order.status.toUpperCase()}
+                      </span>
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${getPaymentBadgeColor(order.payment_status)}`}>
+                        {order.payment_status.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Order Info */}
+                  <div className="p-5 sm:p-6 space-y-3">
+                    <div>
+                      <p className="text-xs text-gray-600 font-medium mb-1">Customer</p>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {typeof order.user_id === "object" ? order.user_id.name : "—"}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        {typeof order.user_id === "object" ? order.user_id.email : "—"}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-gray-200">
+                      <div>
+                        <p className="text-xs text-gray-600 font-medium">Items</p>
+                        <p className="font-bold text-gray-900">
+                          {order.items.length} item{order.items.length !== 1 ? "s" : ""}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 font-medium">Total</p>
+                        <p className="font-bold text-brand">{formatCurrency(order.total_amount)}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 font-medium">Coupon</p>
+                        <p className="font-bold text-gray-900">
+                          {order.coupon_id && order.discount && order.discount > 0
+                            ? typeof order.coupon_id === "object"
+                              ? order.coupon_id.code
+                              : getCouponCode(order.coupon_id)
+                            : "No coupon"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 font-medium">Discount</p>
+                        <p className="font-bold text-gray-900">
+                          {order.discount && order.discount > 0 ? `-${formatCurrency(order.discount)}` : "—"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Link
+                      to={`/admin/orders/${order._id}`}
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm"
+                      title="View Order Details"
+                    >
+                      <ViewIcon />
+                      View Order
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {orders.length > 0 && data?.pagination && (
+            <div className="mt-8">
+              <Pagination pagination={data.pagination} onPageChange={setPage} />
+            </div>
           )}
         </div>
       </div>

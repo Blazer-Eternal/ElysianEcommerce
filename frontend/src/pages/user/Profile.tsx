@@ -17,6 +17,44 @@ const emptyAddress: AddressPayload = {
   is_default: false,
 };
 
+const PersonIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const LockIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <rect x="3" y="11" width="18" height="11" rx="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
+const CameraIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+    <circle cx="12" cy="13" r="4" />
+  </svg>
+);
+
+const ShieldIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <polyline points="9 12 11 14 15 10" />
+  </svg>
+);
+
+const MapPinIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+);
+
+const inputClass =
+  "w-full border border-gray-200 rounded-lg px-4 py-3 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white";
+
 const Profile = () => {
   const { user } = useAuth();
   const userId = user?.id as string;
@@ -37,6 +75,7 @@ const Profile = () => {
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
@@ -46,6 +85,8 @@ const Profile = () => {
   const [addressForm, setAddressForm] = useState<AddressPayload>(emptyAddress);
   const [addressError, setAddressError] = useState<string | null>(null);
   const [isSavingAddress, setIsSavingAddress] = useState(false);
+
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
   const profileUser = data?.data;
 
@@ -74,12 +115,17 @@ const Profile = () => {
   const handlePasswordSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setPasswordError(null);
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError("New passwords do not match.");
+      return;
+    }
     setIsSavingPassword(true);
     try {
       await authService.changePassword({ currentPassword, newPassword });
       setPasswordSuccess(true);
       setCurrentPassword("");
       setNewPassword("");
+      setConfirmNewPassword("");
       setTimeout(() => setPasswordSuccess(false), 2500);
     } catch (err) {
       setPasswordError(getErrorMessage(err));
@@ -140,6 +186,20 @@ const Profile = () => {
     }
   };
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      alert("Please choose a JPG, PNG or WEBP image.");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Image must be smaller than 2MB.");
+      return;
+    }
+    setPhotoPreview(URL.createObjectURL(file));
+  };
+
   if (isLoading || !profileUser) {
     return (
       <div className="py-24">
@@ -148,97 +208,209 @@ const Profile = () => {
     );
   }
 
+  const initials = profileUser.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 space-y-10">
-      <h1 className="text-2xl font-bold">My Profile</h1>
+    <div className="max-w-3xl mx-auto px-4 py-10 space-y-6">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-gray-500">Keep your account details up to date.</p>
+        <p className="flex items-center gap-1.5 text-sm text-green-700">
+          <ShieldIcon /> Account protected
+        </p>
+      </div>
 
-      <section>
-        <h2 className="font-semibold mb-3">Account Details</h2>
-        {profileError && <p className="text-sm text-red-600 mb-2">{profileError}</p>}
-        {profileSuccess && <p className="text-sm text-green-700 mb-2">Profile updated successfully.</p>}
+      {/* Profile information */}
+      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+        <div className="flex items-start gap-3">
+          <div className="bg-blue-50 text-blue-600 rounded-lg p-2">
+            <PersonIcon />
+          </div>
+          <div>
+            <h2 className="font-semibold text-gray-900">Profile information</h2>
+            <p className="text-sm text-gray-500">This information helps personalize your account.</p>
+          </div>
+        </div>
 
-        <form onSubmit={handleProfileSubmit} className="space-y-3 max-w-sm">
-          <input
-            id="profile-name"
-            name="name"
-            type="text"
-            aria-label="Name"
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
-            className="w-full border rounded px-3 py-2 text-sm"
-          />
-          <input
-            id="profile-email"
-            name="email"
-            type="email"
-            aria-label="Email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            className="w-full border rounded px-3 py-2 text-sm"
-          />
-          <input
-            id="profile-phone"
-            name="phone"
-            type="tel"
-            aria-label="Phone"
-            autoComplete="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Phone"
-            className="w-full border rounded px-3 py-2 text-sm"
-          />
+        <hr className="border-gray-100" />
+
+        <div className="flex items-center gap-5">
+          {photoPreview ? (
+            <img src={photoPreview} alt="Profile" className="w-20 h-20 rounded-full object-cover" />
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-semibold">
+              {initials}
+            </div>
+          )}
+          <div>
+            <p className="font-medium text-gray-900">{profileUser.name}</p>
+            <p className="text-sm text-gray-500 mt-0.5">JPG, PNG or WEBP · Max 2MB</p>
+            <div className="flex gap-3 mt-3">
+              <label className="inline-flex items-center gap-2 text-sm border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-gray-50">
+                <CameraIcon /> Change photo
+                <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handlePhotoChange} />
+              </label>
+              <button
+                type="button"
+                onClick={() => setPhotoPreview(null)}
+                className="text-sm text-red-600 border border-red-200 rounded-lg px-4 py-2 hover:bg-red-50"
+              >
+                Remove photo
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {profileError && <p className="text-sm text-red-600">{profileError}</p>}
+        {profileSuccess && <p className="text-sm text-green-700">Profile updated successfully.</p>}
+
+        <form onSubmit={handleProfileSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="profile-name" className="block text-sm font-medium text-gray-700 mb-1">
+              Name
+            </label>
+            <input
+              id="profile-name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="profile-email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              id="profile-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label htmlFor="profile-phone" className="block text-sm font-medium text-gray-700 mb-1">
+              Phone
+            </label>
+            <input
+              id="profile-phone"
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="98XXXXXXXXX"
+              className={inputClass}
+            />
+          </div>
           <button
             type="submit"
             disabled={isSavingProfile}
-            className="bg-black text-white px-4 py-2 rounded text-sm disabled:opacity-50"
+            className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
           >
-            {isSavingProfile ? "Saving..." : "Save Changes"}
+            {isSavingProfile ? "Saving..." : "Save changes"}
           </button>
         </form>
       </section>
 
-      <section>
-        <h2 className="font-semibold mb-3">Change Password</h2>
-        {passwordError && <p className="text-sm text-red-600 mb-2">{passwordError}</p>}
-        {passwordSuccess && <p className="text-sm text-green-700 mb-2">Password changed successfully.</p>}
+      {/* Password & security */}
+      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+        <div className="flex items-start gap-3">
+          <div className="bg-orange-50 text-orange-500 rounded-lg p-2">
+            <LockIcon />
+          </div>
+          <div>
+            <h2 className="font-semibold text-gray-900">Password &amp; security</h2>
+            <p className="text-sm text-gray-500">Use a strong password to protect your account.</p>
+          </div>
+        </div>
 
-        <form onSubmit={handlePasswordSubmit} className="space-y-3 max-w-sm">
-          <PasswordInput
-            id="currentPassword"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            placeholder="Current password"
-            required
-          />
-          <PasswordInput
-            id="newPasswordProfile"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="New password"
-            required
-            minLength={6}
-          />
+        <hr className="border-gray-100" />
+
+        {passwordError && <p className="text-sm text-red-600">{passwordError}</p>}
+        {passwordSuccess && <p className="text-sm text-green-700">Password changed successfully.</p>}
+
+        <form onSubmit={handlePasswordSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              Current password
+            </label>
+            <PasswordInput
+              id="currentPassword"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              placeholder="Enter current password"
+              required
+              className="rounded-lg bg-gray-50 border-gray-200"
+            />
+          </div>
+          <div>
+            <label htmlFor="newPasswordProfile" className="block text-sm font-medium text-gray-700 mb-1">
+              New password
+            </label>
+            <PasswordInput
+              id="newPasswordProfile"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter new password"
+              required
+              minLength={6}
+              className="rounded-lg bg-gray-50 border-gray-200"
+            />
+          </div>
+          <div>
+            <label htmlFor="confirmNewPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm new password
+            </label>
+            <PasswordInput
+              id="confirmNewPassword"
+              value={confirmNewPassword}
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
+              placeholder="Re-enter new password"
+              required
+              minLength={6}
+              className="rounded-lg bg-gray-50 border-gray-200"
+            />
+          </div>
           <button
             type="submit"
             disabled={isSavingPassword}
-            className="bg-black text-white px-4 py-2 rounded text-sm disabled:opacity-50"
+            className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
           >
-            {isSavingPassword ? "Updating..." : "Change Password"}
+            {isSavingPassword ? "Updating..." : "Update password"}
           </button>
         </form>
       </section>
 
-      <section>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold">Addresses</h2>
-          <button onClick={openAddForm} className="text-sm text-black underline">
-            + Add Address
+      {/* Addresses */}
+      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+        <div className="flex items-start justify-between">
+          <div className="flex items-start gap-3">
+            <div className="bg-green-50 text-green-600 rounded-lg p-2">
+              <MapPinIcon />
+            </div>
+            <div>
+              <h2 className="font-semibold text-gray-900">Addresses</h2>
+              <p className="text-sm text-gray-500">Manage your saved delivery addresses.</p>
+            </div>
+          </div>
+          <button onClick={openAddForm} className="text-sm text-blue-600 font-medium hover:underline">
+            + Add address
           </button>
         </div>
+
+        <hr className="border-gray-100" />
 
         {profileUser.addresses.length === 0 && !showAddressForm && (
           <p className="text-sm text-gray-500">No saved addresses yet.</p>
@@ -246,9 +418,9 @@ const Profile = () => {
 
         <div className="space-y-3">
           {profileUser.addresses.map((address) => (
-            <div key={address._id} className="border rounded p-3 text-sm flex items-start justify-between">
+            <div key={address._id} className="border border-gray-200 rounded-lg p-4 text-sm flex items-start justify-between">
               <div>
-                <p>
+                <p className="text-gray-800">
                   {address.street}, {address.city}, {address.state} {address.zip}, {address.country}
                 </p>
                 {address.is_default && (
@@ -257,13 +429,13 @@ const Profile = () => {
                   </span>
                 )}
               </div>
-              <div className="flex gap-3 shrink-0 ml-4">
-                <button onClick={() => openEditForm(address)} className="text-xs underline">
+              <div className="flex gap-4 shrink-0 ml-4">
+                <button onClick={() => openEditForm(address)} className="text-xs text-blue-600 hover:underline">
                   Edit
                 </button>
                 <button
                   onClick={() => address._id && handleRemoveAddress(address._id)}
-                  className="text-xs text-red-600 underline"
+                  className="text-xs text-red-600 hover:underline"
                 >
                   Remove
                 </button>
@@ -273,7 +445,7 @@ const Profile = () => {
         </div>
 
         {showAddressForm && (
-          <form onSubmit={handleAddressSubmit} className="border rounded p-4 mt-4 space-y-3 max-w-sm">
+          <form onSubmit={handleAddressSubmit} className="border border-gray-200 rounded-lg p-4 space-y-3">
             {addressError && <p className="text-sm text-red-600">{addressError}</p>}
 
             <input
@@ -286,7 +458,7 @@ const Profile = () => {
               required
               value={addressForm.street}
               onChange={(e) => setAddressForm({ ...addressForm, street: e.target.value })}
-              className="w-full border rounded px-3 py-2 text-sm"
+              className={inputClass}
             />
             <div className="grid grid-cols-2 gap-2">
               <input
@@ -299,7 +471,7 @@ const Profile = () => {
                 required
                 value={addressForm.city}
                 onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
-                className="border rounded px-3 py-2 text-sm"
+                className={inputClass}
               />
               <input
                 id="addr-state"
@@ -311,7 +483,7 @@ const Profile = () => {
                 required
                 value={addressForm.state}
                 onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
-                className="border rounded px-3 py-2 text-sm"
+                className={inputClass}
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -325,7 +497,7 @@ const Profile = () => {
                 required
                 value={addressForm.zip}
                 onChange={(e) => setAddressForm({ ...addressForm, zip: e.target.value })}
-                className="border rounded px-3 py-2 text-sm"
+                className={inputClass}
               />
               <input
                 id="addr-country"
@@ -337,7 +509,7 @@ const Profile = () => {
                 required
                 value={addressForm.country}
                 onChange={(e) => setAddressForm({ ...addressForm, country: e.target.value })}
-                className="border rounded px-3 py-2 text-sm"
+                className={inputClass}
               />
             </div>
             <label htmlFor="default-address" className="flex items-center gap-2 text-sm">
@@ -355,14 +527,14 @@ const Profile = () => {
               <button
                 type="submit"
                 disabled={isSavingAddress}
-                className="bg-black text-white px-4 py-2 rounded text-sm disabled:opacity-50"
+                className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
               >
-                {isSavingAddress ? "Saving..." : editingAddressId ? "Update Address" : "Add Address"}
+                {isSavingAddress ? "Saving..." : editingAddressId ? "Update address" : "Add address"}
               </button>
               <button
                 type="button"
                 onClick={() => setShowAddressForm(false)}
-                className="px-4 py-2 rounded text-sm border"
+                className="px-5 py-2.5 rounded-lg text-sm border border-gray-200 hover:bg-gray-50"
               >
                 Cancel
               </button>

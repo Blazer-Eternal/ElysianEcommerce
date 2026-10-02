@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userService } from "../../services/userService";
 import AdminLayout from "../../components/layout/AdminLayout";
 import Pagination from "../../components/ui/Pagination";
+import ViewToggle, { type ViewMode } from "../../components/ui/ViewToggle";
 import { formatDate } from "../../utils/formatDate";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { useAuth } from "../../hooks/useAuth";
+
+const PAGE_SIZE = 6;
 
 const DeleteIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -20,11 +23,22 @@ const ManageUsers = () => {
   const { user: currentUser } = useAuth();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "users", page],
-    queryFn: ({ signal }) => userService.getAll(page, 12, { signal }),
+    queryFn: ({ signal }) => userService.getAll(page, PAGE_SIZE, { signal }),
   });
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    const scrollContainer = document.querySelector(".overflow-auto");
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [page]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this user? This cannot be undone.")) return;
@@ -49,6 +63,7 @@ const ManageUsers = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Users</h1>
               <p className="text-gray-600 mt-2">View and manage customer accounts and their roles.</p>
             </div>
+            <ViewToggle viewMode={viewMode} onChange={setViewMode} />
           </div>
 
           {/* Users Grid */}
@@ -60,7 +75,7 @@ const ManageUsers = () => {
             <div className="text-center py-12">
               <p className="text-gray-600">No users found.</p>
             </div>
-          ) : (
+          ) : viewMode === "grid" ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
                 {users.map((user) => (
@@ -129,6 +144,71 @@ const ManageUsers = () => {
                           </button>
                         </div>
                       )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {data?.pagination && <Pagination pagination={data.pagination} onPageChange={setPage} />}
+            </>
+          ) : (
+            <>
+              <div className="space-y-3 mb-8">
+                {users.map((user) => (
+                  <div
+                    key={user._id}
+                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-200 p-4 sm:p-6"
+                  >
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
+                      {/* Avatar */}
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-brand to-cyan-600 text-white text-lg font-bold shrink-0">
+                        {user.name?.charAt(0).toUpperCase() || "U"}
+                      </div>
+
+                      {/* User Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                          <div>
+                            <h3 className="font-bold text-gray-900 text-base sm:text-lg">{user.name}</h3>
+                            <p className="text-sm text-gray-600 line-clamp-1">{user.email}</p>
+                          </div>
+                          <span className="px-3 py-1 bg-brand/10 text-brand text-xs font-bold rounded-full border border-brand/20 max-w-fit capitalize">
+                            {user.role}
+                            {user._id === currentUser?.id ? " (You)" : ""}
+                          </span>
+                        </div>
+
+                        <div className="py-3 border-t border-b border-gray-200">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            <div>
+                              <p className="text-xs text-gray-600 font-medium">Phone</p>
+                              <p className="text-sm text-gray-900">{user.phone || "—"}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-600 font-medium">Joined</p>
+                              <p className="text-sm text-gray-900">{formatDate(user.created_at)}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="w-full sm:w-auto pt-2 sm:pt-0">
+                        {user._id === currentUser?.id ? (
+                          <button disabled className="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-lg font-medium text-sm opacity-50 cursor-not-allowed">
+                            Cannot delete yourself
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleDelete(user._id)}
+                            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-600 rounded-lg transition-all duration-200 font-medium text-sm"
+                          >
+                            <DeleteIcon />
+                            Delete User
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -31,9 +31,9 @@ export const orderService = {
     return data;
   },
 
-  getAll: async (page = 1, limit = 20, config?: { signal?: AbortSignal }): Promise<PaginatedResponse<Order>> => {
+  getAll: async (page = 1, limit = 20, config?: { signal?: AbortSignal; status?: OrderStatus }): Promise<PaginatedResponse<Order>> => {
     const { data } = await axiosInstance.get("/orders", {
-      params: { page, limit },
+      params: { page, limit, status: config?.status },
       signal: config?.signal,
     });
     return data;

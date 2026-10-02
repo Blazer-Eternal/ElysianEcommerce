@@ -30,7 +30,16 @@ const UserSchema = new Schema<UserInterface>({
   },
   phone: {
     type: String,
-    required: true,
+    default: "",
+  },
+  auth_provider: {
+    type: String,
+    enum: ["local", "google"],
+    default: "local",
+  },
+  google_id: {
+    type: String,
+    default: null,
   },
   role: {
     type: String,

@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { reviewService } from "../../services/reviewService";
 import AdminLayout from "../../components/layout/AdminLayout";
 import Pagination from "../../components/ui/Pagination";
+import ViewToggle, { type ViewMode } from "../../components/ui/ViewToggle";
 import { formatDate } from "../../utils/formatDate";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import type { Review } from "../../types/review.types";
+
+const PAGE_SIZE = 6;
 
 const StarRating = ({ rating }: { rating: number }) => {
   return (
@@ -39,12 +42,23 @@ const DeleteIcon = () => (
 const ManageReviews = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin", "reviews", page],
-    queryFn: ({ signal }) => reviewService.getAll({ page, limit: 10, sort: "recent", signal }),
+    queryFn: ({ signal }) => reviewService.getAll({ page, limit: PAGE_SIZE, sort: "recent", signal }),
     refetchInterval: 5000,
   });
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    const scrollContainer = document.querySelector(".overflow-auto");
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [page]);
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this review? This cannot be undone.")) return;
@@ -77,10 +91,13 @@ const ManageReviews = () => {
       <div className="w-full px-4 sm:px-6 py-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Reviews</h1>
-            <p className="text-gray-600 mt-2">View and moderate all customer reviews across your store.</p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div>
+              <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Reviews</h1>
+              <p className="text-gray-600 mt-2">View and moderate all customer reviews across your store.</p>
+            </div>
+            <ViewToggle viewMode={viewMode} onChange={setViewMode} />
           </div>
 
           {/* Reviews Table */}
@@ -92,7 +109,7 @@ const ManageReviews = () => {
             <div className="text-center py-12 glass rounded-xl p-6 border border-gray-200">
               <p className="text-gray-600 text-lg">No reviews found.</p>
             </div>
-          ) : (
+          ) : viewMode === "list" ? (
             <>
               <div className="glass rounded-xl overflow-hidden border border-gray-200">
                 <div className="overflow-x-auto">
@@ -168,6 +185,64 @@ const ManageReviews = () => {
                     </tbody>
                   </table>
                 </div>
+              </div>
+
+              {/* Pagination */}
+              {data?.pagination && (
+                <div className="mt-8">
+                  <Pagination pagination={data.pagination} onPageChange={setPage} />
+                </div>
+              )}
+            </>
+          ) : (
+            /* Grid View */
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {reviews.map((review) => (
+                  <div
+                    key={review._id}
+                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
+                  >
+                    {/* Review Header */}
+                    <div className="bg-linear-to-br from-brand/10 to-cyan-600/10 p-6">
+                      <p className="text-xs text-gray-600 font-medium mb-1">Product</p>
+                      <p className="font-bold text-gray-900 text-base sm:text-lg">{getProductName(review)}</p>
+                    </div>
+
+                    {/* Review Info */}
+                    <div className="p-5 sm:p-6 space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                          {getCustomerName(review).charAt(0).toUpperCase()}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-gray-900">{getCustomerName(review)}</p>
+                          <p className="text-xs text-gray-600">{formatDate(review.created_at)}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <StarRating rating={review.rating} />
+                        <span className="text-xs text-gray-500 font-medium">{review.rating}/5</span>
+                      </div>
+
+                      <div className="py-3 border-t border-b border-gray-200">
+                        <p className="text-sm text-gray-700 line-clamp-4">
+                          {review.comment || <span className="italic text-gray-400">No comment</span>}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => handleDelete(review._id)}
+                        className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-600 rounded-lg transition-all duration-200 font-semibold text-sm"
+                        title="Delete Review"
+                      >
+                        <DeleteIcon />
+                        Delete Review
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
 
               {/* Pagination */}

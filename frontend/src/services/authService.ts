@@ -11,6 +11,21 @@ import type {
 } from "../types/user.types";
 
 export const authService = {
+  googleInitiate: async (credential: string): Promise<ApiResponse<{ email: string; attemptsRemaining: number }>> => {
+    const { data } = await axiosInstance.post("/auth/google/initiate", { credential });
+    return data;
+  },
+
+  googleResend: async (email: string): Promise<ApiResponse<{ email: string; attemptsRemaining: number }>> => {
+    const { data } = await axiosInstance.post("/auth/google/resend", { email });
+    return data;
+  },
+
+  googleVerify: async (email: string, otp: string): Promise<ApiResponse<null>> => {
+    const { data } = await axiosInstance.post("/auth/google/verify", { email, otp });
+    return data;
+  },
+
   signup: async (payload: SignupPayload): Promise<ApiResponse<Pick<User, "_id" | "name" | "email" | "role">>> => {
     const { data } = await axiosInstance.post("/auth/signup", payload);
     return data;

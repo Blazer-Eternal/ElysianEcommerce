@@ -12,6 +12,22 @@ export class ProductController {
       const search = req.query.search as string | undefined;
       const minPrice = req.query.minPrice ? parseFloat(req.query.minPrice as string) : undefined;
       const maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice as string) : undefined;
+      // Encoded checkbox buckets: "0-5000,200000-" → [{min:0,max:5000},{min:200000}].
+      // The trailing dash on an open-ended bucket yields a NaN max, which is dropped.
+      const priceRanges = (typeof req.query.priceRanges === "string" ? req.query.priceRanges : "")
+        .split(",")
+        .map((segment) => segment.trim())
+        .filter(Boolean)
+        .map((segment) => {
+          const [rawMin, rawMax] = segment.split("-");
+          const min = Number.parseFloat(rawMin);
+          const max = Number.parseFloat(rawMax);
+          return {
+            ...(Number.isFinite(min) ? { min } : {}),
+            ...(Number.isFinite(max) ? { max } : {}),
+          };
+        })
+        .filter((range) => range.min !== undefined || range.max !== undefined);
       const category_id = req.query.category_id as string | undefined;
       const status = req.query.status as string | undefined;
       const inStock = req.query.inStock === "true";
@@ -24,6 +40,7 @@ export class ProductController {
         search,
         minPrice,
         maxPrice,
+        priceRanges: priceRanges.length > 0 ? priceRanges : undefined,
         category_id,
         status,
         inStock,

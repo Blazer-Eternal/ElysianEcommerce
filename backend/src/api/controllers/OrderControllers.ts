@@ -339,7 +339,11 @@ export class OrderController {
       const page = req.query.page ? parseInt(req.query.page as string) : 1;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 20;
 
-      const result = await new OrderServices().findAll({ page, limit });
+      // Optional ?status= filter — only applied when it matches a known status.
+      const rawStatus = typeof req.query.status === "string" ? req.query.status : undefined;
+      const status = rawStatus && Object.values(OrderStatusEnum).includes(rawStatus as OrderStatusEnum) ? rawStatus : undefined;
+
+      const result = await new OrderServices().findAll({ page, limit, status });
       return res.status(200).json({ success: true, data: result.orders, pagination: result.pagination });
     } catch (error) {
       return res.status(500).json({ success: false, message: "Internal server error" });

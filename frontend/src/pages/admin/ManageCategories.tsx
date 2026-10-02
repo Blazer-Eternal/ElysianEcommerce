@@ -1,10 +1,13 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { categoryService } from "../../services/categoryService";
 import AdminLayout from "../../components/layout/AdminLayout";
 import Modal from "../../components/ui/Modal";
+import Pagination from "../../components/ui/Pagination";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import type { Category, CreateCategoryPayload } from "../../types/category.types";
+
+const PAGE_SIZE = 10;
 
 const emptyForm: CreateCategoryPayload = { name: "", slug: "", parent_id: null, description: "" };
 
@@ -32,6 +35,7 @@ const ManageCategories = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
@@ -41,6 +45,30 @@ const ManageCategories = () => {
 
   const categories = data?.data || [];
   const allCategories = categories;
+
+  // Client-side pagination: categories are fetched as one list (the same
+  // ["categories"] cache is shared with other pages), so we slice here.
+  const totalPages = Math.max(1, Math.ceil(categories.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginatedCategories = categories.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const pagination = {
+    total: categories.length,
+    page: safePage,
+    limit: PAGE_SIZE,
+    totalPages,
+    hasNextPage: safePage < totalPages,
+    hasPrevPage: safePage > 1,
+  };
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    const scrollContainer = document.querySelector(".overflow-auto");
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [safePage]);
 
   const openCreateForm = () => {
     setEditingId(null);
@@ -91,9 +119,9 @@ const ManageCategories = () => {
     }
   };
 
-  const getParentName = (parentId: string | object | null | undefined) => {
+  const getParentName = (parentId: Category["parent_id"] | undefined) => {
     if (!parentId) return "Top-level";
-    const id = typeof parentId === "object" ? (parentId as any)._id : parentId;
+    const id = typeof parentId === "object" ? parentId._id : parentId;
     return allCategories.find((c) => c._id === id)?.name || "Unknown";
   };
 
@@ -173,7 +201,7 @@ const ManageCategories = () => {
           ) : viewMode === "grid" ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                {categories.map((category) => (
+                {paginatedCategories.map((category) => (
                   <div
                     key={category._id}
                     className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
@@ -220,11 +248,14 @@ const ManageCategories = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Pagination */}
+              <Pagination pagination={pagination} onPageChange={setPage} />
             </>
           ) : (
             <>
               <div className="space-y-3 mb-8">
-                {categories.map((category) => (
+                {paginatedCategories.map((category) => (
                   <div
                     key={category._id}
                     className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-200 p-4 sm:p-6"
@@ -280,6 +311,9 @@ const ManageCategories = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Pagination */}
+              <Pagination pagination={pagination} onPageChange={setPage} />
             </>
           )}
         </div>

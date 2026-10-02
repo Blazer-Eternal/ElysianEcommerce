@@ -39,7 +39,9 @@ const DashboardStatCard = memo(
     // Percentage only means something when the previous period had activity;
     // otherwise fall back to the absolute change so the badge is never empty.
     const pct = previousValue > 0 ? (delta / previousValue) * 100 : null;
-    const magnitude = pct === null ? `${Math.abs(delta)}` : `${Math.abs(pct).toFixed(0)}%`;
+    // 100% is the ceiling (full growth): raw ratios like 1228% read as noise,
+    // so anything beyond doubling is capped at 100%.
+    const magnitude = pct === null ? `${Math.abs(delta)}` : `${Math.min(Math.abs(pct), 100).toFixed(0)}%`;
 
     const badgeClass = isUp ? "text-green-600" : isDown ? "text-red-500" : "text-gray-500";
     const badgeText = delta === 0 ? "0" : `${isUp ? "▲" : "▼"} ${magnitude}`;

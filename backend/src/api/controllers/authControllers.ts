@@ -1,12 +1,100 @@
 import { Response } from "express";
 import { CustomRequestInterface } from "../../intefaces";
 import { UserServices } from "../../services";
-import { jwtSecret, frontendUrl } from "../../config";
+import { jwtSecret, frontendUrl, googleClientId } from "../../config";
 import { sendMail } from "../../config/mailer";
 import { RoleEnum } from "../../enums/UserEnums";
+import { GoogleOtpModel } from "../../models/GoogleOtpModel";
+import { OAuth2Client } from "google-auth-library";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+
+const googleOAuthClient = new OAuth2Client(googleClientId);
+
+const OTP_MAX_SENDS = 3; // max OTP emails allowed per 24h window
+const OTP_TTL_MS = 10 * 60 * 1000; // OTP valid for 10 minutes
+const OTP_MAX_VERIFY_ATTEMPTS = 5;
+const RESEND_COOLDOWN_MS = 60 * 1000; // 1 resend per minute
+const LOCK_MS = 24 * 60 * 60 * 1000; // 1 day restriction after limit hit
+
+async function issueGoogleOtp(email: string, name: string, googleId: string): Promise<
+  | { ok: true; remaining: number }
+  | { ok: false; status: number; message: string }
+> {
+  let doc = await GoogleOtpModel.findOne({ email });
+
+  const now = Date.now();
+
+  if (doc?.locked_until && doc.locked_until.getTime() > now) {
+    return {
+      ok: false,
+      status: 429,
+      message: "OTP limit reached. You can request a new OTP after 24 hours.",
+    };
+  }
+
+  if (!doc) {
+    doc = new GoogleOtpModel({ email, name, google_id: googleId });
+  }
+
+  // Reset the 24h send window once it has fully elapsed
+  if (now - doc.window_start.getTime() > LOCK_MS) {
+    doc.send_count = 0;
+    doc.window_start = new Date(now);
+    doc.locked_until = null;
+  }
+
+  if (doc.last_sent_at && now - doc.last_sent_at.getTime() < RESEND_COOLDOWN_MS) {
+    return {
+      ok: false,
+      status: 429,
+      message: "Please wait a moment before requesting another OTP.",
+    };
+  }
+
+  if (doc.send_count >= OTP_MAX_SENDS) {
+    doc.locked_until = new Date(now + LOCK_MS);
+    await doc.save();
+    return {
+      ok: false,
+      status: 429,
+      message: "OTP limit reached (3 OTPs in 24 hours). Please try again after 24 hours.",
+    };
+  }
+
+  const otp = crypto.randomInt(100000, 1000000).toString(); // 6 digits, CSPRNG
+  doc.otp_hash = crypto.createHash("sha256").update(otp).digest("hex");
+  doc.otp_expires = new Date(now + OTP_TTL_MS);
+  doc.verify_attempts = 0;
+  doc.send_count += 1;
+  doc.last_sent_at = new Date(now);
+  doc.name = name;
+  doc.google_id = googleId;
+  await doc.save();
+
+  try {
+    await sendMail({
+      to: email,
+      subject: "Your Elysian verification code",
+      text: `Your Elysian OTP is ${otp}. It expires in 10 minutes. If you didn't request this, ignore this email.`,
+      html: `
+        <div style="font-family: Arial, Helvetica, sans-serif; max-width: 520px; margin: 0 auto; padding: 24px; color: #111111">
+          <h2 style="color: #0e7c85; margin: 0 0 16px">Elysian</h2>
+          <p>Hi${name ? ` ${name}` : ""},</p>
+          <p>Use this code to verify your Google sign-up:</p>
+          <p style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #0e7c85; margin: 24px 0">${otp}</p>
+          <p style="color: #666666; font-size: 13px">The code expires in 10 minutes. If you didn't request it, you can ignore this email.</p>
+        </div>
+      `,
+    });
+  } catch (mailError) {
+    console.error("Google signup OTP email failed:", mailError);
+    return { ok: false, status: 500, message: "Failed to send OTP email. Please try again later." };
+  }
+
+  return { ok: true, remaining: OTP_MAX_SENDS - doc.send_count };
+}
 
 export class AuthController {
   public static async signup(req: CustomRequestInterface, res: Response): Promise<Response> {
@@ -220,6 +308,155 @@ export class AuthController {
       return res.status(200).json({ success: true, message: "Password reset successfully. You can now log in." });
     } catch (error) {
       console.error("resetPassword error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  // Step 1 of Google sign-up: verify the Google ID token, require a verified
+  // Google (Gmail/Workspace) account, then email a one-time OTP. No user is
+  // created until the OTP is verified.
+  public static async googleInitiate(req: CustomRequestInterface, res: Response): Promise<Response> {
+    const { credential } = req.body;
+
+    try {
+      let payload;
+      try {
+        const ticket = await googleOAuthClient.verifyIdToken({
+          idToken: credential,
+          audience: googleClientId,
+        });
+        payload = ticket.getPayload();
+      } catch {
+        return res.status(401).json({ success: false, message: "Google authentication failed. Please try again." });
+      }
+
+      if (!payload || !payload.email || !payload.email_verified) {
+        return res.status(403).json({
+          success: false,
+          message: "A verified Google/Gmail account is required to sign up with Google.",
+        });
+      }
+
+      const email = payload.email.toLowerCase();
+
+      const existing = await new UserServices().findone(email);
+      if (existing) {
+        return res.status(409).json({
+          success: false,
+          message: "An account with this email already exists. Please log in instead.",
+        });
+      }
+
+      const result = await issueGoogleOtp(email, payload.name || "", payload.sub);
+      if (!result.ok) {
+        return res.status(result.status).json({ success: false, message: result.message });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: `A verification code has been sent to ${email}.`,
+        data: { email, attemptsRemaining: result.remaining },
+      });
+    } catch (error) {
+      console.error("googleInitiate error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  // Resend the OTP (counts toward the 3-per-24h limit).
+  public static async googleResend(req: CustomRequestInterface, res: Response): Promise<Response> {
+    const { email } = req.body;
+
+    try {
+      const doc = await GoogleOtpModel.findOne({ email: email.toLowerCase() });
+      if (!doc) {
+        return res.status(404).json({ success: false, message: "No pending Google sign-up found. Start again." });
+      }
+
+      const result = await issueGoogleOtp(doc.email, doc.name, doc.google_id);
+      if (!result.ok) {
+        return res.status(result.status).json({ success: false, message: result.message });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: `A new verification code has been sent to ${doc.email}.`,
+        data: { email: doc.email, attemptsRemaining: result.remaining },
+      });
+    } catch (error) {
+      console.error("googleResend error:", error);
+      return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
+
+  // Step 2: verify the OTP, then create the account.
+  public static async googleVerify(req: CustomRequestInterface, res: Response): Promise<Response> {
+    const { email, otp } = req.body;
+
+    try {
+      const doc = await GoogleOtpModel.findOne({ email: email.toLowerCase() });
+      if (!doc) {
+        return res.status(404).json({ success: false, message: "No pending Google sign-up found. Start again." });
+      }
+
+      if (doc.locked_until && doc.locked_until.getTime() > Date.now()) {
+        return res.status(429).json({
+          success: false,
+          message: "OTP limit reached. You can request a new OTP after 24 hours.",
+        });
+      }
+
+      if (!doc.otp_hash || !doc.otp_expires || doc.otp_expires.getTime() < Date.now()) {
+        return res.status(400).json({ success: false, message: "OTP has expired. Please request a new one." });
+      }
+
+      if (doc.verify_attempts >= OTP_MAX_VERIFY_ATTEMPTS) {
+        doc.otp_hash = null;
+        doc.otp_expires = null;
+        await doc.save();
+        return res.status(429).json({
+          success: false,
+          message: "Too many incorrect attempts. Please request a new OTP.",
+        });
+      }
+
+      const hashed = crypto.createHash("sha256").update(otp).digest("hex");
+      if (hashed !== doc.otp_hash) {
+        doc.verify_attempts += 1;
+        await doc.save();
+        return res.status(401).json({ success: false, message: "Incorrect OTP. Please try again." });
+      }
+
+      const existing = await new UserServices().findone(doc.email);
+      if (existing) {
+        await GoogleOtpModel.deleteOne({ _id: doc._id });
+        return res.status(409).json({
+          success: false,
+          message: "An account with this email already exists. Please log in instead.",
+        });
+      }
+
+      const password_hash = await bcrypt.hash(crypto.randomBytes(24).toString("hex"), 12);
+      const user = await new UserServices().create({
+        name: doc.name || "Elysian User",
+        email: doc.email,
+        password_hash,
+        phone: "",
+        role: RoleEnum.customer,
+        addresses: [],
+        auth_provider: "google",
+        google_id: doc.google_id,
+      });
+
+      await GoogleOtpModel.deleteOne({ _id: doc._id });
+
+      return res.status(201).json({
+        success: true,
+        message: "Account created successfully! You can now log in.",
+        data: { id: user._id, name: user.name, email: user.email, role: user.role },
+      });
+    } catch (error) {
+      console.error("googleVerify error:", error);
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }

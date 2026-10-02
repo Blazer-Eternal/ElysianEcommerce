@@ -20,6 +20,8 @@ export interface InputUserInterface {
   addresses: AddressInterface[];
   reset_password_token?: string | null;
   reset_password_expires?: Date | null;
+  auth_provider?: "local" | "google";
+  google_id?: string | null;
 }
 
 export interface UserInterface extends InputUserInterface, Document {

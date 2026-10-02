@@ -32,6 +32,19 @@ export const resetPasswordValidator = z.object({
   newPassword: z.string().min(6, "New password must be at least 6 characters"),
 });
 
+export const googleInitiateValidator = z.object({
+  credential: z.string().min(1, "Google credential is required"),
+});
+
+export const googleVerifyOtpValidator = z.object({
+  email: z.string().email("Please provide a valid email address"),
+  otp: z.string().regex(/^\d{6}$/, "OTP must be a 6 digit code"),
+});
+
+export const googleResendOtpValidator = z.object({
+  email: z.string().email("Please provide a valid email address"),
+});
+
 export const addressValidator = z.object({
   street: z.string().min(1, "Street is required"),
   city: z.string().min(1, "City is required"),
@@ -60,6 +73,9 @@ export type UpdateUserInput = z.infer<typeof updateUserValidator>;
 export type ChangePasswordInput = z.infer<typeof changePasswordValidator>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordValidator>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordValidator>;
+export type GoogleInitiateInput = z.infer<typeof googleInitiateValidator>;
+export type GoogleVerifyOtpInput = z.infer<typeof googleVerifyOtpValidator>;
+export type GoogleResendOtpInput = z.infer<typeof googleResendOtpValidator>;
 export type AddressInput = z.infer<typeof addressValidator>;
 export type UpdateAddressInput = z.infer<typeof updateAddressValidator>;
 export type AssignRoleInput = z.infer<typeof assignRoleValidator>;

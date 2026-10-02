@@ -1,12 +1,16 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { couponService } from "../../services/couponService";
 import AdminLayout from "../../components/layout/AdminLayout";
 import Modal from "../../components/ui/Modal";
+import Pagination from "../../components/ui/Pagination";
+import ViewToggle, { type ViewMode } from "../../components/ui/ViewToggle";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { formatDate } from "../../utils/formatDate";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import type { Coupon, CreateCouponPayload, DiscountType } from "../../types/coupon.types";
+
+const PAGE_SIZE = 6;
 
 const emptyForm: CreateCouponPayload = {
   code: "",
@@ -47,6 +51,8 @@ const ManageCoupons = () => {
   const [form, setForm] = useState<CreateCouponPayload>(emptyForm);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [page, setPage] = useState(1);
 
   const { data, isLoading } = useQuery({
     queryKey: ["coupons"],
@@ -55,6 +61,30 @@ const ManageCoupons = () => {
   });
 
   const coupons = data?.data || [];
+
+  // Client-side pagination: coupons are fetched as one list (the same
+  // ["coupons"] cache is shared with other pages), so we slice here.
+  const totalPages = Math.max(1, Math.ceil(coupons.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginatedCoupons = coupons.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const pagination = {
+    total: coupons.length,
+    page: safePage,
+    limit: PAGE_SIZE,
+    totalPages,
+    hasNextPage: safePage < totalPages,
+    hasPrevPage: safePage > 1,
+  };
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    const scrollContainer = document.querySelector(".overflow-auto");
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [safePage]);
 
   const openCreateForm = () => {
     setEditingId(null);
@@ -121,12 +151,15 @@ const ManageCoupons = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Coupons</h1>
               <p className="text-gray-600 mt-2">Create and manage discount coupons for your store.</p>
             </div>
-            <button
-              onClick={openCreateForm}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
-            >
-              <span className="text-xl">+</span> Add Coupon
-            </button>
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-3">
+              <button
+                onClick={openCreateForm}
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
+              >
+                <span className="text-xl">+</span> Add Coupon
+              </button>
+              <ViewToggle viewMode={viewMode} onChange={setViewMode} />
+            </div>
           </div>
 
           {/* Coupons Grid */}
@@ -144,9 +177,10 @@ const ManageCoupons = () => {
                 <span>+</span> Create First Coupon
               </button>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {coupons.map((coupon) => (
+          ) : viewMode === "grid" ? (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedCoupons.map((coupon) => (
                 <div
                   key={coupon._id}
                   className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
@@ -233,8 +267,95 @@ const ManageCoupons = () => {
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              <Pagination pagination={pagination} onPageChange={setPage} />
+            </>
+          ) : (
+            <>
+              <div className="space-y-3">
+                {paginatedCoupons.map((coupon) => (
+                  <div
+                    key={coupon._id}
+                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-200 p-4 sm:p-6"
+                  >
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
+                      {/* Coupon Code */}
+                      <div className="text-2xl font-bold text-brand font-mono tracking-wider sm:min-w-[140px]">
+                        {coupon.code}
+                      </div>
+
+                      {/* Coupon Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {!coupon.is_active && (
+                            <span className="px-3 py-1 bg-gray-200 text-gray-700 text-xs font-bold rounded-full">
+                              Inactive
+                            </span>
+                          )}
+                          {isExpired(coupon.expiry_date) && (
+                            <span className="px-3 py-1 bg-red-200 text-red-700 text-xs font-bold rounded-full">
+                              Expired
+                            </span>
+                          )}
+                          {coupon.is_active && !isExpired(coupon.expiry_date) && (
+                            <span className="px-3 py-1 bg-green-200 text-green-700 text-xs font-bold rounded-full">
+                              Active
+                            </span>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-gray-200">
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">Discount</p>
+                            <p className="font-bold text-gray-900">
+                              {coupon.discount_type === "percentage" ? `${coupon.value}%` : formatCurrency(coupon.value)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">Min Order</p>
+                            <p className="font-bold text-gray-900">{formatCurrency(coupon.min_order_amount)}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">Expiry</p>
+                            <p className="font-bold text-gray-900">{formatDate(coupon.expiry_date)}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 font-medium">Used</p>
+                            <p className="font-bold text-gray-900">
+                              {coupon.used_count}
+                              {coupon.usage_limit ? ` / ${coupon.usage_limit}` : " / ∞"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="w-full sm:w-auto flex gap-2 pt-2 sm:pt-0">
+                        <button
+                          onClick={() => openEditForm(coupon)}
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-brand/10 hover:bg-brand/20 text-brand rounded-lg transition-all duration-200 font-medium text-sm"
+                        >
+                          <EditIcon />
+                          <span className="hidden sm:inline">Edit</span>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(coupon._id)}
+                          className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-600 rounded-lg transition-all duration-200 font-medium text-sm"
+                        >
+                          <DeleteIcon />
+                          <span className="hidden sm:inline">Delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              <Pagination pagination={pagination} onPageChange={setPage} />
+            </>
           )}
         </div>
       </div>

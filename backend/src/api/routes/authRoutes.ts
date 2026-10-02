@@ -6,6 +6,9 @@ import {
   changePasswordValidator,
   forgotPasswordValidator,
   resetPasswordValidator,
+  googleInitiateValidator,
+  googleVerifyOtpValidator,
+  googleResendOtpValidator,
 } from "../../validators/UserValidator";
 import { AuthController } from "../controllers/authControllers";
 
@@ -34,6 +37,27 @@ authRoutes.post(
   authLimiter,
   exceptionHandler(Validator.check(resetPasswordValidator)),
   exceptionHandler(AuthController.resetPassword)
+);
+
+authRoutes.post(
+  "/google/initiate",
+  authLimiter,
+  exceptionHandler(Validator.check(googleInitiateValidator)),
+  exceptionHandler(AuthController.googleInitiate)
+);
+
+authRoutes.post(
+  "/google/resend",
+  authLimiter,
+  exceptionHandler(Validator.check(googleResendOtpValidator)),
+  exceptionHandler(AuthController.googleResend)
+);
+
+authRoutes.post(
+  "/google/verify",
+  authLimiter,
+  exceptionHandler(Validator.check(googleVerifyOtpValidator)),
+  exceptionHandler(AuthController.googleVerify)
 );
 
 export default authRoutes;

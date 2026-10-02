@@ -35,13 +35,17 @@ export class OrderServices {
     };
   }
 
-  public async findAll(options: PaginationOptions = {}) {
-    const { page = 1, limit = 20 } = options;
+  public async findAll(options: PaginationOptions & { status?: string } = {}) {
+    const { page = 1, limit = 20, status } = options;
     const skip = (page - 1) * limit;
 
+    // Optional status filter (pending/paid/shipped/delivered/cancelled) so the
+    // admin orders list can narrow results server-side with correct pagination.
+    const filter: Record<string, unknown> = status ? { status } : {};
+
     const [orders, total] = await Promise.all([
-      OrderModel.find().populate("user_id", "name email").sort({ created_at: -1 }).skip(skip).limit(limit),
-      OrderModel.countDocuments(),
+      OrderModel.find(filter).populate("user_id", "name email").sort({ created_at: -1 }).skip(skip).limit(limit),
+      OrderModel.countDocuments(filter),
     ]);
 
     return {

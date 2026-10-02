@@ -1,12 +1,21 @@
 import { ProductModel } from "../models/ProductModel";
 import { ProductInterface, InputProductInterface } from "../intefaces/ProductInterface";
 
+export interface PriceRangeFilter {
+  /** Inclusive lower bound in NPR. */
+  min?: number;
+  /** Inclusive upper bound; omitted for the open-ended top bucket. */
+  max?: number;
+}
+
 export interface ProductQueryOptions {
   page?: number;
   limit?: number;
   search?: string;
   minPrice?: number;
   maxPrice?: number;
+  /** Selected price buckets — union of inclusive [min, max] windows. */
+  priceRanges?: PriceRangeFilter[];
   category_id?: string;
   status?: string;
   inStock?: boolean;
@@ -22,6 +31,7 @@ export class ProductServices {
       search,
       minPrice,
       maxPrice,
+      priceRanges,
       category_id,
       status,
       inStock,
@@ -34,10 +44,31 @@ export class ProductServices {
     if (search) {
       filter.name = { $regex: search, $options: "i" };
     }
-    if (minPrice !== undefined || maxPrice !== undefined) {
-      filter.price = {};
-      if (minPrice !== undefined) filter.price.$gte = minPrice;
-      if (maxPrice !== undefined) filter.price.$lte = maxPrice;
+
+    // Price constraints: a plain min/max pair narrows directly, while the
+    // checked price buckets form a union (OR of inclusive windows).
+    const bucketClauses = (priceRanges ?? [])
+      .map((bucket) => {
+        const condition: Record<string, number> = {};
+        if (bucket.min !== undefined) condition.$gte = bucket.min;
+        if (bucket.max !== undefined) condition.$lte = bucket.max;
+        return Object.keys(condition).length > 0 ? { price: condition } : null;
+      })
+      .filter((clause): clause is { price: Record<string, number> } => clause !== null);
+
+    const hasMinMax = minPrice !== undefined || maxPrice !== undefined;
+    if (bucketClauses.length > 0 && hasMinMax) {
+      const minMax: Record<string, number> = {};
+      if (minPrice !== undefined) minMax.$gte = minPrice;
+      if (maxPrice !== undefined) minMax.$lte = maxPrice;
+      filter.$and = [{ $or: bucketClauses }, { price: minMax }];
+    } else if (bucketClauses.length > 0) {
+      filter.$or = bucketClauses;
+    } else if (hasMinMax) {
+      const price: Record<string, number> = {};
+      if (minPrice !== undefined) price.$gte = minPrice;
+      if (maxPrice !== undefined) price.$lte = maxPrice;
+      filter.price = price;
     }
     if (category_id) {
       filter.category_id = category_id;
