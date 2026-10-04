@@ -10,15 +10,8 @@ import { ROUTES } from "../../constants/routes";
 import Spinner from "../../components/ui/Spinner";
 import StarRating from "../../components/ui/StarRating";
 import WishlistButton from "../../components/wishlist/WishlistButton";
+import ViewToggle, { type ViewMode } from "../../components/ui/ViewToggle";
 import { cloudinaryImg } from "../../utils/imageUrl";
-
-const AddToCartIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="21" r="1" />
-    <circle cx="20" cy="21" r="1" />
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-  </svg>
-);
 
 const TrendingIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -34,9 +27,9 @@ const Wishlist = () => {
   const [addingId, setAddingId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
   const [errorId, setErrorId] = useState<{ id: string; message: string } | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"newest" | "price-low" | "price-high" | "rating">("newest");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
 
   const handleAddToCart = async (productId: string) => {
     setErrorId(null);
@@ -107,7 +100,7 @@ const Wishlist = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 flex items-center justify-center px-4">
         <div className="max-w-md text-center space-y-8 animate-fade-in">
           {/* Animated Heart Icon */}
           <div className="flex justify-center">
@@ -135,7 +128,7 @@ const Wishlist = () => {
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
             <Link
               to={ROUTES.PRODUCTS}
-              className="px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-brand to-cyan-600 hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 transform active:scale-95"
+              className="px-8 py-3.5 rounded-xl font-semibold text-white bg-linear-to-r from-brand to-cyan-600 hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 transform active:scale-95"
             >
               Explore Products →
             </Link>
@@ -169,19 +162,19 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 py-8 sm:py-16">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 py-8 sm:py-16">
       {/* Header Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-12 animate-fade-in">
-        <div className="space-y-2 mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6 animate-fade-in">
+        <div className="space-y-2 mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-brand/10 rounded-lg">
+            <div className="p-2.5 bg-brand/10 rounded-lg">
               <HeartIcon />
             </div>
             <div>
-              <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
                 My Wishlist
               </h1>
-              <p className="text-gray-600 text-base sm:text-lg mt-1">
+              <p className="text-gray-600 text-sm sm:text-base mt-0.5">
                 {filteredAndSortedItems.length} item{filteredAndSortedItems.length !== 1 ? "s" : ""} saved
               </p>
             </div>
@@ -190,27 +183,31 @@ const Wishlist = () => {
       </div>
 
       {/* Filter & Sort Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           {/* Category Filter */}
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 flex-wrap items-center">
             <button
               onClick={() => setSelectedCategory("all")}
               className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                 selectedCategory === "all"
-                  ? "bg-gradient-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
+                  ? "bg-linear-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
                   : "bg-white border border-gray-200 text-gray-700 hover:bg-white hover:border-cyan-300"
               }`}
             >
               All Items
             </button>
+
+            {/* Grid / List toggle — immediately right of "All Items" */}
+            <ViewToggle viewMode={viewMode} onChange={setViewMode} />
+
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                   selectedCategory === category
-                    ? "bg-gradient-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
+                    ? "bg-linear-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
                     : "bg-white border border-gray-200 text-gray-700 hover:bg-white hover:border-cyan-300"
                 }`}
               >
@@ -236,53 +233,37 @@ const Wishlist = () => {
         </div>
       </div>
 
-      {/* Products Grid */}
+      {/* Products — Grid / List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 auto-rows-max">
-          {filteredAndSortedItems.map((item) => {
-            const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
-            if (!product) return null;
+        {viewMode === "grid" ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-max">
+            {filteredAndSortedItems.map((item) => {
+              const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
+              if (!product) return null;
 
-            const outOfStock = product.stock === 0;
-            const isAdding = addingId === product._id;
-            const justAdded = addedId === product._id;
-            const itemError = errorId?.id === product._id ? errorId.message : null;
-            const isHovered = hoveredId === product._id;
-            const imageUrl = product.images?.[0] || "/placeholder.svg";
+              const outOfStock = product.stock === 0;
+              const isAdding = addingId === product._id;
+              const justAdded = addedId === product._id;
+              const itemError = errorId?.id === product._id ? errorId.message : null;
+              const imageUrl = product.images?.[0] || "/placeholder.svg";
 
-            return (
-              <div
-                key={item._id}
-                onMouseEnter={() => setHoveredId(product._id)}
-                onMouseLeave={() => setHoveredId(null)}
-                className="group h-full animate-fade-in"
-              >
-                <div className="relative h-full rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-105 transform-gpu will-animate">
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/50 to-blue-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
-
-                  {/* Card Container */}
-                  <div className="glass h-full rounded-2xl overflow-hidden hover:bg-white transition-all duration-300 flex flex-col shadow-md hover:shadow-xl border border-gray-200 hover:border-cyan-200/60">
+              return (
+                <div key={item._id} className="group h-full animate-fade-in">
+                  <div className="h-full rounded-2xl overflow-hidden bg-white transition-all duration-300 flex flex-col shadow-md hover:shadow-xl border border-gray-200 hover:border-cyan-200/60 hover:-translate-y-1 transform-gpu will-animate">
                     {/* Image Container */}
-                    <div className="relative overflow-hidden bg-gradient-to-br from-[#eafcfd] via-[#d7f4f6] to-[#c5eef0] aspect-square group">
+                    <div className="relative overflow-hidden bg-linear-to-br from-[#eafcfd] via-[#d7f4f6] to-[#c5eef0] aspect-4/3 group">
                       <img
-                        src={cloudinaryImg(imageUrl, 800)}
+                        src={cloudinaryImg(imageUrl, 640)}
                         alt={product.name}
-                        width={800}
-                        height={800}
+                        width={640}
+                        height={480}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 will-change-transform"
-                      />
-
-                      {/* Overlay Gradient */}
-                      <div
-                        className={`absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent transition-opacity duration-300 ${
-                          isHovered ? "opacity-100" : "opacity-0"
-                        }`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
                       />
 
                       {/* Stock Badge */}
-                      <div className="absolute top-3 left-3 glass rounded-full px-3 py-1.5 text-xs font-semibold border border-gray-200">
+                      <div className="absolute top-2 left-2 glass rounded-full px-2 py-1 text-[11px] font-semibold border border-gray-200">
                         {outOfStock ? (
                           <span className="text-red-600 font-bold">Out of Stock</span>
                         ) : product.stock && product.stock < 5 ? (
@@ -294,114 +275,207 @@ const Wishlist = () => {
                         )}
                       </div>
 
-                      {/* Wishlist Button */}
-                      <div className="absolute top-3 right-3 z-20 transform transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0">
-                        <div className="glass rounded-full p-2.5 hover:bg-white transition-all duration-300 border border-gray-200 hover:border-gray-300 hover:scale-110 cursor-pointer">
+                      {/* Wishlist Button — always visible */}
+                      <div className="absolute top-2 right-2 z-20">
+                        <div className="glass rounded-full p-1.5 hover:bg-white transition-all duration-300 border border-gray-200 hover:border-gray-300 hover:scale-110">
                           <WishlistButton productId={product._id} />
                         </div>
                       </div>
-
-                      {/* Add to Cart Button - Floating */}
-                      <button
-                        onClick={() => handleAddToCart(product._id)}
-                        disabled={outOfStock || isAdding}
-                        className={`absolute bottom-4 right-4 glass rounded-full p-3 transition-all duration-300 flex items-center justify-center text-white bg-gradient-to-r from-brand to-cyan-600 hover:from-brand-dark hover:to-cyan-700 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transform will-animate group-hover:scale-110 ${
-                          isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                        }`}
-                        title="Add to Cart"
-                      >
-                        <AddToCartIcon />
-                      </button>
                     </div>
 
                     {/* Content Section */}
-                    <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
-                      <div className="space-y-3">
-                        {/* Product Name */}
-                        <Link to={ROUTES.PRODUCT_DETAIL(product._id)}>
-                          <h3 className="font-bold text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-brand transition-colors duration-300 hover:underline decoration-cyan-400">
-                            {product.name}
-                          </h3>
-                        </Link>
+                    <div className="p-3 flex flex-col gap-1.5 flex-1">
+                      {/* Product Name */}
+                      <Link to={ROUTES.PRODUCT_DETAIL(product._id)}>
+                        <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 group-hover:text-brand transition-colors duration-300">
+                          {product.name}
+                        </h3>
+                      </Link>
 
-                        {/* Product Description Preview */}
-                        {product.description && (
-                          <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            {product.description}
-                          </p>
+                      {/* Rating Section */}
+                      {product.rating_avg > 0 && product.rating_count > 0 ? (
+                        <div className="flex items-center gap-1.5">
+                          <StarRating
+                            value={product.rating_avg}
+                            size={13}
+                            filledClassName="text-amber-400"
+                            emptyClassName="text-gray-300"
+                          />
+                          <span className="text-[11px] text-gray-600 font-medium">
+                            {product.rating_avg.toFixed(1)} ({product.rating_count})
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="text-[11px] text-gray-500 font-medium">No reviews yet</div>
+                      )}
+
+                      {/* Price Display */}
+                      <div className="flex items-baseline gap-1.5 flex-wrap">
+                        <span className="text-lg font-bold text-brand">
+                          {formatCurrency(product.price)}
+                        </span>
+                        {getDisplayMrp(product) && (
+                          <span className="text-[11px] text-gray-500 line-through font-medium">
+                            {formatCurrency(getDisplayMrp(product) as number)}
+                          </span>
                         )}
-
-                        {/* Rating Section */}
-                        {product.rating_avg > 0 && product.rating_count > 0 ? (
-                          <div className="flex items-center gap-2 pt-1">
-                            <StarRating
-                              value={product.rating_avg}
-                              size={16}
-                              filledClassName="text-amber-400"
-                              emptyClassName="text-gray-300"
-                              className="group-hover:scale-110 transition-transform duration-300"
-                            />
-                            <span className="text-xs text-gray-600 font-medium">
-                              {product.rating_avg.toFixed(1)} ({product.rating_count}{" "}
-                              {product.rating_count === 1 ? "review" : "reviews"})
-                            </span>
-                          </div>
-                        ) : (
-                          <div className="text-xs text-gray-500 font-medium pt-1">No reviews yet</div>
+                        {formatDiscount(product.price, getDisplayMrp(product)) > 0 && (
+                          <span className="text-[11px] font-bold text-green-600">
+                            -{formatDiscount(product.price, getDisplayMrp(product))}%
+                          </span>
                         )}
                       </div>
 
-                      {/* Price & Action Section */}
-                      <div className="pt-4 mt-4 space-y-3">
-                        {/* Price Display */}
-                        <div className="flex items-baseline gap-2 flex-wrap">
-                          <span className="text-xl sm:text-2xl font-bold text-brand">
-                            {formatCurrency(product.price)}
-                          </span>
-                          {getDisplayMrp(product) && (
-                            <span className="text-xs text-gray-500 line-through font-medium">
-                              {formatCurrency(getDisplayMrp(product) as number)}
-                            </span>
-                          )}
-                          {formatDiscount(product.price, getDisplayMrp(product)) > 0 && (
-                            <span className="text-xs font-bold text-green-600">
-                              -{formatDiscount(product.price, getDisplayMrp(product))}%
-                            </span>
-                          )}
+                      {/* Error Message */}
+                      {itemError && (
+                        <div className="p-1.5 bg-red-50/80 border border-red-200 rounded-lg">
+                          <p className="text-[11px] text-red-700 font-medium">{itemError}</p>
                         </div>
+                      )}
 
-                        {/* Error Message */}
-                        {itemError && (
-                          <div className="p-2 bg-red-50/80 border border-red-200 rounded-lg">
-                            <p className="text-xs text-red-700 font-medium">{itemError}</p>
-                          </div>
-                        )}
-
-                        {/* Add to Cart Button - Full Width */}
+                      {/* Actions */}
+                      <div className="mt-auto pt-1.5 flex gap-2">
                         <button
                           onClick={() => handleAddToCart(product._id)}
                           disabled={outOfStock || isAdding}
-                          className="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 bg-gradient-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-lg hover:-translate-y-0.5 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0 transform active:scale-95"
+                          className="flex-1 py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
                         >
-                          <AddToCartIcon />
                           {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
                         </button>
-
-                        {/* Secondary Action */}
                         <Link
                           to={ROUTES.PRODUCT_DETAIL(product._id)}
-                          className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center text-brand border border-cyan-300 bg-white hover:bg-white hover:border-cyan-500 hover:shadow-md"
+                          className="px-3 py-2 rounded-lg font-medium text-xs transition-all duration-300 text-brand border border-cyan-300 bg-white hover:bg-cyan-50 hover:border-cyan-500"
                         >
-                          View Details
+                          Details
                         </Link>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {filteredAndSortedItems.map((item) => {
+              const product = typeof item.product_id === "object" ? (item.product_id as Product) : null;
+              if (!product) return null;
+
+              const outOfStock = product.stock === 0;
+              const isAdding = addingId === product._id;
+              const justAdded = addedId === product._id;
+              const itemError = errorId?.id === product._id ? errorId.message : null;
+              const imageUrl = product.images?.[0] || "/placeholder.svg";
+
+              return (
+                <div
+                  key={item._id}
+                  className="group flex items-center gap-3 sm:gap-4 p-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-cyan-200/60 transition-all duration-300 animate-fade-in"
+                >
+                  {/* Thumbnail */}
+                  <Link
+                    to={ROUTES.PRODUCT_DETAIL(product._id)}
+                    className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-linear-to-br from-[#eafcfd] via-[#d7f4f6] to-[#c5eef0]"
+                  >
+                    <img
+                      src={cloudinaryImg(imageUrl, 320)}
+                      alt={product.name}
+                      width={320}
+                      height={320}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </Link>
+
+                  {/* Details */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <Link to={ROUTES.PRODUCT_DETAIL(product._id)} className="min-w-0">
+                        <h3 className="font-semibold text-sm sm:text-base text-gray-900 line-clamp-1 group-hover:text-brand transition-colors duration-300">
+                          {product.name}
+                        </h3>
+                      </Link>
+                      <div className="shrink-0 glass rounded-full p-1.5 border border-gray-200 hover:bg-white hover:border-gray-300 transition-all duration-300">
+                        <WishlistButton productId={product._id} />
+                      </div>
+                    </div>
+
+                    {product.description && (
+                      <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{product.description}</p>
+                    )}
+
+                    <div className="flex items-center gap-2 flex-wrap mt-1">
+                      {product.rating_avg > 0 && product.rating_count > 0 ? (
+                        <>
+                          <StarRating
+                            value={product.rating_avg}
+                            size={13}
+                            filledClassName="text-amber-400"
+                            emptyClassName="text-gray-300"
+                          />
+                          <span className="text-[11px] text-gray-600 font-medium">
+                            {product.rating_avg.toFixed(1)} ({product.rating_count})
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-[11px] text-gray-500 font-medium">No reviews yet</span>
+                      )}
+                      <span
+                        className={`text-[11px] font-bold ${
+                          outOfStock ? "text-red-600" : product.stock && product.stock < 5 ? "text-orange-600" : "text-green-600"
+                        }`}
+                      >
+                        {outOfStock
+                          ? "Out of Stock"
+                          : product.stock && product.stock < 5
+                            ? `Only ${product.stock} left`
+                            : "✓ In Stock"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-baseline gap-1.5 flex-wrap mt-1">
+                      <span className="text-lg font-bold text-brand">{formatCurrency(product.price)}</span>
+                      {getDisplayMrp(product) && (
+                        <span className="text-[11px] text-gray-500 line-through font-medium">
+                          {formatCurrency(getDisplayMrp(product) as number)}
+                        </span>
+                      )}
+                      {formatDiscount(product.price, getDisplayMrp(product)) > 0 && (
+                        <span className="text-[11px] font-bold text-green-600">
+                          -{formatDiscount(product.price, getDisplayMrp(product))}%
+                        </span>
+                      )}
+                    </div>
+
+                    {itemError && (
+                      <div className="mt-1 p-1.5 bg-red-50/80 border border-red-200 rounded-lg">
+                        <p className="text-[11px] text-red-700 font-medium">{itemError}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="hidden sm:flex flex-col gap-2 w-32 shrink-0">
+                    <button
+                      onClick={() => handleAddToCart(product._id)}
+                      disabled={outOfStock || isAdding}
+                      className="w-full py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
+                    >
+                      {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
+                    </button>
+                    <Link
+                      to={ROUTES.PRODUCT_DETAIL(product._id)}
+                      className="w-full py-2 rounded-lg font-medium text-xs transition-all duration-300 text-center text-brand border border-cyan-300 bg-white hover:bg-cyan-50 hover:border-cyan-500"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* No items after filter */}

@@ -16,4 +16,8 @@ export * from './OrderServices'
 
 export * from './DashboardAnalyticsServices'
 
+export * from './MessageServices'
+
+export * from './NotificationServices'
+
 export * from "./EsewaServices";

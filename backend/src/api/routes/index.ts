@@ -10,6 +10,8 @@ import cartRoutes from "./CartRoutes";
 import reviewRoutes from "./ReviewRoutes";
 import wishlistRoutes from "./WishlistRoutes";
 import orderRoutes from "./OrderRoutes";
+import messageRoutes from "./MessageRoutes";
+import notificationRoutes from "./NotificationRoutes";
 
 const router = express.Router();
 
@@ -25,6 +27,8 @@ router.use("/cart", cartRoutes);
 router.use("/reviews", reviewRoutes);
 router.use("/wishlist", wishlistRoutes);
 router.use("/orders", orderRoutes);
+router.use("/messages", messageRoutes);
+router.use("/notifications", notificationRoutes);
 
 
 export default router;

@@ -71,11 +71,15 @@ const Navbar = () => {
     navigate(ROUTES.HOME);
   };
 
-  const accountMenuItems: Array<{ label: string; to?: string; action?: () => void; red?: boolean; admin?: boolean }> = [
-    { label: "Your Profile", to: ROUTES.PROFILE },
-    { label: "My Wishlist", to: ROUTES.WISHLIST },
-    { label: "My Orders", to: ROUTES.ORDER_HISTORY },
-    { label: "Dashboard", to: ROUTES.ADMIN_DASHBOARD, admin: true },
+  // The account menu is deliberately minimal — Dashboard and Logout only, for
+  // every role. Profile / Wishlist / Orders live inside the customer portal,
+  // and the admin's profile shortcut lives next to the notification bell on
+  // the admin dashboard, so nothing else belongs in this dropdown.
+  const accountMenuItems: Array<{ label: string; to?: string; action?: () => void; red?: boolean }> = [
+    {
+      label: "Dashboard",
+      to: user?.role === "admin" ? ROUTES.ADMIN_DASHBOARD : ROUTES.DASHBOARD,
+    },
     { label: "Logout", red: true, action: handleLogout },
   ];
 
@@ -138,13 +142,7 @@ const Navbar = () => {
                     Translucent white + light backdrop blur keeps it dull so it doesn't pull focus from the hero (only rendered while open). */}
                 {userMenuOpen && (
                   <div className="hidden md:block absolute top-full right-5 mt-1 z-50 w-32 whitespace-nowrap rounded-lg border border-gray-200 bg-white shadow-md py-1">
-                    {user?.name && (
-                      <div className="px-3 py-2 border-b border-gray-100/70 text-gray-500 text-xs font-medium truncate">
-                        {user.name}
-                      </div>
-                    )}
                     {accountMenuItems.map((item) => {
-                      if (item.admin && user?.role !== "admin") return null;
                       const baseClass = `block w-full text-left px-3 py-1 text-sm transition-colors ${item.red ? "text-red-500 hover:bg-red-50/60" : "text-gray-600 hover:bg-white"}`;
                       const onClick = () => setUserMenuOpen(false);
                       if (item.action) {
@@ -225,13 +223,7 @@ const Navbar = () => {
           {/* Rows use `flex items-center min-h-[44px]` so every row is exactly 44px with a vertically centered label:
               neutralizes the touch rule's uneven effect (buttons center their label under min-height, links top-align it),
               which was making the gap above Logout visibly larger than the rest */}
-          {user?.name && (
-            <div className="flex items-center min-h-[44px] py-2 text-sm font-semibold text-gray-800 border-b border-gray-100 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
-              <span className="truncate">{user.name}</span>
-            </div>
-          )}
           {accountMenuItems.map((item) => {
-            if (item.admin && user?.role !== "admin") return null;
             const baseClass = `flex items-center w-full min-h-[44px] text-left py-2 border-b border-gray-100 last:border-b-0 gpu-accelerate transition-colors ${item.red ? "text-red-600 hover:text-red-700" : "text-gray-700 hover:text-brand"}`;
             const onClick = () => setUserMenuOpen(false);
             if (item.action) {

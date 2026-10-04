@@ -60,11 +60,4 @@ authRoutes.post(
   exceptionHandler(AuthController.googleVerify)
 );
 
-authRoutes.post(
-  "/google/login",
-  authLimiter,
-  exceptionHandler(Validator.check(googleInitiateValidator)),
-  exceptionHandler(AuthController.googleLogin)
-);
-
 export default authRoutes;

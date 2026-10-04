@@ -21,13 +21,8 @@ export const authService = {
     return data;
   },
 
-  googleVerify: async (email: string, otp: string): Promise<ApiResponse<null>> => {
+  googleVerify: async (email: string, otp: string): Promise<ApiResponse<AuthResponseData>> => {
     const { data } = await axiosInstance.post("/auth/google/verify", { email, otp });
-    return data;
-  },
-
-  googleLogin: async (credential: string): Promise<ApiResponse<AuthResponseData>> => {
-    const { data } = await axiosInstance.post("/auth/google/login", { credential });
     return data;
   },
 

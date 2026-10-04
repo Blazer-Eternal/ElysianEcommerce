@@ -1,7 +1,7 @@
 import HeroSection from "../../components/sections/HeroSection";
 import WhyChooseUsSection from "../../components/sections/WhyChooseUsSection";
 import ProductsSection from "../../components/sections/ProductsSection";
-import AboutSection from "../../components/sections/AboutSection";
+import PlansSection from "../../components/sections/PlansSection";
 import CTASection from "../../components/sections/CTASection";
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
       <HeroSection />
       <WhyChooseUsSection />
       <ProductsSection />
-      <AboutSection />
+      <PlansSection />
       <CTASection />
     </div>
   );

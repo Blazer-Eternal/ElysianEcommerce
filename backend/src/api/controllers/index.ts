@@ -15,3 +15,7 @@ export * from './ReviewControllers'
 export * from './WishlistControllers'
 
 export * from './OrderControllers'
+
+export * from './MessageControllers'
+
+export * from './NotificationControllers'

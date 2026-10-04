@@ -15,3 +15,7 @@ export * from './WishlistModel'
 export * from './OrderModel'
 
 export * from './PaymentModel'
+
+export * from './MessageModel'
+
+export * from './NotificationModel'

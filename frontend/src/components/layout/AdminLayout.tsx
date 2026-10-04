@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
-import { useAuth } from "../../hooks/useAuth";
 
 // Icons
 const DashboardIcon = () => (
@@ -55,9 +54,9 @@ const DataTablesIcon = () => (
   </svg>
 );
 
-const LogoutIcon = () => (
+const MessageIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
   </svg>
 );
 
@@ -87,8 +86,6 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navItems: NavItem[] = [
@@ -99,13 +96,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { label: "Orders", route: ROUTES.ADMIN_ORDERS, icon: <OrderIcon /> },
     { label: "Users", route: ROUTES.ADMIN_USERS, icon: <UserIcon /> },
     { label: "Reviews", route: ROUTES.ADMIN_REVIEWS, icon: <ReviewIcon /> },
+    { label: "Messages", route: ROUTES.ADMIN_MESSAGES, icon: <MessageIcon /> },
     { label: "Data Tables", route: ROUTES.ADMIN_DATA_TABLES, icon: <DataTablesIcon /> },
   ];
-
-  const handleLogout = () => {
-    logout();
-    navigate(ROUTES.LOGIN);
-  };
 
   return (
     <div className="flex h-screen bg-linear-to-b from-[#eafcfd] to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
@@ -118,17 +111,24 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       >
         {/* Sidebar Header - pinned above the nav so items never paint over it */}
         <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] shadow-[0_4px_12px_-6px_rgba(14,124,133,0.15)] p-6">
-          {/* Logo Section */}
+          {/* Logo Section — full brand name, links back to the main site */}
           <div className="flex items-center justify-between">
-            <Link to={ROUTES.ADMIN_DASHBOARD} className="flex items-center gap-3 group">
+            <Link
+              to={ROUTES.HOME}
+              className="flex items-center gap-3 group"
+              title="Go to Elysian Ecommerce home page"
+            >
               <div className="relative">
-                <img src="/logo-256.png" alt="Logo" width={256} height={256} className="h-10 w-auto object-contain" />
+                <img
+                  src="/logo-256.png"
+                  alt="Elysian Ecommerce"
+                  width={256}
+                  height={256}
+                  className="h-10 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
-              <div>
-                <div className="text-lg font-bold text-brand">
-                  Elysian
-                </div>
-                <div className="text-xs text-gray-500 font-semibold">Admin Panel</div>
+              <div className="text-base font-bold text-brand leading-tight min-w-0 group-hover:text-brand-dark transition-colors duration-300">
+                Elysian Ecommerce
               </div>
             </Link>
             <button
@@ -162,46 +162,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             </Link>
           ))}
         </nav>
-
-        {/* Divider */}
-        <div className="mx-4 my-6 h-px linear-to-r from-transparent via-brand/20 to-transparent" />
-
-        {/* Sidebar Footer - User Profile & Logout */}
-        <div className="px-4 py-6 space-y-4">
-          {/* User Profile */}
-          <div className="glass rounded-xl p-4 bg-linear-to-br from-brand/5 to-cyan-600/5 border border-brand/10">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 rounded-full bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white font-bold text-lg shrink-0">
-                {user?.name?.charAt(0).toUpperCase() || "A"}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-gray-900 truncate">{user?.name || "Admin"}</p>
-                <p className="text-xs text-brand truncate">{user?.email || "admin@elysian.com"}</p>
-              </div>
-            </div>
-            <div className="text-xs text-gray-600">
-              <span className="font-semibold">Role: </span>
-              <span className="capitalize font-bold text-brand">{user?.role || "Administrator"}</span>
-            </div>
-          </div>
-
-          {/* Logout Button */}
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-brand to-cyan-600 text-white rounded-xl hover:shadow-lg transition-all duration-200 font-semibold group"
-          >
-            <LogoutIcon />
-            <span>Logout</span>
-          </button>
-
-          {/* Back to Home Link */}
-          <Link
-            to={ROUTES.HOME}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 border-2 border-brand/20 text-brand rounded-xl hover:bg-brand/5 transition-all duration-200 font-semibold text-sm"
-          >
-            ← Visit Website
-          </Link>
-        </div>
       </div>
 
       {/* Main Content */}

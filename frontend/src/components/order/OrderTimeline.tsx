@@ -50,7 +50,7 @@ const OrderTimeline = ({ status }: OrderTimelineProps) => {
             {idx < STEPS.length - 1 && (
               <div
                 className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
-                  idx < currentIndex ? "bg-gradient-to-r from-green-500 to-green-400 shadow-sm shadow-green-500/50" : "bg-gray-200"
+                  idx < currentIndex ? "bg-linear-to-r from-green-500 to-green-400 shadow-sm shadow-green-500/50" : "bg-gray-200"
                 }`}
               />
             )}

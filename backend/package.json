@@ -11,6 +11,9 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "seed:admin": "tsx src/seeders/adminSeeder.ts",
+    "seed:users": "tsx src/seeders/userSeeder.ts",
+    "seed:coupons": "tsx src/seeders/couponSeeder.ts",
+    "seed:demo": "tsx src/seeders/userSeeder.ts && tsx src/seeders/couponSeeder.ts",
     "seed:categories": "ts-node-dev --transpile-only src/seeders/categorySeeder.ts",
     "seed:products": "ts-node-dev --transpile-only src/seeders/productSeeder.ts",
     "enrich:products": "tsx src/seeders/productEnrich.ts"

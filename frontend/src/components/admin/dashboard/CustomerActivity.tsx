@@ -18,7 +18,10 @@ const TYPE_STYLES: Record<ActivityItem["type"], { icon: ReactNode; className: st
   review: { icon: <StarIcon size={16} />, className: "bg-amber-100 text-amber-600" },
 };
 
-/** Merged feed of recent orders, registrations and reviews. */
+/**
+ * Registrations and reviews from the selected period. Order placements are
+ * deliberately left out: they already have their own Recent Orders table.
+ */
 const CustomerActivity = memo(({ activity, isLoading, periodDays }: CustomerActivityProps) => (
   <DashboardPanel title="Customer Activity" icon={<ActivityIcon size={18} />} className="h-full">
     {isLoading ? (
@@ -30,7 +33,7 @@ const CustomerActivity = memo(({ activity, isLoading, periodDays }: CustomerActi
     ) : !activity || activity.length === 0 ? (
       <PanelEmpty
         message={periodDays ? `No activity in the last ${periodDays} days` : "No activity yet"}
-        hint="Orders, sign-ups and reviews from this period will stream in here."
+        hint="New sign-ups and reviews from this period will stream in here."
       />
     ) : (
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6">

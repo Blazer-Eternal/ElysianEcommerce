@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { SearchIcon } from "../../components/icons";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
@@ -10,14 +11,54 @@ import type { Product, ProductQueryParams } from "../../types/product.types";
 // Stable reference: a fresh [] on every render would defeat ProductGrid's memo.
 const EMPTY_PRODUCTS: Product[] = [];
 
+/**
+ * Wrapper that owns the inbound `?search=` parameter (the customer portal's
+ * top bar hands its query to the catalog through it). The catalog itself is
+ * keyed on the term, so a search arriving from another page always starts it
+ * from a clean filter state instead of needing a state-sync effect.
+ */
 const ProductList = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlSearch = searchParams.get("search")?.trim() || "";
+
+  const clearUrlSearch = () =>
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("search");
+        return next;
+      },
+      { replace: true }
+    );
+
+  return <ProductCatalog key={urlSearch} initialSearch={urlSearch} onClearSearch={clearUrlSearch} />;
+};
+
+interface ProductCatalogProps {
+  initialSearch: string;
+  onClearSearch: () => void;
+}
+
+const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) => {
   const [filters, setFilters] = useState<ProductQueryParams>({
     page: 1,
     limit: 12,
     status: "active",
     sortBy: "created_at",
     sortOrder: "asc",
+    ...(initialSearch ? { search: initialSearch } : {}),
   });
+
+  const handleReset = () => {
+    onClearSearch();
+    setFilters({
+      page: 1,
+      limit: 12,
+      status: "active",
+      sortBy: "created_at",
+      sortOrder: "asc",
+    });
+  };
 
   const { data, isLoading } = useQuery({
     queryKey: ["products", filters],
@@ -150,13 +191,7 @@ const ProductList = () => {
                 Try adjusting your filters or search terms to find what you're looking for
               </p>
               <button
-                onClick={() => setFilters({
-                  page: 1,
-                  limit: 12,
-                  status: "active",
-                  sortBy: "created_at",
-                  sortOrder: "asc",
-                })}
+                onClick={handleReset}
                 className="group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-linear-to-r from-brand via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-lg hover:shadow-xl overflow-hidden gpu-accelerate"
                 style={{ transform: "translateZ(0)", willChange: "transform, box-shadow" }}
               >

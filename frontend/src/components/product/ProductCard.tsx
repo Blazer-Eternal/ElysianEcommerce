@@ -13,14 +13,6 @@ interface ProductCardProps {
   product: Product;
 }
 
-const AddToCartIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="21" r="1" />
-    <circle cx="20" cy="21" r="1" />
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-  </svg>
-);
-
 const ProductCard = ({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -114,17 +106,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 <WishlistButton productId={product._id} />
               </div>
             </div>
-
-            {/* Quick Add to Cart Button */}
-            <button
-              onClick={handleAddToCart}
-              disabled={outOfStock || isAdding}
-              className={`absolute bottom-2 right-2 glass rounded-full p-2 transition-all duration-300 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-white disabled:opacity-50 disabled:cursor-not-allowed ${
-                isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-              }`}
-            >
-              <AddToCartIcon />
-            </button>
           </div>
 
           {/* Content Container */}

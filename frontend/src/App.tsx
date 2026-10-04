@@ -27,6 +27,7 @@ const Checkout = lazy(() => import("./pages/user/Checkout"));
 const OrderHistory = lazy(() => import("./pages/user/OrderHistory"));
 const OrderDetail = lazy(() => import("./pages/user/OrderDetail"));
 const Profile = lazy(() => import("./pages/user/Profile"));
+const CustomerDashboard = lazy(() => import("./pages/user/Dashboard"));
 
 // Admin Pages
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -37,6 +38,7 @@ const ManageOrders = lazy(() => import("./pages/admin/ManageOrders"));
 const AdminOrderDetail = lazy(() => import("./pages/admin/AdminOrderDetail"));
 const ManageUsers = lazy(() => import("./pages/admin/ManageUsers"));
 const ManageReviews = lazy(() => import("./pages/admin/ManageReviews"));
+const ManageMessages = lazy(() => import("./pages/admin/ManageMessages"));
 const DataTablesDemo = lazy(() => import("./pages/admin/DataTablesDemo"));
 
 // Info Pages
@@ -180,6 +182,14 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path={ROUTES.DASHBOARD}
+        element={
+          <ProtectedRoute>
+            <CustomerDashboard />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path={ROUTES.LOGIN}
@@ -294,6 +304,16 @@ function App() {
           <ProtectedRoute requireAdmin>
             <AdminLayout>
               <ManageReviews />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.ADMIN_MESSAGES}
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <ManageMessages />
             </AdminLayout>
           </ProtectedRoute>
         }

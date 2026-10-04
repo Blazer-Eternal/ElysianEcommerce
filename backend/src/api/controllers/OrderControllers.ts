@@ -2,7 +2,7 @@ import { Response } from "express";
 import * as crypto from "crypto";
 import mongoose from "mongoose";
 import { CustomRequestInterface } from "../../intefaces";
-import { OrderServices, CartServices, ProductServices, CouponServices, EsewaServices, DashboardAnalyticsServices } from "../../services";
+import { OrderServices, CartServices, ProductServices, CouponServices, EsewaServices, DashboardAnalyticsServices, NotificationServices, UserServices } from "../../services";
 import { RoleEnum } from "../../enums/UserEnums";
 import { OrderStatusEnum, PaymentStatusEnum, PaymentMethodEnum } from "../../enums/OrderEnums";
 import { OrderItemInterface } from "../../intefaces/OrderInterface";
@@ -16,6 +16,17 @@ const getOrderOwnerId = (userIdField: any): string => {
 };
 
 // Helper functions outside the class to avoid context issues
+// Builds the admin bell notification for a freshly placed order. Lookups are
+// best-effort: a failed notification must never fail the order response.
+const notifyOrderPlaced = async (orderNumber: string, amount: number, userId: string): Promise<void> => {
+  try {
+    const customer = await new UserServices().findById(userId);
+    await new NotificationServices().recordOrder(orderNumber, amount, customer?.name);
+  } catch (error) {
+    console.error("Failed to record order notification:", error);
+  }
+};
+
 const encodePreOrderToken = (data: any): string => {
   const json = JSON.stringify(data);
   return Buffer.from(json).toString("base64");
@@ -160,6 +171,9 @@ export class OrderController {
             await new CartServices().clearCart(userId);
           }
 
+          // Admin bell notification (fire-and-forget).
+          void notifyOrderPlaced(order.order_number, order.total_amount, userId);
+
           return res.status(201).json({ 
             success: true, 
             message: "Order placed successfully", 
@@ -289,6 +303,9 @@ export class OrderController {
       if (preOrderData.from_cart !== false) {
         await new CartServices().clearCart(userId);
       }
+
+      // Admin bell notification (fire-and-forget).
+      void notifyOrderPlaced(order.order_number, order.total_amount, userId);
 
       console.log(`[Order Creation] Order ${preOrderData.order_number} created successfully after eSewa payment verification`);
 

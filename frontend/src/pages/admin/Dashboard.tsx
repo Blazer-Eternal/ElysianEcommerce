@@ -2,31 +2,34 @@ import { memo, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
-import { userService } from "../../services/userService";
 import AdminLayout from "../../components/layout/AdminLayout";
 import { formatCurrency } from "../../utils/formatCurrency";
 
 // Dashboard analytics panels (charts + feeds)
 import PeriodSelector, { type PeriodDays } from "../../components/admin/dashboard/PeriodSelector";
+import NotificationBell from "../../components/admin/dashboard/NotificationBell";
+import AdminUserMenu from "../../components/admin/dashboard/AdminUserMenu";
 import DashboardStatCard from "../../components/admin/dashboard/DashboardStatCard";
 import SalesOverview from "../../components/admin/dashboard/SalesOverview";
 import TopCategories from "../../components/admin/dashboard/TopCategories";
-import RecentProducts from "../../components/admin/dashboard/RecentProducts";
 import RecentOrders from "../../components/admin/dashboard/RecentOrders";
+import LowStockAlerts from "../../components/admin/dashboard/LowStockAlerts";
 import TopSellingProducts from "../../components/admin/dashboard/TopSellingProducts";
 import ProductDemandTrends from "../../components/admin/dashboard/ProductDemandTrends";
-import AverageOrderValue from "../../components/admin/dashboard/AverageOrderValue";
 import CustomerActivity from "../../components/admin/dashboard/CustomerActivity";
 import {
   BagIcon,
-  BoxIcon,
   CartIcon,
-  PeopleIcon,
+  TargetIcon,
+  TrendUpIcon,
 } from "../../components/admin/dashboard/icons";
+
+/** Stock at or below this counts as a low-stock alert. */
+const LOW_STOCK_THRESHOLD = 10;
 
 // Memoized Header Component
 const DashboardHeader = memo(({ period, onPeriodChange }: { period: PeriodDays; onPeriodChange: (days: PeriodDays) => void }) => (
-  <div className="max-w-7xl mx-auto flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between animate-fade-in">
+  <div className="max-w-7xl mx-auto flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between animate-fade-in relative z-30">
     <div className="space-y-1.5">
       <div className="text-sm font-semibold text-brand uppercase tracking-wider">ADMINISTRATION</div>
       <h1 className="text-responsive-h2 font-bold text-gray-900">Dashboard</h1>
@@ -34,7 +37,14 @@ const DashboardHeader = memo(({ period, onPeriodChange }: { period: PeriodDays; 
         Here's an overview of your store's performance and key metrics.
       </p>
     </div>
-    <PeriodSelector value={period} onChange={onPeriodChange} />
+    <div className="flex flex-col items-start sm:items-end gap-3">
+      {/* Bell + account avatar sit directly above the "Last 30 Days" period selector */}
+      <div className="flex items-center gap-3">
+        <NotificationBell />
+        <AdminUserMenu />
+      </div>
+      <PeriodSelector value={period} onChange={onPeriodChange} />
+    </div>
   </div>
 ));
 DashboardHeader.displayName = "DashboardHeader";
@@ -54,13 +64,6 @@ const Dashboard = memo(() => {
   }, [period]);
 
   // Queries with optimized stale time
-  const { data: productsRes, isLoading: productsLoading } = useQuery({
-    queryKey: ["admin", "products", "count"],
-    queryFn: ({ signal }) => productService.getAll({ limit: 1 }, { signal }),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
-  });
-
   // Backend aggregates all dashboard numbers (revenue, order count, status
   // breakdown) in a single $facet round-trip - replaces the previous pattern
   // of fetching up to 100 full order documents and summing them here. The key
@@ -69,13 +72,6 @@ const Dashboard = memo(() => {
   const { data: statsRes, isLoading: statsLoading } = useQuery({
     queryKey: ["admin", "orders", "stats"],
     queryFn: ({ signal }) => orderService.getStats({ signal }),
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-  });
-
-  const { data: usersRes, isLoading: usersLoading } = useQuery({
-    queryKey: ["admin", "users", "count"],
-    queryFn: ({ signal }) => userService.getAll(1, 1, { signal }),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
@@ -100,34 +96,46 @@ const Dashboard = memo(() => {
     refetchInterval: 60 * 1000,
   });
 
-  // Newest products table - refreshed by ManageProducts invalidations too.
-  const { data: recentProductsRes, isLoading: recentProductsLoading } = useQuery({
-    queryKey: ["admin", "products", "recent"],
+  // Running-out inventory: the ten lowest-stocked products, then trimmed to
+  // the ones actually at/below the threshold. Keyed under ["admin","products"]
+  // so stock edits in ManageProducts refresh the alerts immediately.
+  const { data: lowStockRes, isLoading: lowStockLoading } = useQuery({
+    queryKey: ["admin", "products", "low-stock"],
     queryFn: ({ signal }) =>
-      productService.getAll({ limit: 5, sortBy: "created_at", sortOrder: "desc" }, { signal }),
-    staleTime: 5 * 60 * 1000,
+      productService.getAll({ limit: 10, sortBy: "stock", sortOrder: "asc" }, { signal }),
+    staleTime: 60 * 1000,
     gcTime: 10 * 60 * 1000,
+    refetchInterval: 60 * 1000,
   });
+
+  const lowStockProducts = useMemo(
+    () =>
+      (lowStockRes?.data ?? [])
+        .filter((product) => product.stock <= LOW_STOCK_THRESHOLD)
+        .slice(0, 5),
+    [lowStockRes]
+  );
 
   const totalRevenue = statsRes?.data.totalRevenue ?? 0;
 
-  const isLoading = productsLoading || statsLoading || usersLoading || analyticsLoading;
+  const isLoading = statsLoading || analyticsLoading;
 
-  const productTotal = productsRes?.pagination.total ?? "—";
   const orderTotal = statsRes?.data.totalOrders ?? "—";
-  const userTotal = usersRes?.pagination.total ?? "—";
+  const averageOrderValue = statsRes?.data.averageOrderValue ?? 0;
 
-  // Period series + comparison totals powering sparklines and change badges.
+  // Daily series for the charts plus the period totals backing the KPI badges.
   const analytics = analyticsRes?.data;
   const currentPoints = analytics?.current ?? [];
   const totals = analytics?.totals;
 
   // Activity restricted to the selected period (defensive re-check of the
-  // server-side window).
+  // server-side window). Order placements are excluded: they are already
+  // listed row-by-row in the Recent Orders table, so keeping them here would
+  // show every recent order twice.
   const activity = useMemo(
     () =>
       (analytics?.recentActivity ?? []).filter(
-        (item) => new Date(item.at).getTime() >= activityCutoff
+        (item) => item.type !== "order" && new Date(item.at).getTime() >= activityCutoff
       ),
     [analytics?.recentActivity, activityCutoff]
   );
@@ -136,13 +144,26 @@ const Dashboard = memo(() => {
   const currentTotals = totals?.current;
   const previousTotals = totals?.previous;
 
+  // Conversion rate = paid orders / all orders placed inside the window.
+  const rateOf = (totals?: { orders: number; paidOrders: number }) =>
+    totals && totals.orders > 0 ? (totals.paidOrders / totals.orders) * 100 : 0;
+  const conversionRate = rateOf(currentTotals);
+  const previousConversionRate = rateOf(previousTotals);
+
+  // Average order value inside each window (the headline uses the lifetime
+  // figure the backend already aggregates).
+  const periodAovOf = (totals?: { orders: number; revenue: number }) =>
+    totals && totals.orders > 0 ? totals.revenue / totals.orders : 0;
+  const periodAov = periodAovOf(currentTotals);
+  const previousPeriodAov = periodAovOf(previousTotals);
+
   return (
     <AdminLayout>
       <div ref={containerRef} className="w-full px-responsive space-y-6 py-8 section-container">
         {/* Header + period selector (drives every chart below) */}
         <DashboardHeader period={period} onPeriodChange={setPeriod} />
 
-        {/* KPI row: Total Revenue / Orders / Customers / Products */}
+        {/* KPI row: Total Revenue / Orders / Conversion Rate / Avg Order Value */}
         {!isLoading ? (
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-responsive">
             <div className="animate-fade-in">
@@ -150,11 +171,9 @@ const Dashboard = memo(() => {
                 label="Total Revenue"
                 value={formatCurrency(totalRevenue)}
                 icon={<BagIcon size={20} />}
-                iconBg="from-brand to-cyan-600"
-                sparkColor="#0e7c85"
+                iconClassName="bg-indigo-100 text-indigo-600"
                 periodValue={currentTotals?.revenue ?? 0}
                 previousValue={previousTotals?.revenue ?? 0}
-                series={currentPoints.map((point) => point.revenue)}
                 periodDays={period}
               />
             </div>
@@ -163,37 +182,32 @@ const Dashboard = memo(() => {
                 label="Total Orders"
                 value={orderTotal}
                 icon={<CartIcon size={20} />}
-                iconBg="from-brand to-brand-dark"
-                sparkColor="#0e7c85"
+                iconClassName="bg-blue-100 text-blue-600"
                 periodValue={currentTotals?.orders ?? 0}
                 previousValue={previousTotals?.orders ?? 0}
-                series={currentPoints.map((point) => point.orders)}
                 periodDays={period}
               />
             </div>
             <div className="animate-fade-in">
               <DashboardStatCard
-                label="Total Customers"
-                value={userTotal}
-                icon={<PeopleIcon size={20} />}
-                iconBg="from-brand to-cyan-700"
-                sparkColor="#0b6169"
-                periodValue={currentTotals?.customers ?? 0}
-                previousValue={previousTotals?.customers ?? 0}
-                series={currentPoints.map((point) => point.customers)}
+                label="Conversion Rate"
+                value={`${conversionRate.toFixed(2)}%`}
+                icon={<TrendUpIcon size={20} />}
+                iconClassName="bg-purple-100 text-purple-600"
+                periodValue={Number(conversionRate.toFixed(2))}
+                previousValue={Number(previousConversionRate.toFixed(2))}
                 periodDays={period}
+                deltaFormat="points"
               />
             </div>
             <div className="animate-fade-in">
               <DashboardStatCard
-                label="Total Products"
-                value={productTotal}
-                icon={<BoxIcon size={20} />}
-                iconBg="from-amber-500 to-amber-600"
-                sparkColor="#f59e0b"
-                periodValue={currentTotals?.products ?? 0}
-                previousValue={previousTotals?.products ?? 0}
-                series={currentPoints.map((point) => point.products)}
+                label="Avg Order Value"
+                value={formatCurrency(averageOrderValue)}
+                icon={<TargetIcon size={20} />}
+                iconClassName="bg-amber-100 text-amber-600"
+                periodValue={periodAov}
+                previousValue={previousPeriodAov}
                 periodDays={period}
               />
             </div>
@@ -201,7 +215,7 @@ const Dashboard = memo(() => {
         ) : (
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-responsive">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="skeleton h-44 rounded-2xl" />
+              <div key={i} className="skeleton h-32 rounded-2xl" />
             ))}
           </div>
         )}
@@ -217,32 +231,23 @@ const Dashboard = memo(() => {
           </div>
           <TopCategories
             categories={analytics?.topCategories ?? []}
-            units={totals?.current.units ?? 0}
             isLoading={analyticsLoading}
           />
         </div>
 
-        {/* Newest products table + newest orders feed */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
-          <div className="lg:col-span-2">
-            <RecentProducts
-              products={recentProductsRes?.data}
-              isLoading={recentProductsLoading}
-            />
-          </div>
+        {/* Newest orders table + running-out inventory */}
+        <div className="max-w-7xl mx-auto space-y-6 animate-fade-in">
           <RecentOrders orders={recentOrdersRes?.data} isLoading={recentOrdersLoading} />
+          <LowStockAlerts products={lowStockProducts} isLoading={lowStockLoading} />
         </div>
 
-        {/* Best sellers, daily demand and average order value */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in">
+        {/* Best sellers + daily demand */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
           <TopSellingProducts products={analytics?.topProducts ?? []} isLoading={analyticsLoading} />
           <ProductDemandTrends current={currentPoints} isLoading={analyticsLoading} />
-          {totals && (
-            <AverageOrderValue current={currentPoints} totals={totals} isLoading={analyticsLoading} />
-          )}
         </div>
 
-        {/* Merged order / signup / review feed */}
+        {/* Signup / review feed (order placements live in the table above) */}
         <div className="max-w-7xl mx-auto animate-fade-in">
           <CustomerActivity activity={activity} isLoading={analyticsLoading} periodDays={period} />
         </div>

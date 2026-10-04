@@ -13,3 +13,5 @@ export * from './ReviewValidator'
 export * from './WishlistValidator'
 
 export * from './OrderValidator'
+
+export * from './MessageValidator'

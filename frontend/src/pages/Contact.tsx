@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from "react";
+import { messageService } from "../services/messageService";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 const LocationIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -23,12 +25,30 @@ const EmailIcon = () => (
 const Contact = () => {
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setForm({ name: "", phone: "", email: "", message: "" });
-    setTimeout(() => setSubmitted(false), 3000);
+    if (submitting) return;
+
+    setSubmitting(true);
+    setError(null);
+    try {
+      await messageService.create({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || undefined,
+        message: form.message.trim(),
+      });
+      setSubmitted(true);
+      setForm({ name: "", phone: "", email: "", message: "" });
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (err) {
+      setError(getErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -115,6 +135,13 @@ const Contact = () => {
                 </div>
               )}
 
+              {error && (
+                <div className="mb-6 glass bg-red-50 border-l-4 border-red-500 rounded-lg px-6 py-4">
+                  <p className="text-red-700 font-semibold">✕ Couldn't send your message</p>
+                  <p className="text-red-600 text-sm mt-1">{error}</p>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
@@ -174,9 +201,10 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-linear-to-r from-brand to-cyan-600 text-white font-semibold py-3 rounded-lg hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                  disabled={submitting}
+                  className="w-full bg-linear-to-r from-brand to-cyan-600 text-white font-semibold py-3 rounded-lg hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed disabled:hover:shadow-md"
                 >
-                  Send Message
+                  {submitting ? "Sending..." : "Send Message"}
                 </button>
               </form>
             </div>

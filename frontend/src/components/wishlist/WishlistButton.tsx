@@ -45,7 +45,9 @@ const WishlistButton = ({ productId, className = "" }: WishlistButtonProps) => {
     <button
       onClick={handleClick}
       disabled={isSubmitting}
-      className={`text-xl leading-none disabled:opacity-50 ${className}`}
+      className={`inline-flex items-center justify-center leading-none transition-all duration-200 hover:scale-110 disabled:opacity-50 ${
+        active ? "text-rose-500" : "text-gray-700 hover:text-rose-400"
+      } ${className}`}
       aria-label={active ? "Remove from wishlist" : "Add to wishlist"}
       title={active ? "Remove from wishlist" : "Add to wishlist"}
     >

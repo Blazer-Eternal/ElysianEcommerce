@@ -18,7 +18,7 @@ interface AuthContextType {
   login: (payload: LoginPayload) => Promise<void>;
   signup: (payload: SignupPayload) => Promise<void>;
   logout: () => void;
-  googleLogin: (credential: string) => Promise<void>;
+  googleVerify: (email: string, otp: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -88,8 +88,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(newUser);
   }, []);
 
-  const googleLogin = useCallback(async (credential: string) => {
-    const response = await authService.googleLogin(credential);
+  const googleVerify = useCallback(async (email: string, otp: string) => {
+    const response = await authService.googleVerify(email, otp);
     const { token: newToken, user: newUser } = response.data;
 
     localStorage.setItem(TOKEN_STORAGE_KEY, newToken);
@@ -119,9 +119,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       login,
       signup,
       logout,
-      googleLogin,
+      googleVerify,
     }),
-    [user, token, isLoading, login, signup, logout, googleLogin]
+    [user, token, isLoading, login, signup, logout, googleVerify]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

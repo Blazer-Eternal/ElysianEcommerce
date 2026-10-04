@@ -6,6 +6,7 @@ export const ROUTES = {
   CHECKOUT: "/checkout",
   WISHLIST: "/wishlist",
   PROFILE: "/profile",
+  DASHBOARD: "/dashboard",
   ORDER_HISTORY: "/orders",
   ORDER_DETAIL: (id: string = ":id") => `/orders/${id}`,
 
@@ -25,6 +26,7 @@ export const ROUTES = {
   ADMIN_ORDER_DETAIL: (id: string = ":orderId") => `/admin/orders/${id}`,
   ADMIN_USERS: "/admin/users",
   ADMIN_REVIEWS: "/admin/reviews",
+  ADMIN_MESSAGES: "/admin/messages",
   ADMIN_DATA_TABLES: "/admin/data-tables",
 
   ABOUT: "/about",

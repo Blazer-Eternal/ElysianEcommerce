@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { CustomRequestInterface } from "../../intefaces";
-import { UserServices } from "../../services";
+import { UserServices, NotificationServices } from "../../services";
 import { jwtSecret, frontendUrl, googleClientId } from "../../config";
 import { sendMail } from "../../config/mailer";
 import { RoleEnum } from "../../enums/UserEnums";
@@ -119,6 +119,9 @@ export class AuthController {
         role: RoleEnum.customer,
         addresses: [],
       });
+
+      // Admin bell notification — never blocks the signup response.
+      void new NotificationServices().recordSignup(user.name, user.email);
 
       return res.status(201).json({
         success: true,
@@ -339,14 +342,6 @@ export class AuthController {
 
       const email = payload.email.toLowerCase();
 
-      const existing = await new UserServices().findone(email);
-      if (existing) {
-        return res.status(409).json({
-          success: false,
-          message: "An account with this email already exists. Please log in instead.",
-        });
-      }
-
       const result = await issueGoogleOtp(email, payload.name || "", payload.sub);
       if (!result.ok) {
         return res.status(result.status).json({ success: false, message: result.message });
@@ -427,72 +422,27 @@ export class AuthController {
         return res.status(401).json({ success: false, message: "Incorrect OTP. Please try again." });
       }
 
-      const existing = await new UserServices().findone(doc.email);
-      if (existing) {
-        await GoogleOtpModel.deleteOne({ _id: doc._id });
-        return res.status(409).json({
-          success: false,
-          message: "An account with this email already exists. Please log in instead.",
-        });
-      }
+      let user = await new UserServices().findone(doc.email);
+      let message = "Login successful!";
 
-      const password_hash = await bcrypt.hash(crypto.randomBytes(24).toString("hex"), 12);
-      const user = await new UserServices().create({
-        name: doc.name || "Elysian User",
-        email: doc.email,
-        password_hash,
-        phone: "",
-        role: RoleEnum.customer,
-        addresses: [],
-        auth_provider: "google",
-        google_id: doc.google_id,
-      });
+      if (!user) {
+        const password_hash = await bcrypt.hash(crypto.randomBytes(24).toString("hex"), 12);
+        user = await new UserServices().create({
+          name: doc.name || "Elysian User",
+          email: doc.email,
+          password_hash,
+          phone: "",
+          role: RoleEnum.customer,
+          addresses: [],
+          auth_provider: "google",
+          google_id: doc.google_id,
+        });
+        message = "Account created and logged in successfully!";
+        // Admin bell notification — never blocks the login response.
+        void new NotificationServices().recordSignup(user.name, user.email);
+      }
 
       await GoogleOtpModel.deleteOne({ _id: doc._id });
-
-      return res.status(201).json({
-        success: true,
-        message: "Account created successfully! You can now log in.",
-        data: { id: user._id, name: user.name, email: user.email, role: user.role },
-      });
-    } catch (error) {
-      console.error("googleVerify error:", error);
-      return res.status(500).json({ success: false, message: "Internal server error" });
-    }
-  }
-
-  // "Continue with Google" login: verifies the Google ID token and, if the
-  // email belongs to a verified Google account matching an existing user,
-  // issues the same JWT as a normal login.
-  public static async googleLogin(req: CustomRequestInterface, res: Response): Promise<Response> {
-    const { credential } = req.body;
-
-    try {
-      let payload;
-      try {
-        const ticket = await googleOAuthClient.verifyIdToken({
-          idToken: credential,
-          audience: googleClientId,
-        });
-        payload = ticket.getPayload();
-      } catch {
-        return res.status(401).json({ success: false, message: "Google authentication failed. Please try again." });
-      }
-
-      if (!payload || !payload.email || !payload.email_verified) {
-        return res.status(403).json({
-          success: false,
-          message: "A verified Google/Gmail account is required.",
-        });
-      }
-
-      const user = await new UserServices().findone(payload.email.toLowerCase());
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "No account found for this Google email. Please register first.",
-        });
-      }
 
       const token = jwt.sign(
         {
@@ -507,7 +457,7 @@ export class AuthController {
 
       return res.status(200).json({
         success: true,
-        message: "Login successful!",
+        message,
         data: {
           token,
           user: {
@@ -519,7 +469,7 @@ export class AuthController {
         },
       });
     } catch (error) {
-      console.error("googleLogin error:", error);
+      console.error("googleVerify error:", error);
       return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }

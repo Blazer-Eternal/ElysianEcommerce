@@ -47,7 +47,7 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
           <span className="font-medium">{applied.code}</span> applied:{" "}
           <span className="text-green-700">-{formatCurrency(applied.discount_amount)}</span>
         </div>
-        <button onClick={handleRemove} className="text-xs text-red-600 hover:underline">
+        <button type="button" onClick={handleRemove} className="text-xs text-red-600 hover:underline">
           Remove
         </button>
       </div>
@@ -65,9 +65,18 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
           placeholder="Coupon code"
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
+          // Enter inside this field must apply the coupon — never implicitly
+          // submit the surrounding checkout form (which would place the order).
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              void handleApply();
+            }
+          }}
           className="flex-1 border rounded px-3 py-2 text-sm"
         />
         <button
+          type="button"
           onClick={handleApply}
           disabled={isChecking || !code.trim()}
           className="bg-black text-white px-4 py-2 rounded text-sm disabled:opacity-50"

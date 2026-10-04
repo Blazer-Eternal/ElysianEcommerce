@@ -20,4 +20,8 @@ export * from './PaymentInterface'
 
 export * from './PaginationInterface'
 
+export * from './MessageInterface'
+
+export * from './NotificationInterface'
+
 

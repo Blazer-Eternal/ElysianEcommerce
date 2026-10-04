@@ -88,3 +88,12 @@ export const ChevronDownIcon = makeIcon(
   "ChevronDownIcon",
   <path d="M12 15.4L5.6 9l1.4-1.4 5 5 5-5L18.4 9 12 15.4z" />
 );
+
+// `evenodd` punches the exclamation mark out of the triangle body.
+export const WarningIcon = makeIcon(
+  "WarningIcon",
+  <path
+    fillRule="evenodd"
+    d="M12 2.5 1.8 20.4a1 1 0 0 0 .9 1.6h18.6a1 1 0 0 0 .9-1.6L12 2.5zm-1.1 7.1a1.1 1.1 0 1 1 2.2 0v4.6a1.1 1.1 0 1 1-2.2 0V9.6zm1.1 7.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6z"
+  />
+);
