@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { couponService } from "../../services/couponService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -65,7 +65,7 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
           placeholder="Coupon code"
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
-          // Enter inside this field must apply the coupon — never implicitly
+          // Enter inside this field must apply the coupon, never implicitly
           // submit the surrounding checkout form (which would place the order).
           onKeyDown={(e) => {
             if (e.key === "Enter") {

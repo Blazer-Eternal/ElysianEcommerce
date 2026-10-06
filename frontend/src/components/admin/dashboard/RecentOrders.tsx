@@ -1,4 +1,4 @@
-import { memo } from "react";
+﻿import { memo } from "react";
 import { Link } from "react-router-dom";
 import DashboardPanel from "./DashboardPanel";
 import { PanelEmpty } from "./PanelStates";
@@ -21,7 +21,7 @@ const STATUS_STYLES: Record<OrderStatus, string> = {
   cancelled: "bg-red-100 text-red-800",
 };
 
-// Neutral avatar tints — the store has no customer photos, so initials stand in.
+// Neutral avatar tints, the store has no customer photos, so initials stand in.
 const AVATAR_TINTS = ["bg-brand/10 text-brand", "bg-cyan-100 text-cyan-700", "bg-rose/20 text-brand"];
 
 const initials = (name: string): string =>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { reviewService } from "../../services/reviewService";
 import AdminLayout from "../../components/layout/AdminLayout";
@@ -76,14 +76,14 @@ const ManageReviews = () => {
     if (typeof review.user_id === "object" && review.user_id !== null) {
       return review.user_id.name;
     }
-    return "—";
+    return ", ";
   };
 
   const getProductName = (review: Review): string => {
     if (typeof review.product_id === "object" && review.product_id !== null) {
       return (review.product_id as unknown as { name: string }).name;
     }
-    return "—";
+    return ", ";
   };
 
   return (

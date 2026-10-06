@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
+﻿import { createContext, useState, useEffect, useCallback, useMemo, type ReactNode } from "react";
 import type { LoginPayload, SignupPayload } from "../types/user.types";
 import { authService } from "../services/authService";
 import { TOKEN_STORAGE_KEY, USER_STORAGE_KEY } from "../constants/config";
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // Same-origin tabs share localStorage, so the most recent login is the session
-  // every tab uses — without this, a tab still showing "Admin Dashboard" would
+  // every tab uses, without this, a tab still showing "Admin Dashboard" would
   // silently act under another account's token. Sync on cross-tab changes.
   useEffect(() => {
     const syncFromStorage = () => {

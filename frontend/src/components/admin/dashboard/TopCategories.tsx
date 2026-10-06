@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+﻿import { memo, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import DashboardPanel from "./DashboardPanel";
 import { PanelEmpty, PanelSkeleton } from "./PanelStates";
@@ -18,7 +18,7 @@ interface DonutEntry {
   units: number;
 }
 
-// Warm analogue of the phoenix palette — eight tones that stay distinguishable
+// Warm analogue of the phoenix palette, eight tones that stay distinguishable
 // inside a donut (deep oxblood -> crimson -> brick -> bronze -> ochre -> amber
 // -> rose -> blush) instead of the old cool indigo/violet set.
 const PALETTE = ["#c01e2e", "#d18029", "#d48b92", "#5c0a14", "#e5a457", "#8e3b5c", "#96521d", "#efa1ac"];
@@ -52,7 +52,7 @@ const DonutTooltip = ({
  * Category"). Categories beyond the first seven are folded into an "Others"
  * slice to keep the legend short.
  *
- * Clicking an arc selects the category it represents (and vice versa — the
+ * Clicking an arc selects the category it represents (and vice versa, the
  * legend rows are buttons): the slice stays at full color while the others
  * dim, and the donut center shows that category's share. Clicking the
  * selected slice or row again clears the selection.
@@ -74,7 +74,7 @@ const TopCategories = memo(({ categories, isLoading }: TopCategoriesProps) => {
   const totalRevenue = entries.reduce((sum, entry) => sum + entry.value, 0);
   const percentOf = (value: number) => (totalRevenue > 0 ? Math.round((value / totalRevenue) * 100) : 0);
 
-  // A category can disappear when the period changes — fall back to no selection.
+  // A category can disappear when the period changes, fall back to no selection.
   const selected = entries.find((entry) => entry.name === selectedName) ?? null;
 
   const toggle = (name: string) => setSelectedName((previous) => (previous === name ? null : name));

@@ -1,4 +1,4 @@
-import type { PaginatedResponse } from "./pagination.types";
+﻿import type { PaginatedResponse } from "./pagination.types";
 
 /** A message submitted through the public Contact Us / Get in Touch form. */
 export interface Message {
@@ -18,7 +18,7 @@ export interface CreateMessagePayload {
   message: string;
 }
 
-/** GET /messages — inbox listing with the unread badge count. */
+/** GET /messages, inbox listing with the unread badge count. */
 export type MessageListResponse = PaginatedResponse<Message> & {
   unreadCount: number;
 };

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+﻿import { useState, type FormEvent } from "react";
 import { AlertIcon, BanknoteIcon, CheckIcon, CreditCardIcon, MapPinIcon, TicketIcon } from "../../components/icons";
 import { Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -144,7 +144,7 @@ const Checkout = () => {
           : undefined,
       });
 
-      // COD — order created, cart already cleared by backend, redirect to order detail
+      // COD, order created, cart already cleared by backend, redirect to order detail
       if (paymentMethod === "cod") {
         if (response.data?._id) {
           window.location.assign(ROUTES.ORDER_DETAIL(response.data._id));
@@ -152,7 +152,7 @@ const Checkout = () => {
         return;
       }
 
-      // eSewa — store preOrderToken and redirect to eSewa payment
+      // eSewa, store preOrderToken and redirect to eSewa payment
       // Cart is NOT cleared yet - only cleared after payment verification
       if (paymentMethod === "esewa" && response.preOrderToken && response.esewa) {
         sessionStorage.setItem("esewaPreOrderToken", response.preOrderToken);
@@ -182,7 +182,7 @@ const Checkout = () => {
           <h1 className="text-5xl sm:text-6xl font-black mb-3 text-brand">
             Complete Your Order
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Delivery details first, then payment — cash on delivery or eSewa.</p>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Delivery details first, then payment, cash on delivery or eSewa.</p>
         </div>
 
         {/* Error Alert */}
@@ -397,7 +397,7 @@ const Checkout = () => {
                     )}
                   </div>
 
-                  {/* Total — label sits above the amount and both hug the same right edge as the
+                  {/* Total, label sits above the amount and both hug the same right edge as the
                       rows above, so a long NPR figure (Rs. 2,14,000) never wraps inside this
                       narrow summary column the way it did on one crowded line. */}
                   <div className="mb-8 p-5 rounded-2xl bg-linear-to-r from-cyan-200/40 to-teal-200/40 border-2 border-cyan-300/60">

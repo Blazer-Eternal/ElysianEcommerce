@@ -1,8 +1,8 @@
-import type { ReactNode, SVGProps } from "react";
+﻿import type { ReactNode, SVGProps } from "react";
 
 /**
  * Shared stroke icon set (Feather-style geometry, 24x24 grid, currentColor).
- * Single source of truth for every icon in the app — do not inline new SVGs
+ * Single source of truth for every icon in the app, do not inline new SVGs
  * in feature files; add an icon here instead.
  */
 
@@ -99,7 +99,7 @@ export const CreditCardIcon = makeIcon(
 );
 
 /* ------------------------------------------------------------------ */
-/* Compact icons (default 24px) — for inline UI use                    */
+/* Compact icons (default 24px), for inline UI use                    */
 /* ------------------------------------------------------------------ */
 
 export const HeartIcon = makeIcon(

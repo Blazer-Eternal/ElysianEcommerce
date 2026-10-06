@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import AdminLayout from "../../components/layout/AdminLayout";
 import TanStackDataTable from "../../components/admin/TanStackDataTable";
@@ -172,7 +172,7 @@ const DataTablesDemo = () => {
         header: "Category",
         cell: (info: any) => {
           const category = info.getValue() as any;
-          const categoryName = typeof category === "object" ? category?.name : "—";
+          const categoryName = typeof category === "object" ? category?.name : ", ";
           return (
             <span className="inline-block px-2 py-1 bg-brand/20 text-brand rounded text-xs font-semibold">
               {categoryName}
@@ -231,7 +231,7 @@ const DataTablesDemo = () => {
 
   // Helper function to get category name by ID
   const getCategoryName = (categoryId: string) => {
-    return categories.find(c => c._id === categoryId)?.name || "—";
+    return categories.find(c => c._id === categoryId)?.name || ", ";
   };
 
   // Category Column definitions
@@ -269,7 +269,7 @@ const DataTablesDemo = () => {
         header: "Description",
         cell: (info: any) => (
           <div className="text-gray-700 text-sm max-w-xs truncate">
-            {info.getValue() || "—"}
+            {info.getValue() || ", "}
           </div>
         ),
       },
@@ -280,7 +280,7 @@ const DataTablesDemo = () => {
         cell: (info: any) => {
           const parent = info.getValue() as any;
           if (!parent) {
-            return <span className="text-gray-500 italic">—</span>;
+            return <span className="text-gray-500 italic">, </span>;
           }
           const parentName = typeof parent === "object" ? parent?.name : getCategoryName(parent);
           return (
@@ -351,7 +351,7 @@ const DataTablesDemo = () => {
         header: "Customer",
         cell: (info: any) => {
           const user = info.getValue() as any;
-          const userName = typeof user === "object" ? user?.name : "—";
+          const userName = typeof user === "object" ? user?.name : ", ";
           return (
             <span className="inline-block px-2 py-1 bg-brand/20 text-brand rounded text-xs font-semibold">
               {userName}
@@ -473,7 +473,7 @@ const DataTablesDemo = () => {
         accessorKey: "phone",
         header: "Phone",
         cell: (info: any) => (
-          <span className="text-gray-700 text-sm">{info.getValue() || "—"}</span>
+          <span className="text-gray-700 text-sm">{info.getValue() || ", "}</span>
         ),
       },
       {

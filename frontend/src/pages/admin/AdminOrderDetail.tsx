@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo, useMemo, useCallback } from "react";
+﻿import { useState, useEffect, useRef, memo, useMemo, useCallback } from "react";
 import { AlertIcon, BanknoteIcon, BoxIcon, CreditCardIcon, PencilIcon } from "../../components/icons";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -203,10 +203,10 @@ const DeliveryAddressSection = memo(({ address, onEdit, canEdit }: any) => (
     {address ? (
       <div className="space-y-3 animate-fade-in">
         <p className="text-sm text-gray-900 font-medium">
-          {address.street || "—"}
+          {address.street || ", "}
         </p>
         <p className="text-sm text-gray-600">
-          {address.city || "—"}, {address.state || "—"}
+          {address.city || ", "}, {address.state || ", "}
         </p>
       </div>
     ) : (

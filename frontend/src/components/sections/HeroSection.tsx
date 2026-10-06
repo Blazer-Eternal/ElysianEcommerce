@@ -21,10 +21,10 @@ const ArrowIcon = memo(() => (
 ArrowIcon.displayName = "ArrowIcon";
 
 const TRUST = [
-  { icon: <TruckIcon size={22} />, label: "Free delivery", detail: "above Rs. 2,000" },
-  { icon: <CreditCardIcon size={22} />, label: "Pay your way", detail: "COD or eSewa" },
-  { icon: <RefreshIcon size={22} />, label: "30-day returns", detail: "full refund" },
-  { icon: <CoinsIcon size={22} />, label: "Reward points", detail: "Rs. 2 = 1 point" },
+  { icon: <TruckIcon size={22} />, label: "Free delivery", detail: "on carts over Rs. 2,000" },
+  { icon: <CreditCardIcon size={22} />, label: "Pay how you like", detail: "COD or eSewa, your pick" },
+  { icon: <RefreshIcon size={22} />, label: "30 days to decide", detail: "full refund on returns" },
+  { icon: <CoinsIcon size={22} />, label: "Member rewards", detail: "1 point per Rs. 2 spent" },
 ];
 
 const HeroSection = memo(() => {
@@ -55,9 +55,9 @@ const HeroSection = memo(() => {
     <div
       ref={containerRef}
       className="relative overflow-hidden bg-cream pt-10 pb-14 sm:pt-14 sm:pb-16 lg:pt-20 lg:pb-24 section-container animation-container"
-      style={{ contain: "layout style paint" }}
+      style={{ contain: "layout style" }}
     >
-      {/* Warm washes — cheap, static, no canvas */}
+      {/* Warm washes, cheap, static, no canvas */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -109,7 +109,7 @@ const HeroSection = memo(() => {
                 className="text-[15px] leading-relaxed text-ink/70 max-w-xl animate-fade-in sm:text-lg"
                 style={{ animationDelay: isInView ? "0.3s" : "0s" }}
               >
-                A curated store for Nepal — checked products, rupee prices you can read at a
+                A curated store for Nepal, checked products, rupee prices you can read at a
                 glance, cash on delivery or eSewa, and thirty days to change your mind.
               </p>
             </div>
@@ -153,7 +153,7 @@ const HeroSection = memo(() => {
             className={`order-1 lg:order-2 flex justify-center lg:justify-end transition-smooth ${
               isInView ? "animate-slide-in-right" : "opacity-0"
             }`}
-            style={{ contain: "layout style paint" }}
+            style={{ contain: "layout style" }}
           >
             <div className="relative w-full max-w-md">
               {/* offset blush block */}
@@ -166,11 +166,11 @@ const HeroSection = memo(() => {
                 className="absolute -bottom-5 -left-5 h-28 w-28 rounded-full border border-[#ecd3b4] sm:h-36 sm:w-36"
               />
 
-              <div className="relative overflow-hidden rounded-[2rem] border border-[#ece1d0] bg-white shadow-[0_28px_60px_-32px_rgba(61,5,12,0.5)]">
+              <div className="relative overflow-hidden rounded-4xl border border-[#ece1d0] bg-white shadow-[0_28px_60px_-32px_rgba(61,5,12,0.5)]">
                 <div className="aspect-square flex items-center justify-center overflow-hidden bg-[#fdfaf3]">
                   <img
-                    src="/images/NewLogo.jpg"
-                    alt="Elysian E-commerce — where every find feels special"
+                    src="/images/NewLogo-transparent.png"
+                    alt="Elysian Ecommerce, Where Every Find Feels Special"
                     width={1000}
                     height={1080}
                     fetchPriority="high"
@@ -181,20 +181,21 @@ const HeroSection = memo(() => {
                 </div>
               </div>
 
-              {/* Floating chips */}
-              <div className="absolute -left-3 top-6 hidden rounded-xl border border-[#ece1d0] bg-white px-3.5 py-2 shadow-[0_10px_26px_-16px_rgba(61,5,12,0.7)] sm:block">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-gold-dark">
-                  Curated
-                </p>
-                <p className="text-[12px] font-semibold text-ink">Checked before listing</p>
-              </div>
-
-              <div className="absolute -right-3 bottom-8 hidden rounded-xl bg-brand px-3.5 py-2 shadow-[0_12px_28px_-14px_rgba(61,5,12,0.9)] sm:block">
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#f0c070]">
-                  Returns
-                </p>
-                <p className="text-[12px] font-semibold text-white">30 days, no questions</p>
-              </div>
+              {/* Transparent rotating brand badges at two corners of the NewLogo card */}
+              <img
+                src="/images/Bestlogo-transparent.png"
+                alt="Elysian emblem"
+                width={256}
+                height={256}
+                className="absolute -top-6 -left-6 z-10 h-28 w-28 rounded-full drop-shadow-[0_8px_18px_rgba(61,5,12,0.35)] animate-spin-slow sm:-top-8 sm:-left-8 sm:h-32 sm:w-32"
+              />
+              <img
+                src="/images/Bestlogo-transparent.png"
+                alt="Elysian emblem"
+                width={256}
+                height={256}
+                className="absolute -bottom-6 -right-6 z-10 h-28 w-28 rounded-full drop-shadow-[0_8px_18px_rgba(61,5,12,0.35)] animate-spin-slow sm:-bottom-8 sm:-right-8 sm:h-32 sm:w-32"
+              />
             </div>
           </div>
         </div>

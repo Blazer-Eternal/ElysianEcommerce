@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import CustomerLayout from "../../components/layout/CustomerLayout";
@@ -18,22 +18,20 @@ import {
   getRepeatBuys,
   getTotalSpent,
 } from "../../utils/customerDashboard";
-import { getLoyaltyPoints, getTierStatus, POINTS_PER_UNIT } from "../../utils/loyalty";
+import { getLoyaltyPoints, getTierStatus } from "../../utils/loyalty";
 import type { OrderStatus } from "../../types/order.types";
 import {
   ArrowRightIcon,
   BanknoteIcon,
-  BoxIcon,
   CheckIcon,
   HeartIcon,
   HomeIcon,
   PlusIcon,
-  SparklesIcon,
   StarIcon,
   TruckIcon,
 } from "../../components/icons";
 
-/* Shipment stepper — maps 1:1 onto the backend's OrderStatus values. */
+/* Shipment stepper, maps 1:1 onto the backend's OrderStatus values. */
 const SHIPMENT_STEPS: Array<{ status: OrderStatus; label: string; glyph: React.ReactNode }> = [
   { status: "pending", label: "Placed", glyph: <CheckIcon size={16} /> },
   { status: "paid", label: "Processed", glyph: <CheckIcon size={16} /> },
@@ -89,7 +87,7 @@ const Dashboard = () => {
   const repeatBuys = useMemo(() => getRepeatBuys(orders), [orders]);
 
   // Product records only supply the photo, current price and stock for the
-  // "Buy it again" rows — the order lines themselves carry the name/price paid.
+  // "Buy it again" rows, the order lines themselves carry the name/price paid.
   const productQueries = useQueries({
     queries: repeatBuys.map((item) => ({
       queryKey: ["product", item.productId],
@@ -101,7 +99,7 @@ const Dashboard = () => {
   });
 
   const loyaltyPoints = getLoyaltyPoints(totalSpent);
-  const { tier, next, progress } = getTierStatus(totalSpent);
+  const { tier, next } = getTierStatus(totalSpent);
   const firstName = user?.name?.split(" ")[0] ?? "there";
 
   const handleAddToCart = async (productId: string) => {
@@ -155,7 +153,7 @@ const Dashboard = () => {
               </>
             ) : (
               <>
-                Nothing is on the way right now — review your past orders below or discover something
+                Nothing is on the way right now, review your past orders below or discover something
                 new in the catalog.
               </>
             )}
@@ -183,7 +181,7 @@ const Dashboard = () => {
             iconClassName="bg-amber-50 text-amber-500"
             label="Loyalty Points"
             value={`${loyaltyPoints.toLocaleString("en-IN")} pts`}
-            hint={`1 pt per Rs. ${POINTS_PER_UNIT} spent`}
+            hint="Points worth 0.5–2% back, by tier"
           />
           <StatCard
             icon={<HeartIcon size={22} />}
@@ -269,7 +267,7 @@ const Dashboard = () => {
                 <span className="font-semibold text-gray-900">
                   {shipment.status === "delivered" ? "Delivered" : SHIPMENT_STEPS[currentIndex].label}
                 </span>{" "}
-                — updates appear here as soon as the carrier scans your parcel.
+               , updates appear here as soon as the carrier scans your parcel.
               </p>
             </>
           ) : (
@@ -364,63 +362,23 @@ const Dashboard = () => {
           )}
         </section>
 
-        {/* Loyalty & rewards */}
-        <section id="rewards" className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.06)] scroll-mt-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="flex items-start gap-3">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
-                <SparklesIcon size={22} />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold text-gray-900">Loyalty &amp; Rewards</h2>
-                <p className="text-sm text-gray-500">
-                  You are on the <span className="font-semibold text-gray-800">{tier.name}</span> tier with{" "}
-                  <span className="font-semibold text-gray-800">{loyaltyPoints.toLocaleString("en-IN")} points</span>.
-                </p>
-              </div>
+        {/* Loyalty snapshot, full details live on the dedicated Loyalty & Rewards page */}
+        <section className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-gold">Loyalty snapshot</p>
+              <p className="mt-1 text-sm text-gray-600">
+                {tier.name} tier · {loyaltyPoints.toLocaleString("en-IN")} pts ·{" "}
+                {next ? `${formatCurrency(Math.max(0, next.minSpend - totalSpent))} to ${next.name}` : "top tier"}
+              </p>
             </div>
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
-              {tier.name} Tier
-            </span>
-          </div>
-
-          <div className="mt-5">
-            <div className="flex items-center justify-between text-xs font-medium text-gray-500">
-              <span>{tier.name}</span>
-              <span>
-                {next ? `${formatCurrency(Math.max(0, next.minSpend - totalSpent))} to ${next.name}` : "Top tier reached"}
-              </span>
-            </div>
-            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-cream-deep">
-              <div
-                className="h-full rounded-full bg-linear-to-r from-amber-400 to-amber-500 transition-all duration-700"
-                style={{ width: `${Math.round(progress * 100)}%` }}
-              />
-            </div>
-            <p className="mt-3 text-sm text-gray-600">
-              Earn 1 point for every Rs. {POINTS_PER_UNIT} spent on non-cancelled orders — points and tier are
-              calculated from your real order history.
-            </p>
-          </div>
-        </section>
-
-        {/* Quick links */}
-        <section className="grid grid-cols-1 gap-4 pb-4 sm:grid-cols-3">
-          {[
-            { to: ROUTES.ORDER_HISTORY, icon: <BoxIcon size={18} />, label: "All Orders" },
-            { to: ROUTES.WISHLIST, icon: <HeartIcon size={18} />, label: "Wishlist" },
-            { to: ROUTES.PROFILE, icon: <StarIcon size={18} />, label: "Profile & Addresses" },
-          ].map((link) => (
             <Link
-              key={link.label}
-              to={link.to}
-              className="flex items-center gap-3 rounded-2xl border border-[#ece1d0] bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition-colors hover:border-brand/40 hover:text-brand"
+              to={ROUTES.LOYALTY}
+              className="rounded-full bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20"
             >
-              <span className="text-brand">{link.icon}</span>
-              {link.label}
-              <ArrowRightIcon size={16} className="ml-auto text-sand" />
+              View loyalty page
             </Link>
-          ))}
+          </div>
         </section>
       </div>
     </CustomerLayout>

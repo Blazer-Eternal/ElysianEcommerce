@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userService } from "../../services/userService";
 import AdminLayout from "../../components/layout/AdminLayout";
@@ -113,7 +113,7 @@ const ManageUsers = () => {
                         </div>
                       </div>
 
-                      {/* Role (read-only): single-admin platform — roles are
+                      {/* Role (read-only): single-admin platform, roles are
                           provisioned by the operator, never promoted here. The
                           API also rejects role=admin, so no control is shown. */}
                       <div className="space-y-2">
@@ -183,7 +183,7 @@ const ManageUsers = () => {
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             <div>
                               <p className="text-xs text-gray-600 font-medium">Phone</p>
-                              <p className="text-sm text-gray-900">{user.phone || "—"}</p>
+                              <p className="text-sm text-gray-900">{user.phone || ", "}</p>
                             </div>
                             <div>
                               <p className="text-xs text-gray-600 font-medium">Joined</p>

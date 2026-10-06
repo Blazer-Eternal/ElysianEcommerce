@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Returns a width-constrained Cloudinary delivery URL for `url`.
  *
  * Cloudinary applies transform segments placed right after `/image/upload/`
@@ -7,8 +7,8 @@
  * appropriately sized variant in the best modern format (WebP/AVIF) instead of
  * the full-size original.
  *
- * Anything that is not a plain res.cloudinary.com upload URL — other CDNs,
- * local files, or a URL that already carries a transform segment — is returned
+ * Anything that is not a plain res.cloudinary.com upload URL, other CDNs,
+ * local files, or a URL that already carries a transform segment, is returned
  * untouched, so this is always safe to call with any product image URL.
  */
 export function cloudinaryImg(url: string, width: number): string {

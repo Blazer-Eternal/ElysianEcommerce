@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { MessageIcon } from "../../components/icons";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -50,7 +50,7 @@ const ProductDetail = () => {
     queryKey: ["product", id],
     queryFn: ({ signal }) => productService.getById(id as string, { signal }),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000, // catalog detail — review mutations still invalidate ["product", id]
+    staleTime: 5 * 60 * 1000, // catalog detail, review mutations still invalidate ["product", id]
   });
 
   const handleAddToCart = async () => {
@@ -384,7 +384,7 @@ const ProductDetail = () => {
           <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5 text-sm">
             <div>
               <p className="text-gray-500">Brand</p>
-              <p className="font-semibold text-gray-900">{brand ?? "—"}</p>
+              <p className="font-semibold text-gray-900">{brand ?? ", "}</p>
             </div>
             <div>
               <p className="text-gray-500">SKU</p>
@@ -392,7 +392,7 @@ const ProductDetail = () => {
             </div>
             <div>
               <p className="text-gray-500">Category</p>
-              <p className="font-semibold text-gray-900">{category?.name ?? "—"}</p>
+              <p className="font-semibold text-gray-900">{category?.name ?? ", "}</p>
             </div>
             <div>
               <p className="text-gray-500">Availability</p>

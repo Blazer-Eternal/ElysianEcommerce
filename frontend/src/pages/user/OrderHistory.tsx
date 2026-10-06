@@ -27,7 +27,7 @@ const OrderHistory = () => {
 
   if (orders.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="py-24 flex items-center justify-center">
         <div className="text-center space-y-6">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-cream-deep to-cream">
             <svg className="w-10 h-10 text-brand/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">

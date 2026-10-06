@@ -1,8 +1,9 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+﻿import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, Suspense, lazy } from "react";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import AuthLayout from "./components/layout/AuthLayout";
+import CustomerLayout from "./components/layout/CustomerLayout";
 import AuthRedirect from "./components/AuthRedirect";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ROUTES } from "./constants/routes";
@@ -28,6 +29,7 @@ const OrderHistory = lazy(() => import("./pages/user/OrderHistory"));
 const OrderDetail = lazy(() => import("./pages/user/OrderDetail"));
 const Profile = lazy(() => import("./pages/user/Profile"));
 const CustomerDashboard = lazy(() => import("./pages/user/Dashboard"));
+const Loyalty = lazy(() => import("./pages/user/Loyalty"));
 
 // Admin Pages
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -45,6 +47,7 @@ const DataTablesDemo = lazy(() => import("./pages/admin/DataTablesDemo"));
 const About = lazy(() => import("./pages/About"));
 const Values = lazy(() => import("./pages/Values"));
 const Features = lazy(() => import("./pages/Features"));
+const CompareBenefits = lazy(() => import("./pages/CompareBenefits"));
 const Contact = lazy(() => import("./pages/Contact"));
 
 // Legal Pages
@@ -67,7 +70,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PageLoadingSpinner = () => (
   <div className="min-h-screen flex items-center justify-center bg-cream animation-container">
     <div className="flex flex-col items-center gap-6">
-      {/* Animated Loading Spinner — three concentric rings: crimson wash, spinning crimson arc, ochre core */}
+      {/* Animated Loading Spinner, three concentric rings: crimson wash, spinning crimson arc, ochre core */}
       <div className="relative w-16 h-16">
         <div className="absolute inset-0 rounded-full border-4 border-brand/20 animate-spin" />
         <div className="absolute inset-2 rounded-full border-4 border-brand border-r-transparent animate-spin animation-delay-100ms" style={{ animationDirection: "reverse" }} />
@@ -80,7 +83,7 @@ const PageLoadingSpinner = () => (
         <p className="text-center text-sm text-ink/70 mt-2">This should only take a moment</p>
       </div>
 
-      {/* GPU-accelerated animated dots — crimson, ochre, rose */}
+      {/* GPU-accelerated animated dots, crimson, ochre, rose */}
       <div className="flex gap-2">
         <div className="w-2 h-2 rounded-full bg-brand animate-pulse animation-delay-0ms" />
         <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse animation-delay-200ms" />
@@ -125,6 +128,7 @@ function App() {
       <Route path={ROUTES.ABOUT} element={<PublicPage><About /></PublicPage>} />
       <Route path={ROUTES.VALUES} element={<PublicPage><Values /></PublicPage>} />
       <Route path={ROUTES.FEATURES} element={<PublicPage><Features /></PublicPage>} />
+      <Route path={ROUTES.COMPARE_BENEFITS} element={<PublicPage><CompareBenefits /></PublicPage>} />
       <Route path={ROUTES.CONTACT} element={<PublicPage><Contact /></PublicPage>} />
       <Route path={ROUTES.REFUND_POLICY} element={<PublicPage><RefundPolicy /></PublicPage>} />
       <Route path={ROUTES.SHIPPING_POLICY} element={<PublicPage><ShippingPolicy /></PublicPage>} />
@@ -138,7 +142,7 @@ function App() {
         path={ROUTES.WISHLIST}
         element={
           <ProtectedRoute>
-            <PublicPage><Wishlist /></PublicPage>
+            <CustomerLayout><Wishlist /></CustomerLayout>
           </ProtectedRoute>
         }
       />
@@ -162,7 +166,7 @@ function App() {
         path={ROUTES.ORDER_HISTORY}
         element={
           <ProtectedRoute>
-            <PublicPage><OrderHistory /></PublicPage>
+            <CustomerLayout><OrderHistory /></CustomerLayout>
           </ProtectedRoute>
         }
       />
@@ -178,7 +182,7 @@ function App() {
         path={ROUTES.PROFILE}
         element={
           <ProtectedRoute>
-            <PublicPage><Profile /></PublicPage>
+            <CustomerLayout><Profile /></CustomerLayout>
           </ProtectedRoute>
         }
       />
@@ -187,6 +191,14 @@ function App() {
         element={
           <ProtectedRoute>
             <CustomerDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.LOYALTY}
+        element={
+          <ProtectedRoute>
+            <Loyalty />
           </ProtectedRoute>
         }
       />

@@ -1,4 +1,4 @@
-export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled";
+﻿export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled";
 export type PaymentStatus = "unpaid" | "paid" | "refunded";
 export type PaymentMethod = "cod" | "esewa";
 
@@ -43,7 +43,7 @@ export interface CreateOrderPayload {
   shipping_address: OrderShippingAddress;
   coupon_code?: string;
   payment_method: PaymentMethod;
-  /** Buy Now lines — omitted for a normal checkout, which uses the cart. */
+  /** Buy Now lines, omitted for a normal checkout, which uses the cart. */
   items?: BuyNowItem[];
 }
 

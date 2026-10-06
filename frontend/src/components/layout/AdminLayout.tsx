@@ -112,7 +112,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       >
         {/* Sidebar Header - pinned above the nav so items never paint over it */}
         <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#fefaf3] border-b border-[#ece1d0] shadow-[0_4px_12px_-6px_rgba(61,5,12,0.12)] p-6">
-          {/* Logo Section — full brand name, links back to the main site */}
+          {/* Logo Section, full brand name, links back to the main site */}
           <div className="flex items-center justify-between">
             <Link
               to={ROUTES.HOME}
@@ -125,7 +125,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   alt="Elysian Ecommerce"
                   width={256}
                   height={256}
-                  className="h-10 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                  className="h-12 w-12 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div className="text-base font-bold text-brand leading-tight min-w-0 group-hover:text-brand-dark transition-colors duration-300">

@@ -1,4 +1,4 @@
-import { useState, type FormEvent, useEffect } from "react";
+﻿import { useState, type FormEvent, useEffect } from "react";
 import { BoxIcon } from "../../components/icons";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
@@ -28,7 +28,7 @@ const emptyForm: CreateProductPayload = {
   status: "draft",
 };
 
-/** Textarea <-> string[] helpers — bullets are edited as newline-separated text. */
+/** Textarea <-> string[] helpers, bullets are edited as newline-separated text. */
 const bulletsToText = (items?: string[]) => (items ?? []).join("\n");
 const textToBullets = (text: string): string[] =>
   text
@@ -71,7 +71,7 @@ const ManageProducts = () => {
   const { data: categoriesRes } = useQuery({
     queryKey: ["categories"],
     queryFn: ({ signal }) => categoryService.getAll({ signal }),
-    staleTime: 5 * 60 * 1000, // singleton data — categories rarely change
+    staleTime: 5 * 60 * 1000, // singleton data, categories rarely change
   });
 
   const categories = categoriesRes?.data || [];

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { HeartFilledIcon, HeartIcon } from "../icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
@@ -35,7 +35,7 @@ const WishlistButton = ({ productId, className = "" }: WishlistButtonProps) => {
         await addToWishlist(productId);
       }
     } catch {
-      // Silently ignore — e.g. duplicate-add race condition
+      // Silently ignore, e.g. duplicate-add race condition
     } finally {
       setIsSubmitting(false);
     }

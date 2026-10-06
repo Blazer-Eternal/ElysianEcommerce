@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+﻿import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AlertIcon, MessageIcon, PencilIcon, SearchIcon, TrashIcon, XIcon } from "../icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../hooks/useAuth";
@@ -172,7 +172,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
     },
   });
 
-  // Close the ⋯ menu when clicking outside it, pressing Escape, or scrolling —
+  // Close the ⋯ menu when clicking outside it, pressing Escape, or scrolling , 
   // the menu is positioned from the button's rect, so a scroll would strand it.
   useEffect(() => {
     if (!menuOpen) return;
@@ -525,7 +525,7 @@ const ReviewList = ({
   const ownerIdOf = (review: Review) =>
     typeof review.user_id === "object" && review.user_id ? review.user_id._id : review.user_id;
 
-  // Only the author themselves — admins are NOT given edit rights over other
+  // Only the author themselves, admins are NOT given edit rights over other
   // people's reviews (the API would reject it anyway with 403).
   const isOwnerOf = (review: Review) => {
     const ownerId = ownerIdOf(review);
@@ -577,7 +577,7 @@ const ReviewList = ({
           <p className="text-gray-600 text-sm leading-relaxed max-w-md mx-auto">
             {filtered
               ? "Try a different star filter to see what other customers said."
-              : "Yours would be the first — a star rating and a line or two about how it held up is plenty."}
+              : "Yours would be the first, a star rating and a line or two about how it held up is plenty."}
           </p>
           {filtered && (
             <button

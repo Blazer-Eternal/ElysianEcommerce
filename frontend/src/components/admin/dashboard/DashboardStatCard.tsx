@@ -1,4 +1,4 @@
-import { memo, type ReactNode } from "react";
+﻿import { memo, type ReactNode } from "react";
 
 interface DashboardStatCardProps {
   label: string;
@@ -63,7 +63,7 @@ const TrendArrow = ({ direction }: { direction: "up" | "down" | "flat" }) => (
 
 /**
  * Top-row KPI card: label + headline number on the left, pastel icon tile on
- * the right, and the period-over-period change underneath (image-2 layout —
+ * the right, and the period-over-period change underneath (image-2 layout , 
  * deliberately compact, no sparkline).
  */
 const DashboardStatCard = memo(

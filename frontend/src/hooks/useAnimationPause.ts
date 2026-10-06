@@ -1,4 +1,4 @@
-/**
+﻿/**
  * useAnimationPause Hook
  * Pauses CSS animations and transitions when element is off-screen
  * Dramatically reduces CPU/GPU load on pages with many animated elements
@@ -7,7 +7,7 @@
  * - IntersectionObserver-based visibility tracking
  * - Applies the pause class to the container; descendants are covered by the
  *   `.animation-paused-by-visibility *` rule in index.css (no per-child DOM scans)
- * - Stateless/imperative class toggling — scrolling never re-renders host components
+ * - Stateless/imperative class toggling, scrolling never re-renders host components
  * - One shared window scroll listener drives every subscribed element
  * - Respects prefers-reduced-motion preference
  *
@@ -43,13 +43,13 @@ interface UseAnimationPauseOptions {
 
   /**
    * Scroll pause timeout in ms (when to resume after scroll ends).
-   * Reserved for API compatibility — the shared scroll listener uses 300ms.
+   * Reserved for API compatibility, the shared scroll listener uses 300ms.
    */
   scrollPauseTimeout?: number;
 
   /**
    * Also apply to direct child elements (not just container).
-   * Reserved for API compatibility — descendants are paused via the CSS
+   * Reserved for API compatibility, descendants are paused via the CSS
    * `.animation-paused-by-visibility *` rule.
    */
   pauseChildren?: boolean;
@@ -69,7 +69,7 @@ interface UseAnimationPauseOptions {
 
 const SCROLL_RESUME_DELAY = 300;
 
-/** Shared scroll-pause state — one listener, zero React re-renders. */
+/** Shared scroll-pause state, one listener, zero React re-renders. */
 let scrollResumeTimer: ReturnType<typeof setTimeout> | null = null;
 let isScrollPaused = false;
 const scrollSubscribers = new Set<() => void>();
@@ -155,7 +155,7 @@ export const useAnimationPause = (
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [respectReducedMotion, syncPauseState]);
 
-  // IntersectionObserver for visibility tracking (updates a ref — no re-render)
+  // IntersectionObserver for visibility tracking (updates a ref, no re-render)
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
@@ -221,7 +221,7 @@ export const useGridAnimationPause = (
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [respectReducedMotion]);
 
-  // IntersectionObserver for container visibility — classList only, no state
+  // IntersectionObserver for container visibility, classList only, no state
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {

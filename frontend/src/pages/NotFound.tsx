@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 
 const NotFound = () => {
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Decorative warm washes — presentational only */}
+      {/* Decorative warm washes, presentational only */}
       <div className="pointer-events-none absolute -top-32 -right-24 h-96 w-96 rounded-full bg-brand/8 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -left-24 h-96 w-96 rounded-full bg-gold/10 blur-3xl" />
 

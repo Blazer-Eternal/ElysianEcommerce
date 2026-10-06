@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { CheckIcon } from "../icons";
 
 /**
- * "Elysian, on your phone" — the download-app panel that closes the landing
+ * "Elysian, on your phone", the download-app panel that closes the landing
  * page. Crimson slab with a faint ornament lattice, story on the left, a white
  * QR card on the right.
  *
@@ -78,7 +78,7 @@ const AppSection = () => {
 
   return (
     <section className="bg-cream px-4 pb-16 sm:px-6 sm:pb-20 lg:pb-24">
-      <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-brand shadow-[0_30px_70px_-40px_rgba(61,5,12,0.9)]">
+      <div className="mx-auto max-w-6xl overflow-hidden rounded-4xl bg-brand shadow-[0_30px_70px_-40px_rgba(61,5,12,0.9)]">
         <div className="relative">
           {/* Ornament lattice */}
           <div
@@ -116,7 +116,7 @@ const AppSection = () => {
 
               <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/75 sm:text-base">
                 The app is still in build. Until it ships, the code below opens the storefront on
-                your phone — same catalogue, same cart, same account, sized for a smaller screen.
+                your phone, same catalogue, same cart, same account, sized for a smaller screen.
               </p>
 
               <ul className="mt-7 space-y-3.5">
@@ -134,13 +134,13 @@ const AppSection = () => {
             </div>
 
             {/* ----------------------------------------------------- Right */}
-            <div className="rounded-[1.5rem] bg-white p-5 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.7)] sm:p-6">
+            <div className="rounded-1.5rem bg-white p-5 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.7)] sm:p-6">
               <p className="text-center text-[11px] font-bold uppercase tracking-[0.28em] text-ink/50">
                 Get the app
               </p>
 
               <div className="mt-4 rounded-2xl border-2 border-dashed border-[#ecd3b4] bg-[#fdfaf3] p-4">
-                <div className="mx-auto flex h-[200px] w-[200px] items-center justify-center">
+                <div className="mx-auto flex h-50 w-50 items-center justify-center">
                   {qrFailed ? (
                     <span className="break-all px-2 text-center text-xs font-semibold text-ink/60">
                       {origin}
@@ -176,7 +176,7 @@ const AppSection = () => {
               </div>
 
               <p className="mt-3 text-center text-[11px] leading-relaxed text-ink/50">
-                Both stores pending release. The code above works today.
+                Rolling out soon. Stay tuned for the apps.
               </p>
             </div>
           </div>

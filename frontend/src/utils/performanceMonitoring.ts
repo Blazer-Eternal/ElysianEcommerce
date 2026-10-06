@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Performance Monitoring Utilities
  * Track and monitor application performance metrics
  */
@@ -123,7 +123,7 @@ export class PerformanceMonitor {
       try {
         let longTaskLogs = 0;
         const observer = new PerformanceObserver((list) => {
-          // Console output is dev-only and capped — logging every long task was
+          // Console output is dev-only and capped, logging every long task was
           // itself main-thread work and flooded the console in production.
           if (!import.meta.env.DEV) return;
           for (const entry of list.getEntries()) {

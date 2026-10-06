@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+﻿import { useState, type FormEvent } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -41,8 +41,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-brand-dark to-[#3d050c] flex items-center justify-center px-4 relative overflow-hidden">
-      <div className="w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-2 relative z-10">
+    <div className="relative z-10 w-full max-w-5xl">
+      <div className="w-full rounded-3xl overflow-hidden shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-2 relative z-10">
         {/* Diagonal Partition SVG */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block z-0" preserveAspectRatio="none" viewBox="0 0 1000 1000">
           <defs>
@@ -144,13 +144,13 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Continue with Google — directly under the Login button */}
+          {/* Continue with Google, directly under the Login button */}
           <div className="mt-6">
             <GoogleAuthFlow buttonText="signin_with" />
           </div>
 
           <p className="text-sm text-ink/70 text-center mt-6">
-            New to ElysianEcommerce?{" "}
+            New to Elysian Ecommerce?{" "}
             <Link to={ROUTES.REGISTER} className="text-brand font-semibold hover:text-brand-dark border-b-2 border-brand">
               Create an account
             </Link>

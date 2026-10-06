@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 /* ========================================
    ELYSIAN DESIGN TOKENS
@@ -98,7 +98,7 @@
   }
 
   /* Editorial display face for headings. Fraunces carries the section titles,
-     Archivo stays on body/UI text — same split the brand book uses. */
+     Archivo stays on body/UI text, same split the brand book uses. */
   h1,
   h2,
   h3 {
@@ -317,6 +317,20 @@
 
   .marquee-track:hover {
     animation-play-state: paused;
+  }
+
+  /* Slow continuous rotation for the brand badge (hero, auth pages). */
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 32s linear infinite;
   }
 
   .animate-pulse {

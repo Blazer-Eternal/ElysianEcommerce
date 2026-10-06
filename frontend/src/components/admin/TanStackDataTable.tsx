@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+﻿import React, { useMemo, useState } from "react";
 
 // Inlined from @tanstack/table-core so the whole @tanstack/react-table family
 // can be dropped from the bundle (this type was its only import).
@@ -98,7 +98,7 @@ export const TanStackDataTable = React.forwardRef<
 
     // Helper function to flatten nested objects for export
     const flattenValue = (value: any, columnHeader?: string, rowData?: any): string => {
-      if (value === null || value === undefined) return "—";
+      if (value === null || value === undefined) return ", ";
       
       // Special handling for coupon IDs in orders export
       if (columnHeader === "Coupon" && couponMap && typeof value === "string" && value.match(/^[0-9a-f]{24}$/)) {
@@ -254,7 +254,7 @@ export const TanStackDataTable = React.forwardRef<
 
         pageData.forEach((row: Record<string, unknown>) => {
           const rowHtml = Object.values(row)
-            .map((val) => `<td>${val !== null && val !== undefined ? val : "—"}</td>`)
+            .map((val) => `<td>${val !== null && val !== undefined ? val : ", "}</td>`)
             .join("");
           htmlContent += `<tr>${rowHtml}</tr>`;
         });

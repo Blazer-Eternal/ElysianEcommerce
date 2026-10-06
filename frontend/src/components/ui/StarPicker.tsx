@@ -1,4 +1,4 @@
-import { useRef, useState, type MouseEvent } from "react";
+﻿import { useRef, useState, type MouseEvent } from "react";
 import { STAR_PATH } from "./StarRating";
 
 interface StarPickerProps {
@@ -10,7 +10,7 @@ interface StarPickerProps {
 
 /**
  * Interactive rating widget: clicking a star selects that full star (1–5).
- * Half stars are not selectable — only whole numbers.
+ * Half stars are not selectable, only whole numbers.
  * Shows a live preview while hovering, like the review form has always done.
  */
 const StarPicker = ({ value, onChange, size = 24, disabled = false }: StarPickerProps) => {

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+﻿import { useState, type FormEvent } from "react";
 import { CheckIcon, SendIcon, XIcon } from "../icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { reviewService } from "../../services/reviewService";
@@ -8,7 +8,7 @@ import type { Review } from "../../types/review.types";
 
 interface ReviewFormProps {
   productId: string;
-  /** Set when the signed-in user has already reviewed — the form is replaced by a hint. */
+  /** Set when the signed-in user has already reviewed, the form is replaced by a hint. */
   myReview?: Review | null;
   /** Called right after a brand-new review is published (so the list can jump to it). */
   onCreated?: () => void;
@@ -105,7 +105,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         {success && (
           <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium flex items-center gap-2">
             <CheckIcon size={16} className="shrink-0" />
-            Thanks — your review is published.
+            Thanks, your review is published.
           </div>
         )}
 

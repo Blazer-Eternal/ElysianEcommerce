@@ -55,7 +55,7 @@ const Footer = () => {
                 alt="Elysian Logo"
                 width={256}
                 height={256}
-                className="h-11 w-auto object-contain"
+                className="h-14 w-14 rounded-full object-cover ring-2 ring-white/25 shadow"
               />
               <span className="flex flex-col leading-none">
                 <span className="font-display text-xl font-semibold text-cream">
@@ -65,7 +65,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-sm leading-relaxed text-cream/65">
-              A curated marketplace for shoppers who care about the details — considered products,
+              A curated marketplace for shoppers who care about the details, considered products,
               honest pricing and service that doesn't stop at checkout.
             </p>
             <div className="flex gap-3 pt-1">
@@ -151,15 +151,15 @@ const Footer = () => {
 
         {/* Payment / fulfilment strip */}
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl border border-cream/15 bg-cream/5 px-4 py-3 text-[12px] text-cream/60 mb-6">
-          <span className="text-gold">Pay your way</span>
+          <span className="text-gold">Shop Elysian</span>
           <span className="h-3 w-px bg-cream/20" aria-hidden="true" />
-          <span>Cash on Delivery</span>
+          <span>Curated for the way Nepal shops</span>
           <span className="h-3 w-px bg-cream/20" aria-hidden="true" />
-          <span>eSewa</span>
+          <span>Every listing checked twice</span>
           <span className="h-3 w-px bg-cream/20" aria-hidden="true" />
-          <span>Free delivery over Rs. 2,000</span>
+          <span>No hidden fees, ever</span>
           <span className="h-3 w-px bg-cream/20" aria-hidden="true" />
-          <span>30-day returns</span>
+          <span>Real support, real people</span>
         </div>
 
         {/* Divider */}

@@ -7,6 +7,7 @@ export const ROUTES = {
   WISHLIST: "/wishlist",
   PROFILE: "/profile",
   DASHBOARD: "/dashboard",
+  LOYALTY: "/dashboard/loyalty",
   ORDER_HISTORY: "/orders",
   ORDER_DETAIL: (id: string = ":id") => `/orders/${id}`,
 
@@ -32,6 +33,7 @@ export const ROUTES = {
   ABOUT: "/about",
   VALUES: "/values",
   FEATURES: "/features",
+  COMPARE_BENEFITS: "/compare-benefits",
   CONTACT: "/contact",
   REFUND_POLICY: "/legal/refund-policy",
   SHIPPING_POLICY: "/legal/shipping",

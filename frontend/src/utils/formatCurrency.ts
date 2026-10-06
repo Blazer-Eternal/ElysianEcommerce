@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Prices are displayed in Nepali Rupees ("Rs.") across the whole storefront.
  * Grouping follows the South-Asian lakh/crore style (Rs. 1,23,456) so large
  * amounts read naturally for NPR.
@@ -22,7 +22,7 @@ interface MrpSource {
   price: number;
   /** Struck-through original price, when the admin set one. */
   mrp?: number;
-  /** Internal cost price — only treated as MRP when it is above the selling price. */
+  /** Internal cost price, only treated as MRP when it is above the selling price. */
   cost_price?: number;
 }
 

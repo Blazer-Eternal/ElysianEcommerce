@@ -1,5 +1,5 @@
-interface StarRatingProps {
-  /** Rating from 0 to 5 — half stars (e.g. 3.5) are rendered partially filled. */
+﻿interface StarRatingProps {
+  /** Rating from 0 to 5, half stars (e.g. 3.5) are rendered partially filled. */
   value: number;
   /** Star size in pixels. */
   size?: number;

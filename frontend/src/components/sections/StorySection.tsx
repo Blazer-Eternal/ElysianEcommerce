@@ -1,7 +1,7 @@
 ﻿import { CheckIcon, CoinsIcon, CreditCardIcon, RefreshIcon, TruckIcon } from "../icons";
 
 /**
- * "Our Story" — replaces the old Why-Choose-Us grid.
+ * "Our Story", replaces the old Why-Choose-Us grid.
  *
  * Left side is a designed brand card rather than stock photography: a framed
  * promise panel listing the terms the storefront actually honours (every value
@@ -16,31 +16,31 @@ const PROMISES: Array<{
 }> = [
   {
     icon: <TruckIcon size={20} />,
-    label: "Delivery",
-    value: "Free above Rs. 2,000 · Rs. 150 flat below",
+    label: "Sourcing",
+    value: "Every listing checked, priced and photographed",
   },
   {
     icon: <CreditCardIcon size={20} />,
-    label: "Payment",
-    value: "Cash on delivery or eSewa, on every order",
+    label: "Packaging",
+    value: "Sealed, tracked, Kathmandu to your door",
   },
   {
     icon: <RefreshIcon size={20} />,
-    label: "Returns",
-    value: "30 days, refunded in full — not store credit",
+    label: "Transparency",
+    value: "No markups, no hidden fees, no surprises",
   },
   {
     icon: <CoinsIcon size={20} />,
-    label: "Rewards",
-    value: "1 point for every Rs. 2 you spend",
+    label: "Care",
+    value: "Real reviews, real support, no bots",
   },
 ];
 
 const CHECKS = [
-  "Stock, spec and price checked before a listing goes live",
-  "Cash on delivery and eSewa on every single order",
-  "Free standard delivery once your cart passes Rs. 2,000",
-  "Thirty days to return anything — full refund, no restocking fee",
+  "Stock and pricing verified before a listing goes live",
+  "Sealed, tracked packaging on every parcel we send",
+  "Real product photography, never catalogue filler",
+  "A human replies to every message, usually within a day",
 ];
 
 const StorySection = () => {
@@ -53,7 +53,7 @@ const StorySection = () => {
           <div className="relative mx-auto w-full max-w-lg lg:mx-0 lg:max-w-none">
             <div
               aria-hidden="true"
-              className="absolute -left-5 -top-5 h-40 w-40 rounded-[2rem] bg-[#f3d9d6] sm:h-48 sm:w-48"
+              className="absolute -left-5 -top-5 h-40 w-40 rounded-4xl bg-[#f3d9d6] sm:h-48 sm:w-48"
             />
             <div
               aria-hidden="true"
@@ -71,7 +71,7 @@ const StorySection = () => {
                     height={256}
                     loading="lazy"
                     decoding="async"
-                    className="h-8 w-8 object-contain"
+                    className="h-10 w-10 rounded-full object-cover ring-1 ring-[#ece1d0]"
                   />
                   <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand">
                     The Elysian promise
@@ -102,7 +102,7 @@ const StorySection = () => {
               {/* Card footer */}
               <div className="flex items-center justify-between gap-4 border-t border-[#f0e7d8] bg-brand px-6 py-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
-                  Every figure above is live policy
+                  No fine print, no asterisks
                 </p>
                 <span className="text-xs font-bold text-[#f0c070]">elysian</span>
               </div>
@@ -132,7 +132,7 @@ const StorySection = () => {
                 ourselves to.
               </p>
               <p>
-                Cash on delivery still matters, and so does paying upfront on eSewa — both work on
+                Cash on delivery still matters, and so does paying upfront on eSewa, both work on
                 every order. Prices are shown in rupees, delivery is free above Rs. 2,000, and if
                 something arrives wrong you have thirty days to send it back.
               </p>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+﻿import { useContext } from "react";
 import { CartStateContext, CartActionsContext } from "../context/CartContext";
 
 /**
@@ -13,7 +13,7 @@ export const useCart = () => {
   return { ...state, ...actions };
 };
 
-/** Cart state only — re-renders when cart/items change. */
+/** Cart state only, re-renders when cart/items change. */
 export const useCartState = () => {
   const context = useContext(CartStateContext);
   if (context === undefined) {
@@ -22,7 +22,7 @@ export const useCartState = () => {
   return context;
 };
 
-/** Cart actions only — stable identity, no re-renders on cart changes. */
+/** Cart actions only, stable identity, no re-renders on cart changes. */
 export const useCartActions = () => {
   const context = useContext(CartActionsContext);
   if (context === undefined) {

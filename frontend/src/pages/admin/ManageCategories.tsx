@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+﻿import { useEffect, useState, type FormEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { categoryService } from "../../services/categoryService";
 import AdminLayout from "../../components/layout/AdminLayout";
@@ -40,7 +40,7 @@ const ManageCategories = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: ({ signal }) => categoryService.getAll({ signal }),
-    staleTime: 5 * 60 * 1000, // singleton data — categories rarely change
+    staleTime: 5 * 60 * 1000, // singleton data, categories rarely change
   });
 
   const categories = data?.data || [];

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { notificationService } from "../../../services/notificationService";
 import type { Notification } from "../../../types/notification.types";
@@ -87,7 +87,7 @@ const NotificationBell = () => {
         .markAllRead()
         .then(() => queryClient.invalidateQueries({ queryKey: ["admin", "notifications"] }))
         .catch(() => {
-          // Badge stays until the next successful poll — never block the UI.
+          // Badge stays until the next successful poll, never block the UI.
         });
     }
   };

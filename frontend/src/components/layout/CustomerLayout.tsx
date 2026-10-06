@@ -86,7 +86,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
         </span>
       ) : undefined,
     },
-    { label: "Loyalty & Rewards", to: ROUTES.DASHBOARD, icon: <GiftIcon size={20} />, hash: "rewards" },
+    { label: "Loyalty & Rewards", to: ROUTES.LOYALTY, icon: <GiftIcon size={20} /> },
     { label: "Addresses & Cards", to: ROUTES.PROFILE, icon: <MapPinIcon size={20} /> },
     { label: "Account Settings", to: ROUTES.PROFILE, icon: <SettingsIcon size={20} /> },
   ];
@@ -118,7 +118,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
 
   return (
     <div className="flex h-screen overflow-hidden bg-cream">
-      {/* Sidebar — fixed drawer on small screens, static column from lg up */}
+      {/* Sidebar, fixed drawer on small screens, static column from lg up */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-[#ece1d0] bg-linear-to-b from-white to-[#fdf8f0] shadow-xl transition-transform duration-300 lg:static lg:z-auto lg:translate-x-0 lg:shadow-none ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -128,7 +128,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
         {/* Portal brand */}
         <div className="flex items-center justify-between gap-3 border-b border-[#ece1d0] px-5 py-4">
           <Link to={ROUTES.HOME} className="flex items-center gap-3 min-w-0" title="Back to Elysian Ecommerce">
-            <img src="/images/Bestlogo.jpg" alt="Elysian Ecommerce" width={48} height={48} className="h-10 w-auto shrink-0 object-contain" />
+            <img src="/images/Bestlogo.jpg" alt="Elysian Ecommerce" width={48} height={48} className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm" />
             <span className="min-w-0">
               <span className="block truncate text-sm font-bold text-ink">Elysian</span>
               <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">Customer Portal</span>

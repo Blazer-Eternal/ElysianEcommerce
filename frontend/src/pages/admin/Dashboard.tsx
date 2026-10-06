@@ -1,4 +1,4 @@
-import { memo, useMemo, useRef, useState } from "react";
+﻿import { memo, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
@@ -120,7 +120,7 @@ const Dashboard = memo(() => {
 
   const isLoading = statsLoading || analyticsLoading;
 
-  const orderTotal = statsRes?.data.totalOrders ?? "—";
+  const orderTotal = statsRes?.data.totalOrders ?? ", ";
   const averageOrderValue = statsRes?.data.averageOrderValue ?? 0;
 
   // Daily series for the charts plus the period totals backing the KPI badges.

@@ -1,4 +1,4 @@
-import { HeartIcon, SproutIcon, TargetIcon, TrendUpIcon, UsersIcon, ZapIcon } from "../components/icons";
+﻿import { HeartIcon, SproutIcon, TargetIcon, TrendUpIcon, UsersIcon, ZapIcon } from "../components/icons";
 
 const Values = () => {
   const coreValues = [
@@ -65,7 +65,7 @@ const Values = () => {
     {
       title: "Continuous Improvement",
       description:
-        "We ship improvements steadily, and customer feedback decides what gets attention next. If something slows you down, tell us — it goes on the list.",
+        "We ship improvements steadily, and customer feedback decides what gets attention next. If something slows you down, tell us, it goes on the list.",
       icon: <TrendUpIcon size={28} />,
       details: [
         "Regular feature updates",

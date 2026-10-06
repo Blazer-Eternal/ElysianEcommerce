@@ -1,33 +1,39 @@
-/**
+﻿/**
  * Loyalty rules for the customer dashboard.
  *
  * The backend keeps no separate points ledger, so the portal derives rewards
  * from what is actually verifiable in the customer's order history: their
- * lifetime spend (orders that were not cancelled). Everything shown on the
- * dashboard — points, tier and the "next tier" progress bar — comes from
- * these two helpers, so the numbers always agree with the real orders.
+ * spend on non-cancelled orders. Tier thresholds follow the 12-month,
+ * order-capped qualifying-spend model documented on the compare-benefits
+ * page; as an interim the dashboard still derives the level from lifetime
+ * non-cancelled spend until the backend exposes per-order qualifying spend
+ * and order counts.
  */
-
-/** Points earned per unit of currency spent (1 point for every Rs. 2). */
-export const POINTS_PER_UNIT = 2;
 
 export interface Tier {
   name: string;
-  /** Lifetime spend (non-cancelled orders) required to reach this tier. */
+  /** Qualifying spend (rolling 12 months) required to reach this tier. */
   minSpend: number;
+  /** Minimum number of delivered orders required alongside the spend. */
+  minOrders: number;
+  /** Points returned per rupee of qualifying spend (1 point = Rs. 1). */
+  pointsRate: number;
 }
 
 /** Ordered lowest → highest; a customer holds the last tier they qualify for. */
 export const TIERS: Tier[] = [
-  { name: "Bronze", minSpend: 0 },
-  { name: "Gold", minSpend: 50_000 },
-  { name: "Platinum", minSpend: 150_000 },
-  { name: "Diamond", minSpend: 400_000 },
+  { name: "Bronze", minSpend: 0, minOrders: 0, pointsRate: 0.005 },
+  { name: "Gold", minSpend: 30_000, minOrders: 3, pointsRate: 0.01 },
+  { name: "Platinum", minSpend: 100_000, minOrders: 8, pointsRate: 0.015 },
+  { name: "Diamond", minSpend: 250_000, minOrders: 15, pointsRate: 0.02 },
 ];
 
-/** Lifetime points from lifetime spend, rounded down. */
-export const getLoyaltyPoints = (totalSpent: number): number =>
-  Math.floor(Math.max(0, totalSpent) / POINTS_PER_UNIT);
+/** Points earned from qualifying spend, tier rate applied, rounded down. */
+export const getLoyaltyPoints = (totalSpent: number): number => {
+  const spend = Math.max(0, totalSpent);
+  const tier = TIERS.reduce((found, t) => (spend >= t.minSpend ? t : found), TIERS[0]);
+  return Math.floor(spend * tier.pointsRate);
+};
 
 export interface TierStatus {
   tier: Tier;
@@ -36,7 +42,7 @@ export interface TierStatus {
   progress: number;
 }
 
-/** Current tier plus progress towards the next one, from lifetime spend. */
+/** Current tier plus progress towards the next one, from qualifying spend. */
 export const getTierStatus = (totalSpent: number): TierStatus => {
   const spend = Math.max(0, totalSpent);
   const index = TIERS.reduce((found, tier, i) => (spend >= tier.minSpend ? i : found), 0);

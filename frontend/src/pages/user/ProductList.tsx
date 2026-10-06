@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SearchIcon } from "../../components/icons";
 import { useQuery } from "@tanstack/react-query";
@@ -63,7 +63,7 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
   const { data, isLoading } = useQuery({
     queryKey: ["products", filters],
     queryFn: ({ signal }) => productService.getAll(filters, { signal }),
-    staleTime: 5 * 60 * 1000, // catalog page — avoid re-hitting the API on back/forward nav
+    staleTime: 5 * 60 * 1000, // catalog page, avoid re-hitting the API on back/forward nav
   });
 
   // Scroll to top whenever the page number changes, so the user actually
@@ -116,7 +116,7 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
 
             <p className="text-lg sm:text-xl text-gray-700 max-w-2xl font-light leading-relaxed gpu-accelerate" style={{ animationDelay: '0.1s', transform: "translateZ(0)" }}>
               Filter by category and price, sort by newest first or lowest price, and add what you
-              like straight to your cart — checkout takes cash on delivery or eSewa.
+              like straight to your cart, checkout takes cash on delivery or eSewa.
             </p>
 
             <div className="flex gap-3 gpu-accelerate" style={{ animationDelay: '0.2s', transform: "translateZ(0)" }}>

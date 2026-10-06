@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { LightbulbIcon } from "../../components/icons";
 import { useCartState } from "../../hooks/useCart";
 import CartItem from "../../components/cart/CartItem";
@@ -53,7 +53,7 @@ const Cart = () => {
             </p>
 
             <p className="text-gray-500">
-              Add an item from the catalogue — it stays here until you check out.
+              Add an item from the catalogue, it stays here until you check out.
             </p>
           </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { categoryService } from "../../services/categoryService";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -25,7 +25,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
   const { data: categoriesRes } = useQuery({
     queryKey: ["categories"],
     queryFn: ({ signal }) => categoryService.getAll({ signal }),
-    staleTime: 5 * 60 * 1000, // singleton data — categories rarely change
+    staleTime: 5 * 60 * 1000, // singleton data, categories rarely change
   });
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         </select>
       </div>
 
-      {/* Price buckets — checkbox ranges sized to the real catalogue prices */}
+      {/* Price buckets, checkbox ranges sized to the real catalogue prices */}
       <div className="border-t border-[#ece1d0] pt-4">
         <button
           type="button"

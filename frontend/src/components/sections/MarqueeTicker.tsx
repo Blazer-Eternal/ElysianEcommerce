@@ -1,5 +1,5 @@
-/**
- * Crimson highlight band — a slow horizontal ticker of the store's headline
+﻿/**
+ * Crimson highlight band, a slow horizontal ticker of the store's headline
  * promises, separated by a small gold lozenge. Sits directly under the hero.
  *
  * The track renders the item list twice and slides by -50%, so the loop is
@@ -8,13 +8,13 @@
  */
 
 const HIGHLIGHTS = [
-  "Curated, checked stock",
-  "Cash on delivery",
-  "eSewa checkout",
-  "Free delivery above Rs. 2,000",
-  "30-day returns",
-  "Delivered across Nepal",
-  "Rewards on every order",
+  "Checked before it ships",
+  "From Kathmandu to all of Nepal",
+  "No hidden charges",
+  "Fair prices, always",
+  "Real help, real people",
+  "Returns in 30 days, full refund",
+  "Points on every rupee",
 ];
 
 const Lozenge = () => (
@@ -61,7 +61,7 @@ const MarqueeTicker = () => (
     <div className="relative py-3 sm:py-3.5">
       <div className="marquee-track">
         <Row />
-        {/* Duplicate — hidden from assistive tech so the list is announced once */}
+        {/* Duplicate, hidden from assistive tech so the list is announced once */}
         <div aria-hidden="true" className="flex shrink-0">
           <Row />
         </div>

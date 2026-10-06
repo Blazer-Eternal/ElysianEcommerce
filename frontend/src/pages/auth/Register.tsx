@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+﻿import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -55,9 +55,9 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-brand-dark to-[#3d050c] flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="relative z-10 w-full max-w-5xl">
 
-      <div className="w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-2 relative z-10">
+      <div className="w-full rounded-3xl overflow-hidden shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-2 relative z-10">
         {/* Diagonal Partition SVG */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block z-0" preserveAspectRatio="none" viewBox="0 0 1000 1000">
           <defs>
@@ -80,7 +80,7 @@ const Register = () => {
                 Create your <span className="text-cyan-300">account</span>.
               </h2>
               <p className="text-cream/85 text-lg leading-relaxed max-w-sm">
-                Your orders, returns and delivery details stay in one place — ready whenever you check out.
+                Your orders, returns and delivery details stay in one place, ready whenever you check out.
               </p>
             </div>
           </div>

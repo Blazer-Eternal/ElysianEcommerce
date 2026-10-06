@@ -71,7 +71,7 @@ const Navbar = () => {
     navigate(ROUTES.HOME);
   };
 
-  // The account menu is deliberately minimal — Dashboard and Logout only, for
+  // The account menu is deliberately minimal, Dashboard and Logout only, for
   // every role. Profile / Wishlist / Orders live inside the customer portal,
   // and the admin's profile shortcut lives next to the notification bell on
   // the admin dashboard, so nothing else belongs in this dropdown.
@@ -95,7 +95,7 @@ const Navbar = () => {
             alt="ElysianEcommerce Logo" 
             width={256}
             height={256}
-            className="h-8 sm:h-10 md:h-11 lg:h-12 w-auto object-contain transition-transform group-hover:scale-105"
+            className="h-10 sm:h-12 md:h-14 w-10 sm:w-12 md:w-14 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm transition-transform group-hover:scale-105"
             style={{ willChange: "transform" }}
           />
           <span className="hidden sm:flex flex-col leading-none pb-0.5">

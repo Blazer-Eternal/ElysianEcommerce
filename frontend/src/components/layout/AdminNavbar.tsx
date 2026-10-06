@@ -19,7 +19,7 @@ const AdminNavbar = () => {
             alt="ElysianEcommerce Logo" 
             width={256}
             height={256}
-            className="h-10 sm:h-12 w-auto object-contain"
+            className="h-10 sm:h-12 w-10 sm:w-12 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm"
           />
           <div className="hidden sm:block">
             <p className="font-bold text-gray-900 text-sm">Admin Dashboard</p>

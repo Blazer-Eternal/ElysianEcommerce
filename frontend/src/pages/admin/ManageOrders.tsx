@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { orderService } from "../../services/orderService";
@@ -213,10 +213,10 @@ const ManageOrders = () => {
                           {/* Customer */}
                           <td className="px-6 py-4">
                             <div className="text-sm font-medium text-gray-900">
-                              {typeof order.user_id === "object" ? order.user_id.name : "—"}
+                              {typeof order.user_id === "object" ? order.user_id.name : ", "}
                             </div>
                             <div className="text-xs text-gray-600">
-                              {typeof order.user_id === "object" ? order.user_id.email : "—"}
+                              {typeof order.user_id === "object" ? order.user_id.email : ", "}
                             </div>
                           </td>
 
@@ -347,10 +347,10 @@ const ManageOrders = () => {
                     <div>
                       <p className="text-xs text-gray-600 font-medium mb-1">Customer</p>
                       <p className="text-sm font-semibold text-gray-900">
-                        {typeof order.user_id === "object" ? order.user_id.name : "—"}
+                        {typeof order.user_id === "object" ? order.user_id.name : ", "}
                       </p>
                       <p className="text-xs text-gray-600">
-                        {typeof order.user_id === "object" ? order.user_id.email : "—"}
+                        {typeof order.user_id === "object" ? order.user_id.email : ", "}
                       </p>
                     </div>
 
@@ -378,7 +378,7 @@ const ManageOrders = () => {
                       <div>
                         <p className="text-xs text-gray-600 font-medium">Discount</p>
                         <p className="font-bold text-gray-900">
-                          {order.discount && order.discount > 0 ? `-${formatCurrency(order.discount)}` : "—"}
+                          {order.discount && order.discount > 0 ? `-${formatCurrency(order.discount)}` : ", "}
                         </p>
                       </div>
                     </div>

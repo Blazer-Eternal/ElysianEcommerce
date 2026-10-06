@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+﻿import { useState, type FormEvent } from "react";
 import { messageService } from "../services/messageService";
 import { getErrorMessage } from "../utils/getErrorMessage";
 
@@ -60,7 +60,7 @@ const Contact = () => {
             Get in <span className="text-brand">Touch</span>
           </h1>
           <p className="text-lg text-ink/70 leading-relaxed max-w-2xl mx-auto">
-            Questions about an order, a product, or a return? Reach out — we answer within 24 hours.
+            Questions about an order, a product, or a return? Reach out, we answer within 24 hours.
           </p>
           <div className="flex justify-center gap-3 pt-1">
             <div className="h-px w-16 bg-brand/40" />

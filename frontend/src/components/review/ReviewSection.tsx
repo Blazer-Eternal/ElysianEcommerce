@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { reviewService } from "../../services/reviewService";
 import type { ReviewSort } from "../../types/review.types";
@@ -22,7 +22,7 @@ interface ReviewSectionProps {
 
 /**
  * Owns review state (page / sort / star filter) and the single query that feeds
- * the rating summary, the form (via myReview) and the paginated list — so every
+ * the rating summary, the form (via myReview) and the paginated list, so every
  * part stays in sync when a review is created, edited or deleted.
  */
 const ReviewSection = ({ productId }: ReviewSectionProps) => {
@@ -46,7 +46,7 @@ const ReviewSection = ({ productId }: ReviewSectionProps) => {
   const pagination = data?.pagination ?? EMPTY_PAGINATION;
 
   // Deleting the last review on a page (or narrowing the filter) must not leave
-  // us stranded on a page that no longer exists — adjusted during render.
+  // us stranded on a page that no longer exists, adjusted during render.
   const [prevTotalPages, setPrevTotalPages] = useState(pagination.totalPages);
   if (pagination.totalPages !== prevTotalPages) {
     setPrevTotalPages(pagination.totalPages);

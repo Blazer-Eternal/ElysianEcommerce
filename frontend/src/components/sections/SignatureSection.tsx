@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { RefreshIcon, SearchIcon, TruckIcon } from "../icons";
 
 /**
- * "What we do best" — the three-card row that replaces the old Why-Choose-Us
+ * "What we do best", the three-card row that replaces the old Why-Choose-Us
  * grid. Each card is a branded gradient panel (the store has no photography to
  * lean on, so the panel is the artwork) with a white glyph, a crimson icon tile
  * breaking the bottom-left edge, then title, body and pill tags on white.
@@ -18,7 +18,7 @@ interface Pillar {
   icon: React.ReactNode;
   /** Same glyph at tile size, for the crimson tile on the panel edge. */
   tile: React.ReactNode;
-  /** Coloured bloom in the top-right of the panel — keeps the three apart. */
+  /** Coloured bloom in the top-right of the panel, keeps the three apart. */
   glow: string;
 }
 
@@ -71,8 +71,8 @@ const SignatureSection = () => {
           </h2>
 
           <p className="mt-5 text-[15px] leading-relaxed text-ink/65 sm:text-base">
-            The rest of the site is built on top of these. Get them right and everything else —
-            the ranges, the offers, the loyalty tiers — is worth having.
+            The rest of the site is built on top of these. Get them right and everything else , 
+            the ranges, the offers, the loyalty tiers, is worth having.
           </p>
         </div>
 
@@ -142,7 +142,7 @@ const SignatureSection = () => {
           ))}
         </div>
 
-        {/* Footer link — same target the old section offered */}
+        {/* Footer link, same target the old section offered */}
         <div className="mt-10 flex justify-center">
           <Link
             to={ROUTES.FEATURES}

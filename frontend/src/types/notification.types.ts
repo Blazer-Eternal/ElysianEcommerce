@@ -1,4 +1,4 @@
-export type NotificationType = "signup" | "order";
+﻿export type NotificationType = "signup" | "order";
 
 /** Admin-facing activity feed entry (new signup / new customer order). */
 export interface Notification {
@@ -10,7 +10,7 @@ export interface Notification {
   created_at: string;
 }
 
-/** GET /notifications — bell feed plus the unread badge count. */
+/** GET /notifications, bell feed plus the unread badge count. */
 export interface NotificationListResponse {
   success: boolean;
   data: Notification[];

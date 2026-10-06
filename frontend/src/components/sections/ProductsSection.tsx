@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
 import { ROUTES } from "../../constants/routes";
@@ -6,7 +6,7 @@ import ProductCard from "../product/ProductCard";
 import { useGridAnimationPause } from "../../hooks/useAnimationPause";
 import type { Product } from "../../types/product.types";
 
-// Stable empty array reference — avoids breaking memoization on `products`
+// Stable empty array reference, avoids breaking memoization on `products`
 // while the query is loading.
 const EMPTY_PRODUCTS: Product[] = [];
 

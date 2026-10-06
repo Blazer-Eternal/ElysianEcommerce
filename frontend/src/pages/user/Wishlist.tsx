@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+﻿import { useState, useMemo } from "react";
 import { CoinsIcon, GiftIcon, HeartIcon, ZapIcon } from "../../components/icons";
 import { Link } from "react-router-dom";
 import { useWishlist } from "../../hooks/useWishlist";
@@ -100,7 +100,7 @@ const Wishlist = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-cream via-white to-cyan-100 flex items-center justify-center px-4">
+      <div className="min-h-full bg-linear-to-br from-cream via-white to-cyan-100 flex items-center justify-center px-4">
         <div className="max-w-md text-center space-y-8 animate-fade-in">
           {/* Animated Heart Icon */}
           <div className="flex justify-center">
@@ -163,7 +163,7 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-cream via-white to-cyan-100 py-8 sm:py-16">
+    <div className="min-h-full bg-linear-to-br from-cream via-white to-cyan-100 py-8 sm:py-16">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6 animate-fade-in">
         <div className="space-y-2 mb-6">
@@ -199,7 +199,7 @@ const Wishlist = () => {
               All Items
             </button>
 
-            {/* Grid / List toggle — immediately right of "All Items" */}
+            {/* Grid / List toggle, immediately right of "All Items" */}
             <ViewToggle viewMode={viewMode} onChange={setViewMode} />
 
             {categories.map((category) => (
@@ -234,7 +234,7 @@ const Wishlist = () => {
         </div>
       </div>
 
-      {/* Products — Grid / List */}
+      {/* Products, Grid / List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-max">
@@ -276,7 +276,7 @@ const Wishlist = () => {
                         )}
                       </div>
 
-                      {/* Wishlist Button — always visible */}
+                      {/* Wishlist Button, always visible */}
                       <div className="absolute top-2 right-2 z-20">
                         <div className="glass rounded-full p-1.5 hover:bg-white transition-all duration-300 border border-[#ece1d0] hover:border-brand/40 hover:scale-110">
                           <WishlistButton productId={product._id} />

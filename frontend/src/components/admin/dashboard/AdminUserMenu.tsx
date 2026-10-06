@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { ROUTES } from "../../../constants/routes";
@@ -19,7 +19,7 @@ const UserIcon = () => (
 
 /**
  * Admin header avatar. Sits beside the notification bell and opens a small menu
- * whose "My Profile" action routes to the shared Your Profile page — the
+ * whose "My Profile" action routes to the shared Your Profile page, the
  * account dropdown in the main navbar no longer carries that shortcut.
  */
 const AdminUserMenu = () => {

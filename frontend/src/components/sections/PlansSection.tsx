@@ -1,7 +1,7 @@
-import { useState, type ReactNode } from "react";
+﻿import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
-import { ArrowRightIcon, CheckIcon, CoinsIcon, CrownIcon, TicketIcon, TruckIcon, ZapIcon } from "../icons";
+import { ArrowRightIcon, CheckIcon, CoinsIcon, CrownIcon, GemIcon, TicketIcon, TruckIcon, ZapIcon } from "../icons";
 
 type PlanKind = "tier" | "savings";
 
@@ -31,14 +31,14 @@ const plans: Plan[] = [
     name: "Bronze",
     kind: "tier",
     badge: "Level 1",
-    headline: "Free — joins with your first order",
+    headline: "Free, joins with your first order",
     description: "Every account starts here, so you earn from the very first rupee you spend.",
     icon: <CrownIcon size={24} />,
     accent: "from-amber-700 to-orange-800",
     perks: [
-      "1 reward point for every Rs. 2 spent",
-      "10% off your first order with WELCOME10",
-      "Flat Rs. 150 delivery, free above Rs. 2,000",
+      "Points worth Rs. 0.50 back on every Rs. 100 spent",
+      "10% off your first order with WELCOME10 (up to Rs. 1,000)",
+      "Standard delivery Rs. 150, free above Rs. 5,000",
       "Real-time tracking on every order",
     ],
   },
@@ -47,13 +47,13 @@ const plans: Plan[] = [
     name: "Gold",
     kind: "tier",
     badge: "Level 2",
-    headline: "Unlocks at Rs. 50,000 lifetime spend",
-    description: "For regular shoppers: the delivery fee disappears and your points double.",
+    headline: "Unlocks at Rs. 30,000 in 12 months · 3 orders",
+    description: "For regular shoppers: points double up and delivery starts clearing sooner.",
     icon: <CoinsIcon size={24} />,
     accent: "from-amber-500 to-amber-700",
     perks: [
-      "2x reward points on every order",
-      "20% off with the VIP20 loyalty coupon",
+      "Points worth Rs. 1 back on every Rs. 100 spent",
+      "GOLD10: 10% off up to Rs. 1,500, non-electronics",
       "Free standard delivery above Rs. 2,000",
       "Early access to seasonal sales & offers",
     ],
@@ -63,15 +63,15 @@ const plans: Plan[] = [
     name: "Platinum",
     kind: "tier",
     badge: "Level 3",
-    headline: "Unlocks at Rs. 150,000 lifetime spend",
+    headline: "Unlocks at Rs. 100,000 in 12 months · 8 orders",
     description: "Priority handling and free delivery, plus first look at every flash sale.",
     icon: <TruckIcon size={24} />,
     accent: "from-stone-400 to-stone-600",
     perks: [
-      "3x reward points on every order",
-      "Free delivery on all orders, no minimum",
+      "Points worth Rs. 1.50 back on every Rs. 100 spent",
+      "PLAT12: 12% off up to Rs. 2,500, non-electronics",
+      "Free standard delivery on all orders, no minimum",
       "Priority order processing & support",
-      "First access to FLASH25 weekend deals",
     ],
   },
   {
@@ -79,14 +79,14 @@ const plans: Plan[] = [
     name: "Diamond",
     kind: "tier",
     badge: "Level 4",
-    headline: "Unlocks at Rs. 400,000 lifetime spend",
-    description: "Our highest level: the best discount ceiling and invite-only offers.",
-    icon: <CrownIcon size={24} />,
+    headline: "Unlocks at Rs. 250,000 in 12 months · 15 orders",
+    description: "Our highest level: free express delivery and the strongest tier coupon.",
+    icon: <GemIcon size={24} />,
     accent: "from-rose-500 to-brand",
     perks: [
-      "4x reward points on every order",
+      "Points worth Rs. 2 back on every Rs. 100 spent",
+      "DIAMOND15: 15% off up to Rs. 4,000, non-electronics",
       "Free express delivery, always",
-      "15% off premium orders with BIGBUY15",
       "Invite-only offers & dedicated support",
     ],
   },
@@ -95,14 +95,14 @@ const plans: Plan[] = [
     name: "Free Shipping Saver",
     kind: "savings",
     badge: "FREESHIP",
-    headline: "Rs. 150 off · min. order Rs. 2,000",
-    description: "Takes the delivery charge off your cart — the number one reason carts get abandoned.",
+    headline: "Waives the Rs. 150 delivery fee · min. order Rs. 2,000",
+    description: "Takes the standard delivery charge off your cart once you cross Rs. 2,000.",
     icon: <TruckIcon size={24} />,
     accent: "from-brand to-brand-dark",
     perks: [
-      "Covers standard shipping in full",
-      "Unlimited uses until 31 Dec 2026",
-      "Nudges your cart past Rs. 2,000",
+      "Removes the Rs. 150 standard delivery fee in full",
+      "Up to 3 uses per account every 30 days",
+      "Standard delivery only, no express upgrades",
     ],
   },
   {
@@ -111,13 +111,13 @@ const plans: Plan[] = [
     kind: "savings",
     badge: "SAVE500",
     headline: "Rs. 500 off · min. order Rs. 5,000",
-    description: "Add one more item, cross Rs. 5,000 and watch Rs. 500 come off the bill.",
+    description: "Applies to eligible items once your cart reaches Rs. 5,000.",
     icon: <CoinsIcon size={24} />,
     accent: "from-cyan-500 to-teal-600",
     perks: [
-      "Instant discount at checkout",
-      "No usage cap until 31 Dec 2026",
-      "Best value on mid-size baskets",
+      "One use per account every 30 days",
+      "Not valid on electronics or already-discounted items",
+      "Cannot be combined with other coupons",
     ],
   },
   {
@@ -125,14 +125,14 @@ const plans: Plan[] = [
     name: "Weekend Flash Deal",
     kind: "savings",
     badge: "FLASH25",
-    headline: "25% off · min. order Rs. 8,000",
-    description: "A short, sharp discount that runs all weekend while the stock lasts.",
+    headline: "25% off up to Rs. 3,000 · min. order Rs. 8,000",
+    description: "Runs Friday 6 PM to Sunday 11:59 PM on selected weekends.",
     icon: <ZapIcon size={24} />,
     accent: "from-[#c9566e] to-brand",
     perks: [
-      "One of the deepest live discounts",
-      "150 redemptions per campaign",
-      "Stacked on already-reduced sale items",
+      "First 150 orders each weekend",
+      "Fashion, beauty, jewellery, toys and home décor",
+      "One use per account, no stacking with sale pricing",
     ],
   },
   {
@@ -140,14 +140,14 @@ const plans: Plan[] = [
     name: "Seasonal Clearance",
     kind: "savings",
     badge: "CLEAR30",
-    headline: "30% off · min. order Rs. 5,000",
-    description: "The biggest markdown of the year on last-season stock, while quantities last.",
+    headline: "30% off up to Rs. 3,000 · min. order Rs. 5,000",
+    description: "On items tagged Clearance in fashion, footwear and bags.",
     icon: <TicketIcon size={24} />,
     accent: "from-gold-dark to-[#5c0a14]",
     perks: [
-      "Clears end-of-season inventory",
-      "100 redemptions per campaign",
-      "Applies to already-reduced items",
+      "First 100 orders, one per account",
+      "Clearance-tagged items only",
+      "Cannot be combined with other coupons",
     ],
   },
 ];
@@ -199,7 +199,7 @@ const PlanCard = ({ plan }: { plan: Plan }) => (
 );
 
 /**
- * Home "plans" section — replaces the old About block. Membership levels come
+ * Home "plans" section, replaces the old About block. Membership levels come
  * first (4 cards), then a "See more plans" toggle reveals the live coupon-backed
  * savings plans.
  */
@@ -228,7 +228,7 @@ const PlansSection = () => {
           </h2>
 
           <p className="text-ink/65 text-sm sm:text-base leading-relaxed">
-            One store, four membership levels and a stack of live promo codes — every plan below is
+            One store, four membership levels and a stack of live promo codes, every plan below is
             powered by rewards, coupons and delivery benefits you can actually use today.
           </p>
         </div>
@@ -257,7 +257,7 @@ const PlansSection = () => {
           ) : (
             <>
               <Link
-                to={ROUTES.FEATURES}
+                to={ROUTES.COMPARE_BENEFITS}
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
               >
                 Compare every benefit
