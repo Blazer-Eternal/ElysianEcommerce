@@ -100,16 +100,16 @@ const Wishlist = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-linear-to-br from-cream via-white to-cyan-100 flex items-center justify-center px-4">
         <div className="max-w-md text-center space-y-8 animate-fade-in">
           {/* Animated Heart Icon */}
           <div className="flex justify-center">
             <div className="relative w-24 h-24">
-              <div className="absolute inset-0 flex items-center justify-center text-pink-500 ">
+              <div className="absolute inset-0 flex items-center justify-center text-brand ">
                 <HeartIcon />
               </div>
               <div className="absolute inset-2 bg-white rounded-full flex items-center justify-center shadow-lg">
-                <div className="text-4xl text-pink-500">♡</div>
+                <div className="text-4xl text-brand">♡</div>
               </div>
             </div>
           </div>
@@ -120,7 +120,8 @@ const Wishlist = () => {
               Your Wishlist is Empty
             </h2>
             <p className="text-gray-600 text-lg leading-relaxed">
-              Start building your collection! Explore our curated selection of premium products and add items you love.
+              Tap the heart on any product to save it here, then move it to your cart when you are
+              ready to buy.
             </p>
           </div>
 
@@ -134,7 +135,7 @@ const Wishlist = () => {
             </Link>
             <Link
               to={ROUTES.HOME}
-              className="px-8 py-3.5 rounded-xl font-semibold text-brand bg-white border border-cyan-200 hover:bg-white hover:border-cyan-400 transition-all duration-300 hover:shadow-lg"
+              className="px-8 py-3.5 rounded-xl font-semibold text-brand bg-white border border-brand/30 hover:bg-brand/5 hover:border-brand/50 transition-all duration-300 hover:shadow-lg"
             >
               Go Home
             </Link>
@@ -149,7 +150,7 @@ const Wishlist = () => {
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="p-3 rounded-lg bg-white border border-gray-200 hover:bg-white hover:border-cyan-200 transition-all duration-300 group cursor-pointer"
+                className="p-3 rounded-lg bg-white border border-[#ece1d0] hover:bg-white hover:border-brand/40 transition-all duration-300 group cursor-pointer"
               >
                 <div className="text-2xl mb-1 group-hover:scale-125 transition-transform duration-300">{feature.icon}</div>
                 <p className="text-xs text-gray-600 font-medium">{feature.label}</p>
@@ -162,7 +163,7 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-cyan-50 py-8 sm:py-16">
+    <div className="min-h-screen bg-linear-to-br from-cream via-white to-cyan-100 py-8 sm:py-16">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6 animate-fade-in">
         <div className="space-y-2 mb-6">
@@ -192,7 +193,7 @@ const Wishlist = () => {
               className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                 selectedCategory === "all"
                   ? "bg-linear-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
-                  : "bg-white border border-gray-200 text-gray-700 hover:bg-white hover:border-cyan-300"
+                  : "bg-white border border-[#ece1d0] text-gray-700 hover:bg-white hover:border-brand/40"
               }`}
             >
               All Items
@@ -208,7 +209,7 @@ const Wishlist = () => {
                 className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
                   selectedCategory === category
                     ? "bg-linear-to-r from-brand to-cyan-600 text-white shadow-lg -translate-y-0.5"
-                    : "bg-white border border-gray-200 text-gray-700 hover:bg-white hover:border-cyan-300"
+                    : "bg-white border border-[#ece1d0] text-gray-700 hover:bg-white hover:border-brand/40"
                 }`}
               >
                 {category}
@@ -223,7 +224,7 @@ const Wishlist = () => {
             aria-label="Sort wishlist"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            className="px-4 py-2 rounded-lg border border-cyan-300 bg-white text-gray-900 font-medium hover:border-cyan-500 hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+            className="px-4 py-2 rounded-lg border border-[#ece1d0] bg-white text-gray-900 font-medium hover:border-brand/40 hover:bg-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand/20"
           >
             <option value="newest">Newest First</option>
             <option value="price-low">Price: Low to High</option>
@@ -249,9 +250,9 @@ const Wishlist = () => {
 
               return (
                 <div key={item._id} className="group h-full animate-fade-in">
-                  <div className="h-full rounded-2xl overflow-hidden bg-white transition-all duration-300 flex flex-col shadow-md hover:shadow-xl border border-gray-200 hover:border-cyan-200/60 hover:-translate-y-1 transform-gpu will-animate">
+                  <div className="h-full rounded-2xl overflow-hidden bg-white transition-all duration-300 flex flex-col shadow-md hover:shadow-xl border border-[#ece1d0] hover:border-brand/40 hover:-translate-y-1 transform-gpu will-animate">
                     {/* Image Container */}
-                    <div className="relative overflow-hidden bg-linear-to-br from-[#eafcfd] via-[#d7f4f6] to-[#c5eef0] aspect-4/3 group">
+                    <div className="relative overflow-hidden bg-linear-to-br from-[#fdf8f0] via-[#f7ecdb] to-[#f2e2cc] aspect-4/3 group">
                       <img
                         src={cloudinaryImg(imageUrl, 640)}
                         alt={product.name}
@@ -263,7 +264,7 @@ const Wishlist = () => {
                       />
 
                       {/* Stock Badge */}
-                      <div className="absolute top-2 left-2 glass rounded-full px-2 py-1 text-[11px] font-semibold border border-gray-200">
+                      <div className="absolute top-2 left-2 glass rounded-full px-2 py-1 text-[11px] font-semibold border border-[#ece1d0]">
                         {outOfStock ? (
                           <span className="text-red-600 font-bold">Out of Stock</span>
                         ) : product.stock && product.stock < 5 ? (
@@ -277,7 +278,7 @@ const Wishlist = () => {
 
                       {/* Wishlist Button — always visible */}
                       <div className="absolute top-2 right-2 z-20">
-                        <div className="glass rounded-full p-1.5 hover:bg-white transition-all duration-300 border border-gray-200 hover:border-gray-300 hover:scale-110">
+                        <div className="glass rounded-full p-1.5 hover:bg-white transition-all duration-300 border border-[#ece1d0] hover:border-brand/40 hover:scale-110">
                           <WishlistButton productId={product._id} />
                         </div>
                       </div>
@@ -338,13 +339,13 @@ const Wishlist = () => {
                         <button
                           onClick={() => handleAddToCart(product._id)}
                           disabled={outOfStock || isAdding}
-                          className="flex-1 py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
+                          className="flex-1 py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-cream-deep disabled:to-cream-deep disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
                         >
                           {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
                         </button>
                         <Link
                           to={ROUTES.PRODUCT_DETAIL(product._id)}
-                          className="px-3 py-2 rounded-lg font-medium text-xs transition-all duration-300 text-brand border border-cyan-300 bg-white hover:bg-cyan-50 hover:border-cyan-500"
+                          className="px-3 py-2 rounded-lg font-medium text-xs transition-all duration-300 text-brand border border-brand/30 bg-white hover:bg-brand/5 hover:border-brand/50"
                         >
                           Details
                         </Link>
@@ -370,12 +371,12 @@ const Wishlist = () => {
               return (
                 <div
                   key={item._id}
-                  className="group flex items-center gap-3 sm:gap-4 p-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-cyan-200/60 transition-all duration-300 animate-fade-in"
+                  className="group flex items-center gap-3 sm:gap-4 p-3 bg-white rounded-xl border border-[#ece1d0] shadow-sm hover:shadow-md hover:border-brand/40 transition-all duration-300 animate-fade-in"
                 >
                   {/* Thumbnail */}
                   <Link
                     to={ROUTES.PRODUCT_DETAIL(product._id)}
-                    className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-linear-to-br from-[#eafcfd] via-[#d7f4f6] to-[#c5eef0]"
+                    className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-linear-to-br from-[#fdf8f0] via-[#f7ecdb] to-[#f2e2cc]"
                   >
                     <img
                       src={cloudinaryImg(imageUrl, 320)}
@@ -396,7 +397,7 @@ const Wishlist = () => {
                           {product.name}
                         </h3>
                       </Link>
-                      <div className="shrink-0 glass rounded-full p-1.5 border border-gray-200 hover:bg-white hover:border-gray-300 transition-all duration-300">
+                      <div className="shrink-0 glass rounded-full p-1.5 border border-[#ece1d0] hover:bg-white hover:border-brand/40 transition-all duration-300">
                         <WishlistButton productId={product._id} />
                       </div>
                     </div>
@@ -460,13 +461,13 @@ const Wishlist = () => {
                     <button
                       onClick={() => handleAddToCart(product._id)}
                       disabled={outOfStock || isAdding}
-                      className="w-full py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
+                      className="w-full py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-cream-deep disabled:to-cream-deep disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
                     >
                       {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
                     </button>
                     <Link
                       to={ROUTES.PRODUCT_DETAIL(product._id)}
-                      className="w-full py-2 rounded-lg font-medium text-xs transition-all duration-300 text-center text-brand border border-cyan-300 bg-white hover:bg-cyan-50 hover:border-cyan-500"
+                      className="w-full py-2 rounded-lg font-medium text-xs transition-all duration-300 text-center text-brand border border-brand/30 bg-white hover:bg-brand/5 hover:border-brand/50"
                     >
                       View Details
                     </Link>
@@ -485,7 +486,7 @@ const Wishlist = () => {
             <p className="text-xl text-gray-600">No items in {selectedCategory} category</p>
             <button
               onClick={() => setSelectedCategory("all")}
-              className="px-6 py-2.5 rounded-lg font-semibold text-brand bg-white border border-cyan-300 hover:bg-cyan-50 transition-all duration-300"
+              className="px-6 py-2.5 rounded-lg font-semibold text-brand bg-white border border-brand/30 hover:bg-brand/5 transition-all duration-300"
             >
               View All Items
             </button>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useCartState } from "../../hooks/useCart";
@@ -89,21 +89,29 @@ const Navbar = () => {
           box the containing block for the account dropdown. The dropdown must anchor to the full-width <nav>
           so it can sit flush at the far-right viewport edge. */}
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible">
-        <Link to={ROUTES.HOME} className="shrink-0 flex items-center gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+        <Link to={ROUTES.HOME} className="shrink-0 flex items-center gap-2 sm:gap-2.5 gpu-accelerate group" style={{ transform: "translateZ(0)" }}>
           <img 
-            src="/logo-256.png" 
+            src="/images/Bestlogo.jpg" 
             alt="ElysianEcommerce Logo" 
             width={256}
             height={256}
-            className="h-8 sm:h-10 md:h-12 lg:h-16 w-auto object-contain transition-transform hover:scale-105"
+            className="h-8 sm:h-10 md:h-11 lg:h-12 w-auto object-contain transition-transform group-hover:scale-105"
             style={{ willChange: "transform" }}
           />
+          <span className="hidden sm:flex flex-col leading-none pb-0.5">
+            <span className="font-display text-lg md:text-xl lg:text-[1.4rem] font-semibold tracking-tight text-ink">
+              Elysian
+            </span>
+            <span className="text-[9px] md:text-[10px] uppercase tracking-[0.28em] text-gold-dark font-medium">
+              Store
+            </span>
+          </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8 lg:gap-10 text-xs sm:text-sm md:text-sm text-gray-700 absolute left-1/2 -translate-x-1/2" style={{ contain: "layout style" }}>
-          <Link to={ROUTES.PRODUCTS} className="hover:accent-text transition-colors gpu-accelerate" style={{ transform: "translateZ(0)" }}>Products</Link>
-          <Link to={ROUTES.FEATURES} className="hover:accent-text transition-colors gpu-accelerate" style={{ transform: "translateZ(0)" }}>Features</Link>
-          <Link to={ROUTES.ABOUT} className="hover:accent-text transition-colors gpu-accelerate" style={{ transform: "translateZ(0)" }}>About</Link>
+        <div className="hidden md:flex items-center gap-8 lg:gap-10 text-xs sm:text-sm md:text-sm text-ink/70 absolute left-1/2 -translate-x-1/2" style={{ contain: "layout style" }}>
+          <Link to={ROUTES.PRODUCTS} className="hover:accent-text transition-colors gpu-accelerate relative after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-brand after:transition-all after:duration-300 hover:after:w-full" style={{ transform: "translateZ(0)" }}>Products</Link>
+          <Link to={ROUTES.FEATURES} className="hover:accent-text transition-colors gpu-accelerate relative after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-brand after:transition-all after:duration-300 hover:after:w-full" style={{ transform: "translateZ(0)" }}>Features</Link>
+          <Link to={ROUTES.ABOUT} className="hover:accent-text transition-colors gpu-accelerate relative after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-brand after:transition-all after:duration-300 hover:after:w-full" style={{ transform: "translateZ(0)" }}>About</Link>
         </div>
 
         {/* No `contain: layout` here either - it would capture the dropdown's positioning context */}
@@ -113,11 +121,11 @@ const Navbar = () => {
               {/* Cart Icon - badge is anchored to an icon-sized wrapper, NOT the link box (the box changes between
                   desktop 28px and mobile 44px touch rule, the icon never does). Offset makes the badge's left edge
                   overlap the icon's RIGHT EDGE by 4px and run down it - badge stays connected to the icon in every view */}
-              <Link to={ROUTES.CART} aria-label="Cart" className="relative inline-flex shrink-0 w-7 h-7 items-center justify-center text-gray-700 hover:accent-text transition-colors overflow-visible">
+              <Link to={ROUTES.CART} aria-label="Cart" className="relative inline-flex shrink-0 w-7 h-7 items-center justify-center text-ink/75 hover:accent-text transition-colors overflow-visible">
                 <span className="relative inline-flex">
                   <BagIcon />
                   {itemCount > 0 && (
-                    <span className="absolute -top-1.5 -right-4 w-5 h-5 text-[10px] rounded-full flex items-center justify-center font-bold bg-brand text-white">
+                    <span className="absolute -top-1.5 -right-4 w-5 h-5 text-[10px] rounded-full flex items-center justify-center font-bold bg-brand text-white ring-2 ring-cream">
                       {itemCount > 99 ? '99+' : itemCount}
                     </span>
                   )}
@@ -132,7 +140,7 @@ const Navbar = () => {
                     setMobileMenuOpen(false);
                   }}
                   aria-label="Account menu"
-                  className="text-gray-700 hover:accent-text transition-colors cursor-pointer p-1 inline-flex items-center justify-center shrink-0 gpu-accelerate"
+                  className="text-ink/75 hover:accent-text transition-colors cursor-pointer p-1 inline-flex items-center justify-center shrink-0 gpu-accelerate"
                   style={{ transform: "translateZ(0)" }}
                 >
                   <UserIcon />
@@ -141,9 +149,9 @@ const Navbar = () => {
                 {/* Desktop Dropdown Card - anchored to the full-width nav, flush at the far-right viewport edge (20px inset).
                     Translucent white + light backdrop blur keeps it dull so it doesn't pull focus from the hero (only rendered while open). */}
                 {userMenuOpen && (
-                  <div className="hidden md:block absolute top-full right-5 mt-1 z-50 w-32 whitespace-nowrap rounded-lg border border-gray-200 bg-white shadow-md py-1">
+                  <div className="hidden md:block absolute top-full right-5 mt-2 z-50 w-40 whitespace-nowrap rounded-xl border border-sand bg-white/95 backdrop-blur-md shadow-[0_18px_40px_-18px_rgba(61,5,12,0.35)] py-1.5">
                     {accountMenuItems.map((item) => {
-                      const baseClass = `block w-full text-left px-3 py-1 text-sm transition-colors ${item.red ? "text-red-500 hover:bg-red-50/60" : "text-gray-600 hover:bg-white"}`;
+                      const baseClass = `block w-full text-left px-3 py-1.5 text-sm transition-colors rounded-lg ${item.red ? "text-brand hover:bg-teal-50" : "text-ink/75 hover:bg-cream-deep hover:text-ink"}`;
                       const onClick = () => setUserMenuOpen(false);
                       if (item.action) {
                         return (
@@ -176,10 +184,10 @@ const Navbar = () => {
             </>
           ) : (
             <div className="hidden sm:flex items-center gap-2 md:gap-3">
-              <Link to={ROUTES.LOGIN} className="text-xs sm:text-sm text-gray-700 hover:accent-text gpu-accelerate" style={{ transform: "translateZ(0)" }}>Login</Link>
+              <Link to={ROUTES.LOGIN} className="text-xs sm:text-sm text-ink/75 hover:accent-text gpu-accelerate" style={{ transform: "translateZ(0)" }}>Login</Link>
               <Link
                 to={ROUTES.REGISTER}
-                className="text-xs sm:text-sm bg-brand text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full hover:bg-brand-dark transition-colors whitespace-nowrap gpu-accelerate"
+                className="text-xs sm:text-sm font-medium bg-brand text-white px-3.5 py-1.5 md:px-5 md:py-2 rounded-full hover:bg-brand-dark shadow-[0_8px_20px_-10px_rgba(192,30,46,0.9)] transition-all whitespace-nowrap gpu-accelerate"
                 style={{ transform: "translateZ(0)" }}
               >
                 Register
@@ -194,7 +202,7 @@ const Navbar = () => {
               setUserMenuOpen(false);
             }}
             aria-label="Open menu"
-            className="sm:hidden shrink-0 text-gray-700 flex items-center justify-center gpu-accelerate"
+            className="sm:hidden shrink-0 text-ink/75 flex items-center justify-center gpu-accelerate"
             style={{ transform: "translateZ(0)" }}
           >
             {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
@@ -204,11 +212,11 @@ const Navbar = () => {
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-        <div className="sm:hidden glass-strong border-t border-gray-200 px-3 py-3 space-y-1 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
-          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+        <div className="sm:hidden glass-strong border-t border-sand px-3 py-3 space-y-1 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
+          <Link to={ROUTES.PRODUCTS} onClick={() => setMobileMenuOpen(false)} className="block py-2 border-b border-sand/60 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             Products
           </Link>
-          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
+          <Link to={ROUTES.FEATURES} onClick={() => setMobileMenuOpen(false)} className="block py-2 border-b border-sand/60 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
             Features
           </Link>
           <Link to={ROUTES.ABOUT} onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-brand gpu-accelerate" style={{ transform: "translateZ(0)" }}>
@@ -219,12 +227,12 @@ const Navbar = () => {
 
       {/* Mobile Account Panel - full-width stacked rows, matches Vercel ref divider + uniform spacing */}
       {userMenuOpen && isAuthenticated && (
-        <div ref={mobilePanelRef} className="sm:hidden glass-strong border-t border-gray-200 px-3 py-3 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
+        <div ref={mobilePanelRef} className="sm:hidden glass-strong border-t border-sand px-3 py-3 text-xs sm:text-sm animation-container gpu-accelerate" style={{ contain: "layout style paint", transform: "translateZ(0)" }}>
           {/* Rows use `flex items-center min-h-[44px]` so every row is exactly 44px with a vertically centered label:
               neutralizes the touch rule's uneven effect (buttons center their label under min-height, links top-align it),
               which was making the gap above Logout visibly larger than the rest */}
           {accountMenuItems.map((item) => {
-            const baseClass = `flex items-center w-full min-h-[44px] text-left py-2 border-b border-gray-100 last:border-b-0 gpu-accelerate transition-colors ${item.red ? "text-red-600 hover:text-red-700" : "text-gray-700 hover:text-brand"}`;
+            const baseClass = `flex items-center w-full min-h-[44px] text-left py-2 border-b border-sand/70 last:border-b-0 gpu-accelerate transition-colors ${item.red ? "text-brand hover:text-brand-dark" : "text-ink/80 hover:text-brand"}`;
             const onClick = () => setUserMenuOpen(false);
             if (item.action) {
               return (

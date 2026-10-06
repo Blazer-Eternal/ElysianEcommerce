@@ -53,7 +53,7 @@ const MapPinIcon = () => (
 );
 
 const inputClass =
-  "w-full border border-gray-200 rounded-lg px-4 py-3 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white";
+  "w-full border border-[#ece1d0] rounded-lg px-4 py-3 text-sm bg-cream/70 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20 focus:bg-white";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -225,9 +225,9 @@ const Profile = () => {
       </div>
 
       {/* Profile information */}
-      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+      <section className="bg-white border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6 space-y-6">
         <div className="flex items-start gap-3">
-          <div className="bg-blue-50 text-blue-600 rounded-lg p-2">
+          <div className="bg-brand/10 text-brand rounded-lg p-2">
             <PersonIcon />
           </div>
           <div>
@@ -236,13 +236,13 @@ const Profile = () => {
           </div>
         </div>
 
-        <hr className="border-gray-100" />
+        <hr className="border-[#ece1d0]" />
 
         <div className="flex items-center gap-5">
           {photoPreview ? (
             <img src={photoPreview} alt="Profile" className="w-20 h-20 rounded-full object-cover" />
           ) : (
-            <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-semibold">
+            <div className="w-20 h-20 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-xl font-semibold">
               {initials}
             </div>
           )}
@@ -250,7 +250,7 @@ const Profile = () => {
             <p className="font-medium text-gray-900">{profileUser.name}</p>
             <p className="text-sm text-gray-500 mt-0.5">JPG, PNG or WEBP · Max 2MB</p>
             <div className="flex gap-3 mt-3">
-              <label className="inline-flex items-center gap-2 text-sm border border-gray-200 rounded-lg px-4 py-2 cursor-pointer hover:bg-gray-50">
+              <label className="inline-flex items-center gap-2 text-sm border border-[#ece1d0] rounded-lg px-4 py-2 cursor-pointer hover:bg-cream">
                 <CameraIcon /> Change photo
                 <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handlePhotoChange} />
               </label>
@@ -317,7 +317,7 @@ const Profile = () => {
           <button
             type="submit"
             disabled={isSavingProfile}
-            className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+            className="bg-brand text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-brand-dark transition-colors disabled:opacity-50"
           >
             {isSavingProfile ? "Saving..." : "Save changes"}
           </button>
@@ -325,7 +325,7 @@ const Profile = () => {
       </section>
 
       {/* Password & security */}
-      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+      <section className="bg-white border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6 space-y-6">
         <div className="flex items-start gap-3">
           <div className="bg-orange-50 text-orange-500 rounded-lg p-2">
             <LockIcon />
@@ -336,7 +336,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <hr className="border-gray-100" />
+        <hr className="border-[#ece1d0]" />
 
         {passwordError && <p className="text-sm text-red-600">{passwordError}</p>}
         {passwordSuccess && <p className="text-sm text-green-700">Password changed successfully.</p>}
@@ -352,7 +352,7 @@ const Profile = () => {
               onChange={(e) => setCurrentPassword(e.target.value)}
               placeholder="Enter current password"
               required
-              className="rounded-lg bg-gray-50 border-gray-200"
+              className="rounded-lg bg-cream border-[#ece1d0]"
             />
           </div>
           <div>
@@ -366,7 +366,7 @@ const Profile = () => {
               placeholder="Enter new password"
               required
               minLength={6}
-              className="rounded-lg bg-gray-50 border-gray-200"
+              className="rounded-lg bg-cream border-[#ece1d0]"
             />
           </div>
           <div>
@@ -380,13 +380,13 @@ const Profile = () => {
               placeholder="Re-enter new password"
               required
               minLength={6}
-              className="rounded-lg bg-gray-50 border-gray-200"
+              className="rounded-lg bg-cream border-[#ece1d0]"
             />
           </div>
           <button
             type="submit"
             disabled={isSavingPassword}
-            className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+            className="bg-brand text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-brand-dark transition-colors disabled:opacity-50"
           >
             {isSavingPassword ? "Updating..." : "Update password"}
           </button>
@@ -394,7 +394,7 @@ const Profile = () => {
       </section>
 
       {/* Addresses */}
-      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+      <section className="bg-white border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6 space-y-6">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">
             <div className="bg-green-50 text-green-600 rounded-lg p-2">
@@ -405,12 +405,12 @@ const Profile = () => {
               <p className="text-sm text-gray-500">Manage your saved delivery addresses.</p>
             </div>
           </div>
-          <button onClick={openAddForm} className="text-sm text-blue-600 font-medium hover:underline">
+          <button onClick={openAddForm} className="text-sm text-brand font-medium hover:underline">
             + Add address
           </button>
         </div>
 
-        <hr className="border-gray-100" />
+        <hr className="border-[#ece1d0]" />
 
         {profileUser.addresses.length === 0 && !showAddressForm && (
           <p className="text-sm text-gray-500">No saved addresses yet.</p>
@@ -418,7 +418,7 @@ const Profile = () => {
 
         <div className="space-y-3">
           {profileUser.addresses.map((address) => (
-            <div key={address._id} className="border border-gray-200 rounded-lg p-4 text-sm flex items-start justify-between">
+            <div key={address._id} className="border border-[#ece1d0] rounded-lg p-4 text-sm flex items-start justify-between">
               <div>
                 <p className="text-gray-800">
                   {address.street}, {address.city}, {address.state} {address.zip}, {address.country}
@@ -430,7 +430,7 @@ const Profile = () => {
                 )}
               </div>
               <div className="flex gap-4 shrink-0 ml-4">
-                <button onClick={() => openEditForm(address)} className="text-xs text-blue-600 hover:underline">
+                <button onClick={() => openEditForm(address)} className="text-xs text-brand hover:underline">
                   Edit
                 </button>
                 <button
@@ -445,7 +445,7 @@ const Profile = () => {
         </div>
 
         {showAddressForm && (
-          <form onSubmit={handleAddressSubmit} className="border border-gray-200 rounded-lg p-4 space-y-3">
+          <form onSubmit={handleAddressSubmit} className="border border-[#ece1d0] bg-cream/50 rounded-lg p-4 space-y-3">
             {addressError && <p className="text-sm text-red-600">{addressError}</p>}
 
             <input
@@ -527,14 +527,14 @@ const Profile = () => {
               <button
                 type="submit"
                 disabled={isSavingAddress}
-                className="bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50"
+                className="bg-brand text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-brand-dark transition-colors disabled:opacity-50"
               >
                 {isSavingAddress ? "Saving..." : editingAddressId ? "Update address" : "Add address"}
               </button>
               <button
                 type="button"
                 onClick={() => setShowAddressForm(false)}
-                className="px-5 py-2.5 rounded-lg text-sm border border-gray-200 hover:bg-gray-50"
+                className="px-5 py-2.5 rounded-lg text-sm border border-[#ece1d0] hover:bg-cream"
               >
                 Cancel
               </button>

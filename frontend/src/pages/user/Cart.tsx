@@ -12,7 +12,7 @@ const Cart = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#eafcfd] via-white to-cyan-50">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-50 via-white to-cyan-100">
         <div className="animate-fade-in">
           <Spinner size="lg" />
         </div>
@@ -23,12 +23,12 @@ const Cart = () => {
   // Empty cart state
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 flex items-center">
+      <div className="min-h-screen bg-linear-to-br from-cyan-50 via-white to-cyan-100 flex items-center">
         <div className="max-w-6xl mx-auto px-4 py-16 text-center animate-fade-in w-full">
           
           {/* Empty Cart Icon and Message */}
           <div className="mb-12">
-            <div className="inline-block mb-6 p-6 rounded-3xl bg-linear-to-r from-brand/10 to-cyan-600/10">
+            <div className="inline-block mb-6 p-6 rounded-2xl bg-linear-to-r from-brand/10 to-cyan-600/10">
               <svg
                 className="w-24 h-24 mx-auto text-brand"
                 fill="none"
@@ -49,16 +49,16 @@ const Cart = () => {
             </h2>
 
             <p className="text-lg text-gray-600 mb-2">
-              Looks like you haven't added anything yet!
+              Nothing added yet.
             </p>
 
             <p className="text-gray-500">
-              Explore our amazing collection and find products you love.
+              Add an item from the catalogue — it stays here until you check out.
             </p>
           </div>
 
           {/* Why Shop With Elysian */}
-          <div className="bg-white rounded-2xl p-8 mb-8 shadow-sm border border-gray-100 max-w-2xl mx-auto">
+          <div className="bg-white rounded-2xl p-8 mb-8 shadow-sm border border-[#ece1d0] max-w-2xl mx-auto">
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Why shop with Elysian?
             </h3>
@@ -120,7 +120,7 @@ const Cart = () => {
 
             <Link
               to={ROUTES.HOME}
-              className="px-8 py-3 bg-white text-brand font-semibold rounded-xl border-2 border-brand hover:bg-gray-50 transition-all duration-300"
+              className="px-8 py-3 bg-white text-brand font-semibold rounded-xl border-2 border-brand hover:bg-cream transition-all duration-300"
             >
               Back to Home
             </Link>
@@ -145,7 +145,7 @@ const Cart = () => {
 
   // Cart with items
   return (
-    <div className="relative min-h-screen bg-linear-to-br from-[#eafcfd] via-white to-cyan-50 py-8 sm:py-16 overflow-hidden animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
+    <div className="relative min-h-screen bg-linear-to-br from-cyan-50 via-white to-cyan-100 py-8 sm:py-16 overflow-hidden animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       
       <div className="absolute inset-0 -z-10 overflow-hidden">
         
@@ -172,8 +172,8 @@ const Cart = () => {
           <div className="md:col-span-2 space-y-4 sm:space-y-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
             
             {/* Item Count */}
-            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm text-blue-700">
+            <div className="mb-4 p-4 bg-cyan-50 border border-cyan-200 rounded-lg">
+              <p className="text-sm text-cyan-700">
                 <span className="font-semibold">
                   Items in cart:
                 </span>{" "}
@@ -209,14 +209,14 @@ const Cart = () => {
               <CartSummary cart={cart} />
 
               {/* Shopping Tip */}
-              <div className="mt-6 p-4 bg-linear-to-br from-cyan-50 to-blue-50 rounded-lg border border-cyan-200">
+              <div className="mt-6 p-4 bg-linear-to-br from-cyan-50 to-cyan-100 rounded-lg border border-cyan-200">
                 <p className="text-xs font-semibold text-gray-600 mb-2">
                   <LightbulbIcon size={14} className="inline-block align-[-2px] mr-1.5" />SHOPPING TIP
                 </p>
 
                 <p className="text-sm text-gray-700">
-                  Complete your order to enjoy fast delivery and exclusive
-                  benefits!
+                  Orders over Rs. 2,000 ship free, and every order can be
+                  returned within 30 days.
                 </p>
               </div>
             </div>

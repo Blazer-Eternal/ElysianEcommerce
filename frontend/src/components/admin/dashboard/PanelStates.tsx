@@ -9,7 +9,7 @@ export const PanelEmpty = memo(({ message, hint }: { message: string; hint?: str
       </svg>
     </span>
     <p className="text-sm font-semibold text-gray-600">{message}</p>
-    {hint && <p className="text-xs text-gray-400 mt-1">{hint}</p>}
+    {hint && <p className="text-xs text-gray-500 mt-1">{hint}</p>}
   </div>
 ));
 PanelEmpty.displayName = "PanelEmpty";

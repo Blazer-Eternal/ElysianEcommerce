@@ -10,12 +10,12 @@ const ProductGallery = ({ images, productName }: ProductGalleryProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   if (images.length === 0) {
-    return <div className="aspect-square bg-gray-100 rounded-lg" />;
+    return <div className="aspect-square bg-cream-deep rounded-lg" />;
   }
 
   return (
     <div>
-      <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+      <div className="aspect-square bg-cream-deep rounded-lg overflow-hidden">
         <img
           src={cloudinaryImg(images[activeIndex], 1200)}
           alt={productName}
@@ -33,7 +33,7 @@ const ProductGallery = ({ images, productName }: ProductGalleryProps) => {
               key={idx}
               onClick={() => setActiveIndex(idx)}
               className={`w-16 h-16 rounded overflow-hidden border-2 ${
-                idx === activeIndex ? "border-black" : "border-transparent"
+                idx === activeIndex ? "border-brand" : "border-transparent hover:border-[#ece1d0]"
               }`}
             >
               <img src={cloudinaryImg(img, 256)} alt={`${productName} ${idx + 1}`} width={64} height={64} loading="lazy" decoding="async" className="w-full h-full object-cover" />

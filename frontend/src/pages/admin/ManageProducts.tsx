@@ -175,12 +175,12 @@ const ManageProducts = () => {
             <div>
               <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Products</h1>
-              <p className="text-gray-600 mt-2">Add, edit and manage products in your collection.</p>
+              <p className="text-gray-600 mt-2">Add products, adjust stock and keep listings current.</p>
             </div>
             <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-3">
               <button
                 onClick={openCreateForm}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-brand text-white rounded-lg hover:bg-brand-dark transition-all duration-200 font-semibold text-sm sm:text-base whitespace-nowrap"
               >
                 <span className="text-xl">+</span> Add Product
               </button>
@@ -243,10 +243,10 @@ const ManageProducts = () => {
                 {products.map((product) => (
                   <div
                     key={product._id}
-                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
+                    className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] transition-all duration-300 group"
                   >
                     {/* Product Image */}
-                    <div className="relative overflow-hidden bg-gray-200 h-48 sm:h-56">
+                    <div className="relative overflow-hidden bg-cream-deep h-48 sm:h-56">
                       {product.images && product.images.length > 0 ? (
                         <img
                           src={cloudinaryImg(product.images[0], 400)}
@@ -258,7 +258,7 @@ const ManageProducts = () => {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                        <div className="w-full h-full flex items-center justify-center bg-sand">
                           <BoxIcon size={36} className="text-gray-500" />
                         </div>
                       )}
@@ -287,7 +287,7 @@ const ManageProducts = () => {
                       </div>
 
                       {/* Product Details */}
-                      <div className="grid grid-cols-2 gap-3 py-2 border-t border-b border-gray-200">
+                      <div className="grid grid-cols-2 gap-3 py-2 border-t border-b border-[#ece1cf]">
                         <div>
                           <p className="text-xs text-gray-600 font-medium">Price</p>
                           <p className="font-bold text-brand text-sm">{formatCurrency(product.price)}</p>
@@ -336,7 +336,7 @@ const ManageProducts = () => {
                 {products.map((product) => (
                   <div
                     key={product._id}
-                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-200 p-4 sm:p-6"
+                    className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] transition-all duration-300 p-4 sm:p-6"
                   >
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
                       {/* Product Image */}
@@ -352,7 +352,7 @@ const ManageProducts = () => {
                             className="w-full h-full object-cover rounded-lg"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gray-300 rounded-lg">
+                          <div className="w-full h-full flex items-center justify-center bg-sand rounded-lg">
                             <BoxIcon size={24} className="text-gray-500" />
                           </div>
                         )}
@@ -379,7 +379,7 @@ const ManageProducts = () => {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-gray-200">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-[#ece1cf]">
                           <div>
                             <p className="text-xs text-gray-600 font-medium">Price</p>
                             <p className="font-bold text-brand text-sm">{formatCurrency(product.price)}</p>
@@ -448,7 +448,7 @@ const ManageProducts = () => {
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
           <input
             type="text"
@@ -456,7 +456,7 @@ const ManageProducts = () => {
             required
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
           <textarea
             placeholder="Description"
@@ -464,14 +464,14 @@ const ManageProducts = () => {
             rows={3}
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
           <input
             type="text"
             placeholder="Brand (e.g. Dot & Key)"
             value={form.brand ?? ""}
             onChange={(e) => setForm({ ...form, brand: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
           <input
             type="text"
@@ -479,7 +479,7 @@ const ManageProducts = () => {
             required
             value={form.sku}
             onChange={(e) => setForm({ ...form, sku: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <div className="grid grid-cols-3 gap-3">
@@ -491,7 +491,7 @@ const ManageProducts = () => {
               step={0.01}
               value={form.price}
               onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
-              className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+              className="border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
             />
             <input
               type="number"
@@ -501,7 +501,7 @@ const ManageProducts = () => {
               title="Original price shown struck-through. Leave empty if there is no discount."
               value={form.mrp ?? ""}
               onChange={(e) => setForm({ ...form, mrp: e.target.value ? Number(e.target.value) : undefined })}
-              className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+              className="border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
             />
             <input
               type="number"
@@ -510,13 +510,13 @@ const ManageProducts = () => {
               step={0.01}
               value={form.cost_price ?? ""}
               onChange={(e) => setForm({ ...form, cost_price: e.target.value ? Number(e.target.value) : undefined })}
-              className="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+              className="border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
             />
           </div>
 
           <div>
             <label htmlFor="product-benefits" className="block text-sm font-medium text-gray-900 mb-1">
-              Product Benefits <span className="text-gray-400 font-normal">(one per line)</span>
+              Product Benefits <span className="text-gray-500 font-normal">(one per line)</span>
             </label>
             <textarea
               id="product-benefits"
@@ -524,13 +524,13 @@ const ManageProducts = () => {
               rows={3}
               value={bulletsToText(form.key_benefits)}
               onChange={(e) => setForm({ ...form, key_benefits: textToBullets(e.target.value) })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+              className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
             />
           </div>
 
           <div>
             <label htmlFor="product-how-to-use" className="block text-sm font-medium text-gray-900 mb-1">
-              How to Use <span className="text-gray-400 font-normal">(one per line)</span>
+              How to Use <span className="text-gray-500 font-normal">(one per line)</span>
             </label>
             <textarea
               id="product-how-to-use"
@@ -538,7 +538,7 @@ const ManageProducts = () => {
               rows={3}
               value={bulletsToText(form.how_to_use)}
               onChange={(e) => setForm({ ...form, how_to_use: textToBullets(e.target.value) })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+              className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
             />
           </div>
 
@@ -549,14 +549,14 @@ const ManageProducts = () => {
             min={0}
             value={form.stock}
             onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           />
 
           <select
             required
             value={form.category_id}
             onChange={(e) => setForm({ ...form, category_id: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           >
             <option value="">Select category</option>
             {categories.map((cat) => (
@@ -569,7 +569,7 @@ const ManageProducts = () => {
           <select
             value={form.status}
             onChange={(e) => setForm({ ...form, status: e.target.value as ProductStatus })}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+            className="w-full border border-[#e2d7c5] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand"
           >
             <option value="draft">Draft</option>
             <option value="active">Active</option>
@@ -594,7 +594,7 @@ const ManageProducts = () => {
           <button
             type="submit"
             disabled={isSaving}
-            className="w-full bg-linear-to-r from-brand to-cyan-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-linear-to-r from-brand to-cyan-600 text-white py-3 rounded-lg font-semibold hover:shadow-[0_8px_24px_rgba(61,5,12,0.20)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSaving ? "Saving..." : editingId ? "Update Product" : "Create Product"}
           </button>

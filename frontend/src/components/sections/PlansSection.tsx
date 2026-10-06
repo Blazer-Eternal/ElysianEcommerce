@@ -34,7 +34,7 @@ const plans: Plan[] = [
     headline: "Free — joins with your first order",
     description: "Every account starts here, so you earn from the very first rupee you spend.",
     icon: <CrownIcon size={24} />,
-    accent: "from-amber-500 to-orange-600",
+    accent: "from-amber-700 to-orange-800",
     perks: [
       "1 reward point for every Rs. 2 spent",
       "10% off your first order with WELCOME10",
@@ -50,7 +50,7 @@ const plans: Plan[] = [
     headline: "Unlocks at Rs. 50,000 lifetime spend",
     description: "For regular shoppers: the delivery fee disappears and your points double.",
     icon: <CoinsIcon size={24} />,
-    accent: "from-yellow-400 to-amber-500",
+    accent: "from-amber-500 to-amber-700",
     perks: [
       "2x reward points on every order",
       "20% off with the VIP20 loyalty coupon",
@@ -66,7 +66,7 @@ const plans: Plan[] = [
     headline: "Unlocks at Rs. 150,000 lifetime spend",
     description: "Priority handling and free delivery, plus first look at every flash sale.",
     icon: <TruckIcon size={24} />,
-    accent: "from-slate-500 to-slate-700",
+    accent: "from-stone-400 to-stone-600",
     perks: [
       "3x reward points on every order",
       "Free delivery on all orders, no minimum",
@@ -82,7 +82,7 @@ const plans: Plan[] = [
     headline: "Unlocks at Rs. 400,000 lifetime spend",
     description: "Our highest level: the best discount ceiling and invite-only offers.",
     icon: <CrownIcon size={24} />,
-    accent: "from-sky-500 to-indigo-600",
+    accent: "from-rose-500 to-brand",
     perks: [
       "4x reward points on every order",
       "Free express delivery, always",
@@ -98,7 +98,7 @@ const plans: Plan[] = [
     headline: "Rs. 150 off · min. order Rs. 2,000",
     description: "Takes the delivery charge off your cart — the number one reason carts get abandoned.",
     icon: <TruckIcon size={24} />,
-    accent: "from-teal-500 to-emerald-600",
+    accent: "from-brand to-brand-dark",
     perks: [
       "Covers standard shipping in full",
       "Unlimited uses until 31 Dec 2026",
@@ -128,7 +128,7 @@ const plans: Plan[] = [
     headline: "25% off · min. order Rs. 8,000",
     description: "A short, sharp discount that runs all weekend while the stock lasts.",
     icon: <ZapIcon size={24} />,
-    accent: "from-fuchsia-500 to-pink-600",
+    accent: "from-[#c9566e] to-brand",
     perks: [
       "One of the deepest live discounts",
       "150 redemptions per campaign",
@@ -143,7 +143,7 @@ const plans: Plan[] = [
     headline: "30% off · min. order Rs. 5,000",
     description: "The biggest markdown of the year on last-season stock, while quantities last.",
     icon: <TicketIcon size={24} />,
-    accent: "from-rose-500 to-orange-500",
+    accent: "from-gold-dark to-[#5c0a14]",
     perks: [
       "Clears end-of-season inventory",
       "100 redemptions per campaign",
@@ -153,7 +153,7 @@ const plans: Plan[] = [
 ];
 
 const PlanCard = ({ plan }: { plan: Plan }) => (
-  <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-xl animate-fade-in">
+  <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.05)] transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/30 hover:shadow-[0_18px_44px_-22px_rgba(61,5,12,0.4)] animate-fade-in">
     {/* Top accent strip */}
     <span className={`absolute inset-x-0 top-0 h-1 bg-linear-to-r ${plan.accent}`} />
 
@@ -168,13 +168,13 @@ const PlanCard = ({ plan }: { plan: Plan }) => (
       </span>
     </div>
 
-    <h3 className="mt-4 text-xl font-bold text-gray-900">{plan.name}</h3>
+    <h3 className="mt-4 text-xl font-semibold text-ink">{plan.name}</h3>
     <p className="mt-1 text-sm font-semibold text-brand">{plan.headline}</p>
-    <p className="mt-2 text-sm leading-relaxed text-gray-600">{plan.description}</p>
+    <p className="mt-2 text-sm leading-relaxed text-ink/65">{plan.description}</p>
 
     <ul className="mt-4 space-y-2.5">
       {plan.perks.map((perk) => (
-        <li key={perk} className="flex items-start gap-2.5 text-sm text-gray-700">
+        <li key={perk} className="flex items-start gap-2.5 text-sm text-ink/75">
           <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
             <CheckIcon size={11} strokeWidth={3.5} />
           </span>
@@ -185,13 +185,13 @@ const PlanCard = ({ plan }: { plan: Plan }) => (
 
     <div className="mt-auto pt-5">
       {plan.kind === "savings" ? (
-        <div className="rounded-xl border border-dashed border-brand/40 bg-brand/5 px-3 py-2 text-center text-xs font-semibold text-gray-700">
+        <div className="rounded-xl border border-dashed border-brand/40 bg-brand/5 px-3 py-2 text-center text-xs font-semibold text-ink/70">
           Use code <span className="font-black tracking-wide text-brand">{plan.badge}</span> at checkout
         </div>
       ) : (
-        <div className="flex items-center justify-between rounded-xl bg-gray-50 px-3 py-2 text-xs text-gray-500">
+        <div className="flex items-center justify-between rounded-xl bg-[#fdfaf3] px-3 py-2 text-xs text-ink/55">
           <span>Earned, not bought</span>
-          <span className="font-bold text-gray-700">{plan.badge}</span>
+          <span className="font-bold text-ink/80">{plan.badge}</span>
         </div>
       )}
     </div>
@@ -211,11 +211,11 @@ const PlansSection = () => {
   const visible = expanded ? [...tierPlans, ...savingsPlans] : tierPlans;
 
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-[#f3fbfc] to-white py-12 sm:py-16">
+    <section className="relative overflow-hidden bg-linear-to-b from-white to-[#fdfaf3] py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center space-y-4">
-          <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-bold text-brand shadow-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-brand">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-brand"></span>
@@ -223,11 +223,11 @@ const PlansSection = () => {
             Membership &amp; Savings Plans
           </span>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight">
+          <h2 className="text-4xl sm:text-5xl font-semibold text-ink leading-[1.06]">
             Shop more, <span className="text-brand">save more</span>
           </h2>
 
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+          <p className="text-ink/65 text-sm sm:text-base leading-relaxed">
             One store, four membership levels and a stack of live promo codes — every plan below is
             powered by rewards, coupons and delivery benefits you can actually use today.
           </p>
@@ -246,7 +246,7 @@ const PlansSection = () => {
             <button
               type="button"
               onClick={() => setExpanded(true)}
-              className="group inline-flex items-center gap-2 rounded-full bg-linear-to-r from-brand via-cyan-500 to-teal-400 px-8 py-4 text-base font-bold text-white shadow-xl transition-all duration-300 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 hover:shadow-2xl"
+              className="group inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] transition-colors duration-300 hover:bg-brand-dark"
             >
               See more plans
               <ArrowRightIcon
@@ -269,7 +269,7 @@ const PlansSection = () => {
               <button
                 type="button"
                 onClick={() => setExpanded(false)}
-                className="text-xs font-semibold text-gray-400 hover:text-brand transition-colors"
+                className="text-xs font-semibold text-ink/45 hover:text-brand transition-colors"
               >
                 Show fewer plans
               </button>

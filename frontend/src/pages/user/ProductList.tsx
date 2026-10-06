@@ -115,7 +115,8 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
             </div>
 
             <p className="text-lg sm:text-xl text-gray-700 max-w-2xl font-light leading-relaxed gpu-accelerate" style={{ animationDelay: '0.1s', transform: "translateZ(0)" }}>
-              Premium quality products handpicked just for you. Explore our exclusive collection featuring the best deals, latest trends, and bestselling items across all categories.
+              Filter by category and price, sort by newest first or lowest price, and add what you
+              like straight to your cart — checkout takes cash on delivery or eSewa.
             </p>
 
             <div className="flex gap-3 gpu-accelerate" style={{ animationDelay: '0.2s', transform: "translateZ(0)" }}>
@@ -129,7 +130,7 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
             <div className="group relative animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
 
               {/* Filter Card */}
-              <div className="relative glass rounded-3xl p-6 sm:p-10 border border-gray-200 hover:border-brand/80 transition-all duration-500 hover:shadow-2xl group-hover:bg-white gpu-accelerate" style={{ contain: "layout style paint" }}>
+              <div className="relative glass rounded-2xl p-6 sm:p-10 border border-[#ece1d0] hover:border-brand/60 transition-all duration-500 hover:shadow-lg group-hover:bg-white gpu-accelerate" style={{ contain: "layout style paint" }}>
                 <div className="relative z-10">
                   <ProductFilters filters={filters} onChange={setFilters} />
                 </div>
@@ -146,13 +147,13 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
               {[...Array(12)].map((_, i) => (
                 <div
                   key={i}
-                  className="glass rounded-2xl p-4 border border-gray-200 animate-pulse gpu-accelerate"
+                  className="glass rounded-2xl p-4 border border-[#ece1d0] animate-pulse gpu-accelerate"
                   style={{ animationDelay: `${i * 0.05}s`, transform: "translateZ(0)" }}
                 >
-                  <div className="w-full h-48 bg-gray-100 rounded-xl mb-4" />
+                  <div className="w-full h-48 bg-cream-deep rounded-xl mb-4" />
                   <div className="space-y-3">
-                    <div className="h-4 bg-gray-100 rounded w-3/4" />
-                    <div className="h-3 bg-gray-100 rounded w-1/2" />
+                    <div className="h-4 bg-cream-deep rounded w-3/4" />
+                    <div className="h-3 bg-cream-deep rounded w-1/2" />
                   </div>
                 </div>
               ))}
@@ -170,7 +171,7 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
                 <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-brand/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl gpu-accelerate" style={{ transform: "translateZ(0)" }} />
 
                 {/* Pagination */}
-                <div className="relative bg-white rounded-2xl p-6 border border-gray-200 hover:border-brand/50 transition-all duration-300 gpu-accelerate" style={{ contain: "layout style paint" }}>
+                <div className="relative bg-white rounded-2xl p-6 border border-[#ece1d0] hover:border-brand/50 transition-all duration-300 gpu-accelerate" style={{ contain: "layout style paint" }}>
                   <Pagination
                     pagination={data.pagination}
                     onPageChange={(page) => setFilters((prev) => ({ ...prev, page }))}
@@ -185,14 +186,14 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
         {!isLoading && (!data?.data || data.data.length === 0) && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
             <div className="text-center py-20 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
-              <div className="mb-4 text-gray-300"><SearchIcon size={56} /></div>
+              <div className="mb-4 text-brand/50"><SearchIcon size={56} /></div>
               <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 gpu-accelerate">No Products Found</h3>
               <p className="text-gray-600 text-lg mb-8 font-light max-w-md mx-auto gpu-accelerate">
-                Try adjusting your filters or search terms to find what you're looking for
+                Clear a filter or try a different search term to see more of the catalogue.
               </p>
               <button
                 onClick={handleReset}
-                className="group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-linear-to-r from-brand via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-lg hover:shadow-xl overflow-hidden gpu-accelerate"
+                className="group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-linear-to-r from-brand via-cyan-500 to-teal-400 hover:from-[#8d1222] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-lg hover:shadow-xl overflow-hidden gpu-accelerate"
                 style={{ transform: "translateZ(0)", willChange: "transform, box-shadow" }}
               >
                 <span className="relative z-10 flex items-center justify-center gap-2 gpu-accelerate" style={{ transform: "translateZ(0)" }}>

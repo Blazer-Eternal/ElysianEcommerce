@@ -85,7 +85,7 @@ const CategoryDropdown = ({ categories, selectedId, onSelect }: CategoryDropdown
         <button
           type="button"
           onClick={() => setOpen((prev) => !prev)}
-          className="border rounded-lg px-3 py-2 text-sm bg-white flex items-center gap-2 min-w-40 justify-between"
+          className="border border-[#ece1d0] rounded-lg px-3 py-2 text-sm bg-white flex items-center gap-2 min-w-40 justify-between hover:border-brand/40 hover:text-brand transition-colors"
         >
           <span className="truncate">{label}</span>
           <ChevronDown />
@@ -96,14 +96,14 @@ const CategoryDropdown = ({ categories, selectedId, onSelect }: CategoryDropdown
         createPortal(
           <div
             ref={panelRef}
-            className="fixed w-56 bg-white border border-gray-200 rounded-xl shadow-2xl py-1.5 text-sm z-9999 max-h-72 overflow-y-auto"
+            className="fixed w-56 bg-white border border-[#ece1d0] rounded-xl shadow-xl py-1.5 text-sm z-9999 max-h-72 overflow-y-auto"
             style={{ top: `${dropdownPosition.top}px`, left: `${dropdownPosition.left}px` }}
           >
             {activeParent && (
               <button
                 type="button"
                 onClick={() => setActiveParent(null)}
-                className="w-full text-left px-3.5 py-2 flex items-center gap-2 text-gray-500 hover:bg-gray-50 border-b border-gray-200"
+                className="w-full text-left px-3.5 py-2 flex items-center gap-2 text-gray-500 hover:bg-cream border-b border-[#ece1d0]"
               >
                 <ArrowLeft />
                 Back
@@ -114,7 +114,7 @@ const CategoryDropdown = ({ categories, selectedId, onSelect }: CategoryDropdown
               <button
                 type="button"
                 onClick={() => handlePick(undefined, undefined)}
-                className="w-full text-left px-3.5 py-2 hover:bg-gray-50"
+                className="w-full text-left px-3.5 py-2 hover:bg-cream"
               >
                 All Categories
               </button>
@@ -135,7 +135,7 @@ const CategoryDropdown = ({ categories, selectedId, onSelect }: CategoryDropdown
                   key={cat._id}
                   type="button"
                   onClick={() => (hasChildren ? setActiveParent(cat) : handlePick(cat._id, cat.name))}
-                  className="w-full text-left px-3.5 py-2 hover:bg-gray-50 flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2 hover:bg-cream flex items-center justify-between"
                 >
                   <span>{cat.name}</span>
                   {hasChildren && <ChevronRight />}

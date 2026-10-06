@@ -53,14 +53,14 @@ const AdminUserMenu = () => {
         aria-label="Account menu"
         aria-expanded={open}
         title={user?.name ?? "Account"}
-        className="w-11 h-11 rounded-xl glass border border-gray-200 text-gray-600 hover:text-brand hover:border-brand/40 hover:bg-white transition-all duration-200 flex items-center justify-center"
+        className="w-11 h-11 rounded-xl bg-white border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] text-gray-600 hover:text-brand hover:border-brand/40 transition-all duration-200 flex items-center justify-center"
       >
         <UserIcon />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-12 z-50 w-56 bg-white rounded-xl border border-gray-200 shadow-2xl animate-fade-in overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+        <div className="absolute right-0 top-12 z-50 w-56 bg-white rounded-2xl border border-[#ece1d0] shadow-[0_16px_48px_rgba(61,5,12,0.18)] animate-fade-in overflow-hidden">
+          <div className="px-4 py-3 border-b border-[#ece1cf] bg-cream-deep/60">
             <p className="text-sm font-bold text-gray-900 truncate">{user?.name}</p>
             <p className="text-xs text-gray-500 truncate">{user?.email}</p>
           </div>

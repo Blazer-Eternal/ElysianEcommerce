@@ -10,8 +10,11 @@ interface AuthLayoutProps {
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <Link to={ROUTES.HOME} className="text-xl font-bold mb-8">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-linear-to-b from-cream via-cream to-cream-deep">
+      <Link
+        to={ROUTES.HOME}
+        className="mb-8 font-display text-2xl font-bold tracking-tight text-brand transition-colors hover:text-brand-dark"
+      >
         ElysianEcommerce
       </Link>
       {children}

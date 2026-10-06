@@ -61,7 +61,7 @@ const ManageUsers = () => {
             <div>
               <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Users</h1>
-              <p className="text-gray-600 mt-2">View and manage customer accounts and their roles.</p>
+              <p className="text-gray-600 mt-2">Customer accounts, join dates and roles.</p>
             </div>
             <ViewToggle viewMode={viewMode} onChange={setViewMode} />
           </div>
@@ -81,7 +81,7 @@ const ManageUsers = () => {
                 {users.map((user) => (
                   <div
                     key={user._id}
-                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
+                    className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] transition-all duration-300 group"
                   >
                     {/* User Avatar Background */}
                     <div className="relative overflow-hidden bg-linear-to-br from-brand/10 to-cyan-600/10 h-48 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
@@ -100,7 +100,7 @@ const ManageUsers = () => {
                       </div>
 
                       {/* User Details */}
-                      <div className="space-y-2 py-3 border-t border-b border-gray-200">
+                      <div className="space-y-2 py-3 border-t border-b border-[#ece1cf]">
                         {user.phone && (
                           <div>
                             <p className="text-xs text-gray-600 font-medium">Phone</p>
@@ -129,7 +129,7 @@ const ManageUsers = () => {
                       {/* Action Buttons */}
                       {user._id === currentUser?.id ? (
                         <div className="pt-2">
-                          <button disabled className="w-full px-3 py-2 bg-gray-200 text-gray-600 rounded-lg transition-all duration-200 font-medium text-sm opacity-50 cursor-not-allowed">
+                          <button disabled className="w-full px-3 py-2 bg-cream-deep text-gray-500 rounded-lg transition-all duration-200 font-medium text-sm opacity-70 cursor-not-allowed">
                             Cannot delete yourself
                           </button>
                         </div>
@@ -158,7 +158,7 @@ const ManageUsers = () => {
                 {users.map((user) => (
                   <div
                     key={user._id}
-                    className="glass rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 border border-gray-200 p-4 sm:p-6"
+                    className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] transition-all duration-300 p-4 sm:p-6"
                   >
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
                       {/* Avatar */}
@@ -179,7 +179,7 @@ const ManageUsers = () => {
                           </span>
                         </div>
 
-                        <div className="py-3 border-t border-b border-gray-200">
+                        <div className="py-3 border-t border-b border-[#ece1cf]">
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             <div>
                               <p className="text-xs text-gray-600 font-medium">Phone</p>
@@ -196,7 +196,7 @@ const ManageUsers = () => {
                       {/* Action Buttons */}
                       <div className="w-full sm:w-auto pt-2 sm:pt-0">
                         {user._id === currentUser?.id ? (
-                          <button disabled className="w-full px-4 py-2 bg-gray-200 text-gray-600 rounded-lg font-medium text-sm opacity-50 cursor-not-allowed">
+                          <button disabled className="w-full px-4 py-2 bg-cream-deep text-gray-500 rounded-lg font-medium text-sm opacity-70 cursor-not-allowed">
                             Cannot delete yourself
                           </button>
                         ) : (

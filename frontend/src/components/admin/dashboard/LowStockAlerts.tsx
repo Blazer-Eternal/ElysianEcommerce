@@ -39,9 +39,9 @@ const LowStockAlerts = memo(({ products, isLoading }: LowStockAlertsProps) => (
         {products.map((product) => (
           <li
             key={product._id}
-            className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100"
+            className="flex items-center gap-3 p-3 rounded-xl bg-cream/70 border border-[#ece1cf]"
           >
-            <span className="shrink-0 w-11 h-11 rounded-lg bg-white border border-gray-200 overflow-hidden flex items-center justify-center text-gray-300">
+            <span className="shrink-0 w-11 h-11 rounded-lg bg-white border border-[#ece1cf] overflow-hidden flex items-center justify-center text-gray-300">
               {product.images?.[0] ? (
                 <img
                   src={cloudinaryImg(product.images[0], 96)}

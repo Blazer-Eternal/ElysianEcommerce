@@ -34,7 +34,7 @@ const OrderTimeline = ({ status }: OrderTimelineProps) => {
                     ? "bg-green-500 text-white shadow-lg shadow-green-500/50"
                     : isCurrent
                       ? "bg-brand text-white shadow-lg ring-2 ring-cyan-200"
-                      : "bg-gray-200 text-gray-400"
+                      : "bg-cream-deep text-gray-500"
                 }`}
               >
                 {isCompleted && !isCurrent ? <CheckIcon /> : idx + 1}
@@ -50,7 +50,7 @@ const OrderTimeline = ({ status }: OrderTimelineProps) => {
             {idx < STEPS.length - 1 && (
               <div
                 className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
-                  idx < currentIndex ? "bg-linear-to-r from-green-500 to-green-400 shadow-sm shadow-green-500/50" : "bg-gray-200"
+                  idx < currentIndex ? "bg-linear-to-r from-green-500 to-green-400 shadow-sm shadow-green-500/50" : "bg-sand"
                 }`}
               />
             )}

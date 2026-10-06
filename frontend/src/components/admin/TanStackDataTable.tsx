@@ -222,15 +222,15 @@ export const TanStackDataTable = React.forwardRef<
             <title>${exportTitle}</title>
             <style>
               body { font-family: Arial, sans-serif; margin: 20px; }
-              h1 { text-align: center; color: #0e7c85; }
-              .page-info { text-align: center; color: #666; font-size: 12px; margin-bottom: 20px; }
+              h1 { text-align: center; color: #c01e2e; }
+              .page-info { text-align: center; color: #6f5f55; font-size: 12px; margin-bottom: 20px; }
               table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-              th { background-color: #0e7c85; color: white; padding: 10px; text-align: left; font-weight: bold; border: 1px solid #ddd; }
-              td { padding: 8px; border: 1px solid #ddd; }
-              tr:nth-child(even) { background-color: #f9f9f9; }
-              tr:hover { background-color: #f0f0f0; }
+              th { background-color: #c01e2e; color: white; padding: 10px; text-align: left; font-weight: bold; border: 1px solid #ece1cf; }
+              td { padding: 8px; border: 1px solid #ece1cf; }
+              tr:nth-child(even) { background-color: #fdfaf3; }
+              tr:hover { background-color: #f3ead9; }
               .page-break { page-break-after: always; }
-              .timestamp { text-align: center; font-size: 12px; color: #999; margin-top: 20px; }
+              .timestamp { text-align: center; font-size: 12px; color: #9a8b7e; margin-top: 20px; }
             </style>
           </head>
           <body>
@@ -289,7 +289,7 @@ export const TanStackDataTable = React.forwardRef<
             <div className="flex items-center gap-2">
               <button
                 onClick={onCreate}
-                className="px-4 py-2 bg-brand text-white rounded-lg hover:bg-[#0a5f66] transition-colors font-semibold"
+                className="px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-dark transition-colors font-semibold"
               >
                 New
               </button>
@@ -298,31 +298,31 @@ export const TanStackDataTable = React.forwardRef<
             <div className="flex items-center gap-2">
               {/* Export Dropdown */}
               <div className="relative group">
-                <button className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-semibold">
+                <button className="px-4 py-2 bg-white border border-brand/30 text-brand rounded-lg hover:bg-brand/5 transition-colors font-semibold">
                   Export ▼
                 </button>
-                <div className="absolute right-0 mt-0 w-48 bg-white border border-gray-300 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+                <div className="absolute right-0 mt-0 w-48 bg-white border border-[#ece1d0] rounded-xl shadow-[0_12px_32px_rgba(61,5,12,0.16)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
                   <button
                     onClick={copyToClipboard}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-semibold text-gray-800"
+                    className="w-full text-left px-4 py-2 hover:bg-cream-deep text-sm font-semibold text-gray-800"
                   >
                     Copy
                   </button>
                   <button
                     onClick={exportToExcel}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-semibold text-gray-800"
+                    className="w-full text-left px-4 py-2 hover:bg-cream-deep text-sm font-semibold text-gray-800"
                   >
                     Excel
                   </button>
                   <button
                     onClick={exportToCSV}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-semibold text-gray-800"
+                    className="w-full text-left px-4 py-2 hover:bg-cream-deep text-sm font-semibold text-gray-800"
                   >
                     CSV
                   </button>
                   <button
                     onClick={handlePrint}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-semibold text-gray-800"
+                    className="w-full text-left px-4 py-2 hover:bg-cream-deep text-sm font-semibold text-gray-800"
                   >
                     Print
                   </button>
@@ -335,7 +335,7 @@ export const TanStackDataTable = React.forwardRef<
                   onClick={() => onViewModeChange?.("table")}
                   className={`px-3 py-1 rounded text-sm font-semibold transition-colors ${
                     viewMode === "table"
-                      ? "bg-white text-gray-900"
+                      ? "bg-white text-brand shadow-sm"
                       : "text-gray-700 hover:text-gray-900"
                   }`}
                 >
@@ -345,7 +345,7 @@ export const TanStackDataTable = React.forwardRef<
                   onClick={() => onViewModeChange?.("card")}
                   className={`px-3 py-1 rounded text-sm font-semibold transition-colors ${
                     viewMode === "card"
-                      ? "bg-white text-gray-900"
+                      ? "bg-white text-brand shadow-sm"
                       : "text-gray-700 hover:text-gray-900"
                   }`}
                 >
@@ -362,12 +362,12 @@ export const TanStackDataTable = React.forwardRef<
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand flex-1 min-w-50"
+              className="px-4 py-2 border border-[#e2d7c5] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand flex-1 min-w-50"
             />
             <select
               value={pageSize}
               onChange={(e) => onPageSizeChange?.(Number(e.target.value))}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand"
+              className="px-4 py-2 border border-[#e2d7c5] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand"
             >
               <option value={5}>5 per page</option>
               <option value={10}>10 per page</option>
@@ -379,10 +379,10 @@ export const TanStackDataTable = React.forwardRef<
 
         {/* Table View */}
         {viewMode === "table" && (
-          <div className="overflow-x-auto border border-gray-200 rounded-lg">
+          <div className="overflow-x-auto border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
             <table className="w-full">
               <thead>
-                <tr className="bg-linear-to-r from-brand/5 to-cyan-600/5 border-b border-gray-200">
+                <tr className="bg-linear-to-r from-brand/5 to-cyan-600/5 border-b border-[#ece1cf]">
                   {columns.map((column: any) => (
                     <th
                       key={column.id || column.accessorKey}
@@ -395,7 +395,7 @@ export const TanStackDataTable = React.forwardRef<
                           setSorting([{ id, desc: false }]);
                         }
                       }}
-                      className="px-4 py-3 text-left font-semibold text-gray-700 cursor-pointer hover:bg-brand/10 transition-colors text-sm"
+                      className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 cursor-pointer hover:bg-brand/10 transition-colors"
                     >
                       <div className="flex items-center gap-2">
                         <span>{column.header}</span>
@@ -410,13 +410,13 @@ export const TanStackDataTable = React.forwardRef<
                     </th>
                   ))}
                   {(onEdit || onDelete) && (
-                    <th className="px-4 py-3 text-left font-semibold text-gray-700 text-sm">Actions</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Actions</th>
                   )}
                 </tr>
               </thead>
               <tbody>
                 {paginatedData.map((row: any, rowIndex: number) => (
-                  <tr key={row._id ?? rowIndex} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+                  <tr key={row._id ?? rowIndex} className="border-b border-[#ece1cf] last:border-0 hover:bg-cream-deep/50 transition-colors">
                     {columns.map((column: any) => {
                       const columnId = column.id || column.accessorKey;
                       const value = row[columnId];
@@ -431,7 +431,7 @@ export const TanStackDataTable = React.forwardRef<
                         {onEdit && (
                           <button
                             onClick={() => onEdit(row)}
-                            className="px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600 transition-colors"
+                            className="px-3 py-1 bg-brand text-white rounded text-xs hover:bg-brand-dark transition-colors"
                           >
                             Edit
                           </button>
@@ -443,7 +443,7 @@ export const TanStackDataTable = React.forwardRef<
                                 onDelete(row);
                               }
                             }}
-                            className="px-3 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600 transition-colors"
+                            className="px-3 py-1 bg-red-500/10 text-red-600 rounded text-xs hover:bg-red-500/20 transition-colors font-semibold"
                           >
                             Delete
                           </button>
@@ -463,7 +463,7 @@ export const TanStackDataTable = React.forwardRef<
             {paginatedData.map((row: any, rowIndex: number) => (
               <div
                 key={row._id ?? rowIndex}
-                className="glass rounded-2xl p-6 border border-gray-200 hover:bg-white transition-all hover-lift card-container bg-white"
+                className="bg-white rounded-2xl p-6 border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] transition-all hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] card-container"
               >
                 <div className="space-y-3">
                   {columns.map((column: any) => {
@@ -471,7 +471,7 @@ export const TanStackDataTable = React.forwardRef<
                     const value = row[columnId];
                     return (
                       <div key={columnId}>
-                        <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                           {column.header}
                         </p>
                         <p className="text-sm font-semibold text-gray-900 mt-1">
@@ -482,11 +482,11 @@ export const TanStackDataTable = React.forwardRef<
                   })}
                 </div>
                 {(onEdit || onDelete) && (
-                  <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200">
+                  <div className="flex gap-2 mt-4 pt-4 border-t border-[#ece1cf]">
                     {onEdit && (
                       <button
                         onClick={() => onEdit(row)}
-                        className="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors"
+                        className="flex-1 px-3 py-2 bg-brand text-white rounded-lg text-sm font-semibold hover:bg-brand-dark transition-colors"
                       >
                         Edit
                       </button>
@@ -498,7 +498,7 @@ export const TanStackDataTable = React.forwardRef<
                             onDelete(row);
                           }
                         }}
-                        className="flex-1 px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-semibold hover:bg-red-600 transition-colors"
+                        className="flex-1 px-3 py-2 bg-red-500/10 text-red-600 rounded-lg text-sm font-semibold hover:bg-red-500/20 transition-colors"
                       >
                         Delete
                       </button>
@@ -511,7 +511,7 @@ export const TanStackDataTable = React.forwardRef<
         )}
 
         {/* Pagination */}
-        <div className="flex items-center justify-between gap-4 flex-wrap pt-4 border-t border-gray-200">
+        <div className="flex items-center justify-between gap-4 flex-wrap pt-4 border-t border-[#ece1cf]">
           <div className="text-sm text-gray-600">
             Page {currentPage} of {totalPages} •
             Showing {paginatedData.length} of {sortedData.length}
@@ -521,14 +521,14 @@ export const TanStackDataTable = React.forwardRef<
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition-colors font-semibold"
+              className="px-3 py-2 bg-white border border-brand/30 text-brand rounded-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand/5 transition-colors font-semibold"
             >
               Previous
             </button>
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage >= totalPages}
-              className="px-3 py-2 bg-gray-200 text-gray-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition-colors font-semibold"
+              className="px-3 py-2 bg-white border border-brand/30 text-brand rounded-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand/5 transition-colors font-semibold"
             >
               Next
             </button>

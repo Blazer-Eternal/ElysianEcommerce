@@ -95,7 +95,7 @@ const ManageReviews = () => {
             <div>
               <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Reviews</h1>
-              <p className="text-gray-600 mt-2">View and moderate all customer reviews across your store.</p>
+              <p className="text-gray-600 mt-2">All customer reviews, with ratings and removal controls.</p>
             </div>
             <ViewToggle viewMode={viewMode} onChange={setViewMode} />
           </div>
@@ -106,30 +106,30 @@ const ManageReviews = () => {
               <p className="text-gray-600">Loading reviews...</p>
             </div>
           ) : reviews.length === 0 ? (
-            <div className="text-center py-12 glass rounded-xl p-6 border border-gray-200">
+            <div className="text-center bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] px-6 py-12">
               <p className="text-gray-600 text-lg">No reviews found.</p>
             </div>
           ) : viewMode === "list" ? (
             <>
-              <div className="glass rounded-xl overflow-hidden border border-gray-200">
+              <div className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     {/* Table Header */}
                     <thead>
-                      <tr className="border-b border-gray-200 bg-linear-to-r from-brand/5 to-cyan-600/5">
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Product Name</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Customer Name</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Rating</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Comments</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Action</th>
+                      <tr className="border-b border-[#ece1cf] bg-linear-to-r from-brand/5 to-cyan-600/5">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Product Name</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Customer Name</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Rating</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Comments</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Action</th>
                       </tr>
                     </thead>
 
                     {/* Table Body */}
-                    <tbody className="divide-y divide-white/20">
+                    <tbody className="divide-y divide-[#ece1cf]">
                       {reviews.map((review) => (
-                        <tr key={review._id} className="hover:bg-linear-to-r hover:from-brand/5 hover:to-cyan-600/5 transition-colors">
+                        <tr key={review._id} className="hover:bg-cream-deep/50 transition-colors">
                           {/* Product Name */}
                           <td className="px-6 py-4">
                             <span className="text-sm font-semibold text-gray-900">
@@ -160,7 +160,7 @@ const ManageReviews = () => {
                           {/* Comments */}
                           <td className="px-6 py-4 max-w-xs">
                             <p className="text-sm text-gray-700 line-clamp-3">
-                              {review.comment || <span className="italic text-gray-400">No comment</span>}
+                              {review.comment || <span className="italic text-gray-500">No comment</span>}
                             </p>
                           </td>
 
@@ -201,7 +201,7 @@ const ManageReviews = () => {
                 {reviews.map((review) => (
                   <div
                     key={review._id}
-                    className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
+                    className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] transition-all duration-300 group"
                   >
                     {/* Review Header */}
                     <div className="bg-linear-to-br from-brand/10 to-cyan-600/10 p-6">
@@ -226,9 +226,9 @@ const ManageReviews = () => {
                         <span className="text-xs text-gray-500 font-medium">{review.rating}/5</span>
                       </div>
 
-                      <div className="py-3 border-t border-b border-gray-200">
+                      <div className="py-3 border-t border-b border-[#ece1cf]">
                         <p className="text-sm text-gray-700 line-clamp-4">
-                          {review.comment || <span className="italic text-gray-400">No comment</span>}
+                          {review.comment || <span className="italic text-gray-500">No comment</span>}
                         </p>
                       </div>
 

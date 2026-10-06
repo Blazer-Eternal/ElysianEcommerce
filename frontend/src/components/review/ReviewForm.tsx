@@ -61,7 +61,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
   // Already reviewed: no second form. The card's ⋯ menu is the edit path.
   if (myReview) {
     return (
-      <div className="flex items-start gap-3 p-4 rounded-2xl bg-brand/5 border border-gray-200 text-sm text-gray-700">
+      <div className="flex items-start gap-3 p-4 rounded-2xl bg-brand/5 border border-[#ece1d0] text-sm text-gray-700">
         <CheckIcon size={18} className="mt-0.5 shrink-0 text-emerald-600" />
         <p>
           You already reviewed this product. Use the{" "}
@@ -84,7 +84,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         }
       `}</style>
 
-      <div className="review-form-container space-y-4 p-6 bg-white rounded-2xl border border-gray-200 shadow-sm transition-all duration-300">
+      <div className="review-form-container space-y-4 p-6 bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] transition-all duration-300">
         {/* Header */}
         <div>
           <h3 className="text-lg font-bold text-gray-900">
@@ -105,7 +105,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
         {success && (
           <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-medium flex items-center gap-2">
             <CheckIcon size={16} className="shrink-0" />
-            Thank you! Your review submitted successfully!
+            Thanks — your review is published.
           </div>
         )}
 
@@ -118,7 +118,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
             <StarPicker value={rating} onChange={setRating} size={26} disabled={isSubmitting} />
             <div className="flex items-center gap-1">
               {rating === 0 ? (
-                <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-bold text-gray-500 bg-cream-deep px-2.5 py-1 rounded-full">
                   Click to rate
                 </span>
               ) : (
@@ -148,7 +148,7 @@ const ReviewForm = ({ productId, myReview = null, onCreated }: ReviewFormProps) 
             maxLength={1000}
             rows={3}
             placeholder="Tell us about your experience... (optional)"
-            className="w-full p-3 border-2 border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition-all duration-300 resize-none text-sm"
+            className="w-full p-3 border-2 border-[#ece1d0] rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition-all duration-300 resize-none text-sm"
           />
           <div className="flex justify-between items-center mt-1.5">
             <span className="text-xs text-gray-500">Character count:</span>

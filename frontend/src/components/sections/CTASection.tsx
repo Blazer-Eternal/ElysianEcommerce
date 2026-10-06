@@ -74,7 +74,7 @@ const styles = `
     background: linear-gradient(
       90deg,
       transparent,
-      #0e7c85,
+      #c01e2e,
       transparent
     );
     animation: slide-right 1s ease 0.5s forwards;
@@ -86,7 +86,7 @@ const styles = `
 
   .cta-card:hover {
     transform: none;
-    box-shadow: 0 10px 40px rgba(14, 124, 133, 0.15);
+    box-shadow: 0 10px 40px rgba(192, 30, 46, 0.15);
   }
 `;
 
@@ -101,28 +101,29 @@ const CTASection = () => {
             <div className="relative group">
 
               {/* Main CTA card */}
-              <div className="cta-card relative glass-strong rounded-3xl p-6 sm:p-8 lg:p-10 text-center space-y-6 border border-gray-200">
+              <div className="cta-card relative glass-strong rounded-3xl p-6 sm:p-8 lg:p-10 text-center space-y-6 border border-[#ece1d0]">
 
                 {/* Content */}
                 <div className="space-y-4">
 
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-teal-100/40 to-cyan-100/40 border border-teal-200/30 mb-2">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand/8 border border-brand/20 mb-2">
                     <SparkleIcon />
 
-                    <span className="text-xs sm:text-sm font-semibold text-teal-700">
-                      Limited Time Offer
+                    <span className="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-brand">
+                      Ready when you are
                     </span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold wrap-break-word text-gray-900">
-                    Ready to Start{" "}
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold wrap-break-word text-ink leading-[1.06]">
+                    Start with the{" "}
                     <span className="block text-brand">
-                      Shopping?
+                      latest arrivals
                     </span>
                   </h2>
 
-                  <p className="text-gray-700 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-medium line-clamp-3">
-                    Premium products handpicked for you. Experience shopping redefined with elegance, quality, and care.
+                  <p className="text-ink/65 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-medium line-clamp-3">
+                    Browse what has just landed, or search for the one thing you came for.
+                    Checkout takes cash on delivery or eSewa, and delivery is free above Rs. 2,000.
                   </p>
                 </div>
 
@@ -132,26 +133,26 @@ const CTASection = () => {
                   {/* Primary CTA */}
                   <Link
                     to={ROUTES.PRODUCTS}
-                    className="cta-button relative px-6 sm:px-8 py-3 rounded-2xl font-semibold text-white text-sm sm:text-base bg-linear-to-br from-teal-500 via-teal-600 to-cyan-600 hover:from-teal-600 hover:via-teal-700 hover:to-cyan-700 flex items-center justify-center gap-2 group shadow-lg hover:shadow-2xl border border-teal-400/50 whitespace-nowrap"
+                    className="cta-button relative px-6 sm:px-8 py-3.5 rounded-xl font-bold uppercase tracking-wide text-white text-xs sm:text-sm bg-brand hover:bg-brand-dark flex items-center justify-center gap-2 group shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] border border-brand whitespace-nowrap"
                   >
-                    <span>Explore Products</span>
+                    <span>Browse products</span>
                     <ArrowIcon />
                   </Link>
 
                   {/* Secondary CTA */}
                   <Link
                     to={ROUTES.CONTACT}
-                    className="cta-button secondary-cta relative px-6 sm:px-8 py-3 rounded-2xl font-semibold text-teal-700 text-sm sm:text-base bg-white flex items-center justify-center gap-2 shadow-lg hover:shadow-2xl border-2 border-teal-200/60 hover:border-teal-300 whitespace-nowrap"
+                    className="cta-button secondary-cta relative px-6 sm:px-8 py-3.5 rounded-xl font-bold uppercase tracking-wide text-brand text-xs sm:text-sm bg-white flex items-center justify-center gap-2 border border-brand/30 hover:border-brand hover:bg-brand/5 whitespace-nowrap"
                   >
-                    Get in Touch
+                    Talk to us
                   </Link>
                 </div>
 
                 {/* Footer note with animation */}
-                <div className="pt-4 border-t border-gray-200">
-                  <p className="text-xs sm:text-sm text-gray-700 font-semibold line-accent">
-                    Subscribe to our newsletter for exclusive deals and
-                    early access to new collections
+                <div className="pt-4 border-t border-[#ece1d0]">
+                  <p className="text-xs sm:text-sm text-ink/60 font-medium line-accent">
+                    New stock lands weekly. Create an account to keep your points, wishlist and
+                    order history in one place.
                   </p>
                 </div>
 

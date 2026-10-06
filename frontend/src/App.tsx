@@ -65,26 +65,26 @@ const NotFound = lazy(() => import("./pages/NotFound"));
    LOADING SPINNER COMPONENT (Optimized)
    ======================================== */
 const PageLoadingSpinner = () => (
-  <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-cyan-50 via-blue-50 to-teal-50 animate-container">
+  <div className="min-h-screen flex items-center justify-center bg-cream animation-container">
     <div className="flex flex-col items-center gap-6">
-      {/* Animated Loading Spinner */}
+      {/* Animated Loading Spinner — three concentric rings: crimson wash, spinning crimson arc, ochre core */}
       <div className="relative w-16 h-16">
-        <div className="absolute inset-0 rounded-full border-4 border-cyan-200 animate-spin" />
-        <div className="absolute inset-2 rounded-full border-4 border-transparent border-t-cyan-500 border-r-teal-400 animate-spin animation-delay-100ms" style={{ animationDirection: "reverse" }} />
-        <div className="absolute inset-4 rounded-full border-4 border-cyan-300 opacity-50 animate-pulse" />
-      </div>
-      
-      {/* Loading Text with Fade Animation */}
-      <div className="animate-fade-in">
-        <p className="text-center text-lg font-semibold text-gray-700">Loading your content...</p>
-        <p className="text-center text-sm text-gray-500 mt-2">This should only take a moment</p>
+        <div className="absolute inset-0 rounded-full border-4 border-brand/20 animate-spin" />
+        <div className="absolute inset-2 rounded-full border-4 border-brand border-r-transparent animate-spin animation-delay-100ms" style={{ animationDirection: "reverse" }} />
+        <div className="absolute inset-4 rounded-full border-4 border-cyan-300 opacity-60 animate-pulse" />
       </div>
 
-      {/* GPU-accelerated animated dots */}
+      {/* Loading Text with Fade Animation */}
+      <div className="animate-fade-in">
+        <p className="text-center text-lg font-semibold text-ink">Loading your content...</p>
+        <p className="text-center text-sm text-ink/70 mt-2">This should only take a moment</p>
+      </div>
+
+      {/* GPU-accelerated animated dots — crimson, ochre, rose */}
       <div className="flex gap-2">
-        <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse animation-delay-0ms" />
-        <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse animation-delay-200ms" />
-        <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse animation-delay-400ms" />
+        <div className="w-2 h-2 rounded-full bg-brand animate-pulse animation-delay-0ms" />
+        <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse animation-delay-200ms" />
+        <div className="w-2 h-2 rounded-full bg-rose animate-pulse animation-delay-400ms" />
       </div>
     </div>
   </div>

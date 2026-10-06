@@ -104,7 +104,7 @@ const ProductDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="py-24 flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="py-24 flex items-center justify-center min-h-screen bg-cream">
         <Spinner size="lg" />
       </div>
     );
@@ -135,10 +135,10 @@ const ProductDetail = () => {
   const howToUse = product.how_to_use?.length ? product.how_to_use : [];
 
   const sectionTitle = "text-lg font-extrabold tracking-wide text-gray-900 uppercase";
-  const card = "bg-white rounded-lg border border-gray-200 shadow-sm";
+  const card = "bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]";
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-cream">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Breadcrumb */}
         <nav className="mb-4 flex flex-wrap items-center gap-2 text-sm text-gray-500">
@@ -170,13 +170,13 @@ const ProductDetail = () => {
                 type="button"
                 onClick={handleShare}
                 aria-label="Share this product"
-                className="p-1.5 rounded-full hover:bg-gray-100 hover:text-brand transition-colors"
+                className="p-1.5 rounded-full hover:bg-cream-deep hover:text-brand transition-colors"
               >
                 <ShareIcon />
               </button>
               <WishlistButton productId={product._id} />
               {shareState && (
-                <span className="absolute right-0 top-full mt-1 text-xs bg-gray-900 text-white rounded px-2 py-1 whitespace-nowrap">
+                <span className="absolute right-0 top-full mt-1 text-xs bg-ink text-white rounded px-2 py-1 whitespace-nowrap">
                   {shareState}
                 </span>
               )}
@@ -210,11 +210,11 @@ const ProductDetail = () => {
               </div>
             )}
 
-            <hr className="my-4 border-gray-200" />
+            <hr className="my-4 border-[#ece1d0]" />
 
             {/* Price */}
             <div>
-              <p className="text-4xl font-semibold text-[#f26522]">{formatCurrency(product.price)}</p>
+              <p className="text-4xl font-semibold text-gold">{formatCurrency(product.price)}</p>
               <div className="mt-1 flex items-center gap-3 text-sm">
                 {mrp && (
                   <span className="text-gray-500 line-through">{formatCurrency(mrp)}</span>
@@ -226,7 +226,7 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            <hr className="my-4 border-gray-200" />
+            <hr className="my-4 border-[#ece1d0]" />
 
             {/* Availability */}
             <div className="flex items-center gap-3 text-sm">
@@ -234,7 +234,7 @@ const ProductDetail = () => {
               {outOfStock ? (
                 <span className="text-red-600 font-semibold">Out of Stock</span>
               ) : lowStock ? (
-                <span className="text-[#f26522] font-semibold">
+                <span className="text-gold-dark font-semibold">
                   Almost sold out, buy now! ({product.stock} left)
                 </span>
               ) : (
@@ -251,7 +251,7 @@ const ProductDetail = () => {
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   disabled={outOfStock}
                   aria-label="Decrease quantity"
-                  className="w-9 h-9 rounded-md border border-gray-300 bg-gray-50 text-xl text-gray-600 flex items-center justify-center hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
+                  className="w-9 h-9 rounded-md border border-[#ece1d0] bg-cream text-xl text-gray-600 flex items-center justify-center hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
                 >
                   −
                 </button>
@@ -261,7 +261,7 @@ const ProductDetail = () => {
                   onClick={() => setQuantity((q) => Math.min(product.stock || 1, q + 1))}
                   disabled={outOfStock}
                   aria-label="Increase quantity"
-                  className="w-9 h-9 rounded-md border border-gray-300 bg-gray-50 text-xl text-gray-600 flex items-center justify-center hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
+                  className="w-9 h-9 rounded-md border border-[#ece1d0] bg-cream text-xl text-gray-600 flex items-center justify-center hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
                 >
                   +
                 </button>
@@ -289,7 +289,7 @@ const ProductDetail = () => {
                 type="button"
                 onClick={handleBuyNow}
                 disabled={outOfStock}
-                className="py-3.5 rounded-lg bg-[#28a3e8] hover:bg-[#1b8fd6] text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-3.5 rounded-lg bg-brand hover:bg-brand-dark text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Buy Now
               </button>
@@ -297,7 +297,7 @@ const ProductDetail = () => {
                 type="button"
                 onClick={handleAddToCart}
                 disabled={isAdding || outOfStock}
-                className="py-3.5 rounded-lg bg-[#f26522] hover:bg-[#e05613] text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-3.5 rounded-lg bg-gold hover:bg-gold-dark text-white font-semibold text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isAdding ? "Adding..." : "Add to Cart"}
               </button>
@@ -313,12 +313,12 @@ const ProductDetail = () => {
 
         {/* Description */}
         <section className={`${card} mt-4 overflow-hidden`}>
-          <h2 className="px-4 sm:px-6 py-3 bg-gray-50 border-b border-gray-200 text-base font-bold text-gray-900">
+          <h2 className="px-4 sm:px-6 py-3 bg-cream-deep border-b border-[#ece1d0] text-base font-bold text-gray-900">
             Description
           </h2>
           <div className="p-4 sm:p-6 space-y-6">
-            <div className="rounded-md border border-gray-200 bg-gray-50/60 p-3 text-xs leading-relaxed text-gray-500">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#28a3e8] mr-2 align-middle" />
+            <div className="rounded-md border border-[#ece1d0] bg-cream/70 p-3 text-xs leading-relaxed text-gray-500">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand mr-2 align-middle" />
               The image provided here is only for reference purpose. Actual product packaging and
               materials may contain more and different information than what is shown on our app or
               website. We recommend that you do not rely solely on the information presented here and
@@ -365,7 +365,7 @@ const ProductDetail = () => {
         {/* How to use */}
         {howToUse.length > 0 && (
           <section className={`${card} mt-4 overflow-hidden`}>
-            <h2 className="px-4 sm:px-6 py-3 bg-gray-50 border-b border-gray-200 text-base font-bold text-gray-900 uppercase tracking-wide">
+            <h2 className="px-4 sm:px-6 py-3 bg-cream-deep border-b border-[#ece1d0] text-base font-bold text-gray-900 uppercase tracking-wide">
               How to Use
             </h2>
             <ul className="list-disc pl-5 sm:pl-6 p-4 sm:p-6 space-y-2 text-sm text-gray-800 leading-relaxed">
@@ -378,7 +378,7 @@ const ProductDetail = () => {
 
         {/* Specifications */}
         <section className={`${card} mt-4 overflow-hidden`}>
-          <h2 className="px-4 sm:px-6 py-3 bg-gray-50 border-b border-gray-200 text-base font-bold text-gray-900">
+          <h2 className="px-4 sm:px-6 py-3 bg-cream-deep border-b border-[#ece1d0] text-base font-bold text-gray-900">
             Specifications
           </h2>
           <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-5 text-sm">
@@ -419,7 +419,7 @@ const ProductDetail = () => {
 
         {/* Reviews */}
         <section id="reviews" className={`${card} mt-4 overflow-hidden scroll-mt-24`}>
-          <h2 className="px-4 sm:px-6 py-3 bg-gray-50 border-b border-gray-200 text-base font-bold text-gray-900">
+          <h2 className="px-4 sm:px-6 py-3 bg-cream-deep border-b border-[#ece1d0] text-base font-bold text-gray-900">
             Ratings &amp; Reviews
           </h2>
           <div className="p-4 sm:p-6">
@@ -439,7 +439,7 @@ const ProductDetail = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <Link
                     to={ROUTES.LOGIN}
-                    className="w-full sm:w-auto py-3 px-8 rounded-lg font-semibold text-white bg-brand hover:bg-[#0b6870] transition-colors"
+                    className="w-full sm:w-auto py-3 px-8 rounded-lg font-semibold text-white bg-brand hover:bg-brand-dark transition-colors"
                   >
                     Login to View Reviews
                   </Link>

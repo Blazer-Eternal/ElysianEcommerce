@@ -47,18 +47,18 @@ const LegendToggle = memo(
       title={`${label}: ${formatCurrency(total)} - ${hiddenHint}`}
       className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-all duration-200 ${
         active
-          ? "border-gray-200 bg-white hover:border-brand/40"
-          : "border-dashed border-gray-200 bg-transparent opacity-60 hover:opacity-100"
+          ? "border-[#ece1cf] bg-white hover:border-brand/40"
+          : "border-dashed border-[#ece1cf] bg-transparent opacity-60 hover:opacity-100"
       }`}
     >
       <span
         className="w-2.5 h-2.5 rounded-full shrink-0"
-        style={{ backgroundColor: active ? color : "#e5e7eb" }}
+        style={{ backgroundColor: active ? color : "#e2d7c5" }}
       />
-      <span className={`text-xs font-semibold ${active ? "text-gray-700" : "text-gray-400 line-through"}`}>
+      <span className={`text-xs font-semibold ${active ? "text-gray-700" : "text-gray-500 line-through"}`}>
         {label}
       </span>
-      <span className={`text-xs font-bold tabular-nums ${active ? "text-gray-900" : "text-gray-400"}`}>
+      <span className={`text-xs font-bold tabular-nums ${active ? "text-gray-900" : "text-gray-500"}`}>
         {formatCurrency(total)}
       </span>
     </button>
@@ -100,7 +100,7 @@ const SalesOverview = memo(({ current, previous, isLoading }: SalesOverviewProps
           <div className="flex items-center gap-2 flex-wrap justify-end">
             <LegendToggle
               label="This Period"
-              color="#0e7c85"
+              color="#c01e2e"
               total={currentTotal}
               active={showCurrent}
               onToggle={toggleCurrent}
@@ -108,7 +108,7 @@ const SalesOverview = memo(({ current, previous, isLoading }: SalesOverviewProps
             />
             <LegendToggle
               label="Last Period"
-              color="#cbd5e1"
+              color="#b8a288"
               total={previousTotal}
               active={showPrevious}
               onToggle={togglePrevious}
@@ -129,28 +129,28 @@ const SalesOverview = memo(({ current, previous, isLoading }: SalesOverviewProps
             <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="salesThisPeriod" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0e7c85" stopOpacity={0.35} />
-                  <stop offset="95%" stopColor="#0e7c85" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#c01e2e" stopOpacity={0.35} />
+                  <stop offset="95%" stopColor="#c01e2e" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0f2f7" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1e6d4" vertical={false} />
               <XAxis
                 dataKey="label"
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
+                tick={{ fontSize: 11, fill: "#9a8b7e" }}
                 tickLine={false}
                 axisLine={false}
                 minTickGap={28}
               />
               <YAxis
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
+                tick={{ fontSize: 11, fill: "#9a8b7e" }}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={formatCompact}
                 width={44}
               />
               <Tooltip
-                cursor={{ stroke: "#0e7c85", strokeDasharray: "3 3" }}
-                contentStyle={{ borderRadius: 12, border: "1px solid #e0f2f7", fontSize: 12 }}
+                cursor={{ stroke: "#c01e2e", strokeDasharray: "3 3" }}
+                contentStyle={{ borderRadius: 12, border: "1px solid #f1e6d4", fontSize: 12 }}
                 formatter={(value: unknown) => formatCurrency(Number(value))}
                 labelFormatter={(_label: unknown, payload) => {
                   const day = payload?.[0]?.payload?.day as string | undefined;
@@ -162,7 +162,7 @@ const SalesOverview = memo(({ current, previous, isLoading }: SalesOverviewProps
                   type="monotone"
                   dataKey="lastPeriod"
                   name="Last Period"
-                  stroke="#cbd5e1"
+                  stroke="#b8a288"
                   strokeWidth={2}
                   strokeDasharray="5 4"
                   fill="none"
@@ -175,7 +175,7 @@ const SalesOverview = memo(({ current, previous, isLoading }: SalesOverviewProps
                   type="monotone"
                   dataKey="thisPeriod"
                   name="This Period"
-                  stroke="#0e7c85"
+                  stroke="#c01e2e"
                   strokeWidth={2.5}
                   fill="url(#salesThisPeriod)"
                   dot={false}

@@ -82,19 +82,19 @@ const PaymentSuccess = () => {
         {status === "verifying" && (
           <>
             <Spinner size="lg" />
-            <p className="text-gray-600 mt-4">Verifying your payment with eSewa...</p>
-            <p className="text-xs text-gray-400 mt-2">Please wait, this may take a moment.</p>
+            <p className="text-ink/70 mt-4">Verifying your payment with eSewa...</p>
+            <p className="text-xs text-ink/50 mt-2">Please wait, this may take a moment.</p>
           </>
         )}
 
         {status === "success" && (
           <>
-            <div className="w-14 h-14 rounded-full bg-[#eafcfd] flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl text-brand">✓</span>
+            <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl text-green-600">✓</span>
             </div>
             <h1 className="font-semibold text-lg mb-1">Payment Successful</h1>
-            <p className="text-sm text-gray-600">{message}</p>
-            <p className="text-xs text-gray-400 mt-3">Redirecting to your order...</p>
+            <p className="text-sm text-ink/70">{message}</p>
+            <p className="text-xs text-ink/50 mt-3">Redirecting to your order...</p>
           </>
         )}
 
@@ -104,12 +104,12 @@ const PaymentSuccess = () => {
               <span className="text-2xl text-red-600">✕</span>
             </div>
             <h1 className="font-semibold text-lg mb-1">Payment Verification Failed</h1>
-            <p className="text-sm text-gray-600 mb-4">{message}</p>
+            <p className="text-sm text-ink/70 mb-4">{message}</p>
             <div className="space-y-2">
               {showRetry && (
                 <button
                   onClick={() => navigate(ROUTES.CHECKOUT)}
-                  className="w-full px-4 py-2 bg-brand text-white rounded-lg text-sm font-semibold hover:bg-[#0a5f68] transition-colors"
+                  className="w-full px-4 py-2 bg-brand text-white rounded-lg text-sm font-semibold hover:bg-brand-dark transition-colors"
                 >
                   Try Again
                 </button>

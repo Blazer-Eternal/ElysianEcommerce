@@ -35,25 +35,25 @@ const TopSellingProducts = memo(({ products, isLoading }: TopSellingProductsProp
         <div className="h-[240px] -ml-2">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 10, right: 10, left: -14, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0f2f7" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1e6d4" vertical={false} />
               <XAxis
                 dataKey="label"
-                tick={{ fontSize: 10, fill: "#9ca3af" }}
+                tick={{ fontSize: 10, fill: "#9a8b7e" }}
                 tickLine={false}
                 axisLine={false}
                 interval={0}
                 height={44}
               />
               <YAxis
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
+                tick={{ fontSize: 11, fill: "#9a8b7e" }}
                 tickLine={false}
                 axisLine={false}
                 allowDecimals={false}
                 width={38}
               />
               <Tooltip
-                cursor={{ fill: "rgba(14,124,133,0.06)" }}
-                contentStyle={{ borderRadius: 12, border: "1px solid #e0f2f7", fontSize: 12 }}
+                cursor={{ fill: "rgba(192,30,46,0.06)" }}
+                contentStyle={{ borderRadius: 12, border: "1px solid #f1e6d4", fontSize: 12 }}
                 formatter={(value: unknown) => `${Number(value)} units`}
                 labelFormatter={(_label: unknown, payload) => {
                   const row = payload?.[0]?.payload as { name?: string; revenue?: number } | undefined;
@@ -61,7 +61,7 @@ const TopSellingProducts = memo(({ products, isLoading }: TopSellingProductsProp
                   return `${row.name} · ${formatCurrency(row.revenue ?? 0)}`;
                 }}
               />
-              <Bar dataKey="units" name="Units Sold" fill="#0e7c85" radius={[6, 6, 0, 0]} maxBarSize={48} />
+              <Bar dataKey="units" name="Units Sold" fill="#c01e2e" radius={[6, 6, 0, 0]} maxBarSize={48} />
             </BarChart>
           </ResponsiveContainer>
         </div>

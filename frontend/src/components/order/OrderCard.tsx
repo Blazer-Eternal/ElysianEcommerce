@@ -13,7 +13,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <Link
       to={ROUTES.ORDER_DETAIL(order._id)}
-      className="group relative block overflow-hidden rounded-2xl bg-white border border-gray-200 p-6 transition-all duration-500 hover:bg-white hover:border-gray-300 hover:shadow-2xl active:scale-95"
+      className="group relative block overflow-hidden rounded-2xl bg-white border border-[#ece1d0] p-6 transition-all duration-500 hover:bg-white hover:border-brand/30 hover:shadow-[0_8px_28px_rgba(61,5,12,0.12)] active:scale-95"
     >
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-linear-to-br from-brand/5 via-transparent to-cyan-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -31,7 +31,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-linear-to-r from-transparent via-gray-200 to-transparent my-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="h-px bg-linear-to-r from-transparent via-sand to-transparent my-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         {/* Footer Section */}
         <div className="flex items-center justify-between">

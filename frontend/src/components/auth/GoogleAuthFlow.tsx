@@ -111,9 +111,9 @@ const GoogleAuthFlow = ({ buttonText = "signin_with" }: Props) => {
 
   if (step === "otp") {
     return (
-      <div className="space-y-4 border border-gray-200 rounded-xl p-6 bg-gray-50">
-        <h2 className="text-lg font-semibold text-gray-900">Verify your Google account</h2>
-        <p className="text-sm text-gray-600">
+      <div className="space-y-4 border border-[#ece1d0] rounded-xl p-6 bg-cream">
+        <h2 className="text-lg font-semibold text-ink">Verify your Google account</h2>
+        <p className="text-sm text-ink/70">
           Enter the 6-digit code sent to <span className="font-medium">{email}</span>.
         </p>
         {error && (
@@ -133,7 +133,7 @@ const GoogleAuthFlow = ({ buttonText = "signin_with" }: Props) => {
           value={otp}
           onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
           placeholder="6-digit code"
-          className="w-full bg-white border-b-2 border-gray-300 px-4 py-3 text-center text-xl tracking-[0.5em] focus:outline-none focus:border-brand transition-all duration-300"
+          className="w-full bg-white border-b-2 border-[#ded2c4] px-4 py-3 text-center text-xl tracking-[0.5em] focus:outline-none focus:border-brand transition-all duration-300"
         />
         <button
           type="button"
@@ -154,7 +154,7 @@ const GoogleAuthFlow = ({ buttonText = "signin_with" }: Props) => {
         <button
           type="button"
           onClick={() => { setStep("idle"); setOtp(""); setError(null); setInfo(null); }}
-          className="w-full text-xs text-gray-500 hover:text-gray-700"
+          className="w-full text-xs text-ink/55 hover:text-ink/80"
         >
           Use a different account
         </button>
@@ -170,7 +170,7 @@ const GoogleAuthFlow = ({ buttonText = "signin_with" }: Props) => {
         </div>
       )}
       <div className="flex justify-center" ref={buttonRef} />
-      <p className="text-xs text-gray-500 text-center mt-2">
+      <p className="text-xs text-ink/55 text-center mt-2">
         Use a verified Google/Gmail account. We'll email you a one-time code.
       </p>
     </div>

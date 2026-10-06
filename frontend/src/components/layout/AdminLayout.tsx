@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+﻿import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 
 // Icons
@@ -87,6 +87,7 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
 
   const navItems: NavItem[] = [
     { label: "Dashboard", route: ROUTES.ADMIN_DASHBOARD, icon: <DashboardIcon /> },
@@ -101,16 +102,16 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="flex h-screen bg-linear-to-b from-[#eafcfd] to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
+    <div className="flex h-screen bg-linear-to-b from-[#fdf8f0] to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-linear-to-b from-white via-white to-[#f0f9fb] border-r border-[#e0f2f7] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-linear-to-b from-white via-white to-[#fdf8f0] border-r border-[#ece1d0] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
         {/* Sidebar Header - pinned above the nav so items never paint over it */}
-        <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#f8fcfd] border-b border-[#e0f2f7] shadow-[0_4px_12px_-6px_rgba(14,124,133,0.15)] p-6">
+        <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#fefaf3] border-b border-[#ece1d0] shadow-[0_4px_12px_-6px_rgba(61,5,12,0.12)] p-6">
           {/* Logo Section — full brand name, links back to the main site */}
           <div className="flex items-center justify-between">
             <Link
@@ -120,7 +121,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             >
               <div className="relative">
                 <img
-                  src="/logo-256.png"
+                  src="/images/Bestlogo.jpg"
                   alt="Elysian Ecommerce"
                   width={256}
                   height={256}
@@ -133,7 +134,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-gray-600 hover:text-gray-900"
+              className="lg:hidden text-ink/60 hover:text-ink transition-colors"
             >
               <CloseIcon />
             </button>
@@ -141,37 +142,59 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         </div>
 
         {/* Sidebar Navigation */}
-        <nav className="px-4 py-6 space-y-2 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
-          {navItems.map((item, index) => (
-            <Link
-              key={item.route}
-              to={item.route}
-              onClick={() => setSidebarOpen(false)}
-              className="flex items-center gap-4 px-4 py-3 rounded-xl text-gray-700 hover:bg-linear-to-r hover:from-brand/5 hover:to-cyan-600/5 hover:text-brand transition-all duration-200 group relative overflow-hidden gpu-accelerate"
-              style={{
-                animation: `fadeInLeft 0.3s ease-out ${index * 0.05}s both`,
-                transform: "translateZ(0)",
-                willChange: "background-color, transform"
-              }}
-            >
-              <div className="absolute inset-0 bg-linear-to-r from-brand/0 to-cyan-600/0 group-hover:from-brand/10 group-hover:to-cyan-600/10 transition-all -z-10 gpu-accelerate" style={{ transform: "translateZ(0)" }} />
-              <div className="text-gray-500 group-hover:text-brand transition-colors text-2xl shrink-0 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
-                {item.icon}
-              </div>
-              <span className="font-semibold text-base group-hover:text-brand transition-colors gpu-accelerate" style={{ willChange: "color" }}>{item.label}</span>
-            </Link>
-          ))}
+        <div className="px-8 pt-6 pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink/65">
+          Menu
+        </div>
+        <nav className="px-4 pb-6 space-y-1.5 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
+          {navItems.map((item, index) => {
+            const isActive = location.pathname === item.route;
+            return (
+              <Link
+                key={item.route}
+                to={item.route}
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-4 px-4 py-3 rounded-xl text-base transition-all duration-200 group relative overflow-hidden gpu-accelerate ${
+                  isActive
+                    ? "bg-brand/10 hover:bg-brand/15 text-brand font-semibold before:absolute before:left-0 before:top-1/2 before:h-5 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-brand before:content-['']"
+                    : "text-ink/70 font-medium hover:bg-brand/5 hover:text-brand"
+                }`}
+                style={{
+                  animation: `fadeInLeft 0.3s ease-out ${index * 0.05}s both`,
+                  transform: "translateZ(0)",
+                  willChange: "background-color, transform"
+                }}
+              >
+                <div className="absolute inset-0 bg-linear-to-r from-brand/0 to-cyan-600/0 group-hover:from-brand/10 group-hover:to-cyan-600/10 transition-all -z-10 gpu-accelerate" style={{ transform: "translateZ(0)" }} />
+                <div
+                  className={`transition-colors text-2xl shrink-0 gpu-accelerate ${
+                    isActive ? "text-brand" : "text-ink/50 group-hover:text-brand"
+                  }`}
+                  style={{ transform: "translateZ(0)" }}
+                >
+                  {item.icon}
+                </div>
+                <span
+                  className={`transition-colors gpu-accelerate ${
+                    isActive ? "font-semibold" : "font-medium group-hover:text-brand"
+                  }`}
+                  style={{ willChange: "color" }}
+                >
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
         </nav>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col w-full overflow-hidden animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
         {/* Top Bar - only carries the mobile sidebar toggle */}
-        <div className="bg-white border-b border-[#e0f2f7] sticky top-0 z-40 gpu-accelerate lg:hidden" style={{ contain: "layout style paint" }}>
+        <div className="bg-white border-b border-[#ece1d0] sticky top-0 z-40 gpu-accelerate lg:hidden" style={{ contain: "layout style paint" }}>
           <div className="flex items-center justify-between px-6 py-4 gpu-accelerate" style={{ willChange: "background-color" }}>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-brand hover:text-brand-dark transition-colors gpu-accelerate"
+              className="-m-2 rounded-lg p-2 text-brand hover:bg-brand/5 hover:text-brand-dark transition-colors gpu-accelerate"
               style={{ transform: "translateZ(0)" }}
             >
               <MenuIcon />
@@ -189,7 +212,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/20 lg:hidden z-40 gpu-accelerate"
+          className="fixed inset-0 bg-ink/40 lg:hidden z-40 gpu-accelerate"
           onClick={() => setSidebarOpen(false)}
           style={{ transform: "translateZ(0)" }}
         />

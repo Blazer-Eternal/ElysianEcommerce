@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 
 const HomeIcon = () => (
@@ -15,7 +15,7 @@ const AdminNavbar = () => {
         {/* Left - Logo */}
         <Link to={ROUTES.ADMIN_DASHBOARD} className="shrink-0 flex items-center gap-3 gpu-accelerate" style={{ transform: "translateZ(0)" }}>
           <img 
-            src="/logo-256.png" 
+            src="/images/Bestlogo.jpg" 
             alt="ElysianEcommerce Logo" 
             width={256}
             height={256}

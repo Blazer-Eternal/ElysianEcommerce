@@ -56,12 +56,16 @@ const Contact = () => {
       {/* Hero Section */}
       <div className="pt-12 pb-8 sm:pt-24 sm:pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-ink">
             Get in <span className="text-brand">Touch</span>
           </h1>
-          <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            We'd love to hear from you. Whether you have a question or feedback, don't hesitate to reach out.
+          <p className="text-lg text-ink/70 leading-relaxed max-w-2xl mx-auto">
+            Questions about an order, a product, or a return? Reach out — we answer within 24 hours.
           </p>
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
+          </div>
         </div>
       </div>
 
@@ -71,8 +75,8 @@ const Contact = () => {
           {/* Contact Info */}
           <div className="lg:col-span-1 space-y-6">
             <div>
-              <p className="text-sm font-semibold text-brand uppercase tracking-wide mb-2">Contact Info</p>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-[11px] font-semibold text-gold uppercase tracking-[0.2em] mb-3">Contact Info</p>
+              <p className="text-ink/70 leading-relaxed">
                 Have a question or feedback? We're here to help. Reach out through any of the methods below.
               </p>
             </div>
@@ -84,9 +88,9 @@ const Contact = () => {
                   <LocationIcon />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Location</h3>
-                  <p className="text-sm text-gray-600 mt-1">Kathmandu, Bagmati</p>
-                  <p className="text-sm text-gray-600">Nepal</p>
+                  <h3 className="font-semibold text-ink">Location</h3>
+                  <p className="text-sm text-ink/70 mt-1">Kathmandu, Bagmati</p>
+                  <p className="text-sm text-ink/70">Nepal</p>
                 </div>
               </div>
             </div>
@@ -98,9 +102,9 @@ const Contact = () => {
                   <PhoneIcon />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Phone</h3>
-                  <p className="text-sm text-gray-600 mt-1">+977 980-000-0000</p>
-                  <p className="text-xs text-gray-500 mt-2">Available 24/7</p>
+                  <h3 className="font-semibold text-ink">Phone</h3>
+                  <p className="text-sm text-ink/70 mt-1">+977 980-000-0000</p>
+                  <p className="text-xs text-ink/55 mt-2">Available 24/7</p>
                 </div>
               </div>
             </div>
@@ -112,9 +116,9 @@ const Contact = () => {
                   <EmailIcon />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Email</h3>
-                  <p className="text-sm text-gray-600 mt-1">support@elysian.com</p>
-                  <p className="text-xs text-gray-500 mt-2">We'll reply within 24 hours</p>
+                  <h3 className="font-semibold text-ink">Email</h3>
+                  <p className="text-sm text-ink/70 mt-1">support@elysian.com</p>
+                  <p className="text-xs text-ink/55 mt-2">We'll reply within 24 hours</p>
                 </div>
               </div>
             </div>
@@ -122,14 +126,15 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="glass-strong rounded-2xl p-8 sm:p-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Send us a Message</h2>
-              <p className="text-gray-600 text-sm mb-8">
+            <div className="glass-strong rounded-2xl p-8 sm:p-10 border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
+              <h2 className="text-2xl font-bold text-ink mb-2">Send us a Message</h2>
+              <div className="mb-4 h-px w-16 bg-brand/40" />
+              <p className="text-ink/70 text-sm mb-8">
                 Fill out the form below and we'll get back to you as soon as possible.
               </p>
 
               {submitted && (
-                <div className="mb-6 glass bg-linear-to-r from-[#eafcfd] to-[#d7f4f6] border-l-4 border-brand rounded-lg px-6 py-4">
+                <div className="mb-6 glass bg-linear-to-r from-[#fdf8f0] to-[#f7ecdb] border-l-4 border-brand rounded-lg px-6 py-4">
                   <p className="text-brand font-semibold">✓ Message Received!</p>
                   <p className="text-brand text-sm mt-1">We'll get back to you within 24 hours.</p>
                 </div>
@@ -145,7 +150,7 @@ const Contact = () => {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="contact-name" className="block text-sm font-semibold text-gray-900 mb-2">Name *</label>
+                    <label htmlFor="contact-name" className="block text-sm font-semibold text-ink mb-2">Name *</label>
                     <input
                       id="contact-name"
                       name="name"
@@ -154,11 +159,11 @@ const Contact = () => {
                       required
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300"
+                      className="w-full rounded-xl border border-[#ded2c4] bg-white px-4 py-3 text-ink placeholder-ink/45 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300"
                     />
                   </div>
                   <div>
-                    <label htmlFor="contact-email" className="block text-sm font-semibold text-gray-900 mb-2">Email *</label>
+                    <label htmlFor="contact-email" className="block text-sm font-semibold text-ink mb-2">Email *</label>
                     <input
                       id="contact-email"
                       name="email"
@@ -167,13 +172,13 @@ const Contact = () => {
                       required
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300"
+                      className="w-full rounded-xl border border-[#ded2c4] bg-white px-4 py-3 text-ink placeholder-ink/45 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="contact-phone" className="block text-sm font-semibold text-gray-900 mb-2">Phone</label>
+                  <label htmlFor="contact-phone" className="block text-sm font-semibold text-ink mb-2">Phone</label>
                   <input
                     id="contact-phone"
                     name="phone"
@@ -181,12 +186,12 @@ const Contact = () => {
                     placeholder="+977 98X-XXX-XXXX"
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300"
+                    className="w-full rounded-xl border border-[#ded2c4] bg-white px-4 py-3 text-ink placeholder-ink/45 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="contact-message" className="block text-sm font-semibold text-gray-900 mb-2">Message *</label>
+                  <label htmlFor="contact-message" className="block text-sm font-semibold text-ink mb-2">Message *</label>
                   <textarea
                     id="contact-message"
                     name="message"
@@ -195,14 +200,14 @@ const Contact = () => {
                     rows={5}
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full glass rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300 resize-none"
+                    className="w-full rounded-xl border border-[#ded2c4] bg-white px-4 py-3 text-ink placeholder-ink/45 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300 resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-linear-to-r from-brand to-cyan-600 text-white font-semibold py-3 rounded-lg hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed disabled:hover:shadow-md"
+                  className="w-full bg-brand text-white font-semibold py-3 rounded-xl hover:bg-brand-dark transition-all duration-300 shadow-[0_2px_16px_rgba(61,5,12,0.18)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.24)] disabled:bg-ink/30 disabled:cursor-not-allowed"
                 >
                   {submitting ? "Sending..." : "Send Message"}
                 </button>
@@ -214,13 +219,14 @@ const Contact = () => {
 
       {/* FAQ Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
+        <h2 className="text-3xl font-bold text-ink text-center mb-4">Frequently Asked Questions</h2>
+        <div className="mx-auto mb-12 h-px w-16 bg-brand/40" />
         
         <div className="space-y-4">
           {[
             {
               q: "What are your business hours?",
-              a: "We operate 24/7 to serve you better. Our support team responds to inquiries within 24 hours.",
+              a: "We operate 24/7. Our support team responds to inquiries within 24 hours.",
             },
             {
               q: "How can I track my order?",
@@ -235,12 +241,12 @@ const Contact = () => {
               a: "Yes! We ship worldwide. Shipping costs and delivery times vary by location.",
             },
           ].map((item, i) => (
-            <details key={i} className="glass rounded-lg p-6 hover:bg-white transition-all duration-300 cursor-pointer group">
-              <summary className="font-semibold text-gray-900 flex items-center justify-between">
+            <details key={i} className="glass rounded-xl p-6 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)]">
+              <summary className="font-semibold text-ink flex items-center justify-between">
                 {item.q}
                 <span className="text-brand group-open:rotate-180 transition-transform">▼</span>
               </summary>
-              <p className="text-gray-600 mt-4 leading-relaxed">{item.a}</p>
+              <p className="text-ink/70 mt-4 leading-relaxed">{item.a}</p>
             </details>
           ))}
         </div>

@@ -55,7 +55,7 @@ const CartItem = ({ item }: CartItemProps) => {
       {/* Border gradient effect */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-linear-to-r from-cyan-300/20 via-transparent to-teal-300/20 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
 
-      <div className="relative p-4 sm:p-6 border border-cyan-100/60 group-hover:border-cyan-200/80 transition-all duration-300 rounded-2xl shadow-sm group-hover:shadow-lg gpu-accelerate">
+      <div className="relative p-4 sm:p-6 border border-[#ece1d0] group-hover:border-cyan-300/80 transition-all duration-300 rounded-2xl shadow-sm group-hover:shadow-lg gpu-accelerate">
         
         <div className="flex gap-4 sm:gap-6">
           {/* Product Image */}
@@ -76,7 +76,7 @@ const CartItem = ({ item }: CartItemProps) => {
               />
             </div>
             {/* Hover badge */}
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-linear-to-br from-cyan-400 to-teal-500 rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-sm font-bold shadow-lg">
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-linear-to-br from-brand to-brand-dark rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-sm font-bold shadow-lg">
               <EyeIcon size={16} />
             </div>
           </Link>
@@ -110,7 +110,7 @@ const CartItem = ({ item }: CartItemProps) => {
               {/* Price Total */}
               <div className="shrink-0 text-right">
                 <p className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Total</p>
-                <p className="text-2xl sm:text-3xl font-black r text-brand">
+                <p className="text-2xl sm:text-3xl font-black text-brand">
                   {formatCurrency(product.price * item.quantity)}
                 </p>
               </div>
@@ -118,11 +118,11 @@ const CartItem = ({ item }: CartItemProps) => {
 
             {/* Quantity Controls - Remove sits flush with the card's right edge via ml-auto */}
             <div className="flex items-center gap-2 mt-4">
-              <div className="inline-flex items-center gap-0 bg-linear-to-r from-gray-100 to-gray-50 rounded-full p-1 border border-gray-200/60 shadow-sm">
+              <div className="inline-flex items-center gap-0 bg-linear-to-r from-cream to-cream-deep rounded-full p-1 border border-[#ece1d0] shadow-sm">
                 <button
                   onClick={() => handleQuantityChange(item.quantity - 1)}
                   disabled={isUpdating || item.quantity <= 1}
-                  className="qty-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
+                  className="qty-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-brand hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
                 >
                   −
                 </button>
@@ -132,7 +132,7 @@ const CartItem = ({ item }: CartItemProps) => {
                 <button
                   onClick={() => handleQuantityChange(item.quantity + 1)}
                   disabled={isUpdating || item.quantity >= product.stock}
-                  className="qty-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-linear-to-r hover:from-cyan-400 hover:to-teal-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
+                  className="qty-btn w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-bold text-gray-700 hover:bg-brand hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 active:scale-90 text-sm"
                 >
                   +
                 </button>

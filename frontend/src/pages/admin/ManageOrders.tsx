@@ -132,20 +132,20 @@ const ManageOrders = () => {
             <div>
               <div className="text-sm font-semibold text-brand uppercase tracking-wider mb-2">Admin Panel</div>
               <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Manage Orders</h1>
-              <p className="text-gray-600 mt-2">View and manage all customer orders.</p>
+              <p className="text-gray-600 mt-2">All customer orders, with status and payment controls.</p>
             </div>
             <ViewToggle viewMode={viewMode} onChange={setViewMode} />
           </div>
 
           {/* Status Filter Bar */}
           <div className="flex flex-wrap items-center gap-2 mb-8">
-            <span className="text-xs font-bold text-gray-900 uppercase tracking-wider mr-1">Status:</span>
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mr-1">Status:</span>
             <button
               onClick={() => handleFilterChange("all")}
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
                 statusFilter === "all"
-                  ? "bg-black text-white shadow-md"
-                  : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-100"
+                  ? "bg-brand text-white"
+                  : "bg-white text-gray-600 border border-[#ece1cf] hover:border-brand/30 hover:text-brand"
               }`}
             >
               All
@@ -156,8 +156,8 @@ const ManageOrders = () => {
                 onClick={() => handleFilterChange(status)}
                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
                   statusFilter === status
-                    ? "bg-black text-white shadow-md"
-                    : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-100"
+                    ? "bg-brand text-white"
+                    : "bg-white text-gray-600 border border-[#ece1cf] hover:border-brand/30 hover:text-brand"
                 }`}
               >
                 {ORDER_STATUS_LABELS[status]}
@@ -171,35 +171,35 @@ const ManageOrders = () => {
               <p className="text-gray-600">Loading orders...</p>
             </div>
           ) : orders.length === 0 ? (
-            <div className="text-center py-12 glass rounded-xl p-6 border border-gray-200">
+            <div className="text-center bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] px-6 py-12">
               <p className="text-gray-600 text-lg">
                 {statusFilter === "all" ? "No orders found." : `No ${statusFilter} orders found.`}
               </p>
             </div>
           ) : viewMode === "list" ? (
             <>
-              <div className="glass rounded-xl overflow-hidden border border-gray-200">
+              <div className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     {/* Table Header */}
                     <thead>
-                      <tr className="border-b border-gray-200 bg-linear-to-r from-brand/5 to-cyan-600/5">
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Order #</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Customer</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Items</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Total</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Coupon</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Order Status</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Payment</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Action</th>
+                      <tr className="border-b border-[#ece1cf] bg-linear-to-r from-brand/5 to-cyan-600/5">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Order #</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Customer</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Items</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Total</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Coupon</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Order Status</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Payment</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Date</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Action</th>
                       </tr>
                     </thead>
 
                     {/* Table Body */}
-                    <tbody className="divide-y divide-white/20">
+                    <tbody className="divide-y divide-[#ece1cf]">
                       {orders.map((order) => (
-                        <tr key={order._id} className="hover:bg-linear-to-r hover:from-brand/5 hover:to-cyan-600/5 transition-colors">
+                        <tr key={order._id} className="hover:bg-cream-deep/50 transition-colors">
                           {/* Order Number */}
                           <td className="px-6 py-4">
                             <Link
@@ -255,7 +255,7 @@ const ManageOrders = () => {
                             <select
                               value={order.status}
                               onChange={(e) => handleStatusChange(order._id, e.target.value as OrderStatus)}
-                              className="px-3 py-1 border border-gray-300 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brand"
+                              className="px-3 py-1 border border-[#e2d7c5] rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brand"
                             >
                               {ORDER_STATUSES.map((s) => (
                                 <option key={s} value={s}>
@@ -275,7 +275,7 @@ const ManageOrders = () => {
                             <select
                               value={order.payment_status}
                               onChange={(e) => handlePaymentStatusChange(order._id, e.target.value as PaymentStatus)}
-                              className="px-3 py-1 border border-gray-300 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brand"
+                              className="px-3 py-1 border border-[#e2d7c5] rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-brand"
                             >
                               {PAYMENT_STATUSES.map((s) => (
                                 <option key={s} value={s}>
@@ -299,7 +299,7 @@ const ManageOrders = () => {
                           <td className="px-6 py-4">
                             <Link
                               to={`/admin/orders/${order._id}`}
-                              className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-xs whitespace-nowrap"
+                              className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-brand text-white rounded-lg hover:bg-brand-dark transition-all duration-200 font-semibold text-xs whitespace-nowrap"
                               title="View Order Details"
                             >
                               <ViewIcon />
@@ -319,7 +319,7 @@ const ManageOrders = () => {
               {orders.map((order) => (
                 <div
                   key={order._id}
-                  className="glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
+                  className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] transition-all duration-300 group"
                 >
                   {/* Order Header */}
                   <div className="bg-linear-to-br from-brand/10 to-cyan-600/10 p-6 flex items-start justify-between">
@@ -354,7 +354,7 @@ const ManageOrders = () => {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-gray-200">
+                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-[#ece1cf]">
                       <div>
                         <p className="text-xs text-gray-600 font-medium">Items</p>
                         <p className="font-bold text-gray-900">
@@ -385,7 +385,7 @@ const ManageOrders = () => {
 
                     <Link
                       to={`/admin/orders/${order._id}`}
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-200 font-semibold text-sm"
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-brand text-white rounded-lg hover:bg-brand-dark transition-all duration-200 font-semibold text-sm"
                       title="View Order Details"
                     >
                       <ViewIcon />

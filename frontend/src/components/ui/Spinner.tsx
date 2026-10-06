@@ -12,7 +12,7 @@ const Spinner = ({ size = "md" }: SpinnerProps) => {
   return (
     <div className="flex items-center justify-center">
       <div
-        className={`${sizeClasses[size]} rounded-full border-gray-300 border-t-black animate-spin`}
+        className={`${sizeClasses[size]} rounded-full border-sand border-t-brand animate-spin`}
       />
     </div>
   );

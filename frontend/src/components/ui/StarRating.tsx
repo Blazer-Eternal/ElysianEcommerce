@@ -18,7 +18,7 @@ const StarRating = ({
   value,
   size = 20,
   className = "",
-  filledClassName = "text-yellow-400",
+  filledClassName = "text-[#f59e0b]",
   emptyClassName = "text-gray-300",
 }: StarRatingProps) => {
   const safeValue = Math.min(5, Math.max(0, value || 0));

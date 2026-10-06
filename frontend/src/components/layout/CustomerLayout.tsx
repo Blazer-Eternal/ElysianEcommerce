@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+﻿import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "../../hooks/useAuth";
@@ -71,7 +71,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       to: ROUTES.ORDER_HISTORY,
       icon: <BoxIcon size={20} />,
       badge: activeOrderCount > 0 ? (
-        <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-600">
+        <span className="rounded-full bg-brand px-2 py-0.5 text-[11px] font-semibold text-white">
           {activeOrderCount} Active
         </span>
       ) : undefined,
@@ -81,7 +81,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       to: ROUTES.WISHLIST,
       icon: <HeartIcon size={20} />,
       badge: wishlistItems.length > 0 ? (
-        <span className="min-w-5 rounded-full bg-gray-100 px-1.5 py-0.5 text-center text-[11px] font-semibold text-gray-600">
+        <span className="min-w-5 rounded-full bg-sand px-1.5 py-0.5 text-center text-[11px] font-semibold text-ink/80">
           {wishlistItems.length}
         </span>
       ) : undefined,
@@ -117,27 +117,27 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       .toUpperCase() ?? "?";
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f3f9fa]">
+    <div className="flex h-screen overflow-hidden bg-cream">
       {/* Sidebar — fixed drawer on small screens, static column from lg up */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-gray-200 bg-white shadow-xl transition-transform duration-300 lg:static lg:z-auto lg:translate-x-0 lg:shadow-none ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-[#ece1d0] bg-linear-to-b from-white to-[#fdf8f0] shadow-xl transition-transform duration-300 lg:static lg:z-auto lg:translate-x-0 lg:shadow-none ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
         {/* Portal brand */}
-        <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-5 py-4">
+        <div className="flex items-center justify-between gap-3 border-b border-[#ece1d0] px-5 py-4">
           <Link to={ROUTES.HOME} className="flex items-center gap-3 min-w-0" title="Back to Elysian Ecommerce">
-            <img src="/logo-256.png" alt="Elysian Ecommerce" width={48} height={48} className="h-10 w-auto shrink-0 object-contain" />
+            <img src="/images/Bestlogo.jpg" alt="Elysian Ecommerce" width={48} height={48} className="h-10 w-auto shrink-0 object-contain" />
             <span className="min-w-0">
-              <span className="block truncate text-sm font-bold text-gray-900">Elysian</span>
-              <span className="block text-[11px] font-semibold uppercase tracking-wider text-brand">Customer Portal</span>
+              <span className="block truncate text-sm font-bold text-ink">Elysian</span>
+              <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">Customer Portal</span>
             </span>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
             aria-label="Close menu"
-            className="lg:hidden text-gray-500 hover:text-gray-900"
+            className="lg:hidden text-ink/60 hover:text-ink transition-colors"
           >
             <XIcon size={20} />
           </button>
@@ -145,7 +145,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
 
         {/* Signed-in customer card */}
         <div className="px-4 pt-4">
-          <div className="flex items-center gap-3 rounded-2xl border border-gray-100 bg-gray-50 p-3">
+          <div className="flex items-center gap-3 rounded-2xl border border-[#ece1d0] bg-cream p-3 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
             <div className="relative shrink-0">
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-brand to-cyan-600 text-sm font-bold text-white">
                 {initials}
@@ -153,8 +153,8 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
               <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-green-500" />
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-gray-900">{user?.name}</p>
-              <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-700">
+              <p className="truncate text-sm font-semibold text-ink">{user?.name}</p>
+              <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700">
                 <CrownIcon size={11} />
                 {tier.name} Tier
               </span>
@@ -171,13 +171,13 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
                 key={item.label}
                 to={item.to}
                 onClick={(event) => handleNavClick(event, item)}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+                className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
                   isActive
-                    ? "bg-brand/10 font-semibold text-brand"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    ? "bg-brand/10 font-semibold text-brand before:absolute before:left-0 before:top-1/2 before:h-5 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-brand before:content-['']"
+                    : "font-medium text-ink/65 hover:bg-brand/5 hover:text-brand"
                 }`}
               >
-                <span className={isActive ? "text-brand" : "text-gray-400"}>{item.icon}</span>
+                <span className={isActive ? "text-brand" : "text-ink/50"}>{item.icon}</span>
                 <span className="flex-1 truncate">{item.label}</span>
                 {item.badge}
               </Link>
@@ -187,30 +187,30 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       </aside>
 
       {sidebarOpen && (
-        <div className="fixed inset-0 z-40 bg-black/30 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-ink/40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
       {/* Content column */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Top bar */}
-        <header className="flex items-center gap-3 border-b border-gray-200 bg-white px-4 py-3 sm:px-6">
+        <header className="flex items-center gap-3 border-b border-[#ece1d0] bg-white px-4 py-3 sm:px-6">
           <button
             onClick={() => setSidebarOpen(true)}
             aria-label="Open menu"
-            className="lg:hidden text-gray-600 hover:text-gray-900"
+            className="lg:hidden -m-1.5 rounded-lg p-1.5 text-ink/60 hover:bg-brand/5 hover:text-brand transition-colors"
           >
             <MenuIcon size={22} />
           </button>
 
           <form onSubmit={handleSearch} className="relative min-w-0 flex-1 sm:max-w-md">
-            <SearchIcon size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <SearchIcon size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/50" />
             <input
               type="search"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
               placeholder="Search orders, products, invoices..."
               aria-label="Search the store"
-              className="w-full rounded-xl border border-transparent bg-gray-100 py-2.5 pl-10 pr-3 text-sm text-gray-800 placeholder:text-gray-400 focus:border-brand/40 focus:bg-white focus:outline-none"
+              className="w-full rounded-xl border border-transparent bg-cream-deep py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink/55 focus:border-brand/40 focus:bg-white focus:ring-2 focus:ring-brand/15 focus:outline-none"
             />
           </form>
 
@@ -218,18 +218,18 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
             <Link
               to={ROUTES.ORDER_HISTORY}
               aria-label="Order updates"
-              className="relative text-gray-500 hover:text-brand transition-colors"
+              className="relative text-ink/55 hover:text-brand transition-colors"
             >
               <BellIcon size={20} />
               {activeOrderCount > 0 && (
-                <span className="absolute -right-1 -top-0.5 h-2.5 w-2.5 rounded-full bg-blue-500 ring-2 ring-white" />
+                <span className="absolute -right-1 -top-0.5 h-2.5 w-2.5 rounded-full bg-brand ring-2 ring-white" />
               )}
             </Link>
 
             <Link
               to={ROUTES.CART}
               aria-label={`Cart with ${itemCount} items`}
-              className="relative text-gray-500 hover:text-brand transition-colors"
+              className="relative text-ink/55 hover:text-brand transition-colors"
             >
               <BagIcon size={20} />
               {itemCount > 0 && (
@@ -241,7 +241,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
 
             <Link
               to={ROUTES.PROFILE}
-              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-brand transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-ink/75 hover:text-brand transition-colors"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-brand to-cyan-600 text-xs font-bold text-white">
                 {initials}

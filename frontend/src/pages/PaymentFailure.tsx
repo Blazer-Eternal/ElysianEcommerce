@@ -9,7 +9,7 @@ const PaymentFailure = () => {
           <span className="text-2xl text-red-600">✕</span>
         </div>
         <h1 className="font-semibold text-lg mb-1">Payment Failed</h1>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-ink/70">
           Your eSewa payment was not completed. Your order has been kept as pending. You can try paying
           again from your order history, or choose Cash on Delivery instead.
         </p>

@@ -64,7 +64,7 @@ const WhyChooseUsSection = () => {
               style={{
                 background: "rgba(255, 255, 255, 0.8)",
                 backdropFilter: "blur(10px)",
-                border: "1px solid rgba(14, 124, 133, 0.1)",
+                border: "1px solid rgba(192, 30, 46, 0.1)",
                 transitionDelay: `${index * 50}ms`,
                 contain: "layout style paint",
                 transform: "translateZ(0)"
@@ -76,7 +76,7 @@ const WhyChooseUsSection = () => {
               {/* Animated border effect */}
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
-                  background: "linear-gradient(45deg, #0e7c85, transparent)",
+                  background: "linear-gradient(45deg, #c01e2e, transparent)",
                   padding: "1px",
                   WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                   WebkitMaskComposite: "xor",
@@ -89,12 +89,12 @@ const WhyChooseUsSection = () => {
                 {/* Icon */}
                 <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:shadow-lg gpu-accelerate"
                   style={{
-                    background: "linear-gradient(135deg, #0e7c85/15 0%, #06b6d4/10 100%)",
+                    background: "linear-gradient(135deg, #c01e2e/15 0%, #d18029/10 100%)",
                     transform: "translateZ(0)",
                     willChange: "transform, opacity"
                   }}
                 >
-                  <div className="text-brand group-hover:text-[#0a5a62] transition-colors duration-500">
+                  <div className="text-brand group-hover:text-[#8d1222] transition-colors duration-500">
                     {feature.icon}
                   </div>
                 </div>

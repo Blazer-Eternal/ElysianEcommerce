@@ -14,8 +14,8 @@ interface CustomerActivityProps {
 
 const TYPE_STYLES: Record<ActivityItem["type"], { icon: ReactNode; className: string }> = {
   order: { icon: <CartIcon size={16} />, className: "bg-brand/10 text-brand" },
-  user: { icon: <PeopleIcon size={16} />, className: "bg-brand/10 text-brand" },
-  review: { icon: <StarIcon size={16} />, className: "bg-amber-100 text-amber-600" },
+  user: { icon: <PeopleIcon size={16} />, className: "bg-cyan-100 text-cyan-700" },
+  review: { icon: <StarIcon size={16} />, className: "bg-amber-100 text-amber-700" },
 };
 
 /**
@@ -40,7 +40,7 @@ const CustomerActivity = memo(({ activity, isLoading, periodDays }: CustomerActi
         {activity.map((item) => {
           const style = TYPE_STYLES[item.type];
           return (
-            <li key={item.id} className="flex items-center gap-3 py-3 border-b border-gray-100 last:border-none">
+            <li key={item.id} className="flex items-center gap-3 py-3 border-b border-[#ece1cf] last:border-none">
               <span className={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center ${style.className}`}>
                 {style.icon}
               </span>
@@ -48,7 +48,7 @@ const CustomerActivity = memo(({ activity, isLoading, periodDays }: CustomerActi
                 <p className="text-sm font-bold text-gray-900 truncate">{item.title}</p>
                 <p className="text-xs text-gray-500 truncate">{item.subtitle}</p>
               </div>
-              <span className="text-xs text-gray-400 whitespace-nowrap shrink-0">
+              <span className="text-xs text-gray-500 whitespace-nowrap shrink-0">
                 {formatRelativeTime(item.at)}
               </span>
             </li>

@@ -90,7 +90,7 @@ const DashboardStatCard = memo(
             `${Math.min(Math.abs((delta / previousValue) * 100), 100).toFixed(0)}%`
           : `${Math.abs(delta)}`;
 
-    const badgeClass = isUp ? "text-emerald-600" : isDown ? "text-rose-500" : "text-gray-400";
+    const badgeClass = isUp ? "text-emerald-600" : isDown ? "text-rose-500" : "text-gray-500";
     const sign = delta === 0 ? "" : isUp ? "+" : "-";
     const badgeText = delta === 0 ? (deltaFormat === "points" ? "0.0 pts" : "0%") : `${sign}${magnitude}`;
 
@@ -100,9 +100,9 @@ const DashboardStatCard = memo(
       `${previousValue} during the previous ${periodDays} days.`;
 
     return (
-      <div className="glass rounded-2xl border border-gray-200 p-5 card-container hover-lift transition-smooth flex items-center justify-between gap-3 sm:gap-4">
+      <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-5 card-container transition-smooth hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] flex items-center justify-between gap-3 sm:gap-4">
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider truncate">{label}</p>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider truncate">{label}</p>
 
           <p
             className={`mt-2 font-extrabold text-gray-900 tracking-tight tabular-nums ${valueSizeClass(valueText)}`}
@@ -116,7 +116,7 @@ const DashboardStatCard = memo(
               <TrendArrow direction={direction} />
               {badgeText}
             </span>
-            <span className="text-[11px] text-gray-400 truncate">vs previous {periodDays} days</span>
+            <span className="text-[11px] text-gray-500 truncate">vs previous {periodDays} days</span>
           </p>
         </div>
 

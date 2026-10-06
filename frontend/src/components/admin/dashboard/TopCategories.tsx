@@ -18,8 +18,10 @@ interface DonutEntry {
   units: number;
 }
 
-// Reference palette (indigo / violet / emerald / amber first, extras after).
-const PALETTE = ["#4f46e5", "#8b5cf6", "#10b981", "#f59e0b", "#ef4444", "#0e7c85", "#3b82f6", "#ec4899"];
+// Warm analogue of the phoenix palette — eight tones that stay distinguishable
+// inside a donut (deep oxblood -> crimson -> brick -> bronze -> ochre -> amber
+// -> rose -> blush) instead of the old cool indigo/violet set.
+const PALETTE = ["#c01e2e", "#d18029", "#d48b92", "#5c0a14", "#e5a457", "#8e3b5c", "#96521d", "#efa1ac"];
 
 /** Dark hover tooltip: category name over a color swatch + share percentage. */
 const DonutTooltip = ({
@@ -32,7 +34,7 @@ const DonutTooltip = ({
   const entry = payload?.[0]?.payload;
   if (!active || !entry) return null;
   return (
-    <div className="rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
+    <div className="rounded-lg bg-ink px-3 py-2 text-xs text-white shadow-lg">
       <p className="font-bold">{entry.name}</p>
       <p className="mt-1 flex items-center gap-1.5">
         <span
@@ -153,7 +155,7 @@ const TopCategories = memo(({ categories, isLoading }: TopCategoriesProps) => {
                   aria-pressed={selected?.name === entry.name}
                   title={`Select ${entry.name}`}
                   className={`w-full flex items-center gap-2 text-xs rounded-lg px-1.5 py-1 transition-colors ${
-                    selected?.name === entry.name ? "bg-brand/10" : "hover:bg-gray-50"
+                    selected?.name === entry.name ? "bg-brand/10" : "hover:bg-cream-deep/60"
                   } ${selected && selected.name !== entry.name ? "opacity-50" : ""}`}
                 >
                   <span

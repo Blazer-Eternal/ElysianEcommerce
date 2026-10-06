@@ -135,7 +135,7 @@ const OrderDetail = () => {
               {order.items.map((item, idx) => (
                 <div
                   key={item._id || idx}
-                  className="group bg-white border border-gray-200 rounded-xl p-5 transition-all duration-300 hover:bg-white hover:shadow-lg"
+                  className="group bg-white border border-[#ece1d0] rounded-2xl p-5 transition-all duration-300 hover:bg-white hover:shadow-lg"
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -169,7 +169,7 @@ const OrderDetail = () => {
                 </button>
               )}
             </div>
-            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300">
+            <div className="bg-white border border-[#ece1d0] rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
               <p className="font-semibold text-gray-900">
                 {order.shipping_address.street}
               </p>
@@ -185,7 +185,7 @@ const OrderDetail = () => {
           {/* Edit Address Modal */}
           {isEditingAddress && editedAddress && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in">
-              <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-fade-in">
+              <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-[0_24px_64px_rgba(61,5,12,0.35)] animate-fade-in">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Edit Shipping Address</h3>
                 
                 <div className="space-y-4">
@@ -198,7 +198,7 @@ const OrderDetail = () => {
                       autoComplete="street-address"
                       value={editedAddress.street}
                       onChange={(e) => handleAddressChange("street", e.target.value)}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                      className="w-full px-4 py-2.5 border border-[#ece1d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
                     />
                   </div>
 
@@ -212,7 +212,7 @@ const OrderDetail = () => {
                         autoComplete="address-level2"
                         value={editedAddress.city}
                         onChange={(e) => handleAddressChange("city", e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                        className="w-full px-4 py-2.5 border border-[#ece1d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
                       />
                     </div>
                     <div>
@@ -224,7 +224,7 @@ const OrderDetail = () => {
                         autoComplete="address-level1"
                         value={editedAddress.state}
                         onChange={(e) => handleAddressChange("state", e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                        className="w-full px-4 py-2.5 border border-[#ece1d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
                       />
                     </div>
                   </div>
@@ -239,7 +239,7 @@ const OrderDetail = () => {
                         autoComplete="postal-code"
                         value={editedAddress.zip}
                         onChange={(e) => handleAddressChange("zip", e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                        className="w-full px-4 py-2.5 border border-[#ece1d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
                       />
                     </div>
                     <div>
@@ -251,7 +251,7 @@ const OrderDetail = () => {
                         autoComplete="country-name"
                         value={editedAddress.country}
                         onChange={(e) => handleAddressChange("country", e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                        className="w-full px-4 py-2.5 border border-[#ece1d0] rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
                       />
                     </div>
                   </div>
@@ -260,7 +260,7 @@ const OrderDetail = () => {
                 <div className="flex gap-3 mt-8">
                   <button
                     onClick={() => setIsEditingAddress(false)}
-                    className="flex-1 px-4 py-3 bg-gray-200 text-gray-900 font-semibold rounded-lg hover:bg-gray-300 transition-colors"
+                    className="flex-1 px-4 py-3 bg-cream-deep text-ink font-semibold rounded-lg hover:bg-sand transition-colors"
                   >
                     Cancel
                   </button>
@@ -282,14 +282,14 @@ const OrderDetail = () => {
           {/* Price Breakdown */}
           <div className="animate-fade-in">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
-            <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4 hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center justify-between pb-4 border-b border-gray-200">
+            <div className="bg-white border border-[#ece1d0] rounded-2xl p-6 space-y-4 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-center justify-between pb-4 border-b border-[#ece1d0]">
                 <span className="text-gray-600">Subtotal</span>
                 <span className="font-semibold text-gray-900">{formatCurrency(order.subtotal)}</span>
               </div>
 
               {order.discount > 0 && (
-                <div className="flex items-center justify-between pb-4 border-b border-gray-200 bg-linear-to-r from-green-50 to-emerald-50/50 -mx-6 px-6 py-3 rounded-lg">
+                <div className="flex items-center justify-between pb-4 border-b border-[#ece1d0] bg-linear-to-r from-green-50 to-emerald-50/50 -mx-6 px-6 py-3 rounded-lg">
                   <div>
                     <span className="text-gray-600 block font-medium">Discount Applied</span>
                     {typeof order.coupon_id === "object" && order.coupon_id?.code && (
@@ -314,8 +314,8 @@ const OrderDetail = () => {
           {/* Payment Status */}
           <div className="animate-fade-in">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Payment</h2>
-            <div className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 space-y-4">
-              <div className="flex items-center justify-between pb-4 border-b border-gray-200">
+            <div className="bg-white border border-[#ece1d0] rounded-2xl p-6 hover:shadow-lg transition-all duration-300 space-y-4">
+              <div className="flex items-center justify-between pb-4 border-b border-[#ece1d0]">
                 <span className="text-gray-600">Status</span>
                 <span
                   className={`px-4 py-2 rounded-lg font-semibold text-sm ${
@@ -336,7 +336,7 @@ const OrderDetail = () => {
                   className={`px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 ${
                     order.payment_method === "esewa"
                       ? "bg-green-100 text-green-800"
-                      : "bg-blue-100 text-blue-800"
+                      : "bg-cyan-100 text-cyan-800"
                   }`}
                 >
                   {order.payment_method === "esewa" ? (

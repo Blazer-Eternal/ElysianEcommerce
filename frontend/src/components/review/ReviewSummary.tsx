@@ -13,14 +13,14 @@ const pluralize = (count: number) => `${count} ${count === 1 ? "Rating" : "Ratin
 const ReviewSummary = ({ stats, activeFilter = null, onStarFilter }: ReviewSummaryProps) => {
   if (!stats) {
     return (
-      <div className="p-6 rounded-2xl bg-white border border-gray-200 animate-pulse h-40" aria-hidden="true" />
+      <div className="p-6 rounded-2xl bg-cream-deep/70 border border-[#ece1d0] animate-pulse h-40" aria-hidden="true" />
     );
   }
 
   const { average, count, distribution } = stats;
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 md:gap-10 p-6 rounded-2xl bg-white border border-gray-200 shadow-sm">
+    <div className="flex flex-col md:flex-row gap-6 md:gap-10 p-6 rounded-2xl bg-white border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
       {/* Overall score */}
       <div className="flex flex-col items-center md:items-start justify-center min-w-[150px]">
         <div className="flex items-end gap-1">
@@ -52,7 +52,7 @@ const ReviewSummary = ({ stats, activeFilter = null, onStarFilter }: ReviewSumma
               } ${isActive ? "bg-brand/10 ring-1 ring-brand/40" : ""}`}
             >
               <StarRating value={star} size={16} className="w-[88px] shrink-0" />
-              <span className="flex-1 h-2.5 rounded-full bg-gray-200 overflow-hidden">
+              <span className="flex-1 h-2.5 rounded-full bg-sand overflow-hidden">
                 <span
                   className={`block h-full rounded-full transition-all duration-500 ${
                     isActive ? "bg-brand" : "bg-yellow-400"

@@ -28,7 +28,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={id} className="block text-sm font-medium mb-1">
+          <label htmlFor={id} className="block text-sm font-medium text-ink/80 mb-1.5">
             {label}
           </label>
         )}
@@ -37,22 +37,24 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             ref={ref}
             id={id}
             type={visible ? "text" : "password"}
-            className={`w-full border rounded px-3 py-2 pr-10 focus:outline-none focus:ring-1 focus:ring-black ${
-              error ? "border-red-500" : "border-gray-300"
+            className={`w-full rounded-xl border bg-white px-3.5 py-2.5 pr-10 text-ink placeholder:text-ink/55 shadow-[0_1px_2px_rgba(61,5,12,0.05)] transition-colors focus:outline-none focus:ring-2 ${
+              error
+                ? "border-red-500 focus:border-red-500 focus:ring-red-500/25"
+                : "border-[#e3d8c6] focus:border-brand focus:ring-brand/30"
             } ${className}`}
             {...rest}
           />
           <button
             type="button"
             onClick={() => setVisible((prev) => !prev)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1 text-ink/60 hover:text-brand transition-colors"
             aria-label={visible ? "Hide password" : "Show password"}
             tabIndex={-1}
           >
             {visible ? <EyeIcon /> : <EyeOffIcon />}
           </button>
         </div>
-        {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
+        {error && <p className="text-sm text-red-600 mt-1.5">{error}</p>}
       </div>
     );
   }

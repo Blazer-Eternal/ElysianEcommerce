@@ -7,7 +7,9 @@ interface BadgeProps {
 
 const Badge = ({ children, className = "" }: BadgeProps) => {
   return (
-    <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${className}`}>
+    <span
+      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold tracking-[0.01em] border border-black/5 ${className}`}
+    >
       {children}
     </span>
   );

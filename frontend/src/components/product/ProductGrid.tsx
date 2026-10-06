@@ -23,7 +23,7 @@ const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
   if (products.length === 0) {
     return (
       <div className="py-24 text-center">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="mx-auto text-gray-300 mb-4">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="mx-auto text-brand/50 mb-4">
           <circle cx="12" cy="12" r="10" />
           <path d="m15 9-6 6M9 9l6 6" />
         </svg>

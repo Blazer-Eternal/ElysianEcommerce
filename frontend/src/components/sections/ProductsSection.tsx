@@ -27,19 +27,32 @@ const ProductsSection = () => {
   const products = response?.data ?? EMPTY_PRODUCTS;
 
   return (
-    <div className="py-12 sm:py-16 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
+    <div className="py-16 sm:py-20 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-9 sm:mb-11">
+        <div className="flex items-end justify-between gap-6 mb-9 sm:mb-11">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Latest Products</h2>
-            <p className="text-gray-600 text-sm sm:text-base">Handpicked collection just for you</p>
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.28em] text-gold-dark">
+                Fresh in
+              </span>
+            </div>
+            <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink leading-[1.06]">
+              Latest arrivals
+            </h2>
+            <p className="mt-3 text-ink/60 text-sm sm:text-base">
+              The eight most recent additions to the catalogue.
+            </p>
           </div>
           <Link
             to={ROUTES.PRODUCTS}
-            className="hidden sm:inline-block text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
+            className="group hidden sm:inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-brand hover:text-brand-dark transition-colors"
           >
-            View all products →
+            View all products
+            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
           </Link>
         </div>
 
@@ -48,10 +61,10 @@ const ProductsSection = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
             {[...Array(8)].map((_, i) => (
               <div key={i} className="glass rounded-2xl p-4 animate-pulse gpu-accelerate" style={{ transform: "translateZ(0)" }}>
-                <div className="bg-gray-300 rounded-lg h-40 mb-4"></div>
-                <div className="bg-gray-300 h-4 rounded mb-3"></div>
-                <div className="bg-gray-300 h-4 rounded w-2/3 mb-4"></div>
-                <div className="bg-gray-300 h-5 rounded w-1/2"></div>
+                <div className="bg-sand rounded-lg h-40 mb-4"></div>
+                <div className="bg-sand h-4 rounded mb-3"></div>
+                <div className="bg-sand h-4 rounded w-2/3 mb-4"></div>
+                <div className="bg-sand h-5 rounded w-1/2"></div>
               </div>
             ))}
           </div>
@@ -76,11 +89,11 @@ const ProductsSection = () => {
           </div>
         ) : (
           <div className="text-center py-16">
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5" className="mx-auto text-gray-200 mb-4">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5" className="mx-auto text-sand mb-4">
               <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
               <path d="M16 4V2M8 4V2M16 11h.01M8 11h.01"/>
             </svg>
-            <p className="text-gray-500 text-lg">No products available at the moment.</p>
+            <p className="text-ink/55 text-lg">No products available at the moment.</p>
           </div>
         )}
 

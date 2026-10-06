@@ -98,19 +98,19 @@ const NotificationBell = () => {
         onClick={handleToggle}
         aria-label={`Notifications (${unreadCount} unread)`}
         title="Notifications"
-        className="relative w-11 h-11 rounded-xl glass border border-gray-200 text-gray-600 hover:text-brand hover:border-brand/40 hover:bg-white transition-all duration-200 flex items-center justify-center"
+        className="relative w-11 h-11 rounded-xl bg-white border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] text-gray-600 hover:text-brand hover:border-brand/40 transition-all duration-200 flex items-center justify-center"
       >
         <BellIcon />
         {unreadCount > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center shadow-lg ring-2 ring-white">
+          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-brand text-white text-[11px] font-bold flex items-center justify-center shadow-lg ring-2 ring-white">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-12 z-50 w-80 sm:w-96 max-h-[70vh] overflow-y-auto bg-white rounded-xl border border-gray-200 shadow-2xl animate-fade-in">
-          <div className="sticky top-0 flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white rounded-t-xl">
+        <div className="absolute right-0 top-12 z-50 w-80 sm:w-96 max-h-[70vh] overflow-y-auto bg-white rounded-2xl border border-[#ece1d0] shadow-[0_16px_48px_rgba(61,5,12,0.18)] animate-fade-in">
+          <div className="sticky top-0 flex items-center justify-between px-4 py-3 border-b border-[#ece1cf] bg-white rounded-t-2xl">
             <span className="font-bold text-gray-900 text-sm">Notifications</span>
             <span className="text-xs text-gray-500 font-medium">{notifications.length} recent</span>
           </div>
@@ -118,10 +118,10 @@ const NotificationBell = () => {
           {notifications.length === 0 ? (
             <div className="px-4 py-10 text-center">
               <p className="text-gray-500 text-sm">No activity yet.</p>
-              <p className="text-gray-400 text-xs mt-1">Signups and new orders will show up here.</p>
+              <p className="text-gray-500 text-xs mt-1">Signups and new orders will show up here.</p>
             </div>
           ) : (
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-[#ece1cf]">
               {notifications.map((item) => (
                 <li
                   key={item._id}
@@ -141,7 +141,7 @@ const NotificationBell = () => {
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold text-gray-900 truncate">{item.title}</p>
                     <p className="text-xs text-gray-600 line-clamp-2">{item.message}</p>
-                    <p className="text-[11px] text-gray-400 mt-1">{relativeTime(item.created_at)}</p>
+                    <p className="text-[11px] text-gray-500 mt-1">{relativeTime(item.created_at)}</p>
                   </div>
                   {!item.read && <span className="shrink-0 w-2 h-2 rounded-full bg-brand mt-1.5" />}
                 </li>

@@ -8,12 +8,12 @@ interface StatCardProps {
 const StatCard = ({ label, value, icon, bgColor = "from-brand to-cyan-600" }: StatCardProps) => {
   return (
     <div 
-      className="glass rounded-2xl p-6 sm:p-8 hover:bg-white transition-all duration-300 group animation-container gpu-accelerate"
+      className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6 sm:p-8 transition-all duration-300 group animation-container gpu-accelerate hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)]"
       style={{ contain: "layout style paint", transform: "translateZ(0)" }}
     >
       <div className="flex items-start justify-between">
         <div className="space-y-3 flex-1">
-          <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{label}</p>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</p>
           <p className="text-3xl sm:text-4xl font-bold text-gray-900">{value}</p>
         </div>
         {icon && (

@@ -53,14 +53,16 @@ const Features = () => {
       <div className="relative pt-12 pb-8 sm:pt-24 sm:pb-16 overflow-hidden">
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6 relative z-10">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-ink">
             Why Shop With <span className="text-brand">Us</span>
           </h1>
-          <p
-            className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto"
-          >
+          <p className="text-lg text-ink/70 leading-relaxed max-w-2xl mx-auto">
             Every order is held to these standards, from the warehouse to your doorstep.
           </p>
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
+          </div>
         </div>
       </div>
 
@@ -73,21 +75,21 @@ const Features = () => {
               className="group relative"
             >
               {/* Gradient Background Animation */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" style={{ background: "linear-gradient(to bottom right, rgba(14,124,133,0.1), rgba(6,182,212,0.05), rgba(20,184,166,0.1))" }} />
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl" style={{ background: "linear-gradient(to bottom right, rgba(192,30,46,0.10), rgba(209,128,41,0.06), rgba(212,139,146,0.10))" }} />
 
               {/* Card */}
-              <div className="relative glass rounded-2xl p-8 border border-gray-200 hover:border-brand/50 hover:bg-white transition-all duration-500 h-full hover:shadow-2xl">
+              <div className="relative glass rounded-2xl p-8 border border-[#ece1d0] hover:border-brand/40 hover:bg-white transition-all duration-500 h-full hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)]">
                 {/* Icon */}
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-brand/25 via-cyan-300/15 to-teal-200/25 rounded-xl group-hover:from-brand/40 group-hover:via-cyan-400/30 group-hover:to-teal-300/40 transition-all duration-500 mb-4 text-brand group-hover:scale-110 transform group-hover:rotate-6">
                   {feature.icon}
                 </div>
 
                 {/* Content */}
-                <h2 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-brand transition-colors duration-300">
+                <h2 className="text-xl font-semibold text-ink mb-3 group-hover:text-brand transition-colors duration-300">
                   {feature.title}
                 </h2>
 
-                <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                <p className="text-ink/70 leading-relaxed group-hover:text-ink/80 transition-colors duration-300">
                   {feature.description}
                 </p>
 
@@ -106,12 +108,14 @@ const Features = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold text-ink">
               Quality Assurance
             </h2>
 
-            <p className="text-gray-600 leading-relaxed">
-              We go above and beyond to ensure every product meets our stringent quality standards. Our team manually inspects and verifies each item before it ships to you.
+            <div className="h-px w-16 bg-brand/40" />
+
+            <p className="text-ink/70 leading-relaxed">
+              Our team manually inspects and verifies each item before it ships to you. Nothing leaves the warehouse unchecked.
             </p>
 
             <ul className="space-y-3">
@@ -123,7 +127,7 @@ const Features = () => {
               ].map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-3 text-gray-700 group/item hover:text-brand transition-colors duration-300 cursor-default"
+                  className="flex items-center gap-3 text-ink/80 group/item hover:text-brand transition-colors duration-300 cursor-default"
                 >
                   <span className="shrink-0 w-2 h-2 rounded-full bg-linear-to-r from-brand to-cyan-500 group-hover/item:scale-150 transition-transform duration-300"></span>
                   {item}
@@ -132,15 +136,17 @@ const Features = () => {
             </ul>
           </div>
 
-          <div className="glass rounded-3xl p-8 sm:p-12 space-y-8 border border-gray-200 hover:border-brand/50 transition-all duration-500 hover:shadow-2xl">
-            
+          <div className="glass rounded-2xl p-8 sm:p-10 space-y-6 border border-[#ece1d0] hover:border-brand/40 transition-all duration-500 hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">
+              By the numbers
+            </p>
 
             <div className="space-y-2 group/stat p-4 rounded-xl hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10 transition-all duration-300">
               <div className="text-4xl font-bold text-brand">
                 100%
               </div>
 
-              <div className="text-gray-600 group-hover/stat:text-gray-700 transition-colors duration-300">
+              <div className="text-ink/70 group-hover/stat:text-ink/80 transition-colors duration-300">
                 Authentic Products
               </div>
             </div>
@@ -152,7 +158,7 @@ const Features = () => {
                 4.8★
               </div>
 
-              <div className="text-gray-600 group-hover/stat:text-gray-700 transition-colors duration-300">
+              <div className="text-ink/70 group-hover/stat:text-ink/80 transition-colors duration-300">
                 Average Rating
               </div>
             </div>
@@ -164,7 +170,7 @@ const Features = () => {
                 0%
               </div>
 
-              <div className="text-gray-600 group-hover/stat:text-gray-700 transition-colors duration-300">
+              <div className="text-ink/70 group-hover/stat:text-ink/80 transition-colors duration-300">
                 Hidden Fees
               </div>
             </div>
@@ -177,18 +183,23 @@ const Features = () => {
         <div className="relative group">
 
           {/* Card */}
-          <div className="relative glass-strong rounded-3xl p-12 text-center space-y-6 border border-gray-200 group-hover:border-brand/50 transition-all duration-500 group-hover:shadow-2xl">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Experience the Difference
+          <div className="relative glass-strong rounded-2xl p-10 sm:p-12 text-center space-y-6 border border-[#ece1d0] group-hover:border-brand/40 transition-all duration-500 group-hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)]">
+            <div className="flex justify-center gap-3">
+              <div className="h-px w-16 bg-brand/40" />
+              <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
+            </div>
+
+            <h2 className="text-3xl font-bold text-ink">
+              Ready when you are
             </h2>
 
-            <p className="text-gray-600 text-lg group-hover:text-gray-700 transition-colors duration-300">
-              Start your shopping journey with ElysianEcommerce today.
+            <p className="text-ink/70 text-lg transition-colors duration-300">
+              Free delivery over Rs. 2,000, and 30-day returns on eligible items.
             </p>
 
             <a
               href="/products"
-              className="inline-block group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-linear-to-r from-brand via-cyan-500 to-teal-400 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 transition-all duration-500 shadow-lg hover:shadow-xl overflow-hidden"
+              className="inline-block group/btn relative px-8 py-3 rounded-xl font-semibold text-white bg-brand hover:bg-brand-dark transition-all duration-300 shadow-[0_2px_16px_rgba(61,5,12,0.18)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.24)] overflow-hidden"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 Browse Products

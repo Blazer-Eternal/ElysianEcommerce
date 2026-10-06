@@ -85,7 +85,7 @@ const StarPicker = ({ value, onChange, size = 24, disabled = false }: StarPicker
                 style={{ width: `${fillPercent}%` }}
               >
                 <svg
-                  className="block text-yellow-400"
+                  className="block text-[#f59e0b]"
                   width={size}
                   height={size}
                   fill="currentColor"

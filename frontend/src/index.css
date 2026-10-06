@@ -1,9 +1,61 @@
 @import "tailwindcss";
 
+/* ========================================
+   ELYSIAN DESIGN TOKENS
+   Palette lifted from the phoenix mark:
+   crimson #c01e2e · ochre #d18029 · rose #d48b92 on warm cream.
+   ======================================== */
 @theme {
-  --color-brand: #0e7c85;
-  --color-brand-dark: #0b6169;
+  /* Core brand ramp */
+  --color-brand: #c01e2e;
+  --color-brand-dark: #9e1526;
+  --color-brand-deep: #3d050c;
+
+  /* Secondary ramps */
+  --color-gold: #d18029;
+  --color-gold-dark: #96521d;
+  --color-rose: #d48b92;
+
+  /* Warm neutrals */
+  --color-ink: #2f211b;
+  --color-cream: #faf6ee;
+  --color-cream-deep: #f3ead9;
+  --color-sand: #ece1cf;
+
+  /* Typography */
   --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-script: "Caveat", "Segoe Script", cursive;
+
+  /* --- Re-pointed cool ramps -------------------------------------------------
+     Every cyan- and teal- based utility in the app predates the rebrand.
+     Rather than hand-editing ~250 class names (and risking a missed one),
+     both ramps are re-mapped to the brand family: teal to crimson,
+     cyan to ochre. A gradient such as "from-brand via-cyan-500 to-teal-400"
+     therefore resolves to crimson -> ochre -> rose, the phoenix palette. */
+  --color-teal-50: #fdf3f4;
+  --color-teal-100: #fbe4e7;
+  --color-teal-200: #f6c8ce;
+  --color-teal-300: #efa1ac;
+  --color-teal-400: #e26d7e;
+  --color-teal-500: #d33c53;
+  --color-teal-600: #c01e2e;
+  --color-teal-700: #a11526;
+  --color-teal-800: #84121f;
+  --color-teal-900: #6d121c;
+  --color-teal-950: #3d050c;
+
+  --color-cyan-50: #fdf8f0;
+  --color-cyan-100: #faefdc;
+  --color-cyan-200: #f5ddba;
+  --color-cyan-300: #efc48c;
+  --color-cyan-400: #e5a457;
+  --color-cyan-500: #d18029;
+  --color-cyan-600: #b5691f;
+  --color-cyan-700: #96521d;
+  --color-cyan-800: #7a431d;
+  --color-cyan-900: #64381b;
+  --color-cyan-950: #361c0c;
 }
 
 /* ========================================
@@ -45,9 +97,19 @@
     contain: layout style paint;
   }
 
+  /* Editorial display face for headings. Fraunces carries the section titles,
+     Archivo stays on body/UI text — same split the brand book uses. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.015em;
+  }
+
   body {
-    color: rgb(31 41 55);
-    background: #f3f9fa;
+    color: #3a2f28;
+    background: var(--color-cream);
     min-height: 100vh;
     
     /* Performance optimizations */
@@ -68,12 +130,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(153, 153, 153, 0.5);
+    background: rgba(192, 30, 46, 0.35);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(102, 102, 102, 0.7);
+    background: rgba(192, 30, 46, 0.6);
   }
 
   /* Optimize input elements */
@@ -121,28 +183,29 @@
 }
 
 @layer utilities {
-  /* Flat surfaces: solid white cards with neutral borders (formerly glass) */
+  /* Flat surfaces: solid warm-white cards with sand-toned borders */
   .glass,
   .glass-strong,
   .glass-light {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    background: #fffdf8;
+    border: 1px solid #ece1d0;
+    box-shadow: 0 1px 3px rgba(61, 5, 12, 0.06);
   }
 
   .glass-nav {
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+    background: rgba(255, 253, 248, 0.94);
+    border-bottom: 1px solid #ece1d0;
+    box-shadow: 0 1px 2px rgba(61, 5, 12, 0.05);
+    backdrop-filter: saturate(140%) blur(8px);
   }
 
   /* Accent Colors */
   .accent-bg {
-    background-color: #bcecef;
+    background-color: #f7e7d2;
   }
 
   .accent-text {
-    color: #0e7c85;
+    color: #c01e2e;
   }
 
   /* ========================================
@@ -233,6 +296,27 @@
     50% {
       opacity: 0.5;
     }
+  }
+
+  /* Infinite ticker used by the crimson highlight band under the hero. The
+     track holds two identical lists, so translating by -50% is seamless. */
+  @keyframes elysian-marquee {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: elysian-marquee 42s linear infinite;
+  }
+
+  .marquee-track:hover {
+    animation-play-state: paused;
   }
 
   .animate-pulse {
@@ -510,7 +594,7 @@
 
   /* Loading skeleton - GPU accelerated */
   .skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background: linear-gradient(90deg, #f3ead9 25%, #e9dcc6 50%, #f3ead9 75%);
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
     border-radius: 0.5rem;

@@ -50,7 +50,7 @@ interface StatCardProps {
 }
 
 const StatCard = ({ icon, iconClassName, label, value, hint }: StatCardProps) => (
-  <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
+  <div className="rounded-2xl border border-[#ece1d0] bg-white p-5 shadow-[0_2px_16px_rgba(61,5,12,0.06)] transition-shadow hover:shadow-[0_6px_24px_rgba(61,5,12,0.1)]">
     <div className="flex items-start gap-4">
       <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconClassName}`}>
         {icon}
@@ -136,7 +136,7 @@ const Dashboard = () => {
     <CustomerLayout>
       <div className="mx-auto max-w-6xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         {/* Welcome banner */}
-        <section className="relative overflow-hidden rounded-3xl bg-linear-to-br from-[#1d4ed8] via-[#4338ca] to-[#6d28d9] px-6 py-8 text-white shadow-xl sm:px-10 sm:py-10">
+        <section className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#7a0f1c] via-[#b01a2a] to-[#b5691f] px-6 py-8 text-white shadow-xl sm:px-10 sm:py-10">
           <div aria-hidden className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-white/10" />
           <div aria-hidden className="pointer-events-none absolute -bottom-24 right-32 h-56 w-56 rounded-full bg-white/5" />
 
@@ -166,7 +166,7 @@ const Dashboard = () => {
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatCard
             icon={<BanknoteIcon size={22} />}
-            iconClassName="bg-blue-50 text-blue-600"
+            iconClassName="bg-cyan-100 text-cyan-700"
             label="Total Spent"
             value={formatCurrency(totalSpent)}
             hint={`across ${countedOrders} order${countedOrders === 1 ? "" : "s"}`}
@@ -187,7 +187,7 @@ const Dashboard = () => {
           />
           <StatCard
             icon={<HeartIcon size={22} />}
-            iconClassName="bg-rose-50 text-rose-500"
+            iconClassName="bg-brand/10 text-brand"
             label="Wishlist Items"
             value={`${wishlistItems.length} Saved`}
             hint="products you are watching"
@@ -195,10 +195,10 @@ const Dashboard = () => {
         </section>
 
         {/* Active shipment */}
-        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-blue-600">Active Shipment</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-gold">Active Shipment</p>
               {shipment ? (
                 <>
                   <h2 className="mt-1 text-2xl font-bold text-gray-900">Order #{shipment.order_number}</h2>
@@ -214,14 +214,14 @@ const Dashboard = () => {
             {shipment && (
               <Link
                 to={ROUTES.ORDER_DETAIL(shipment._id)}
-                className="rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition-colors hover:bg-blue-100"
+                className="rounded-full bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20"
               >
                 Detailed Status
               </Link>
             )}
           </div>
 
-          <hr className="my-5 border-gray-100" />
+          <hr className="my-5 border-[#ece1d0]" />
 
           {shipment && currentIndex >= 0 ? (
             <>
@@ -238,7 +238,7 @@ const Dashboard = () => {
                         <span
                           aria-hidden
                           className={`absolute left-1/2 top-3.75 z-0 h-0.75 w-full ${
-                            index < currentIndex ? "bg-blue-600" : "bg-gray-200"
+                            index < currentIndex ? "bg-brand" : "bg-sand"
                           }`}
                         />
                       )}
@@ -246,16 +246,16 @@ const Dashboard = () => {
                         className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full transition-all ${
                           isCompleted
                             ? isCurrent
-                              ? "bg-blue-600 text-white ring-4 ring-blue-100"
-                              : "bg-blue-600 text-white"
-                            : "bg-gray-200 text-gray-400"
+                              ? "bg-brand text-white ring-4 ring-brand/15"
+                              : "bg-brand text-white"
+                            : "bg-sand text-gray-400"
                         }`}
                       >
                         {step.glyph}
                       </span>
                       <span
                         className={`mt-2 text-[11px] font-semibold sm:text-xs ${
-                          isCompleted ? (isCurrent ? "text-blue-600" : "text-gray-900") : "text-gray-400"
+                          isCompleted ? (isCurrent ? "text-brand" : "text-gray-900") : "text-gray-400"
                         }`}
                       >
                         {step.label}
@@ -279,7 +279,7 @@ const Dashboard = () => {
               </p>
               <Link
                 to={ROUTES.ORDER_HISTORY}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-dark hover:underline"
               >
                 View order history <ArrowRightIcon size={16} />
               </Link>
@@ -291,13 +291,13 @@ const Dashboard = () => {
         <section>
           <div className="mb-4 flex items-center justify-between gap-4">
             <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">Buy It Again</h2>
-            <Link to={ROUTES.ORDER_HISTORY} className="text-sm font-semibold text-blue-600 hover:underline">
+            <Link to={ROUTES.ORDER_HISTORY} className="text-sm font-semibold text-brand hover:text-brand-dark hover:underline">
               View All History
             </Link>
           </div>
 
           {repeatBuys.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
+            <div className="rounded-2xl border border-dashed border-sand bg-white p-8 text-center text-sm text-gray-500">
               Once you have placed an order, your past purchases will appear here for a one-tap re-order.
             </div>
           ) : (
@@ -313,11 +313,11 @@ const Dashboard = () => {
                 return (
                   <div
                     key={item.productId}
-                    className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
+                    className="flex items-start gap-4 rounded-2xl border border-[#ece1d0] bg-white p-4 shadow-[0_2px_16px_rgba(61,5,12,0.06)] transition-shadow hover:shadow-[0_6px_24px_rgba(61,5,12,0.1)]"
                   >
                     <Link
                       to={ROUTES.PRODUCT_DETAIL(item.productId)}
-                      className="shrink-0 overflow-hidden rounded-xl bg-linear-to-br from-[#eafcfd] to-[#d7f4f6]"
+                      className="shrink-0 overflow-hidden rounded-xl bg-linear-to-br from-[#fdf8f0] to-[#f7ecdb]"
                     >
                       <img
                         src={cloudinaryImg(imageUrl, 160)}
@@ -342,7 +342,7 @@ const Dashboard = () => {
                         type="button"
                         onClick={() => handleAddToCart(item.productId)}
                         disabled={isAdding || outOfStock}
-                        className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700 disabled:cursor-not-allowed disabled:text-gray-400"
+                        className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-brand-dark disabled:cursor-not-allowed disabled:text-gray-400"
                       >
                         {outOfStock ? (
                           "Out of stock"
@@ -365,7 +365,7 @@ const Dashboard = () => {
         </section>
 
         {/* Loyalty & rewards */}
-        <section id="rewards" className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm scroll-mt-6">
+        <section id="rewards" className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.06)] scroll-mt-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-start gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
@@ -391,7 +391,7 @@ const Dashboard = () => {
                 {next ? `${formatCurrency(Math.max(0, next.minSpend - totalSpent))} to ${next.name}` : "Top tier reached"}
               </span>
             </div>
-            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-gray-100">
+            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-cream-deep">
               <div
                 className="h-full rounded-full bg-linear-to-r from-amber-400 to-amber-500 transition-all duration-700"
                 style={{ width: `${Math.round(progress * 100)}%` }}
@@ -414,11 +414,11 @@ const Dashboard = () => {
             <Link
               key={link.label}
               to={link.to}
-              className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition-colors hover:border-brand/40 hover:text-brand"
+              className="flex items-center gap-3 rounded-2xl border border-[#ece1d0] bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition-colors hover:border-brand/40 hover:text-brand"
             >
               <span className="text-brand">{link.icon}</span>
               {link.label}
-              <ArrowRightIcon size={16} className="ml-auto text-gray-300" />
+              <ArrowRightIcon size={16} className="ml-auto text-sand" />
             </Link>
           ))}
         </section>

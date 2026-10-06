@@ -5,6 +5,9 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
+const arrowButton =
+  "px-3.5 py-1.5 rounded-xl border border-brand/30 bg-white text-sm font-medium text-brand transition-colors hover:bg-brand/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white";
+
 const Pagination = ({ pagination, onPageChange }: PaginationProps) => {
   const { page, totalPages, hasNextPage, hasPrevPage } = pagination;
 
@@ -15,19 +18,19 @@ const Pagination = ({ pagination, onPageChange }: PaginationProps) => {
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={!hasPrevPage}
-        className="px-3 py-1.5 border rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+        className={arrowButton}
       >
         Prev
       </button>
 
-      <span className="text-sm px-2">
+      <span className="text-xs px-3 py-1.5 rounded-full bg-brand text-white font-semibold tracking-wide whitespace-nowrap">
         Page {page} of {totalPages}
       </span>
 
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={!hasNextPage}
-        className="px-3 py-1.5 border rounded disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+        className={arrowButton}
       >
         Next
       </button>

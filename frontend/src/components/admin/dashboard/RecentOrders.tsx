@@ -22,7 +22,7 @@ const STATUS_STYLES: Record<OrderStatus, string> = {
 };
 
 // Neutral avatar tints — the store has no customer photos, so initials stand in.
-const AVATAR_TINTS = ["bg-brand/10 text-brand", "bg-indigo-100 text-indigo-600", "bg-amber-100 text-amber-700"];
+const AVATAR_TINTS = ["bg-brand/10 text-brand", "bg-cyan-100 text-cyan-700", "bg-rose/20 text-brand"];
 
 const initials = (name: string): string =>
   name
@@ -63,7 +63,7 @@ const RecentOrders = memo(({ orders, isLoading }: RecentOrdersProps) => (
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] text-left">
           <thead>
-            <tr className="bg-gray-50 text-xs font-bold uppercase tracking-wider text-gray-500">
+            <tr className="bg-cream-deep/60 border-b border-[#ece1cf] text-xs font-semibold uppercase tracking-wider text-gray-500">
               <th className="px-4 py-3 first:rounded-l-lg">Order ID</th>
               <th className="px-4 py-3">Customer</th>
               <th className="px-4 py-3">Status</th>
@@ -71,13 +71,13 @@ const RecentOrders = memo(({ orders, isLoading }: RecentOrdersProps) => (
               <th className="px-4 py-3 text-right last:rounded-r-lg">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#ece1cf]">
             {orders.map((order, index) => {
               const customer =
                 typeof order.user_id === "object" ? order.user_id.name : "Customer";
 
               return (
-                <tr key={order._id} className="transition-fast hover:bg-gray-50/70">
+                <tr key={order._id} className="transition-fast hover:bg-cream-deep/50">
                   <td className="px-4 py-3.5 text-sm font-bold text-gray-900 whitespace-nowrap">
                     {order.order_number}
                   </td>

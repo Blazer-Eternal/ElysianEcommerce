@@ -67,7 +67,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       >
         <div className="glass rounded-2xl overflow-hidden hover:bg-white transition-all duration-300 h-full flex flex-col shadow-md hover:shadow-xl hover:-translate-y-1 gpu-accelerate" style={{ backfaceVisibility: "hidden" }}>
           {/* Image Container */}
-          <div className="relative overflow-hidden bg-linear-to-br from-[#eafcfd] to-[#d7f4f6] aspect-square">
+          <div className="relative overflow-hidden bg-linear-to-br from-[#fdf8f0] to-[#f7ecdb] aspect-square">
             {/* Product Image */}
             <img
               src={cloudinaryImg(imageUrl, 800)}
@@ -137,7 +137,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </div>
 
             {/* Price Container */}
-            <div className="pt-3 border-t border-gray-200">
+            <div className="pt-3 border-t border-[#ece1d0]">
               <div className="flex items-baseline gap-2 flex-wrap">
                 <span className="text-xl font-extrabold text-brand">
                   {formatCurrency(product.price)}

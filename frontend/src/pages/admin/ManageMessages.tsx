@@ -99,8 +99,8 @@ const ManageMessages = () => {
               <p className="text-gray-600">Loading messages...</p>
             </div>
           ) : messages.length === 0 ? (
-            <div className="text-center py-12 glass rounded-xl p-6 border border-gray-200">
-              <div className="flex justify-center mb-3 text-gray-400">
+            <div className="text-center bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] px-6 py-12">
+              <div className="flex justify-center mb-3 text-gray-500">
                 <MailIcon />
               </div>
               <p className="text-gray-600 text-lg">No messages yet.</p>
@@ -108,25 +108,25 @@ const ManageMessages = () => {
             </div>
           ) : viewMode === "list" ? (
             <>
-              <div className="glass rounded-xl overflow-hidden border border-gray-200">
+              <div className="bg-white rounded-2xl overflow-hidden border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-gray-200 bg-linear-to-r from-brand/5 to-cyan-600/5">
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Sender</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Contact</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Message</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Received</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Status</th>
-                        <th className="px-6 py-4 text-left text-xs font-bold text-gray-900 uppercase tracking-wider">Action</th>
+                      <tr className="border-b border-[#ece1cf] bg-linear-to-r from-brand/5 to-cyan-600/5">
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Sender</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Contact</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Message</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Received</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/20">
+                    <tbody className="divide-y divide-[#ece1cf]">
                       {messages.map((message) => (
                         <tr
                           key={message._id}
-                          className={`hover:bg-linear-to-r hover:from-brand/5 hover:to-cyan-600/5 transition-colors ${
-                            message.is_read ? "" : "bg-brand/0.04"
+                          className={`hover:bg-cream-deep/50 transition-colors ${
+                            message.is_read ? "" : "bg-brand/5"
                           }`}
                         >
                           <td className="px-6 py-4">
@@ -207,8 +207,8 @@ const ManageMessages = () => {
                 {messages.map((message) => (
                   <div
                     key={message._id}
-                    className={`glass rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border ${
-                      message.is_read ? "border-gray-200" : "border-brand/30"
+                    className={`bg-white rounded-2xl overflow-hidden border shadow-[0_2px_16px_rgba(61,5,12,0.06)] hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)] transition-all duration-300 group ${
+                      message.is_read ? "border-[#ece1d0]" : "border-brand/40"
                     }`}
                   >
                     {/* Sender header */}
@@ -230,7 +230,7 @@ const ManageMessages = () => {
 
                       <p className="text-sm text-gray-700 line-clamp-4 whitespace-pre-line">{message.message}</p>
 
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                      <div className="flex items-center justify-between pt-2 border-t border-[#ece1cf]">
                         <span className="text-xs text-gray-500">{formatDate(message.created_at)}</span>
                         {message.is_read ? (
                           <span className="inline-flex items-center gap-1 text-xs font-bold text-green-700">

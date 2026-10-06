@@ -6,7 +6,7 @@ import { ROUTES } from "../../constants/routes";
 import GoogleAuthFlow from "../../components/auth/GoogleAuthFlow";
 
 const UserIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-ink/45">
     <circle cx="12" cy="8" r="4" />
     <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
   </svg>
@@ -41,14 +41,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-brand-dark to-[#0f2d42] flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-brand-dark to-[#3d050c] flex items-center justify-center px-4 relative overflow-hidden">
       <div className="w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl bg-white grid grid-cols-1 lg:grid-cols-2 relative z-10">
         {/* Diagonal Partition SVG */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block z-0" preserveAspectRatio="none" viewBox="0 0 1000 1000">
           <defs>
             <linearGradient id="diagonalGradLogin" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#0e7c85" />
-              <stop offset="100%" stopColor="#0b6169" />
+              <stop offset="0%" stopColor="#c01e2e" />
+              <stop offset="100%" stopColor="#9e1526" />
             </linearGradient>
           </defs>
           <polygon points="500,0 1000,0 1000,1000 0,1000" fill="url(#diagonalGradLogin)" />
@@ -57,8 +57,8 @@ const Login = () => {
         {/* Left Side - Form */}
         <div className="p-8 sm:p-12 bg-white flex flex-col justify-center relative z-20">
           <div className="mb-2 text-sm font-semibold text-brand tracking-widest">WELCOME BACK</div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Login</h1>
-          <div className="h-1 w-16 bg-linear-to-r from-brand to-cyan-500 rounded-full mb-8"></div>
+          <h1 className="text-4xl font-bold text-ink mb-2">Login</h1>
+          <div className="h-px w-16 bg-brand/40 mb-8"></div>
 
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm animate-shake">
@@ -69,7 +69,7 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Input */}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="text-sm font-medium text-ink/80">
                 Email Address
               </label>
               <div className="relative">
@@ -80,9 +80,9 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full bg-gray-50 border-b-2 border-gray-300 px-4 py-3 pr-10 focus:outline-none focus:border-brand focus:bg-white transition-all duration-300"
+                  className="w-full bg-cream border-b-2 border-[#ded2c4] px-4 py-3 pr-10 focus:outline-none focus:border-brand focus:bg-white transition-all duration-300"
                 />
-                <div className="absolute right-0 top-3 text-gray-400">
+                <div className="absolute right-0 top-3 text-ink/45">
                   <UserIcon />
                 </div>
               </div>
@@ -90,7 +90,7 @@ const Login = () => {
 
             {/* Password Input */}
             <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="text-sm font-medium text-ink/80">
                 Password
               </label>
               <div className="relative">
@@ -101,12 +101,12 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="w-full bg-gray-50 border-b-2 border-gray-300 px-4 py-3 pr-10 focus:outline-none focus:border-brand focus:bg-white transition-all duration-300"
+                  className="w-full bg-cream border-b-2 border-[#ded2c4] px-4 py-3 pr-10 focus:outline-none focus:border-brand focus:bg-white transition-all duration-300"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-0 top-3 text-gray-400 hover:text-brand transition-colors"
+                  className="absolute right-0 top-3 text-ink/45 hover:text-brand transition-colors"
                 >
                   {showPassword ? (
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -126,8 +126,8 @@ const Login = () => {
             {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 cursor-pointer group">
-                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-brand" />
-                <span className="text-sm text-gray-600 group-hover:text-gray-900">Keep me signed in</span>
+                <input type="checkbox" className="w-4 h-4 rounded border-[#ded2c4] text-brand" />
+                <span className="text-sm text-ink/70 group-hover:text-ink">Keep me signed in</span>
               </label>
               <Link to={ROUTES.FORGOT_PASSWORD} className="text-sm text-brand hover:text-brand-dark font-medium">
                 Forgot password?
@@ -138,7 +138,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-linear-to-r from-brand to-brand-dark text-white font-semibold py-3 rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+              className="w-full bg-brand text-white font-semibold py-3 rounded-full hover:bg-brand-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-8"
             >
               {isSubmitting ? "Logging in..." : "Login"}
             </button>
@@ -149,7 +149,7 @@ const Login = () => {
             <GoogleAuthFlow buttonText="signin_with" />
           </div>
 
-          <p className="text-sm text-gray-600 text-center mt-6">
+          <p className="text-sm text-ink/70 text-center mt-6">
             New to ElysianEcommerce?{" "}
             <Link to={ROUTES.REGISTER} className="text-brand font-semibold hover:text-brand-dark border-b-2 border-brand">
               Create an account
@@ -162,12 +162,12 @@ const Login = () => {
           {/* Decorative Elements */}
 
           <div className="relative z-10 text-center space-y-6 animate-fade-in">
-            <div className="text-sm font-semibold tracking-widest text-blue-100">ELYSIAN</div>
+            <div className="text-sm font-semibold tracking-widest text-cream/85">ELYSIAN</div>
             <div className="space-y-3">
               <h2 className="text-4xl font-bold leading-tight">
                 Welcome <span className="text-cyan-300">back</span>.
               </h2>
-              <p className="text-blue-100 text-lg leading-relaxed max-w-sm">
+              <p className="text-cream/85 text-lg leading-relaxed max-w-sm">
                 Your shopping experience, your preferences and your cart are exactly where you left them.
               </p>
             </div>

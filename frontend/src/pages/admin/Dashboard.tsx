@@ -34,7 +34,7 @@ const DashboardHeader = memo(({ period, onPeriodChange }: { period: PeriodDays; 
       <div className="text-sm font-semibold text-brand uppercase tracking-wider">ADMINISTRATION</div>
       <h1 className="text-responsive-h2 font-bold text-gray-900">Dashboard</h1>
       <p className="text-responsive-body text-gray-600">
-        Here's an overview of your store's performance and key metrics.
+        Sales, orders and stock for the period you select.
       </p>
     </div>
     <div className="flex flex-col items-start sm:items-end gap-3">
@@ -171,7 +171,7 @@ const Dashboard = memo(() => {
                 label="Total Revenue"
                 value={formatCurrency(totalRevenue)}
                 icon={<BagIcon size={20} />}
-                iconClassName="bg-indigo-100 text-indigo-600"
+                iconClassName="bg-brand/10 text-brand"
                 periodValue={currentTotals?.revenue ?? 0}
                 previousValue={previousTotals?.revenue ?? 0}
                 periodDays={period}
@@ -182,7 +182,7 @@ const Dashboard = memo(() => {
                 label="Total Orders"
                 value={orderTotal}
                 icon={<CartIcon size={20} />}
-                iconClassName="bg-blue-100 text-blue-600"
+                iconClassName="bg-cyan-100 text-cyan-700"
                 periodValue={currentTotals?.orders ?? 0}
                 previousValue={previousTotals?.orders ?? 0}
                 periodDays={period}
@@ -193,7 +193,7 @@ const Dashboard = memo(() => {
                 label="Conversion Rate"
                 value={`${conversionRate.toFixed(2)}%`}
                 icon={<TrendUpIcon size={20} />}
-                iconClassName="bg-purple-100 text-purple-600"
+                iconClassName="bg-rose/20 text-brand"
                 periodValue={Number(conversionRate.toFixed(2))}
                 previousValue={Number(previousConversionRate.toFixed(2))}
                 periodDays={period}
@@ -205,7 +205,7 @@ const Dashboard = memo(() => {
                 label="Avg Order Value"
                 value={formatCurrency(averageOrderValue)}
                 icon={<TargetIcon size={20} />}
-                iconClassName="bg-amber-100 text-amber-600"
+                iconClassName="bg-amber-100 text-amber-700"
                 periodValue={periodAov}
                 previousValue={previousPeriodAov}
                 periodDays={period}

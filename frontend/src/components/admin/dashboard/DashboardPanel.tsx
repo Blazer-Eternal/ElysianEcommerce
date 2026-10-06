@@ -11,14 +11,16 @@ interface DashboardPanelProps {
   children: ReactNode;
 }
 
-/** Shared `glass` card wrapper used by every dashboard analytics panel. */
+/** Shared card wrapper used by every dashboard analytics panel. */
 const DashboardPanel = memo(({ title, subtitle, icon, action, className = "", children }: DashboardPanelProps) => (
-  <section className={`glass rounded-2xl border border-gray-200 p-5 sm:p-6 card-container flex flex-col ${className}`}>
-    <header className={`mb-4 ${subtitle ? "border-b border-gray-100 pb-3" : ""}`}>
+  <section
+    className={`bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-5 sm:p-6 card-container flex flex-col ${className}`}
+  >
+    <header className={`mb-4 ${subtitle ? "border-b border-[#ece1cf] pb-3" : ""}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 min-w-0">
           {icon && <span className="text-brand shrink-0">{icon}</span>}
-          <h3 className="font-bold text-gray-900 truncate">{title}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 truncate">{title}</h3>
         </div>
         {action}
       </div>

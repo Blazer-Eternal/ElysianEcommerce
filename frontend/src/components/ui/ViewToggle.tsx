@@ -7,12 +7,14 @@ interface ViewToggleProps {
 
 /** Grid / list segmented icon toggle used across the admin manage pages. */
 const ViewToggle = ({ viewMode, onChange }: ViewToggleProps) => (
-  <div className="flex gap-0 bg-gray-200 p-1 rounded-lg">
+  <div className="flex gap-1 bg-cream-deep border border-[#ece1d0] p-1 rounded-xl">
     <button
       onClick={() => onChange("grid")}
       title="Grid View"
-      className={`flex items-center justify-center p-2 rounded-l-md transition-all duration-200 ${
-        viewMode === "grid" ? "bg-white text-brand shadow-md" : "text-gray-600 hover:text-gray-900"
+      className={`flex items-center justify-center p-2 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 ${
+        viewMode === "grid"
+          ? "bg-white text-brand shadow-[0_1px_3px_rgba(61,5,12,0.14)]"
+          : "text-ink/55 hover:text-brand"
       }`}
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -25,8 +27,10 @@ const ViewToggle = ({ viewMode, onChange }: ViewToggleProps) => (
     <button
       onClick={() => onChange("list")}
       title="List View"
-      className={`flex items-center justify-center p-2 rounded-r-md transition-all duration-200 ${
-        viewMode === "list" ? "bg-white text-brand shadow-md" : "text-gray-600 hover:text-gray-900"
+      className={`flex items-center justify-center p-2 rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 ${
+        viewMode === "list"
+          ? "bg-white text-brand shadow-[0_1px_3px_rgba(61,5,12,0.14)]"
+          : "text-ink/55 hover:text-brand"
       }`}
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

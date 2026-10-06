@@ -5,7 +5,7 @@ const Values = () => {
     {
       title: "Integrity & Transparency",
       description:
-        "We believe in honest communication and transparent practices. Every price you see is what you pay, with no hidden fees or surprise charges. Our commitment to transparency extends to our supply chain, product sourcing, and customer service policies.",
+        "Every price you see is what you pay: no hidden fees, no surprise charges at checkout. The same plainness applies to our product descriptions, sourcing and return policies.",
       icon: <TargetIcon size={28} />,
       details: [
         "No hidden charges or surprise fees",
@@ -17,7 +17,7 @@ const Values = () => {
     {
       title: "Customer-First Excellence",
       description:
-        "Our customers are at the heart of everything we do. We don't just sell products; we build relationships. Every decision is made with your satisfaction in mind, from product curation to post-purchase support.",
+        "Every decision runs through one test: does it help the person waiting for the parcel? From what we stock to how we handle a return, that is the question.",
       icon: <HeartIcon size={28} />,
       details: [
         "24/7 dedicated customer support",
@@ -29,7 +29,7 @@ const Values = () => {
     {
       title: "Innovation & Technology",
       description:
-        "Smart, intuitive technology that adapts to you. We continuously innovate to provide seamless, secure, and delightful shopping experiences.",
+        "Search, live stock levels and secure payments, built to work the same on a phone as on a desktop.",
       icon: <ZapIcon size={28} />,
       details: [
         "Personalized recommendations",
@@ -41,7 +41,7 @@ const Values = () => {
     {
       title: "Sustainability & Ethics",
       description:
-        "We're committed to reducing our environmental footprint and supporting ethical practices. From eco-friendly packaging to fair trade partnerships, we believe business should be a force for good.",
+        "We're committed to cutting our environmental footprint where we can. Eco-friendly packaging and fair trade partnerships are the starting point, and we hold suppliers to the same standard we hold ourselves.",
       icon: <SproutIcon size={28} />,
       details: [
         "Eco-friendly packaging solutions",
@@ -65,7 +65,7 @@ const Values = () => {
     {
       title: "Continuous Improvement",
       description:
-        "We never settle. Our culture of continuous learning and improvement drives us to enhance every aspect of the platform. Your feedback directly shapes our roadmap and priorities.",
+        "We ship improvements steadily, and customer feedback decides what gets attention next. If something slows you down, tell us — it goes on the list.",
       icon: <TrendUpIcon size={28} />,
       details: [
         "Regular feature updates",
@@ -100,7 +100,7 @@ const Values = () => {
     {
       title: "Secure & Private",
       content:
-        "Your data is sacred. We use bank-level encryption and comply with all major data protection regulations. Your shopping history, payment info, and personal details are always secure.",
+        "We use bank-level encryption and comply with all major data protection regulations. Your shopping history, payment info and personal details stay protected.",
     },
     {
       title: "Community First",
@@ -156,7 +156,7 @@ const Values = () => {
       {/* Hero Section */}
       <div className="relative z-10 pt-12 pb-8 sm:pt-24 sm:pb-16">
         <div className="mx-auto max-w-5xl space-y-8 px-4 text-center sm:px-6">
-          <h1 className="text-5xl leading-tight font-black text-gray-900 sm:text-6xl lg:text-7xl">
+          <h1 className="text-5xl leading-[1.06] font-semibold text-ink sm:text-6xl lg:text-7xl">
             Our{" "}
             <span
               className="text-brand"
@@ -166,18 +166,14 @@ const Values = () => {
             </span>
           </h1>
 
-          <p
-            className="mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-700 sm:text-2xl"
-          >
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">
             These six principles decide how we source products, set prices, and handle returns. They are
             the reason customers come back.
           </p>
 
-          <div
-            className="flex justify-center gap-4"
-          >
-            <div className="h-1 w-12 rounded-full bg-linear-to-r from-brand to-cyan-500" />
-            <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
           </div>
         </div>
       </div>
@@ -185,17 +181,18 @@ const Values = () => {
       {/* Core Values Grid */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
-          <h2
-            className="text-4xl font-bold text-gray-900 sm:text-5xl"
-          >
+          <h2 className="text-4xl font-bold text-ink sm:text-5xl">
             Six Pillars of Our Philosophy
           </h2>
 
-          <p
-            className="mx-auto max-w-2xl text-lg font-light text-gray-600"
-          >
+          <p className="mx-auto max-w-2xl text-lg text-ink/70">
             The standards behind every order we ship
           </p>
+
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
@@ -206,19 +203,19 @@ const Values = () => {
             >
 
               {/* Card */}
-              <div className="group-hover-lift glass relative h-full overflow-hidden rounded-3xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 hover:shadow-2xl sm:p-10">
+              <div className="group-hover-lift glass relative h-full overflow-hidden rounded-2xl border border-[#ece1d0] p-8 transition-all duration-500 hover:border-brand/40 hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)] sm:p-10">
                 {/* Icon */}
                 <div className="mb-6 inline-block transform text-6xl transition-all duration-500 group-hover:rotate-12 group-hover:scale-125">
                   {value.icon}
                 </div>
 
                 {/* Title */}
-                <h3 className="mb-4 text-2xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                <h3 className="mb-4 text-2xl font-bold text-ink transition-colors duration-300 group-hover:text-brand">
                   {value.title}
                 </h3>
 
                 {/* Description */}
-                <p className="mb-6 font-light leading-relaxed text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
+                <p className="mb-6 leading-relaxed text-ink/80 transition-colors duration-300 group-hover:text-ink">
                   {value.description}
                 </p>
 
@@ -227,7 +224,7 @@ const Values = () => {
                   {value.details.map((detail, i) => (
                     <div
                       key={i}
-                      className="flex items-start gap-3 text-gray-600 transition-colors duration-300 group-hover:text-gray-700"
+                      className="flex items-start gap-3 text-ink/70 transition-colors duration-300 group-hover:text-ink/80"
                     >
                       <span className="mt-1 font-bold text-brand">✓</span>
                       <span className="text-sm font-medium">{detail}</span>
@@ -236,7 +233,7 @@ const Values = () => {
                 </div>
 
                 {/* Bottom Accent */}
-                <div className="mt-8 border-t border-gray-200 pt-6 transition-colors duration-300 group-hover:border-brand/30">
+                <div className="mt-8 border-t border-[#ece1d0] pt-6 transition-colors duration-300 group-hover:border-brand/30">
                   <div className="h-1 w-full rounded-full bg-linear-to-r from-brand to-cyan-500 [clip-path:inset(0_calc(100%-48px)_0_0_round_2px)] group-hover:[clip-path:inset(0_0_0_0_round_2px)] transition-[clip-path] duration-500" />
                 </div>
               </div>
@@ -248,17 +245,18 @@ const Values = () => {
       {/* Our Promises Section */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
-          <h2
-            className="text-4xl font-bold text-gray-900 sm:text-5xl"
-          >
+          <h2 className="text-4xl font-bold text-ink sm:text-5xl">
             Our Promises to You
           </h2>
 
-          <p
-            className="mx-auto max-w-2xl text-lg font-light text-gray-600"
-          >
+          <p className="mx-auto max-w-2xl text-lg text-ink/70">
             Commitments we stand behind, every single day
           </p>
+
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -270,19 +268,19 @@ const Values = () => {
               <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-brand/20 to-cyan-500/20 opacity-0 blur-xl transition-all duration-500 group-hover:opacity-100" />
 
               {/* Card */}
-              <div className="group-hover-lift glass relative h-full rounded-2xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 hover:shadow-xl">
+              <div className="group-hover-lift glass relative h-full rounded-2xl border border-[#ece1d0] p-8 transition-all duration-500 hover:border-brand/40 hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)]">
                 {/* Number Badge */}
                 <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-brand/30 to-cyan-500/30 text-lg font-bold text-brand transition-all duration-300 group-hover:rotate-6 group-hover:scale-110">
                   {index + 1}
                 </div>
 
                 {/* Title */}
-                <h3 className="mb-4 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                <h3 className="mb-4 text-xl font-bold text-ink transition-colors duration-300 group-hover:text-brand">
                   {promise.title}
                 </h3>
 
                 {/* Content */}
-                <p className="font-light leading-relaxed text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
+                <p className="leading-relaxed text-ink/80 transition-colors duration-300 group-hover:text-ink">
                   {promise.content}
                 </p>
 
@@ -303,18 +301,18 @@ const Values = () => {
         >
 
           {/* Card */}
-          <div className="glass relative rounded-3xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 group-hover:shadow-2xl sm:p-16">
+          <div className="glass relative rounded-2xl border border-[#ece1d0] p-8 transition-all duration-500 hover:border-brand/40 group-hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)] sm:p-16">
             <div className="space-y-8">
               <div className="space-y-4 text-center">
-                <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl">
+                <h2 className="text-4xl font-bold text-ink sm:text-5xl">
                   Built on Modern{" "}
                   <span className="text-brand">
                     Technology
                   </span>
                 </h2>
 
-                <p className="mx-auto max-w-2xl text-lg font-light text-gray-600">
-                  The latest technology powers our platform. Designed for speed, security, and simplicity. Everything you need, nothing you don't.
+                <p className="mx-auto max-w-2xl text-lg text-ink/70">
+                  Built for speed, security, and simplicity. Everything you need, nothing you don't.
                 </p>
               </div>
 
@@ -328,12 +326,12 @@ const Values = () => {
                     <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-brand/20 to-cyan-500/20 opacity-0 blur-lg transition-all duration-300 group-hover/tech:opacity-100" />
 
                     {/* Content */}
-                    <div className="relative rounded-2xl border border-gray-200 p-6 transition-all duration-300 group-hover/tech:border-brand/50 group-hover/tech:bg-white group-hover/tech:shadow-lg group-hover/tech:">
-                      <p className="mb-2 text-lg font-bold text-gray-900 transition-colors duration-300 group-hover/tech:text-brand">
+                    <div className="relative rounded-2xl border border-[#ece1d0] p-6 transition-all duration-300 group-hover/tech:border-brand/50 group-hover/tech:bg-white group-hover/tech:shadow-lg group-hover/tech:">
+                      <p className="mb-2 text-lg font-bold text-ink transition-colors duration-300 group-hover/tech:text-brand">
                         {tech.name}
                       </p>
 
-                      <p className="text-sm font-light text-gray-600 transition-colors duration-300 group-hover/tech:text-gray-700">
+                      <p className="text-sm text-ink/70 transition-colors duration-300 group-hover/tech:text-ink/80">
                         {tech.role}
                       </p>
                     </div>
@@ -352,7 +350,7 @@ const Values = () => {
           <div
             className="space-y-8"
           >
-            <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl">
+            <h2 className="text-4xl font-bold text-ink sm:text-5xl">
               Why{" "}
               <span className="text-brand">
                 ElysianEcommerce
@@ -360,13 +358,15 @@ const Values = () => {
               Stands Apart
             </h2>
 
+            <div className="h-px w-16 bg-brand/40" />
+
             <div className="space-y-6">
               <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10">
-                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                <h3 className="mb-3 text-xl font-bold text-ink transition-colors duration-300 group-hover:text-brand">
                   Design-Driven Excellence
                 </h3>
 
-                <p className="font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
+                <p className="text-ink/80 transition-colors duration-300 group-hover:text-ink">
                   Clean layouts, readable type, and a checkout that never gets
                   in your way. Everything is built to load fast and work on any
                   screen, from phone to desktop.
@@ -374,11 +374,11 @@ const Values = () => {
               </div>
 
               <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10">
-                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                <h3 className="mb-3 text-xl font-bold text-ink transition-colors duration-300 group-hover:text-brand">
                   Security First
                 </h3>
 
-                <p className="font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
+                <p className="text-ink/80 transition-colors duration-300 group-hover:text-ink">
                   Bank-level encryption protects your data. We comply with
                   GDPR, CCPA, and all major data protection standards. Your
                   trust is our greatest asset.
@@ -386,11 +386,11 @@ const Values = () => {
               </div>
 
               <div className="group rounded-xl p-6 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10">
-                <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                <h3 className="mb-3 text-xl font-bold text-ink transition-colors duration-300 group-hover:text-brand">
                   Performance Optimized
                 </h3>
 
-                <p className="font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800">
+                <p className="text-ink/80 transition-colors duration-300 group-hover:text-ink">
                   Lightning-fast load times, smooth animations, and responsive
                   design. Every interaction feels instant. We measure in
                   milliseconds, not seconds.
@@ -403,8 +403,8 @@ const Values = () => {
           <div
             className=""
           >
-            <div className="glass group  space-y-8 rounded-3xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 hover:shadow-2xl sm:p-12">
-              <h3 className="text-3xl font-bold text-gray-900">
+            <div className="glass group space-y-8 rounded-2xl border border-[#ece1d0] p-8 transition-all duration-500 hover:border-brand/40 hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)] sm:p-12">
+              <h3 className="text-3xl font-bold text-ink">
                 Our Core Beliefs
               </h3>
 
@@ -431,11 +431,11 @@ const Values = () => {
                     key={index}
                     className="group/stat rounded-xl p-4 transition-all duration-300 hover:bg-linear-to-br hover:from-brand/10 hover:to-cyan-500/10"
                   >
-                    <div className="text-xl font-bold text-gray-900">
+                    <div className="text-xl font-bold text-ink">
                       {item.quote}
                     </div>
 
-                    <div className="mt-2 text-sm text-gray-600">
+                    <div className="mt-2 text-sm text-ink/70">
                       {item.author}
                     </div>
                   </div>
@@ -453,23 +453,27 @@ const Values = () => {
         >
 
           {/* Card */}
-          <div className="glass-strong relative overflow-hidden rounded-3xl border border-gray-200 p-8 text-center transition-all duration-500 group-hover:border-brand/80 group-hover:shadow-2xl sm:p-16">
+          <div className="glass-strong relative overflow-hidden rounded-2xl border border-[#ece1d0] p-8 text-center transition-all duration-500 group-hover:border-brand/40 group-hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)] sm:p-16">
             {/* Content */}
             <div className="relative z-10 space-y-6">
-              <h2 className="text-4xl font-bold sm:text-5xl text-gray-900">
-                Join Our Community Today
+              <div className="flex justify-center gap-3">
+                <div className="h-px w-16 bg-brand/40" />
+                <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
+              </div>
+
+              <h2 className="text-4xl font-bold sm:text-5xl text-ink">
+                Hold us to them
               </h2>
 
-              <p className="mx-auto max-w-2xl text-lg leading-relaxed font-light text-gray-700">
-                Experience the ElysianEcommerce difference. Where values
-                matter, quality never compromises, and every customer is
-                cherished. Start your journey with us.
+              <p className="mx-auto max-w-2xl text-lg leading-relaxed text-ink/70">
+                Browse the collection and judge us on the six above. Free delivery over Rs. 2,000,
+                30-day returns on eligible items.
               </p>
 
               <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">
                 <a
                   href="/products"
-                  className="group/btn relative overflow-hidden rounded-2xl bg-linear-to-r from-brand via-cyan-500 to-teal-400 px-10 py-4 text-lg font-bold text-white shadow-xl transition-all duration-500 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 hover:shadow-2xl"
+                  className="group/btn relative overflow-hidden rounded-2xl bg-brand px-10 py-4 text-lg font-bold text-white shadow-[0_2px_16px_rgba(61,5,12,0.18)] transition-all duration-300 hover:bg-brand-dark hover:shadow-[0_8px_24px_rgba(61,5,12,0.24)]"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Explore Products
@@ -483,7 +487,7 @@ const Values = () => {
 
                 <a
                   href="/about"
-                  className="group/btn relative overflow-hidden rounded-2xl border border-gray-200 bg-white px-10 py-4 text-lg font-bold text-brand transition-all duration-500 hover:border-brand/50 hover:bg-white hover:shadow-lg"
+                  className="group/btn relative overflow-hidden rounded-2xl border border-[#ece1d0] bg-white px-10 py-4 text-lg font-bold text-brand transition-all duration-300 hover:border-brand/50 hover:bg-brand/5 hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)]"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Back to About

@@ -42,7 +42,7 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
 
   if (applied) {
     return (
-      <div className="border rounded p-3 bg-green-50 flex items-center justify-between text-sm">
+      <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 flex items-center justify-between text-sm">
         <div>
           <span className="font-medium">{applied.code}</span> applied:{" "}
           <span className="text-green-700">-{formatCurrency(applied.discount_amount)}</span>
@@ -73,13 +73,13 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
               void handleApply();
             }
           }}
-          className="flex-1 border rounded px-3 py-2 text-sm"
+          className="flex-1 border border-[#ece1d0] rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-colors"
         />
         <button
           type="button"
           onClick={handleApply}
           disabled={isChecking || !code.trim()}
-          className="bg-black text-white px-4 py-2 rounded text-sm disabled:opacity-50"
+          className="bg-brand text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50"
         >
           {isChecking ? "Checking..." : "Apply"}
         </button>

@@ -1,22 +1,30 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ElysianEcommerce</title>
+    <meta
+      name="description"
+      content="Elysian E-commerce — a curated marketplace in Nepal. Cash on delivery, eSewa payments, free delivery over Rs. 2,000 and 30-day returns."
+    />
+    <meta name="theme-color" content="#c01e2e" />
+    <title>Elysian E-commerce — Where Every Find Feels Special</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Caveat:wght@500;600&family=Fraunces:opsz,wght@9..144,400..900&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://accounts.google.com/gsi/client?hl=en" async defer></script>
     <script>
       /* Preload the LCP hero image, but ONLY on the home page: on any deep
-         link this ~1.5MB PNG would be downloaded and never rendered. */
+         link this ~800KB PNG would be downloaded and never rendered. */
       if (location.pathname === "/") {
         var heroLink = document.createElement("link");
         heroLink.rel = "preload";
         heroLink.as = "image";
-        heroLink.href = "/HeroSection.png";
+        heroLink.href = "/images/NewLogo.jpg";
         heroLink.fetchPriority = "high";
         document.head.appendChild(heroLink);
       }

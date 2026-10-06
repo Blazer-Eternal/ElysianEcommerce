@@ -28,12 +28,12 @@ function DataTable<T>({ columns, data, isLoading, rowKey, emptyMessage = "No rec
   }
 
   return (
-    <div className="overflow-x-auto border rounded-lg">
+    <div className="overflow-x-auto rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
       <table className="w-full text-sm">
-        <thead className="bg-gray-50 border-b">
+        <thead className="bg-cream-deep/60 border-b border-[#ece1cf]">
           <tr>
             {columns.map((col, idx) => (
-              <th key={idx} className="text-left px-4 py-2.5 font-medium text-gray-600">
+              <th key={idx} className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
                 {col.header}
               </th>
             ))}
@@ -41,9 +41,9 @@ function DataTable<T>({ columns, data, isLoading, rowKey, emptyMessage = "No rec
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={rowKey(row)} className="border-b last:border-0 hover:bg-gray-50">
+            <tr key={rowKey(row)} className="border-b border-[#ece1cf] last:border-0 hover:bg-cream-deep/50">
               {columns.map((col, idx) => (
-                <td key={idx} className="px-4 py-2.5">
+                <td key={idx} className="px-4 py-3">
                   {col.render(row)}
                 </td>
               ))}

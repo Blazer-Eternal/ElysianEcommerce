@@ -62,7 +62,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         placeholder="Search products..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full border rounded-lg px-3 py-2 bg-white"
+        className="w-full border border-[#ece1d0] rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-colors"
       />
 
       <div className="flex flex-wrap gap-3">
@@ -92,7 +92,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
             const [sortBy, sortOrder] = e.target.value.split(":");
             onChange({ ...filters, sortBy, sortOrder: sortOrder as "asc" | "desc", page: 1 });
           }}
-          className="border rounded-lg px-3 py-2 text-sm bg-white"
+          className="border border-[#ece1d0] rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-colors"
         >
           <option value="created_at:asc">Oldest First</option>
           <option value="created_at:desc">Newest First</option>
@@ -102,7 +102,7 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
       </div>
 
       {/* Price buckets — checkbox ranges sized to the real catalogue prices */}
-      <div className="border-t border-gray-200 pt-4">
+      <div className="border-t border-[#ece1d0] pt-4">
         <button
           type="button"
           onClick={() => setPriceOpen((open) => !open)}

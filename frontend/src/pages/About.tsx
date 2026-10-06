@@ -72,23 +72,23 @@ const About = () => {
   const milestones = [
     {
       year: "2024",
-      event: "Brought our vision to life with elegance and care",
+      event: "ElysianEcommerce opened for business",
     },
     {
       year: "2024",
-      event: "Focused on delivering excellence in every detail",
+      event: "Descriptions, pricing and returns written to be clear",
     },
     {
       year: "2024",
-      event: "Committed to continuous excellence and innovation",
+      event: "Ongoing improvements shaped by customer feedback",
     },
   ];
 
   const stats = [
-    { value: <StarIcon size={32} />, label: "Excellence in Every Detail", delay: "0s" },
-    { value: <HeartIcon size={32} />, label: "Passionate About Service", delay: "0.2s" },
-    { value: <PenToolIcon size={32} />, label: "Beautifully Designed", delay: "0.4s" },
-    { value: <GemIcon size={32} />, label: "Premium Quality Always", delay: "0.6s" },
+    { value: <StarIcon size={32} />, label: "Checked Before It Ships", delay: "0s" },
+    { value: <HeartIcon size={32} />, label: "Support Around the Clock", delay: "0.2s" },
+    { value: <PenToolIcon size={32} />, label: "Readable on Any Screen", delay: "0.4s" },
+    { value: <GemIcon size={32} />, label: "Verified Sellers Only", delay: "0.6s" },
   ];
 
   return (
@@ -128,10 +128,8 @@ const About = () => {
 
       {/* Hero Section */}
       <div className="relative z-10 pt-12 pb-8 sm:pt-24 sm:pb-16">
-        <div className="mx-auto max-w-5xl space-y-8 px-4 text-center sm:px-6">
-          <h1
-            className="text-4xl leading-tight font-black text-gray-900 sm:text-5xl lg:text-7xl"
-          >
+        <div className="mx-auto max-w-4xl space-y-7 px-4 text-center sm:px-6">
+          <h1 className="text-4xl leading-[1.08] font-semibold text-ink sm:text-5xl lg:text-6xl">
             About{" "}
             <span
               className="text-brand"
@@ -141,19 +139,14 @@ const About = () => {
             </span>
           </h1>
 
-          <p
-            className="mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-600 sm:text-xl"
-          >
-            We believe that exceptional shopping experiences matter. That's
-            why we built ElysianEcommerce with care, using the latest
-            technology to serve you better.
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">
+            An online store built on a plain promise: accurate descriptions,
+            prices with no surprises, and returns that don't fight you.
           </p>
 
-          <div
-            className="flex justify-center gap-4"
-          >
-            <div className="h-1 w-12 rounded-full bg-linear-to-r from-brand to-cyan-500" />
-            <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
           </div>
         </div>
       </div>
@@ -166,29 +159,29 @@ const About = () => {
             className="space-y-8"
           >
             <div>
-              <h2 className="mb-6 text-4xl font-bold sm:text-5xl text-gray-900">
+              <h2 className="mb-6 text-4xl font-bold text-ink sm:text-5xl">
                 Our Story
               </h2>
 
-              <div className="mb-8 h-1 w-16 rounded-full bg-linear-to-r from-brand to-cyan-500" />
+              <div className="mb-8 h-px w-16 bg-brand/40" />
             </div>
 
             <div className="space-y-6">
-              <p className="text-lg leading-relaxed font-light text-gray-700">
+              <p className="text-lg leading-relaxed text-ink/80">
                 ElysianEcommerce started with a simple frustration: online shopping meant vague product descriptions, surprise costs, and returns that were more trouble than they were worth. We built the store we wanted to shop at.
               </p>
 
-              <p className="text-lg leading-relaxed font-light text-gray-700">
-                Today, we're focused on delivering premium products and exceptional service. We listen to our customers, refine our craft, and never stop improving.
+              <p className="text-lg leading-relaxed text-ink/80">
+                Today the focus hasn't moved: quality-checked products, support that actually answers, and a returns process you can finish in one sitting.
               </p>
             </div>
 
             <a
               href="/products"
-              className="group/cta relative mt-4 inline-block overflow-hidden rounded-2xl bg-linear-to-r from-brand via-cyan-500 to-teal-400 px-8 py-4 font-semibold text-white shadow-xl transition-all duration-500 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 hover:shadow-2xl"
+              className="group/cta relative mt-4 inline-block overflow-hidden rounded-2xl bg-brand px-8 py-4 font-semibold text-white shadow-[0_2px_16px_rgba(61,5,12,0.18)] transition-all duration-300 hover:bg-brand-dark hover:shadow-[0_8px_24px_rgba(61,5,12,0.24)]"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                Discover Our Products
+                Browse the collection
                 <span className="transform transition-transform duration-300 group-hover/cta:translate-x-2">
                   →
                 </span>
@@ -201,12 +194,12 @@ const About = () => {
           <div
             className=""
           >
-            <div className="glass group  space-y-6 rounded-3xl border border-gray-200 p-8 transition-all duration-500 hover:border-brand/80 hover:shadow-2xl sm:p-12">
-              <h3 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+            <div className="glass group space-y-6 rounded-2xl border border-[#ece1d0] p-8 transition-all duration-500 hover:border-brand/40 hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)] sm:p-10">
+              <h3 className="text-2xl font-bold text-ink sm:text-3xl">
                 What Makes Us Special
               </h3>
 
-              <div className="space-y-5">
+              <div className="space-y-3">
                 {stats.map((stat, index) => (
                   <div
                     key={index}
@@ -215,11 +208,11 @@ const About = () => {
                   >
                     <div className="flex items-end justify-between">
                       <div>
-                        <div className="text-5xl font-black sm:text-6xl text-brand">
+                        <div className="text-5xl font-semibold sm:text-6xl text-brand">
                           {stat.value}
                         </div>
 
-                        <div className="mt-2 font-medium text-gray-600 transition-colors duration-300 group-hover/stat:text-gray-800">
+                        <div className="mt-2 font-medium text-ink/70 transition-colors duration-300 group-hover/stat:text-ink">
                           {stat.label}
                         </div>
                       </div>
@@ -232,9 +225,9 @@ const About = () => {
                 ))}
               </div>
 
-              <div className="border-t border-gray-200 pt-4">
-                <p className="text-sm text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
-                  Where elegance meets accessibility, and shopping becomes an experience.
+              <div className="border-t border-[#ece1d0] pt-5">
+                <p className="text-sm text-ink/70 transition-colors duration-300 group-hover:text-ink">
+                  Free delivery over Rs. 2,000, 30-day returns on eligible items, and payment by Cash on Delivery or eSewa.
                 </p>
               </div>
             </div>
@@ -245,23 +238,17 @@ const About = () => {
       {/* Values Section */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
-          <h2
-            className="text-4xl font-bold text-gray-900 sm:text-5xl"
-          >
+          <h2 className="text-4xl font-bold text-ink sm:text-5xl">
             Our Core Values
           </h2>
 
-          <p
-            className="mx-auto max-w-2xl text-lg font-light text-gray-600"
-          >
+          <p className="mx-auto max-w-2xl text-lg text-ink/70">
             Everything we do is guided by these principles
           </p>
 
-          <div
-            className="flex justify-center gap-2"
-          >
-            <div className="h-1 w-12 rounded-full bg-linear-to-r from-brand to-cyan-500" />
-            <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
           </div>
         </div>
 
@@ -274,7 +261,7 @@ const About = () => {
               {/* Animated Gradient Background */}
 
               {/* Main Card */}
-              <div className="group-hover-grow glass relative h-full overflow-hidden rounded-3xl border border-gray-200 p-8 text-center transition-all duration-500 hover:border-brand/80 hover:shadow-2xl sm:p-10">
+              <div className="group-hover-grow glass relative h-full overflow-hidden rounded-2xl border border-[#ece1d0] p-8 text-center transition-all duration-500 hover:border-brand/40 hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)] sm:p-10">
                 {/* Icon Container */}
                 <div className="mb-6 flex justify-center text-brand transition-all duration-500 group-hover:rotate-12 group-hover:scale-125 group-hover:text-cyan-600">
                   <div className="relative">
@@ -287,11 +274,11 @@ const About = () => {
                 </div>
 
                 {/* Text Content */}
-                <h3 className="mb-4 text-2xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-brand">
+                <h3 className="mb-4 text-2xl font-bold text-ink transition-colors duration-300 group-hover:text-brand">
                   {value.title}
                 </h3>
 
-                <p className="font-light leading-relaxed text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
+                <p className="leading-relaxed text-ink/70 transition-colors duration-300 group-hover:text-ink/80">
                   {value.description}
                 </p>
 
@@ -310,23 +297,17 @@ const About = () => {
       {/* Journey Timeline */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
         <div className="mb-16 space-y-4 text-center">
-          <h2
-            className="text-4xl font-bold text-gray-900 sm:text-5xl"
-          >
+          <h2 className="text-4xl font-bold text-ink sm:text-5xl">
             Our Journey
           </h2>
 
-          <p
-            className="text-lg font-light text-gray-600"
-          >
+          <p className="text-lg text-ink/70">
             Key moments in our growth
           </p>
 
-          <div
-            className="flex justify-center gap-2"
-          >
-            <div className="h-1 w-12 rounded-full bg-linear-to-r from-brand to-cyan-500" />
-            <div className="h-1 w-3 rounded-full bg-linear-to-r from-cyan-500 to-teal-400 opacity-70" />
+          <div className="flex justify-center gap-3 pt-1">
+            <div className="h-px w-16 bg-brand/40" />
+            <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
           </div>
         </div>
 
@@ -354,7 +335,7 @@ const About = () => {
                       {milestone.year}
                     </p>
 
-                    <p className="mt-2 text-lg font-semibold text-gray-800 transition-colors duration-300 group-hover:text-gray-900">
+                    <p className="mt-2 text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-ink">
                       {milestone.event}
                     </p>
                   </div>
@@ -377,21 +358,27 @@ const About = () => {
         >
 
           {/* Main Card */}
-          <div className="glass-strong relative overflow-hidden rounded-3xl border border-gray-200 p-8 text-center transition-all duration-500 group-hover:border-brand/80 group-hover:shadow-2xl sm:p-16">
+          <div className="glass-strong relative overflow-hidden rounded-2xl border border-[#ece1d0] p-8 text-center transition-all duration-500 group-hover:border-brand/40 group-hover:shadow-[0_16px_40px_rgba(61,5,12,0.12)] sm:p-16">
             {/* Content */}
             <div className="relative z-10 space-y-8">
-              <h2 className="text-4xl font-bold sm:text-5xl text-gray-900">
-                Ready to Experience the Difference?
+              <div className="flex justify-center gap-3">
+                <div className="h-px w-16 bg-brand/40" />
+                <div className="h-1.5 w-1.5 rounded-full bg-gold opacity-80" />
+              </div>
+
+              <h2 className="text-4xl font-bold sm:text-5xl text-ink">
+                Take a look for yourself
               </h2>
 
-              <p className="mx-auto max-w-3xl text-lg leading-relaxed font-light text-gray-700 transition-colors duration-300 group-hover:text-gray-800 sm:text-xl">
-                Discover premium products curated with care. Experience shopping reimagined with elegance, quality, and exceptional service.
+              <p className="mx-auto max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">
+                Every item is quality-checked before it ships, with 30-day returns on eligible
+                items and free delivery over Rs. 2,000.
               </p>
 
               <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">
                 <a
                   href="/products"
-                  className="group/btn relative overflow-hidden rounded-2xl bg-linear-to-r from-brand via-cyan-500 to-teal-400 px-10 py-4 text-lg font-bold text-white shadow-xl transition-all duration-500 hover:from-[#0e5a68] hover:via-cyan-600 hover:to-teal-500 hover:shadow-2xl"
+                  className="group/btn relative overflow-hidden rounded-2xl bg-brand px-10 py-4 text-lg font-bold text-white shadow-[0_2px_16px_rgba(61,5,12,0.18)] transition-all duration-300 hover:bg-brand-dark hover:shadow-[0_8px_24px_rgba(61,5,12,0.24)]"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Start Shopping
@@ -405,10 +392,10 @@ const About = () => {
 
                 <a
                   href="/values"
-                  className="group/btn relative overflow-hidden rounded-2xl border border-gray-200 bg-white px-10 py-4 text-lg font-bold text-brand transition-all duration-500 hover:border-brand/50 hover:bg-white hover:shadow-lg"
+                  className="group/btn relative overflow-hidden rounded-2xl border border-[#ece1d0] bg-white px-10 py-4 text-lg font-bold text-brand transition-all duration-300 hover:border-brand/50 hover:bg-brand/5 hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)]"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
-                    Learn More
+                    Read our values
 
                     <span className="transform transition-transform duration-300 group-hover/btn:translate-y-1">
                       ↓

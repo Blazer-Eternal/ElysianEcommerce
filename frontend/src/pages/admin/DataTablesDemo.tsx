@@ -284,7 +284,7 @@ const DataTablesDemo = () => {
           }
           const parentName = typeof parent === "object" ? parent?.name : getCategoryName(parent);
           return (
-            <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-semibold">
+            <span className="inline-block px-2 py-1 bg-cream-deep text-gray-700 rounded text-xs font-semibold">
               {parentName}
             </span>
           );
@@ -314,7 +314,7 @@ const DataTablesDemo = () => {
           // For parent/main categories, show a special indicator
           if (isMainCategory) {
             return (
-              <span className="inline-block px-3 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-700">
+              <span className="inline-block px-3 py-1 rounded text-xs font-semibold bg-cyan-100 text-cyan-700">
                 ↓ Parent
               </span>
             );
@@ -523,7 +523,7 @@ const DataTablesDemo = () => {
           const type = info.getValue() as string;
           return (
             <span className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
-              type === "percentage" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"
+              type === "percentage" ? "bg-cyan-100 text-cyan-700" : "bg-brand/10 text-brand"
             }`}>
               {type === "percentage" ? "%" : "$"}
             </span>
@@ -685,17 +685,17 @@ const DataTablesDemo = () => {
           <div className="text-sm font-semibold text-brand uppercase tracking-wider">
             DATA MANAGEMENT
           </div>
-          <h1 className="text-4xl font-bold text-gray-900">DataTables</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">DataTables</h1>
           <p className="text-gray-600 mt-2">
-            Manage your products, categories, orders, users, and coupons with advanced table features.
+            Search, sort, export and print the store's core records.
           </p>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 border-b border-gray-200">
+        <div className="flex gap-2 border-b border-[#ece1cf] overflow-x-auto">
           <button
             onClick={() => setActiveTab("products")}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 shrink-0 whitespace-nowrap font-semibold transition-colors relative ${
               activeTab === "products"
                 ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
@@ -708,7 +708,7 @@ const DataTablesDemo = () => {
           </button>
           <button
             onClick={() => setActiveTab("categories")}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 shrink-0 whitespace-nowrap font-semibold transition-colors relative ${
               activeTab === "categories"
                 ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
@@ -721,7 +721,7 @@ const DataTablesDemo = () => {
           </button>
           <button
             onClick={() => setActiveTab("orders")}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 shrink-0 whitespace-nowrap font-semibold transition-colors relative ${
               activeTab === "orders"
                 ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
@@ -734,7 +734,7 @@ const DataTablesDemo = () => {
           </button>
           <button
             onClick={() => setActiveTab("users")}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 shrink-0 whitespace-nowrap font-semibold transition-colors relative ${
               activeTab === "users"
                 ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
@@ -747,7 +747,7 @@ const DataTablesDemo = () => {
           </button>
           <button
             onClick={() => setActiveTab("coupons")}
-            className={`px-6 py-3 font-semibold transition-colors relative ${
+            className={`px-6 py-3 shrink-0 whitespace-nowrap font-semibold transition-colors relative ${
               activeTab === "coupons"
                 ? "text-brand"
                 : "text-gray-600 hover:text-gray-900"
@@ -764,20 +764,20 @@ const DataTablesDemo = () => {
         {activeTab === "products" && (
           <>
             {productsLoading ? (
-              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-12 text-center">
                 <div className="inline-block">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading products...</p>
               </div>
             ) : productsError ? (
-              <div className="glass rounded-2xl p-8 border border-red-200 bg-red-50">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-8">
                 <p className="text-red-700 font-semibold">
                   Failed to load products. Please try again.
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-gray-200">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6">
                 <TanStackDataTable
                   data={products}
                   columns={productColumns}
@@ -801,20 +801,20 @@ const DataTablesDemo = () => {
         {activeTab === "categories" && (
           <>
             {categoriesLoading ? (
-              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-12 text-center">
                 <div className="inline-block">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading categories...</p>
               </div>
             ) : categoriesError ? (
-              <div className="glass rounded-2xl p-8 border border-red-200 bg-red-50">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-8">
                 <p className="text-red-700 font-semibold">
                   Failed to load categories. Please try again.
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-gray-200">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6">
                 <TanStackDataTable
                   data={categories}
                   columns={categoryColumns}
@@ -839,20 +839,20 @@ const DataTablesDemo = () => {
         {activeTab === "orders" && (
           <>
             {ordersLoading ? (
-              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-12 text-center">
                 <div className="inline-block">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading orders...</p>
               </div>
             ) : ordersError ? (
-              <div className="glass rounded-2xl p-8 border border-red-200 bg-red-50">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-8">
                 <p className="text-red-700 font-semibold">
                   Failed to load orders. Please try again.
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-gray-200">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6">
                 <TanStackDataTable
                   data={orders}
                   columns={orderColumns}
@@ -877,20 +877,20 @@ const DataTablesDemo = () => {
         {activeTab === "users" && (
           <>
             {usersLoading ? (
-              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-12 text-center">
                 <div className="inline-block">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading users...</p>
               </div>
             ) : usersError ? (
-              <div className="glass rounded-2xl p-8 border border-red-200 bg-red-50">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-8">
                 <p className="text-red-700 font-semibold">
                   Failed to load users. Please try again.
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-gray-200">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6">
                 <TanStackDataTable
                   data={users}
                   columns={userColumns}
@@ -914,20 +914,20 @@ const DataTablesDemo = () => {
         {activeTab === "coupons" && (
           <>
             {couponsLoading ? (
-              <div className="glass rounded-2xl p-12 border border-gray-200 text-center">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-12 text-center">
                 <div className="inline-block">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
                 </div>
                 <p className="text-gray-600 mt-4">Loading coupons...</p>
               </div>
             ) : couponsError ? (
-              <div className="glass rounded-2xl p-8 border border-red-200 bg-red-50">
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-8">
                 <p className="text-red-700 font-semibold">
                   Failed to load coupons. Please try again.
                 </p>
               </div>
             ) : (
-              <div className="glass rounded-2xl p-6 border border-gray-200">
+              <div className="bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6">
                 <TanStackDataTable
                   data={coupons}
                   columns={couponColumns}

@@ -81,7 +81,7 @@ const Dropdown = ({ icon, title, selectedLabel, options, onSelect }: DropdownPro
         }}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:border-brand/60 hover:text-brand transition-colors"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-[#ece1d0] rounded-xl hover:border-brand/60 hover:text-brand transition-colors"
       >
         <span className="text-gray-400">{icon}</span>
         <span>
@@ -101,7 +101,7 @@ const Dropdown = ({ icon, title, selectedLabel, options, onSelect }: DropdownPro
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full mt-2 z-30 min-w-[190px] bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden py-1"
+          className="absolute right-0 top-full mt-2 z-30 min-w-[190px] bg-white border border-[#ece1d0] rounded-xl shadow-xl overflow-hidden py-1"
         >
           {options.map((option) => (
             <button
@@ -211,7 +211,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
   if (editing) {
     return (
       <div
-        className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm"
+        className="p-6 bg-white border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
@@ -251,7 +251,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
               maxLength={1000}
               rows={3}
               placeholder="Tell us about your experience... (optional)"
-              className="w-full p-3 border-2 border-gray-300 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition-all duration-300 resize-none text-sm"
+              className="w-full p-3 border-2 border-[#ece1d0] rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition-all duration-300 resize-none text-sm"
             />
             <div className="flex justify-between items-center mt-1.5">
               <span className="text-xs text-gray-500">Character count:</span>
@@ -303,7 +303,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
     <>
       <div
         onClick={() => setExpanded((value) => !value)}
-        className={`group relative p-6 bg-white border border-gray-200 rounded-2xl hover:border-brand/60 transition-all duration-300 cursor-pointer hover:shadow-md ${
+        className={`group relative p-6 bg-white border border-[#ece1d0] rounded-2xl hover:border-brand/60 transition-all duration-300 cursor-pointer hover:shadow-md ${
           menuOpen ? "review-menu-open" : ""
         }`}
       >
@@ -312,7 +312,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
           <div className="flex items-start justify-between mb-4 gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2 flex-wrap">
-                <div className="w-10 h-10 shrink-0 rounded-full bg-linear-to-br from-brand to-brand flex items-center justify-center text-white font-bold shadow-lg">
+                <div className="w-10 h-10 shrink-0 rounded-full bg-linear-to-br from-brand to-brand-dark flex items-center justify-center text-white font-bold shadow-lg">
                   {authorName.charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -377,11 +377,11 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
                     {/* Caret anchoring the menu to the ⋯ button */}
                     <span
                       aria-hidden="true"
-                      className={`absolute right-4 w-2.5 h-2.5 rotate-45 bg-white border-gray-200 ${
+                      className={`absolute right-4 w-2.5 h-2.5 rotate-45 bg-white border-[#ece1d0] ${
                         menuUp ? "-bottom-[5px] border-b border-r" : "-top-[5px] border-t border-l"
                       }`}
                     />
-                    <div className="relative bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden py-1">
+                    <div className="relative bg-white border border-[#ece1d0] rounded-xl shadow-xl overflow-hidden py-1">
                       <button
                         type="button"
                         role="menuitem"
@@ -393,7 +393,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
                       >
                         <PencilIcon size={14} className="inline-block align-[-2px] mr-1" />Edit
                       </button>
-                      <div className="h-px bg-gray-100 mx-3" />
+                      <div className="h-px bg-[#ece1d0] mx-3" />
                       <button
                         type="button"
                         role="menuitem"
@@ -415,7 +415,7 @@ const ReviewCard = ({ review, productId, isOwner }: ReviewCardProps) => {
           </div>
 
           {review.verified_purchase && (
-            <span className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 mb-2 bg-linear-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-sm">
+            <span className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 mb-2 bg-linear-to-r from-emerald-500 to-emerald-600 text-white rounded-full shadow-sm">
               ✓ Verified Purchase
             </span>
           )}
@@ -538,7 +538,7 @@ const ReviewList = ({
         {[1, 2, 3].map((index) => (
           <div
             key={index}
-            className="p-4 bg-linear-to-r from-gray-100 to-gray-50 rounded-2xl animate-pulse h-24"
+            className="p-4 bg-linear-to-r from-cream-deep to-cream rounded-2xl animate-pulse h-24"
           />
         ))}
       </div>
@@ -547,7 +547,7 @@ const ReviewList = ({
 
   if (isError) {
     return (
-      <div className="p-6 bg-linear-to-br from-red-50 to-rose-50 border-2 border-red-200 rounded-2xl text-center">
+      <div className="p-6 bg-linear-to-br from-red-50 to-red-100/60 border-2 border-red-200 rounded-2xl text-center">
         <AlertIcon size={28} className="mb-2 block text-amber-500" />
         <p className="text-red-700 font-semibold">Error loading reviews</p>
         <p className="text-red-600 text-sm mt-1">Please try again later</p>
@@ -567,9 +567,9 @@ const ReviewList = ({
           onSortChange={onSortChange}
           onRatingFilterChange={onRatingFilterChange}
         />
-        <div className="text-center py-16 px-6 bg-gray-50/60 rounded-3xl border border-dashed border-gray-300 hover:border-brand/60 transition-all duration-300">
+        <div className="text-center py-16 px-6 bg-cream-deep/60 rounded-2xl border border-dashed border-sand hover:border-brand/60 transition-all duration-300">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-brand/10 mb-6">
-            <span className="text-4xl text-gray-300">{filtered ? <SearchIcon size={40} /> : <MessageIcon size={40} />}</span>
+            <span className="text-4xl text-brand/50">{filtered ? <SearchIcon size={40} /> : <MessageIcon size={40} />}</span>
           </div>
           <p className="text-gray-900 font-bold text-lg mb-2">
             {filtered ? `No ${ratingFilter}-star reviews yet` : "No reviews yet"}
@@ -577,7 +577,7 @@ const ReviewList = ({
           <p className="text-gray-600 text-sm leading-relaxed max-w-md mx-auto">
             {filtered
               ? "Try a different star filter to see what other customers said."
-              : "Be the first to share your thoughts about this amazing product! Your feedback helps others make informed decisions."}
+              : "Yours would be the first — a star rating and a line or two about how it held up is plenty."}
           </p>
           {filtered && (
             <button
@@ -657,7 +657,7 @@ const ReviewList = ({
               onClick={() => onPageChange(pagination.page - 1)}
               disabled={!pagination.hasPrevPage || isFetching}
               aria-label="Previous page"
-              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-brand/5 hover:text-brand disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
+              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-[#ece1d0] text-gray-600 hover:bg-brand/5 hover:text-brand disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
             >
               ‹
             </button>
@@ -677,7 +677,7 @@ const ReviewList = ({
                   className={`min-w-[2rem] px-2 py-1.5 text-sm font-semibold rounded-lg border transition-colors ${
                     item === pagination.page
                       ? "bg-linear-to-r from-brand to-brand-dark text-white border-transparent shadow-md"
-                      : "border-gray-200 text-gray-600 hover:bg-brand/5 hover:text-brand"
+                      : "border-[#ece1d0] text-gray-600 hover:bg-brand/5 hover:text-brand"
                   } disabled:opacity-40 disabled:cursor-not-allowed`}
                 >
                   {item}
@@ -690,7 +690,7 @@ const ReviewList = ({
               onClick={() => onPageChange(pagination.page + 1)}
               disabled={!pagination.hasNextPage || isFetching}
               aria-label="Next page"
-              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-gray-200 text-gray-600 hover:bg-brand/5 hover:text-brand disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
+              className="px-3 py-1.5 text-sm font-semibold rounded-lg border border-[#ece1d0] text-gray-600 hover:bg-brand/5 hover:text-brand disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors"
             >
               ›
             </button>
