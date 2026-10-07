@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { ROUTES } from "../../../constants/routes";
@@ -60,7 +60,7 @@ const AdminUserMenu = () => {
 
       {open && (
         <div className="absolute right-0 top-12 z-50 w-56 bg-white rounded-2xl border border-[#ece1d0] shadow-[0_16px_48px_rgba(61,5,12,0.18)] animate-fade-in overflow-hidden">
-          <div className="px-4 py-3 border-b border-[#ece1cf] bg-cream-deep/60">
+          <div className="px-4 py-3 border-b border-sand bg-cream-deep/60">
             <p className="text-sm font-bold text-gray-900 truncate">{user?.name}</p>
             <p className="text-xs text-gray-500 truncate">{user?.email}</p>
           </div>

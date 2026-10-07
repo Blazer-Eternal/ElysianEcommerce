@@ -20,4 +20,6 @@ export * from './MessageServices'
 
 export * from './NotificationServices'
 
+export * from './CustomerNotificationServices';
+
 export * from "./EsewaServices";

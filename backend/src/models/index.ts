@@ -19,3 +19,5 @@ export * from './PaymentModel'
 export * from './MessageModel'
 
 export * from './NotificationModel'
+
+export * from './CustomerNotificationReadModel'

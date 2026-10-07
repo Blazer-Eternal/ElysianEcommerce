@@ -5,13 +5,16 @@ import { useAuth } from "../../hooks/useAuth";
 import { useCartState } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useMyOrders } from "../../hooks/useMyOrders";
+import { useCustomerNotifications } from "../../hooks/useCustomerNotifications";
 import { getActiveOrders, getTotalSpent } from "../../utils/customerDashboard";
 import { getTierStatus } from "../../utils/loyalty";
+import NotificationBell from "./NotificationBell";
 import {
   BagIcon,
   BellIcon,
   BoxIcon,
   CrownIcon,
+  CreditCardIcon,
   GiftIcon,
   GridIcon,
   HeartIcon,
@@ -26,20 +29,30 @@ interface NavItem {
   label: string;
   to: string;
   icon: ReactNode;
-  badge?: ReactNode;
-  /** Element id on the dashboard to scroll to when already on `to`. */
-  hash?: string;
+  /** Numeric badge: a corner count on the rail, a chip in the drawer. */
+  count?: number;
+  /** Suffix for the drawer chip, e.g. the "3 Active" orders badge. */
+  countSuffix?: string;
 }
 
 interface CustomerLayoutProps {
   children: ReactNode;
 }
 
+/**
+ * Customer portal shell.
+ *
+ * Desktop navigation is a detached floating icon rail: icons only, a tooltip
+ * that fades and slides in on hover, and a filled highlight on the active
+ * entry. Touch devices keep a labelled drawer instead, since hover has no
+ * meaning there — both read from the same `navItems` list.
+ */
 const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   const { user } = useAuth();
   const { itemCount } = useCartState();
   const { items: wishlistItems } = useWishlist();
   const { data: ordersData } = useMyOrders();
+  const { data: notificationsData } = useCustomerNotifications();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -49,10 +62,11 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
 
   const orders = ordersData?.data ?? [];
   const activeOrderCount = getActiveOrders(orders).length;
+  const unreadNotifications = notificationsData?.unreadCount ?? 0;
   const { tier } = getTierStatus(getTotalSpent(orders));
 
   // The portal scrolls its own content pane (the window itself never moves),
-  // so reset it on navigation and honour `#hash` links such as Loyalty.
+  // so reset it on navigation and honour `#hash` links.
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.slice(1);
@@ -70,36 +84,31 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       label: "My Orders",
       to: ROUTES.ORDER_HISTORY,
       icon: <BoxIcon size={20} />,
-      badge: activeOrderCount > 0 ? (
-        <span className="rounded-full bg-brand px-2 py-0.5 text-[11px] font-semibold text-white">
-          {activeOrderCount} Active
-        </span>
-      ) : undefined,
+      count: activeOrderCount,
+      countSuffix: "Active",
+    },
+    {
+      label: "Notifications",
+      to: ROUTES.NOTIFICATIONS,
+      icon: <BellIcon size={20} />,
+      count: unreadNotifications,
+      countSuffix: "New",
     },
     {
       label: "Wishlist",
       to: ROUTES.WISHLIST,
       icon: <HeartIcon size={20} />,
-      badge: wishlistItems.length > 0 ? (
-        <span className="min-w-5 rounded-full bg-sand px-1.5 py-0.5 text-center text-[11px] font-semibold text-ink/80">
-          {wishlistItems.length}
-        </span>
-      ) : undefined,
+      count: wishlistItems.length,
     },
     { label: "Loyalty & Rewards", to: ROUTES.LOYALTY, icon: <GiftIcon size={20} /> },
-    { label: "Addresses & Cards", to: ROUTES.PROFILE, icon: <MapPinIcon size={20} /> },
+    { label: "Addresses", to: ROUTES.ADDRESSES, icon: <MapPinIcon size={20} /> },
+    { label: "Payment Methods", to: ROUTES.PAYMENTS, icon: <CreditCardIcon size={20} /> },
     { label: "Account Settings", to: ROUTES.PROFILE, icon: <SettingsIcon size={20} /> },
   ];
 
-  const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, item: NavItem) => {
-    setSidebarOpen(false);
-    // Already on the dashboard: scroll inside the pane instead of re-navigating
-    // (a same-path link would leave the section off-screen).
-    if (item.hash && location.pathname === item.to) {
-      event.preventDefault();
-      document.getElementById(item.hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+  const isActive = (item: NavItem) => location.pathname === item.to;
+
+  const handleNavClick = () => setSidebarOpen(false);
 
   const handleSearch = (event: FormEvent) => {
     event.preventDefault();
@@ -117,33 +126,92 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       .toUpperCase() ?? "?";
 
   return (
-    <div className="flex h-screen overflow-hidden bg-cream">
-      {/* Sidebar, fixed drawer on small screens, static column from lg up */}
+    <div className="flex h-screen overflow-hidden bg-cream lg:pl-28">
+      {/* Floating icon rail — desktop only */}
+      <aside className="fixed bottom-4 left-4 top-4 z-40 hidden w-18 flex-col items-center rounded-3xl border border-[#ece1d0] bg-white/95 p-2 shadow-[0_6px_32px_rgba(61,5,12,0.12)] backdrop-blur-sm lg:flex">
+        <Link
+          to={ROUTES.HOME}
+          className="group relative flex h-12 w-12 shrink-0 items-center justify-center"
+          aria-label="Back to Elysian Ecommerce"
+        >
+          <img
+            src="/images/Bestlogo.jpg"
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm"
+          />
+          <RailTooltip label="Back to store" />
+        </Link>
+
+        <span className="my-2 h-px w-8 shrink-0 bg-[#ece1d0]" aria-hidden />
+
+        <nav className="flex w-full min-h-0 flex-1 flex-col items-center justify-center gap-1.5">
+          {navItems.map((item) => {
+            const active = isActive(item);
+            return (
+              <Link
+                key={item.label}
+                to={item.to}
+                onClick={handleNavClick}
+                aria-current={active ? "page" : undefined}
+                className={`group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-all duration-200 ${
+                  active
+                    ? "bg-brand text-white shadow-[0_4px_14px_rgba(61,5,12,0.3)]"
+                    : "text-ink/50 hover:bg-brand/10 hover:text-brand"
+                }`}
+              >
+                {item.icon}
+
+                {item.count !== undefined && item.count > 0 && (
+                  <span
+                    className={`absolute -right-1 -top-1 min-w-4 rounded-full px-1 text-center text-[10px] font-bold leading-4 ring-2 ring-white ${
+                      active ? "bg-white text-brand" : "bg-brand text-white"
+                    }`}
+                  >
+                    {item.count > 9 ? "9+" : item.count}
+                  </span>
+                )}
+
+                <RailTooltip label={item.label} />
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+
+      {/* Labelled drawer — small screens keep text, since hover does not exist */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-[#ece1d0] bg-linear-to-b from-white to-[#fdf8f0] shadow-xl transition-transform duration-300 lg:static lg:z-auto lg:translate-x-0 lg:shadow-none ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-[#ece1d0] bg-linear-to-b from-white to-cyan-50 shadow-xl transition-transform duration-300 lg:hidden ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
-        {/* Portal brand */}
         <div className="flex items-center justify-between gap-3 border-b border-[#ece1d0] px-5 py-4">
-          <Link to={ROUTES.HOME} className="flex items-center gap-3 min-w-0" title="Back to Elysian Ecommerce">
-            <img src="/images/Bestlogo.jpg" alt="Elysian Ecommerce" width={48} height={48} className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm" />
+          <Link to={ROUTES.HOME} className="flex min-w-0 items-center gap-3" title="Back to Elysian Ecommerce">
+            <img
+              src="/images/Bestlogo.jpg"
+              alt="Elysian Ecommerce"
+              width={48}
+              height={48}
+              className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm"
+            />
             <span className="min-w-0">
               <span className="block truncate text-sm font-bold text-ink">Elysian</span>
-              <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">Customer Portal</span>
+              <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-brand">
+                Customer Portal
+              </span>
             </span>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
             aria-label="Close menu"
-            className="lg:hidden text-ink/60 hover:text-ink transition-colors"
+            className="text-ink/60 transition-colors hover:text-ink"
           >
             <XIcon size={20} />
           </button>
         </div>
 
-        {/* Signed-in customer card */}
         <div className="px-4 pt-4">
           <div className="flex items-center gap-3 rounded-2xl border border-[#ece1d0] bg-cream p-3 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
             <div className="relative shrink-0">
@@ -162,24 +230,29 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
           </div>
         </div>
 
-        {/* Portal navigation */}
-        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+        <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-4">
           {navItems.map((item) => {
-            const isActive = location.pathname === item.to && (!item.hash || location.hash === `#${item.hash}`);
+            const active = isActive(item);
             return (
               <Link
                 key={item.label}
                 to={item.to}
-                onClick={(event) => handleNavClick(event, item)}
+                onClick={handleNavClick}
+                aria-current={active ? "page" : undefined}
                 className={`relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
-                  isActive
-                    ? "bg-brand/10 font-semibold text-brand before:absolute before:left-0 before:top-1/2 before:h-5 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-brand before:content-['']"
+                  active
+                    ? "bg-brand/10 font-semibold text-brand before:absolute before:left-0 before:top-1/2 before:h-5 before:w-0.75 before:-translate-y-1/2 before:rounded-r-full before:bg-brand before:content-['']"
                     : "font-medium text-ink/65 hover:bg-brand/5 hover:text-brand"
                 }`}
               >
-                <span className={isActive ? "text-brand" : "text-ink/50"}>{item.icon}</span>
+                <span className={active ? "text-brand" : "text-ink/50"}>{item.icon}</span>
                 <span className="flex-1 truncate">{item.label}</span>
-                {item.badge}
+                {item.count !== undefined && item.count > 0 && (
+                  <span className="min-w-5 rounded-full bg-brand px-1.5 py-0.5 text-center text-[11px] font-semibold text-white">
+                    {item.count}
+                    {item.countSuffix ? ` ${item.countSuffix}` : ""}
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -197,7 +270,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
           <button
             onClick={() => setSidebarOpen(true)}
             aria-label="Open menu"
-            className="lg:hidden -m-1.5 rounded-lg p-1.5 text-ink/60 hover:bg-brand/5 hover:text-brand transition-colors"
+            className="-m-1.5 rounded-lg p-1.5 text-ink/60 transition-colors hover:bg-brand/5 hover:text-brand lg:hidden"
           >
             <MenuIcon size={22} />
           </button>
@@ -214,26 +287,17 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
             />
           </form>
 
-          <div className="ml-auto flex items-center gap-4">
-            <Link
-              to={ROUTES.ORDER_HISTORY}
-              aria-label="Order updates"
-              className="relative text-ink/55 hover:text-brand transition-colors"
-            >
-              <BellIcon size={20} />
-              {activeOrderCount > 0 && (
-                <span className="absolute -right-1 -top-0.5 h-2.5 w-2.5 rounded-full bg-brand ring-2 ring-white" />
-              )}
-            </Link>
+          <div className="ml-auto flex items-center gap-3 sm:gap-4">
+            <NotificationBell />
 
             <Link
               to={ROUTES.CART}
               aria-label={`Cart with ${itemCount} items`}
-              className="relative text-ink/55 hover:text-brand transition-colors"
+              className="relative rounded-xl p-2 text-ink/55 transition-colors hover:bg-brand/5 hover:text-brand"
             >
               <BagIcon size={20} />
               {itemCount > 0 && (
-                <span className="absolute -right-2 -top-1.5 min-w-4 rounded-full bg-brand px-1 text-[10px] font-bold leading-4 text-white">
+                <span className="absolute -right-1.5 -top-1 min-w-4 rounded-full bg-brand px-1 text-[10px] font-bold leading-4 text-white ring-2 ring-white">
                   {itemCount > 99 ? "99+" : itemCount}
                 </span>
               )}
@@ -241,7 +305,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
 
             <Link
               to={ROUTES.PROFILE}
-              className="flex items-center gap-2 text-sm font-medium text-ink/75 hover:text-brand transition-colors"
+              className="flex items-center gap-2 text-sm font-medium text-ink/75 transition-colors hover:text-brand"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-brand to-cyan-600 text-xs font-bold text-white">
                 {initials}
@@ -259,5 +323,18 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
     </div>
   );
 };
+
+/**
+ * Hover label for the icon rail. The outer span only positions it, the inner
+ * span owns every animated property, so the fade and the slide never fight
+ * over the same `translate` declaration.
+ */
+const RailTooltip = ({ label }: { label: string }) => (
+  <span className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap">
+    <span className="block -translate-x-1 rounded-lg bg-ink px-2.5 py-1.5 text-xs font-medium text-white opacity-0 shadow-[0_6px_20px_rgba(61,5,12,0.28)] transition-all duration-200 ease-out group-hover:translate-x-0 group-hover:opacity-100">
+      {label}
+    </span>
+  </span>
+);
 
 export default CustomerLayout;

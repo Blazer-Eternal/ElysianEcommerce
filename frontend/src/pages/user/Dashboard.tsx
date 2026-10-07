@@ -2,15 +2,19 @@
 import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import CustomerLayout from "../../components/layout/CustomerLayout";
+import OrderStatusBadge from "../../components/order/OrderStatusBadge";
+import OrderTrackingModal from "../../components/order/OrderTrackingModal";
+import Badge from "../../components/ui/Badge";
 import Spinner from "../../components/ui/Spinner";
 import { ROUTES } from "../../constants/routes";
+import { ORDER_STATUS_COLORS, ORDER_STATUS_LABELS } from "../../constants/orderStatus";
 import { useAuth } from "../../hooks/useAuth";
 import { useMyOrders } from "../../hooks/useMyOrders";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCartActions } from "../../hooks/useCart";
 import { productService } from "../../services/productService";
 import { formatCurrency } from "../../utils/formatCurrency";
-import { formatDate } from "../../utils/formatDate";
+import { formatDate, formatLongDate } from "../../utils/formatDate";
 import { cloudinaryImg } from "../../utils/imageUrl";
 import {
   getActiveOrders,
@@ -18,26 +22,44 @@ import {
   getRepeatBuys,
   getTotalSpent,
 } from "../../utils/customerDashboard";
+import { getTrackingSteps, trackingCircleClass, type TrackingStep } from "../../utils/orderTracking";
 import { getLoyaltyPoints, getTierStatus } from "../../utils/loyalty";
-import type { OrderStatus } from "../../types/order.types";
+import type { Order } from "../../types/order.types";
 import {
   ArrowRightIcon,
+  BagIcon,
   BanknoteIcon,
+  BoxIcon,
   CheckIcon,
+  CrownIcon,
+  CreditCardIcon,
+  GiftIcon,
   HeartIcon,
   HomeIcon,
+  MapPinIcon,
   PlusIcon,
   StarIcon,
   TruckIcon,
 } from "../../components/icons";
 
-/* Shipment stepper, maps 1:1 onto the backend's OrderStatus values. */
-const SHIPMENT_STEPS: Array<{ status: OrderStatus; label: string; glyph: React.ReactNode }> = [
-  { status: "pending", label: "Placed", glyph: <CheckIcon size={16} /> },
-  { status: "paid", label: "Processed", glyph: <CheckIcon size={16} /> },
-  { status: "shipped", label: "In Transit", glyph: <TruckIcon size={16} /> },
-  { status: "delivered", label: "Delivered", glyph: <HomeIcon size={16} /> },
+/** Shared panel skin for every card in the bento grid. */
+const CARD = "rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.06)]";
+
+const QUICK_ACTIONS: Array<{ label: string; to: string; icon: React.ReactNode; iconClassName: string }> = [
+  { label: "Browse the catalog", to: ROUTES.PRODUCTS, icon: <BagIcon size={18} />, iconClassName: "bg-amber-50 text-amber-500" },
+  { label: "Review your orders", to: ROUTES.ORDER_HISTORY, icon: <BoxIcon size={18} />, iconClassName: "bg-green-50 text-green-600" },
+  { label: "Manage addresses", to: ROUTES.ADDRESSES, icon: <MapPinIcon size={18} />, iconClassName: "bg-brand/10 text-brand" },
+  { label: "Payment methods", to: ROUTES.PAYMENTS, icon: <CreditCardIcon size={18} />, iconClassName: "bg-rose/10 text-rose" },
+  { label: "Redeem loyalty rewards", to: ROUTES.LOYALTY, icon: <GiftIcon size={18} />, iconClassName: "bg-cyan-100 text-cyan-700" },
 ];
+
+/** Green check once a milestone is reached; the step's own icon otherwise. */
+const stepGlyph = (step: TrackingStep) => {
+  if (step.state === "done") return <CheckIcon size={16} />;
+  if (step.status === "shipped") return <TruckIcon size={16} />;
+  if (step.status === "delivered") return <HomeIcon size={16} />;
+  return <CheckIcon size={16} />;
+};
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -70,6 +92,7 @@ const Dashboard = () => {
 
   const [addingId, setAddingId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
+  const [trackingOrder, setTrackingOrder] = useState<Order | null>(null);
   const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(
@@ -85,6 +108,7 @@ const Dashboard = () => {
   const activeOrders = useMemo(() => getActiveOrders(orders), [orders]);
   const shipment = useMemo(() => getActiveShipment(orders), [orders]);
   const repeatBuys = useMemo(() => getRepeatBuys(orders), [orders]);
+  const steps = useMemo(() => (shipment ? getTrackingSteps(shipment) : []), [shipment]);
 
   // Product records only supply the photo, current price and stock for the
   // "Buy it again" rows, the order lines themselves carry the name/price paid.
@@ -99,8 +123,10 @@ const Dashboard = () => {
   });
 
   const loyaltyPoints = getLoyaltyPoints(totalSpent);
-  const { tier, next } = getTierStatus(totalSpent);
+  const { tier, next, progress } = getTierStatus(totalSpent);
   const firstName = user?.name?.split(" ")[0] ?? "there";
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
 
   const handleAddToCart = async (productId: string) => {
     setAddingId(productId);
@@ -126,261 +152,327 @@ const Dashboard = () => {
     );
   }
 
-  const currentIndex = shipment ? SHIPMENT_STEPS.findIndex((step) => step.status === shipment.status) : -1;
+  const currentIndex = steps.findIndex((step) => step.state === "current");
   const activeCount = activeOrders.length;
   const countedOrders = orders.filter((order) => order.status !== "cancelled").length;
 
   return (
     <CustomerLayout>
-      <div className="mx-auto max-w-6xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
-        {/* Welcome banner */}
-        <section className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#7a0f1c] via-[#b01a2a] to-[#b5691f] px-6 py-8 text-white shadow-xl sm:px-10 sm:py-10">
-          <div aria-hidden className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full bg-white/10" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-24 right-32 h-56 w-56 rounded-full bg-white/5" />
+      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
+        {/* Greeting header */}
+        <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+          <div className="min-w-0">
+            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+              {greeting}, {firstName}
+            </h1>
+            <p className="mt-1 text-sm text-gray-500">
+              {activeCount > 0
+                ? `You have ${activeCount} active order${activeCount === 1 ? "" : "s"} on the way`
+                : "Nothing is on the way right now"}
+            </p>
+          </div>
+          <p className="text-sm font-medium text-gray-500">{formatLongDate()}</p>
+        </header>
 
-          <span className="inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur-sm">
-            Welcome Back
-          </span>
-          <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Glad to see you, {firstName}! 👋
-          </h1>
-          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-white/90 sm:text-base">
-            {activeCount > 0 ? (
-              <>
-                You have <strong className="font-semibold">{activeCount} active package{activeCount === 1 ? "" : "s"}</strong>{" "}
-                currently being prepared or shipped. Check live tracking below or manage your recent
-                purchases.
-              </>
-            ) : (
-              <>
-                Nothing is on the way right now, review your past orders below or discover something
-                new in the catalog.
-              </>
-            )}
-          </p>
-        </section>
-
-        {/* Key numbers */}
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard
-            icon={<BanknoteIcon size={22} />}
-            iconClassName="bg-cyan-100 text-cyan-700"
-            label="Total Spent"
-            value={formatCurrency(totalSpent)}
-            hint={`across ${countedOrders} order${countedOrders === 1 ? "" : "s"}`}
-          />
-          <StatCard
-            icon={<TruckIcon size={22} />}
-            iconClassName="bg-green-50 text-green-600"
-            label="Active Orders"
-            value={`${activeCount} Order${activeCount === 1 ? "" : "s"}`}
-            hint={activeCount > 0 ? "being processed or shipped" : "nothing in transit"}
-          />
-          <StatCard
-            icon={<StarIcon size={22} />}
-            iconClassName="bg-amber-50 text-amber-500"
-            label="Loyalty Points"
-            value={`${loyaltyPoints.toLocaleString("en-IN")} pts`}
-            hint="Points worth 0.5–2% back, by tier"
-          />
-          <StatCard
-            icon={<HeartIcon size={22} />}
-            iconClassName="bg-brand/10 text-brand"
-            label="Wishlist Items"
-            value={`${wishlistItems.length} Saved`}
-            hint="products you are watching"
-          />
-        </section>
-
-        {/* Active shipment */}
-        <section className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-gold">Active Shipment</p>
-              {shipment ? (
-                <>
-                  <h2 className="mt-1 text-2xl font-bold text-gray-900">Order #{shipment.order_number}</h2>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {formatDate(shipment.created_at)} · {shipment.items.length} item
-                    {shipment.items.length === 1 ? "" : "s"} · {formatCurrency(shipment.total_amount)}
-                  </p>
-                </>
-              ) : (
-                <h2 className="mt-1 text-2xl font-bold text-gray-900">No package in transit</h2>
-              )}
-            </div>
-            {shipment && (
-              <Link
-                to={ROUTES.ORDER_DETAIL(shipment._id)}
-                className="rounded-full bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20"
-              >
-                Detailed Status
-              </Link>
-            )}
+        {/*
+          Bento grid, in reading order: the four key numbers, the active
+          shipment, recent orders, the loyalty snapshot, quick actions, and
+          finally the repeat-buy rail.
+        */}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-4">
+          {/* Key numbers */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-2 xl:col-span-4 xl:grid-cols-4">
+            <StatCard
+              icon={<BanknoteIcon size={22} />}
+              iconClassName="bg-cyan-100 text-cyan-700"
+              label="Total Spent"
+              value={formatCurrency(totalSpent)}
+              hint={`across ${countedOrders} order${countedOrders === 1 ? "" : "s"}`}
+            />
+            <StatCard
+              icon={<TruckIcon size={22} />}
+              iconClassName="bg-green-50 text-green-600"
+              label="Active Orders"
+              value={`${activeCount} Order${activeCount === 1 ? "" : "s"}`}
+              hint={activeCount > 0 ? "being processed or shipped" : "nothing in transit"}
+            />
+            <StatCard
+              icon={<StarIcon size={22} />}
+              iconClassName="bg-amber-50 text-amber-500"
+              label="Loyalty Points"
+              value={`${loyaltyPoints.toLocaleString("en-IN")} pts`}
+              hint="Points worth 0.5–2% back, by tier"
+            />
+            <StatCard
+              icon={<HeartIcon size={22} />}
+              iconClassName="bg-brand/10 text-brand"
+              label="Wishlist Items"
+              value={`${wishlistItems.length} Saved`}
+              hint="products you are watching"
+            />
           </div>
 
-          <hr className="my-5 border-[#ece1d0]" />
-
+          {/* Active shipment — live tracking hero */}
           {shipment && currentIndex >= 0 ? (
-            <>
-              <ol className="flex items-start">
-                {SHIPMENT_STEPS.map((step, index) => {
-                  const isCompleted = index <= currentIndex;
-                  const isCurrent = index === currentIndex;
-                  return (
-                    <li
-                      key={step.status}
-                      className="relative flex flex-1 flex-col items-center text-center last:flex-none"
+            <section className={`${CARD} lg:col-span-2 xl:col-span-4`}>
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <Badge className={`uppercase tracking-wide ${ORDER_STATUS_COLORS[shipment.status]}`}>
+                    {ORDER_STATUS_LABELS[shipment.status]}
+                  </Badge>
+                  <h2 className="mt-3 text-2xl font-bold text-gray-900">
+                    Order #{shipment.order_number}
+                  </h2>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Placed {formatDate(shipment.created_at)} · {shipment.items.length} item
+                    {shipment.items.length === 1 ? "" : "s"} · {formatCurrency(shipment.total_amount)}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setTrackingOrder(shipment)}
+                  className="group inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white shadow-[0_1px_3px_rgba(61,5,12,0.14)] transition-colors hover:bg-brand-dark focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:outline-none"
+                >
+                  Live Tracking Details
+                  <ArrowRightIcon size={16} className="transition-transform group-hover:translate-x-0.5" />
+                </button>
+              </div>
+
+              <hr className="my-5 border-[#ece1d0]" />
+
+              <ol className="grid grid-cols-4">
+                {steps.map((step, index) => (
+                  <li key={step.status} className="relative flex flex-col items-center px-1 text-center">
+                    {index < steps.length - 1 && (
+                      <span
+                        aria-hidden
+                        className={`absolute top-5 left-1/2 z-0 h-0.75 w-full -translate-y-1/2 ${
+                          index < currentIndex ? "bg-green-500" : "bg-sand"
+                        }`}
+                      />
+                    )}
+                    <span
+                      className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full ${trackingCircleClass[step.state]}`}
                     >
-                      {index < SHIPMENT_STEPS.length - 1 && (
-                        <span
-                          aria-hidden
-                          className={`absolute left-1/2 top-3.75 z-0 h-0.75 w-full ${
-                            index < currentIndex ? "bg-brand" : "bg-sand"
-                          }`}
-                        />
-                      )}
-                      <span
-                        className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full transition-all ${
-                          isCompleted
-                            ? isCurrent
-                              ? "bg-brand text-white ring-4 ring-brand/15"
-                              : "bg-brand text-white"
-                            : "bg-sand text-gray-400"
-                        }`}
-                      >
-                        {step.glyph}
-                      </span>
-                      <span
-                        className={`mt-2 text-[11px] font-semibold sm:text-xs ${
-                          isCompleted ? (isCurrent ? "text-brand" : "text-gray-900") : "text-gray-400"
-                        }`}
-                      >
-                        {step.label}
-                      </span>
-                    </li>
-                  );
-                })}
+                      {stepGlyph(step)}
+                    </span>
+                    <span
+                      className={`mt-3 text-xs font-semibold ${
+                        step.state === "current"
+                          ? "text-brand"
+                          : step.state === "upcoming"
+                            ? "text-gray-400"
+                            : "text-gray-900"
+                      }`}
+                    >
+                      {step.label}
+                    </span>
+                    <span className="mt-1 block text-[11px] leading-tight text-gray-400">
+                      {step.detail ?? "\u00A0"}
+                    </span>
+                  </li>
+                ))}
               </ol>
+
               <p className="mt-5 text-sm text-gray-600">
                 Status:{" "}
-                <span className="font-semibold text-gray-900">
-                  {shipment.status === "delivered" ? "Delivered" : SHIPMENT_STEPS[currentIndex].label}
-                </span>{" "}
-               , updates appear here as soon as the carrier scans your parcel.
+                <span className="font-semibold text-gray-900">{steps[currentIndex].label}</span> —
+                updates appear here as soon as the carrier scans your parcel.
               </p>
-            </>
+            </section>
           ) : (
-            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-gray-600">
+            <section className={`${CARD} flex flex-col justify-center lg:col-span-2 xl:col-span-4`}>
+              <p className="text-xs font-bold uppercase tracking-wide text-gold">Active Shipment</p>
+              <h2 className="mt-2 text-2xl font-bold text-gray-900">No package in transit</h2>
+              <p className="mt-2 text-sm text-gray-600">
                 Every order you place shows its live tracking steps right here.
               </p>
               <Link
                 to={ROUTES.ORDER_HISTORY}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-dark hover:underline"
+                className="mt-4 inline-flex w-fit items-center gap-1 text-sm font-semibold text-brand hover:text-brand-dark hover:underline"
               >
                 View order history <ArrowRightIcon size={16} />
               </Link>
-            </div>
+            </section>
           )}
-        </section>
 
-        {/* Buy it again */}
-        <section>
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">Buy It Again</h2>
-            <Link to={ROUTES.ORDER_HISTORY} className="text-sm font-semibold text-brand hover:text-brand-dark hover:underline">
-              View All History
-            </Link>
-          </div>
-
-          {repeatBuys.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-sand bg-white p-8 text-center text-sm text-gray-500">
-              Once you have placed an order, your past purchases will appear here for a one-tap re-order.
+          {/* Recent order updates */}
+          <section className={`${CARD} lg:col-span-2 xl:col-span-4`}>
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-base font-bold text-gray-900">Recent Orders</h2>
+              <Link
+                to={ROUTES.ORDER_HISTORY}
+                className="text-sm font-semibold text-brand hover:text-brand-dark hover:underline"
+              >
+                View all
+              </Link>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {repeatBuys.map((item, index) => {
-                const product = productQueries[index]?.data?.data;
-                const imageUrl = product?.images?.[0] || "/placeholder.svg";
-                const price = product?.price ?? item.unitPrice;
-                const outOfStock = product ? product.stock === 0 : false;
-                const isAdding = addingId === item.productId;
-                const justAdded = addedId === item.productId;
 
-                return (
-                  <div
-                    key={item.productId}
-                    className="flex items-start gap-4 rounded-2xl border border-[#ece1d0] bg-white p-4 shadow-[0_2px_16px_rgba(61,5,12,0.06)] transition-shadow hover:shadow-[0_6px_24px_rgba(61,5,12,0.1)]"
-                  >
-                    <Link
-                      to={ROUTES.PRODUCT_DETAIL(item.productId)}
-                      className="shrink-0 overflow-hidden rounded-xl bg-linear-to-br from-[#fdf8f0] to-[#f7ecdb]"
-                    >
-                      <img
-                        src={cloudinaryImg(imageUrl, 160)}
-                        alt={product?.name ?? item.name}
-                        width={72}
-                        height={72}
-                        loading="lazy"
-                        className="h-16 w-16 object-cover sm:h-18 sm:w-18"
-                      />
-                    </Link>
-
-                    <div className="min-w-0 flex-1">
-                      <Link
-                        to={ROUTES.PRODUCT_DETAIL(item.productId)}
-                        className="block truncate text-sm font-semibold text-gray-900 hover:text-brand"
-                      >
-                        {product?.name ?? item.name}
-                      </Link>
-                      <p className="mt-0.5 text-sm text-gray-500">{formatCurrency(price)}</p>
-
-                      <button
-                        type="button"
-                        onClick={() => handleAddToCart(item.productId)}
-                        disabled={isAdding || outOfStock}
-                        className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-brand-dark disabled:cursor-not-allowed disabled:text-gray-400"
-                      >
-                        {outOfStock ? (
-                          "Out of stock"
-                        ) : justAdded ? (
-                          <>
-                            <CheckIcon size={16} /> Added to cart
-                          </>
-                        ) : (
-                          <>
-                            <PlusIcon size={16} /> {isAdding ? "Adding..." : "Add to Cart"}
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </section>
-
-        {/* Loyalty snapshot, full details live on the dedicated Loyalty & Rewards page */}
-        <section className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-gold">Loyalty snapshot</p>
-              <p className="mt-1 text-sm text-gray-600">
-                {tier.name} tier · {loyaltyPoints.toLocaleString("en-IN")} pts ·{" "}
-                {next ? `${formatCurrency(Math.max(0, next.minSpend - totalSpent))} to ${next.name}` : "top tier"}
+            {orders.length === 0 ? (
+              <p className="mt-4 rounded-xl border border-dashed border-sand bg-cream px-4 py-6 text-center text-sm text-gray-500">
+                No orders yet — once you place one, its status shows up here.
               </p>
+            ) : (
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {orders.slice(0, 4).map((order) => (
+                  <Link
+                    key={order._id}
+                    to={ROUTES.ORDER_DETAIL(order._id)}
+                    className="group flex items-center gap-3 rounded-xl border border-[#ece1d0] bg-cream px-4 py-3 transition-colors hover:border-brand/30 hover:bg-white"
+                  >
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+                      <BoxIcon size={18} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-semibold text-gray-900">
+                        Order #{order.order_number}
+                      </span>
+                      <span className="mt-0.5 block truncate text-xs text-gray-500">
+                        {formatDate(order.created_at)} · {formatCurrency(order.total_amount)}
+                      </span>
+                    </span>
+                    <OrderStatusBadge status={order.status} />
+                    <ArrowRightIcon size={16} className="shrink-0 text-gray-400 transition-colors group-hover:text-brand" />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* Loyalty snapshot, full details live on the dedicated Loyalty & Rewards page */}
+          <section className={`${CARD} flex flex-col lg:col-span-1 xl:col-span-2`}>
+            <h2 className="text-base font-bold text-gray-900">Loyalty Snapshot</h2>
+            <div className="mt-4 flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-1 rounded-full bg-cyan-100 px-2.5 py-1 text-xs font-semibold text-cyan-700">
+                <CrownIcon size={12} />
+                {tier.name} Tier
+              </span>
+              <span className="text-sm font-semibold text-gray-900">
+                {loyaltyPoints.toLocaleString("en-IN")} pts
+              </span>
             </div>
+            <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-sand">
+              <div
+                className="h-full rounded-full bg-linear-to-r from-brand to-cyan-600 transition-all duration-700"
+                style={{ width: `${Math.round(progress * 100)}%` }}
+              />
+            </div>
+            <p className="mt-2 text-xs text-gray-500">
+              {next
+                ? `${formatCurrency(Math.max(0, next.minSpend - totalSpent))} to ${next.name}`
+                : "top tier"}
+            </p>
             <Link
               to={ROUTES.LOYALTY}
-              className="rounded-full bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20"
+              className="mt-auto w-fit rounded-full bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20"
             >
-              View loyalty page
+              View rewards
             </Link>
-          </div>
-        </section>
+          </section>
+
+          {/* Quick actions */}
+          <section className={`${CARD} lg:col-span-1 xl:col-span-2`}>
+            <h2 className="text-base font-bold text-gray-900">Quick Actions</h2>
+            <div className="mt-4 space-y-2.5">
+              {QUICK_ACTIONS.map((action) => (
+                <Link
+                  key={action.label}
+                  to={action.to}
+                  className="group flex items-center gap-3 rounded-xl border border-[#ece1d0] bg-cream px-4 py-3 text-sm font-semibold text-gray-800 transition-colors hover:border-brand/30 hover:bg-white hover:text-brand"
+                >
+                  <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${action.iconClassName}`}>
+                    {action.icon}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate">{action.label}</span>
+                  <ArrowRightIcon size={16} className="shrink-0 text-gray-400 transition-colors group-hover:text-brand" />
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* Buy it again */}
+          <section className={`${CARD} lg:col-span-2 xl:col-span-4`}>
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <h2 className="text-lg font-bold text-gray-900">Buy It Again</h2>
+              <Link
+                to={ROUTES.ORDER_HISTORY}
+                className="text-sm font-semibold text-brand hover:text-brand-dark hover:underline"
+              >
+                View All History
+              </Link>
+            </div>
+
+            {repeatBuys.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-sand bg-white p-8 text-center text-sm text-gray-500">
+                Once you have placed an order, your past purchases will appear here for a one-tap re-order.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {repeatBuys.map((item, index) => {
+                  const product = productQueries[index]?.data?.data;
+                  const imageUrl = product?.images?.[0] || "/placeholder.svg";
+                  const price = product?.price ?? item.unitPrice;
+                  const outOfStock = product ? product.stock === 0 : false;
+                  const isAdding = addingId === item.productId;
+                  const justAdded = addedId === item.productId;
+
+                  return (
+                    <div
+                      key={item.productId}
+                      className="flex items-start gap-4 rounded-2xl border border-[#ece1d0] bg-white p-4 shadow-[0_2px_16px_rgba(61,5,12,0.06)] transition-shadow hover:shadow-[0_6px_24px_rgba(61,5,12,0.1)]"
+                    >
+                      <Link
+                        to={ROUTES.PRODUCT_DETAIL(item.productId)}
+                        className="shrink-0 overflow-hidden rounded-xl bg-linear-to-br from-cyan-50 to-[#f7ecdb]"
+                      >
+                        <img
+                          src={cloudinaryImg(imageUrl, 160)}
+                          alt={product?.name ?? item.name}
+                          width={72}
+                          height={72}
+                          loading="lazy"
+                          className="h-16 w-16 object-cover sm:h-18 sm:w-18"
+                        />
+                      </Link>
+
+                      <div className="min-w-0 flex-1">
+                        <Link
+                          to={ROUTES.PRODUCT_DETAIL(item.productId)}
+                          className="block truncate text-sm font-semibold text-gray-900 hover:text-brand"
+                        >
+                          {product?.name ?? item.name}
+                        </Link>
+                        <p className="mt-0.5 text-sm text-gray-500">{formatCurrency(price)}</p>
+
+                        <button
+                          type="button"
+                          onClick={() => handleAddToCart(item.productId)}
+                          disabled={isAdding || outOfStock}
+                          className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-brand-dark disabled:cursor-not-allowed disabled:text-gray-400"
+                        >
+                          {outOfStock ? (
+                            "Out of stock"
+                          ) : justAdded ? (
+                            <>
+                              <CheckIcon size={16} /> Added to cart
+                            </>
+                          ) : (
+                            <>
+                              <PlusIcon size={16} /> {isAdding ? "Adding..." : "Add to Cart"}
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        </div>
       </div>
+
+      <OrderTrackingModal order={trackingOrder} onClose={() => setTrackingOrder(null)} />
     </CustomerLayout>
   );
 };

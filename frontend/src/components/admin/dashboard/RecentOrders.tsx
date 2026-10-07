@@ -1,4 +1,4 @@
-﻿import { memo } from "react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import DashboardPanel from "./DashboardPanel";
 import { PanelEmpty } from "./PanelStates";
@@ -61,9 +61,9 @@ const RecentOrders = memo(({ orders, isLoading }: RecentOrdersProps) => (
       <PanelEmpty message="No orders yet" hint="New orders will show up here instantly." />
     ) : (
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[640px] text-left">
+        <table className="w-full min-w-160 text-left">
           <thead>
-            <tr className="bg-cream-deep/60 border-b border-[#ece1cf] text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <tr className="bg-cream-deep/60 border-b border-sand text-xs font-semibold uppercase tracking-wider text-gray-500">
               <th className="px-4 py-3 first:rounded-l-lg">Order ID</th>
               <th className="px-4 py-3">Customer</th>
               <th className="px-4 py-3">Status</th>
@@ -71,7 +71,7 @@ const RecentOrders = memo(({ orders, isLoading }: RecentOrdersProps) => (
               <th className="px-4 py-3 text-right last:rounded-r-lg">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#ece1cf]">
+          <tbody className="divide-y divide-sand">
             {orders.map((order, index) => {
               const customer =
                 typeof order.user_id === "object" ? order.user_id.name : "Customer";
@@ -92,7 +92,7 @@ const RecentOrders = memo(({ orders, isLoading }: RecentOrdersProps) => (
                       >
                         {initials(customer) || "?"}
                       </span>
-                      <span className="text-sm font-medium text-gray-800 truncate max-w-[180px]">
+                      <span className="text-sm font-medium text-gray-800 truncate max-w-45">
                         {customer}
                       </span>
                     </div>

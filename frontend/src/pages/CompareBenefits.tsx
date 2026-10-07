@@ -107,7 +107,7 @@ const CompareBenefits = () => {
           </p>
         </div>
         <div className="mt-8 overflow-x-auto rounded-2xl border border-[#ece1d0] bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
-          <table className="w-full min-w-[720px] text-sm">
+          <table className="w-full min-w-180 text-sm">
             <thead>
               <tr className="bg-[#fdfaf3] text-left">
                 <th className="px-5 py-4 font-semibold text-ink/60">Benefit</th>
@@ -217,7 +217,7 @@ const CompareBenefits = () => {
           PLAT12 and DIAMOND15 appear automatically in the checkout of members at the right level.
         </p>
         <div className="mt-8 overflow-x-auto rounded-2xl border border-[#ece1d0] bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
-          <table className="w-full min-w-[720px] text-sm">
+          <table className="w-full min-w-180 text-sm">
             <thead>
               <tr className="bg-[#fdfaf3] text-left">
                 <th className="px-5 py-4 font-semibold text-ink/60">Code</th>

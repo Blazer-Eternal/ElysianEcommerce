@@ -67,7 +67,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       >
         <div className="glass rounded-2xl overflow-hidden hover:bg-white transition-all duration-300 h-full flex flex-col shadow-md hover:shadow-xl hover:-translate-y-1 gpu-accelerate" style={{ backfaceVisibility: "hidden" }}>
           {/* Image Container */}
-          <div className="relative overflow-hidden bg-linear-to-br from-[#fdf8f0] to-[#f7ecdb] aspect-square">
+          <div className="relative overflow-hidden bg-linear-to-br from-cyan-50 to-[#f7ecdb] aspect-square">
             {/* Product Image */}
             <img
               src={cloudinaryImg(imageUrl, 800)}

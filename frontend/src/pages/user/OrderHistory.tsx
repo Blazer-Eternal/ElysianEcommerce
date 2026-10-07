@@ -2,13 +2,34 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { orderService } from "../../services/orderService";
 import OrderCard from "../../components/order/OrderCard";
+import OrderTrackingModal from "../../components/order/OrderTrackingModal";
 import Pagination from "../../components/ui/Pagination";
 import Spinner from "../../components/ui/Spinner";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
+import { isActiveOrder } from "../../utils/customerDashboard";
+import type { Order } from "../../types/order.types";
+
+/** Client-side views over the current page of orders; statuses stay untouched. */
+const FILTERS = [
+  { key: "all", label: "All" },
+  { key: "in_progress", label: "In Progress" },
+  { key: "delivered", label: "Delivered" },
+  { key: "cancelled", label: "Cancelled" },
+] as const;
+
+type FilterKey = (typeof FILTERS)[number]["key"];
+
+const matchesFilter = (order: Order, filter: FilterKey): boolean => {
+  if (filter === "all") return true;
+  if (filter === "in_progress") return isActiveOrder(order);
+  return order.status === filter;
+};
 
 const OrderHistory = () => {
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState<FilterKey>("all");
+  const [trackingOrder, setTrackingOrder] = useState<Order | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["my-orders", page],
@@ -52,26 +73,60 @@ const OrderHistory = () => {
     );
   }
 
+  const visibleOrders = orders.filter((order) => matchesFilter(order, filter));
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      {/* Header */}
-      <div className="mb-12 animate-fade-in">
-        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-2">My Orders</h1>
-        <p className="text-lg text-gray-600">Track and manage your orders</p>
-        <div className="h-1 w-20 bg-linear-to-r from-brand to-cyan-600 rounded-full mt-4" />
+    <div className="max-w-4xl mx-auto px-4 py-10 sm:py-12">
+      {/* Header with view filters */}
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4 animate-fade-in">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">
+            Orders & Tracking Center
+          </h1>
+          <p className="mt-1.5 text-sm sm:text-base text-gray-600">
+            View order history, track shipments, and follow delivery status
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {FILTERS.map((option) => {
+            const isActive = filter === option.key;
+            return (
+              <button
+                key={option.key}
+                type="button"
+                onClick={() => setFilter(option.key)}
+                aria-pressed={isActive}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                  isActive
+                    ? "bg-brand text-white shadow-[0_1px_3px_rgba(61,5,12,0.14)]"
+                    : "bg-cream-deep text-ink/70 hover:bg-sand hover:text-ink"
+                }`}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Orders Grid */}
-      <div className="space-y-4">
-        {orders.map((order) => (
-          <div
-            key={order._id}
-            className="animate-fade-in"
-          >
-            <OrderCard order={order} />
-          </div>
-        ))}
-      </div>
+      {/* Orders */}
+      {visibleOrders.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-sand bg-white p-10 text-center">
+          <p className="text-sm font-semibold text-gray-900">No orders in this view</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Orders you place will show up here with live tracking.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {visibleOrders.map((order) => (
+            <div key={order._id} className="animate-fade-in">
+              <OrderCard order={order} onTrack={() => setTrackingOrder(order)} />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Pagination */}
       {data?.pagination && (
@@ -79,6 +134,8 @@ const OrderHistory = () => {
           <Pagination pagination={data.pagination} onPageChange={setPage} />
         </div>
       )}
+
+      <OrderTrackingModal order={trackingOrder} onClose={() => setTrackingOrder(null)} />
     </div>
   );
 };

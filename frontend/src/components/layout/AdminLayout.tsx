@@ -102,10 +102,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="flex h-screen bg-linear-to-b from-[#fdf8f0] to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
+    <div className="flex h-screen bg-linear-to-b from-cyan-50 to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-linear-to-b from-white via-white to-[#fdf8f0] border-r border-[#ece1d0] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-linear-to-b from-white via-white to-cyan-50 border-r border-[#ece1d0] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ transform: "translateZ(0)", willChange: "transform" }}
@@ -155,7 +155,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-4 px-4 py-3 rounded-xl text-base transition-all duration-200 group relative overflow-hidden gpu-accelerate ${
                   isActive
-                    ? "bg-brand/10 hover:bg-brand/15 text-brand font-semibold before:absolute before:left-0 before:top-1/2 before:h-5 before:w-[3px] before:-translate-y-1/2 before:rounded-r-full before:bg-brand before:content-['']"
+                    ? "bg-brand/10 hover:bg-brand/15 text-brand font-semibold before:absolute before:left-0 before:top-1/2 before:h-5 before:w-0.75 before:-translate-y-1/2 before:rounded-r-full before:bg-brand before:content-['']"
                     : "text-ink/70 font-medium hover:bg-brand/5 hover:text-brand"
                 }`}
                 style={{

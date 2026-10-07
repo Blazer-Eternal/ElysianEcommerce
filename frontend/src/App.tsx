@@ -30,6 +30,9 @@ const OrderDetail = lazy(() => import("./pages/user/OrderDetail"));
 const Profile = lazy(() => import("./pages/user/Profile"));
 const CustomerDashboard = lazy(() => import("./pages/user/Dashboard"));
 const Loyalty = lazy(() => import("./pages/user/Loyalty"));
+const Addresses = lazy(() => import("./pages/user/Addresses"));
+const Payments = lazy(() => import("./pages/user/Payments"));
+const Notifications = lazy(() => import("./pages/user/Notifications"));
 
 // Admin Pages
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -199,6 +202,30 @@ function App() {
         element={
           <ProtectedRoute>
             <Loyalty />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.ADDRESSES}
+        element={
+          <ProtectedRoute>
+            <Addresses />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.PAYMENTS}
+        element={
+          <ProtectedRoute>
+            <Payments />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.NOTIFICATIONS}
+        element={
+          <ProtectedRoute>
+            <Notifications />
           </ProtectedRoute>
         }
       />

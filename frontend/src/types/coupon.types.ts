@@ -28,6 +28,8 @@ export type UpdateCouponPayload = Partial<CreateCouponPayload>;
 export interface ApplyCouponPayload {
   code: string;
   order_amount: number;
+  /** Cart lines so the server previews with the exact checkout rules. */
+  items?: Array<{ product_id: string; quantity: number }>;
 }
 
 export interface ApplyCouponResult {
@@ -35,4 +37,6 @@ export interface ApplyCouponResult {
   discount_type: DiscountType;
   discount_amount: number;
   final_amount: number;
+  /** Subtotal of the items the coupon is allowed to discount (line previews only). */
+  eligible_subtotal?: number;
 }

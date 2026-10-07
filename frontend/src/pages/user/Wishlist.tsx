@@ -252,7 +252,7 @@ const Wishlist = () => {
                 <div key={item._id} className="group h-full animate-fade-in">
                   <div className="h-full rounded-2xl overflow-hidden bg-white transition-all duration-300 flex flex-col shadow-md hover:shadow-xl border border-[#ece1d0] hover:border-brand/40 hover:-translate-y-1 transform-gpu will-animate">
                     {/* Image Container */}
-                    <div className="relative overflow-hidden bg-linear-to-br from-[#fdf8f0] via-[#f7ecdb] to-[#f2e2cc] aspect-4/3 group">
+                    <div className="relative overflow-hidden bg-linear-to-br from-cyan-50 via-[#f7ecdb] to-[#f2e2cc] aspect-4/3 group">
                       <img
                         src={cloudinaryImg(imageUrl, 640)}
                         alt={product.name}
@@ -376,7 +376,7 @@ const Wishlist = () => {
                   {/* Thumbnail */}
                   <Link
                     to={ROUTES.PRODUCT_DETAIL(product._id)}
-                    className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-linear-to-br from-[#fdf8f0] via-[#f7ecdb] to-[#f2e2cc]"
+                    className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-linear-to-br from-cyan-50 via-[#f7ecdb] to-[#f2e2cc]"
                   >
                     <img
                       src={cloudinaryImg(imageUrl, 320)}

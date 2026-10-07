@@ -40,7 +40,7 @@ const CustomerActivity = memo(({ activity, isLoading, periodDays }: CustomerActi
         {activity.map((item) => {
           const style = TYPE_STYLES[item.type];
           return (
-            <li key={item.id} className="flex items-center gap-3 py-3 border-b border-[#ece1cf] last:border-none">
+            <li key={item.id} className="flex items-center gap-3 py-3 border-b border-sand last:border-none">
               <span className={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center ${style.className}`}>
                 {style.icon}
               </span>

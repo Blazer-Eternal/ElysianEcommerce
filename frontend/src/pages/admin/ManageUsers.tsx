@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { userService } from "../../services/userService";
 import AdminLayout from "../../components/layout/AdminLayout";
@@ -100,7 +100,7 @@ const ManageUsers = () => {
                       </div>
 
                       {/* User Details */}
-                      <div className="space-y-2 py-3 border-t border-b border-[#ece1cf]">
+                      <div className="space-y-2 py-3 border-t border-b border-sand">
                         {user.phone && (
                           <div>
                             <p className="text-xs text-gray-600 font-medium">Phone</p>
@@ -179,7 +179,7 @@ const ManageUsers = () => {
                           </span>
                         </div>
 
-                        <div className="py-3 border-t border-b border-[#ece1cf]">
+                        <div className="py-3 border-t border-b border-sand">
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             <div>
                               <p className="text-xs text-gray-600 font-medium">Phone</p>

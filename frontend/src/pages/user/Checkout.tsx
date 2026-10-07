@@ -292,7 +292,11 @@ const Checkout = () => {
                   <span className="inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-brand text-white shadow-lg"><TicketIcon size={20} /></span>
                   Apply Coupon
                 </h2>
-                <CouponInput orderAmount={subtotal} onApplied={setAppliedCoupon} />
+                <CouponInput
+                  orderAmount={subtotal}
+                  items={lines.map((line) => ({ product_id: line.product._id, quantity: line.quantity }))}
+                  onApplied={setAppliedCoupon}
+                />
                 {appliedCoupon && (
                   <div className="mt-5 p-4 rounded-2xl bg-green-50 border border-green-200">
                     <p className="text-sm font-bold text-green-700 flex items-center gap-2">
@@ -417,7 +421,7 @@ const Checkout = () => {
                     disabled={isSubmitting || exceedsStock}
                     className="w-full relative py-5 px-6 rounded-2xl font-black text-lg text-white overflow-hidden transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <div className="absolute inset-0 bg-linear-to-r from-brand via-cyan-600 to-teal-500 group-hover:from-[#8d1222] group-hover:via-[#b5691f] group-hover:to-[#a11526] transition-all duration-300 rounded-2xl"></div>
+                    <div className="absolute inset-0 bg-linear-to-r from-brand via-cyan-600 to-teal-500 group-hover:from-[#8d1222] group-hover:via-cyan-600 group-hover:to-teal-700 transition-all duration-300 rounded-2xl"></div>
                     <span className="relative flex items-center justify-center gap-3">
                       {isSubmitting ? (
                         <>

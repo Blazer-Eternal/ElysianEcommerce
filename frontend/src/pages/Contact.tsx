@@ -134,7 +134,7 @@ const Contact = () => {
               </p>
 
               {submitted && (
-                <div className="mb-6 glass bg-linear-to-r from-[#fdf8f0] to-[#f7ecdb] border-l-4 border-brand rounded-lg px-6 py-4">
+                <div className="mb-6 glass bg-linear-to-r from-cyan-50 to-[#f7ecdb] border-l-4 border-brand rounded-lg px-6 py-4">
                   <p className="text-brand font-semibold">✓ Message Received!</p>
                   <p className="text-brand text-sm mt-1">We'll get back to you within 24 hours.</p>
                 </div>

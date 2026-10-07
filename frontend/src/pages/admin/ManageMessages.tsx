@@ -112,7 +112,7 @@ const ManageMessages = () => {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-[#ece1cf] bg-linear-to-r from-brand/5 to-cyan-600/5">
+                      <tr className="border-b border-sand bg-linear-to-r from-brand/5 to-cyan-600/5">
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Sender</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Contact</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Message</th>
@@ -121,7 +121,7 @@ const ManageMessages = () => {
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#ece1cf]">
+                    <tbody className="divide-y divide-sand">
                       {messages.map((message) => (
                         <tr
                           key={message._id}
@@ -230,7 +230,7 @@ const ManageMessages = () => {
 
                       <p className="text-sm text-gray-700 line-clamp-4 whitespace-pre-line">{message.message}</p>
 
-                      <div className="flex items-center justify-between pt-2 border-t border-[#ece1cf]">
+                      <div className="flex items-center justify-between pt-2 border-t border-sand">
                         <span className="text-xs text-gray-500">{formatDate(message.created_at)}</span>
                         {message.is_read ? (
                           <span className="inline-flex items-center gap-1 text-xs font-bold text-green-700">

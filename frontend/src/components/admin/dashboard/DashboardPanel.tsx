@@ -16,7 +16,7 @@ const DashboardPanel = memo(({ title, subtitle, icon, action, className = "", ch
   <section
     className={`bg-white rounded-2xl border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-5 sm:p-6 card-container flex flex-col ${className}`}
   >
-    <header className={`mb-4 ${subtitle ? "border-b border-[#ece1cf] pb-3" : ""}`}>
+    <header className={`mb-4 ${subtitle ? "border-b border-sand pb-3" : ""}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 min-w-0">
           {icon && <span className="text-brand shrink-0">{icon}</span>}

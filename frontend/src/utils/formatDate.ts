@@ -6,6 +6,38 @@ export const formatDate = (dateString: string): string => {
   });
 };
 
+/** "Oct 4, 2026, 9:30 AM" — a stored timestamp shown with its clock time. */
+export const formatDateTime = (dateString: string): string => {
+  return new Date(dateString).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+};
+
+const ordinalSuffix = (day: number): string => {
+  if (day % 100 >= 11 && day % 100 <= 13) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
+
+/** "Wednesday, October 7th, 2026" — the greeting-header date on the dashboard. */
+export const formatLongDate = (date: Date = new Date()): string => {
+  const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+  const month = date.toLocaleDateString("en-US", { month: "long" });
+  return `${weekday}, ${month} ${date.getDate()}${ordinalSuffix(date.getDate())}, ${date.getFullYear()}`;
+};
+
 /**
  * Formats a "YYYY-MM-DD" bucket key as a short axis label ("Sep 1").
  * The key is split manually instead of passed to `new Date(string)` so no

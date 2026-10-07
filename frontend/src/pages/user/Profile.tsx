@@ -1,21 +1,14 @@
 import { useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { userService, type AddressPayload } from "../../services/userService";
+import { userService } from "../../services/userService";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { ROUTES } from "../../constants/routes";
 import Spinner from "../../components/ui/Spinner";
 import PasswordInput from "../../components/ui/PasswordInput";
-import type { Address } from "../../types/user.types";
-
-const emptyAddress: AddressPayload = {
-  street: "",
-  city: "",
-  state: "",
-  zip: "",
-  country: "",
-  is_default: false,
-};
+import { ArrowRightIcon, CreditCardIcon, MapPinIcon } from "../../components/icons";
 
 const PersonIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -42,13 +35,6 @@ const ShieldIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
     <polyline points="9 12 11 14 15 10" />
-  </svg>
-);
-
-const MapPinIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-    <circle cx="12" cy="10" r="3" />
   </svg>
 );
 
@@ -79,12 +65,6 @@ const Profile = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
-
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
-  const [addressForm, setAddressForm] = useState<AddressPayload>(emptyAddress);
-  const [addressError, setAddressError] = useState<string | null>(null);
-  const [isSavingAddress, setIsSavingAddress] = useState(false);
 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
@@ -131,58 +111,6 @@ const Profile = () => {
       setPasswordError(getErrorMessage(err));
     } finally {
       setIsSavingPassword(false);
-    }
-  };
-
-  const openAddForm = () => {
-    setEditingAddressId(null);
-    setAddressForm(emptyAddress);
-    setAddressError(null);
-    setShowAddressForm(true);
-  };
-
-  const openEditForm = (address: Address) => {
-    setEditingAddressId(address._id || null);
-    setAddressForm({
-      street: address.street,
-      city: address.city,
-      state: address.state,
-      zip: address.zip,
-      country: address.country,
-      is_default: address.is_default,
-    });
-    setAddressError(null);
-    setShowAddressForm(true);
-  };
-
-  const handleAddressSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setAddressError(null);
-    setIsSavingAddress(true);
-    try {
-      if (editingAddressId) {
-        await userService.updateAddress(userId, editingAddressId, addressForm);
-      } else {
-        await userService.addAddress(userId, addressForm);
-      }
-      queryClient.invalidateQueries({ queryKey: ["user", userId] });
-      setShowAddressForm(false);
-      setAddressForm(emptyAddress);
-      setEditingAddressId(null);
-    } catch (err) {
-      setAddressError(getErrorMessage(err));
-    } finally {
-      setIsSavingAddress(false);
-    }
-  };
-
-  const handleRemoveAddress = async (addressId: string) => {
-    if (!confirm("Remove this address?")) return;
-    try {
-      await userService.removeAddress(userId, addressId);
-      queryClient.invalidateQueries({ queryKey: ["user", userId] });
-    } catch (err) {
-      alert(getErrorMessage(err));
     }
   };
 
@@ -393,154 +321,63 @@ const Profile = () => {
         </form>
       </section>
 
-      {/* Addresses */}
-      <section className="bg-white border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6 space-y-6">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start gap-3">
-            <div className="bg-green-50 text-green-600 rounded-lg p-2">
-              <MapPinIcon />
-            </div>
-            <div>
-              <h2 className="font-semibold text-gray-900">Addresses</h2>
-              <p className="text-sm text-gray-500">Manage your saved delivery addresses.</p>
-            </div>
+      {/*
+        Addresses and payment history moved to their own pages, so the account
+        settings screen now only points the way instead of duplicating the
+        forms.
+      */}
+      <section className="bg-white border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)] p-6 space-y-4">
+        <div className="flex items-start gap-3">
+          <div className="bg-brand/10 text-brand rounded-lg p-2">
+            <MapPinIcon size={20} />
           </div>
-          <button onClick={openAddForm} className="text-sm text-brand font-medium hover:underline">
-            + Add address
-          </button>
+          <div>
+            <h2 className="font-semibold text-gray-900">Addresses &amp; payments</h2>
+            <p className="text-sm text-gray-500">
+              Delivery details and payment history each have their own page.
+            </p>
+          </div>
         </div>
 
         <hr className="border-[#ece1d0]" />
 
-        {profileUser.addresses.length === 0 && !showAddressForm && (
-          <p className="text-sm text-gray-500">No saved addresses yet.</p>
-        )}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <Link
+            to={ROUTES.ADDRESSES}
+            className="group flex items-center gap-3 rounded-xl border border-[#ece1d0] bg-cream/60 px-4 py-3.5 transition-colors hover:border-brand/30 hover:bg-white"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-green-50 text-green-600">
+              <MapPinIcon size={18} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-semibold text-gray-900 group-hover:text-brand">
+                Addresses
+              </span>
+              <span className="mt-0.5 block truncate text-xs text-gray-500">
+                Saved delivery addresses
+              </span>
+            </span>
+            <ArrowRightIcon size={16} className="shrink-0 text-gray-400 transition-colors group-hover:text-brand" />
+          </Link>
 
-        <div className="space-y-3">
-          {profileUser.addresses.map((address) => (
-            <div key={address._id} className="border border-[#ece1d0] rounded-lg p-4 text-sm flex items-start justify-between">
-              <div>
-                <p className="text-gray-800">
-                  {address.street}, {address.city}, {address.state} {address.zip}, {address.country}
-                </p>
-                {address.is_default && (
-                  <span className="text-xs text-green-700 bg-green-50 px-1.5 py-0.5 rounded inline-block mt-1">
-                    Default
-                  </span>
-                )}
-              </div>
-              <div className="flex gap-4 shrink-0 ml-4">
-                <button onClick={() => openEditForm(address)} className="text-xs text-brand hover:underline">
-                  Edit
-                </button>
-                <button
-                  onClick={() => address._id && handleRemoveAddress(address._id)}
-                  className="text-xs text-red-600 hover:underline"
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
+          <Link
+            to={ROUTES.PAYMENTS}
+            className="group flex items-center gap-3 rounded-xl border border-[#ece1d0] bg-cream/60 px-4 py-3.5 transition-colors hover:border-brand/30 hover:bg-white"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+              <CreditCardIcon size={18} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-semibold text-gray-900 group-hover:text-brand">
+                Payment methods
+              </span>
+              <span className="mt-0.5 block truncate text-xs text-gray-500">
+                Methods used and payment history
+              </span>
+            </span>
+            <ArrowRightIcon size={16} className="shrink-0 text-gray-400 transition-colors group-hover:text-brand" />
+          </Link>
         </div>
-
-        {showAddressForm && (
-          <form onSubmit={handleAddressSubmit} className="border border-[#ece1d0] bg-cream/50 rounded-lg p-4 space-y-3">
-            {addressError && <p className="text-sm text-red-600">{addressError}</p>}
-
-            <input
-              id="addr-street"
-              name="street"
-              type="text"
-              aria-label="Street"
-              autoComplete="street-address"
-              placeholder="Street"
-              required
-              value={addressForm.street}
-              onChange={(e) => setAddressForm({ ...addressForm, street: e.target.value })}
-              className={inputClass}
-            />
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                id="addr-city"
-                name="city"
-                type="text"
-                aria-label="City"
-                autoComplete="address-level2"
-                placeholder="City"
-                required
-                value={addressForm.city}
-                onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
-                className={inputClass}
-              />
-              <input
-                id="addr-state"
-                name="state"
-                type="text"
-                aria-label="State"
-                autoComplete="address-level1"
-                placeholder="State"
-                required
-                value={addressForm.state}
-                onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
-                className={inputClass}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <input
-                id="addr-zip"
-                name="zip"
-                type="text"
-                aria-label="Zip"
-                autoComplete="postal-code"
-                placeholder="Zip"
-                required
-                value={addressForm.zip}
-                onChange={(e) => setAddressForm({ ...addressForm, zip: e.target.value })}
-                className={inputClass}
-              />
-              <input
-                id="addr-country"
-                name="country"
-                type="text"
-                aria-label="Country"
-                autoComplete="country-name"
-                placeholder="Country"
-                required
-                value={addressForm.country}
-                onChange={(e) => setAddressForm({ ...addressForm, country: e.target.value })}
-                className={inputClass}
-              />
-            </div>
-            <label htmlFor="default-address" className="flex items-center gap-2 text-sm">
-              <input
-                id="default-address"
-                name="is_default"
-                type="checkbox"
-                checked={addressForm.is_default}
-                onChange={(e) => setAddressForm({ ...addressForm, is_default: e.target.checked })}
-              />
-              Set as default
-            </label>
-
-            <div className="flex gap-2">
-              <button
-                type="submit"
-                disabled={isSavingAddress}
-                className="bg-brand text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-brand-dark transition-colors disabled:opacity-50"
-              >
-                {isSavingAddress ? "Saving..." : editingAddressId ? "Update address" : "Add address"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowAddressForm(false)}
-                className="px-5 py-2.5 rounded-lg text-sm border border-[#ece1d0] hover:bg-cream"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        )}
       </section>
     </div>
   );

@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import AdminLayout from "../../components/layout/AdminLayout";
 import TanStackDataTable from "../../components/admin/TanStackDataTable";
@@ -692,7 +692,7 @@ const DataTablesDemo = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 border-b border-[#ece1cf] overflow-x-auto">
+        <div className="flex gap-2 border-b border-sand overflow-x-auto">
           <button
             onClick={() => setActiveTab("products")}
             className={`px-6 py-3 shrink-0 whitespace-nowrap font-semibold transition-colors relative ${

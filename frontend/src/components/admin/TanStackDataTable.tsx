@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 // Inlined from @tanstack/table-core so the whole @tanstack/react-table family
 // can be dropped from the bundle (this type was its only import).
@@ -382,7 +382,7 @@ export const TanStackDataTable = React.forwardRef<
           <div className="overflow-x-auto border border-[#ece1d0] rounded-2xl shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
             <table className="w-full">
               <thead>
-                <tr className="bg-linear-to-r from-brand/5 to-cyan-600/5 border-b border-[#ece1cf]">
+                <tr className="bg-linear-to-r from-brand/5 to-cyan-600/5 border-b border-sand">
                   {columns.map((column: any) => (
                     <th
                       key={column.id || column.accessorKey}
@@ -416,7 +416,7 @@ export const TanStackDataTable = React.forwardRef<
               </thead>
               <tbody>
                 {paginatedData.map((row: any, rowIndex: number) => (
-                  <tr key={row._id ?? rowIndex} className="border-b border-[#ece1cf] last:border-0 hover:bg-cream-deep/50 transition-colors">
+                  <tr key={row._id ?? rowIndex} className="border-b border-sand last:border-0 hover:bg-cream-deep/50 transition-colors">
                     {columns.map((column: any) => {
                       const columnId = column.id || column.accessorKey;
                       const value = row[columnId];
@@ -482,7 +482,7 @@ export const TanStackDataTable = React.forwardRef<
                   })}
                 </div>
                 {(onEdit || onDelete) && (
-                  <div className="flex gap-2 mt-4 pt-4 border-t border-[#ece1cf]">
+                  <div className="flex gap-2 mt-4 pt-4 border-t border-sand">
                     {onEdit && (
                       <button
                         onClick={() => onEdit(row)}
@@ -511,7 +511,7 @@ export const TanStackDataTable = React.forwardRef<
         )}
 
         {/* Pagination */}
-        <div className="flex items-center justify-between gap-4 flex-wrap pt-4 border-t border-[#ece1cf]">
+        <div className="flex items-center justify-between gap-4 flex-wrap pt-4 border-t border-sand">
           <div className="text-sm text-gray-600">
             Page {currentPage} of {totalPages} •
             Showing {paginatedData.length} of {sortedData.length}

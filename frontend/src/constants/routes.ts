@@ -8,6 +8,9 @@ export const ROUTES = {
   PROFILE: "/profile",
   DASHBOARD: "/dashboard",
   LOYALTY: "/dashboard/loyalty",
+  ADDRESSES: "/dashboard/addresses",
+  PAYMENTS: "/dashboard/payments",
+  NOTIFICATIONS: "/dashboard/notifications",
   ORDER_HISTORY: "/orders",
   ORDER_DETAIL: (id: string = ":id") => `/orders/${id}`,
 

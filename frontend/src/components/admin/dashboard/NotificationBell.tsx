@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { notificationService } from "../../../services/notificationService";
 import type { Notification } from "../../../types/notification.types";
@@ -102,7 +102,7 @@ const NotificationBell = () => {
       >
         <BellIcon />
         {unreadCount > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-brand text-white text-[11px] font-bold flex items-center justify-center shadow-lg ring-2 ring-white">
+          <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 rounded-full bg-brand text-white text-[11px] font-bold flex items-center justify-center shadow-lg ring-2 ring-white">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
@@ -110,7 +110,7 @@ const NotificationBell = () => {
 
       {open && (
         <div className="absolute right-0 top-12 z-50 w-80 sm:w-96 max-h-[70vh] overflow-y-auto bg-white rounded-2xl border border-[#ece1d0] shadow-[0_16px_48px_rgba(61,5,12,0.18)] animate-fade-in">
-          <div className="sticky top-0 flex items-center justify-between px-4 py-3 border-b border-[#ece1cf] bg-white rounded-t-2xl">
+          <div className="sticky top-0 flex items-center justify-between px-4 py-3 border-b border-sand bg-white rounded-t-2xl">
             <span className="font-bold text-gray-900 text-sm">Notifications</span>
             <span className="text-xs text-gray-500 font-medium">{notifications.length} recent</span>
           </div>
@@ -121,7 +121,7 @@ const NotificationBell = () => {
               <p className="text-gray-500 text-xs mt-1">Signups and new orders will show up here.</p>
             </div>
           ) : (
-            <ul className="divide-y divide-[#ece1cf]">
+            <ul className="divide-y divide-sand">
               {notifications.map((item) => (
                 <li
                   key={item._id}

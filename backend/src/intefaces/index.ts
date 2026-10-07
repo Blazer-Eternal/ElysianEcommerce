@@ -24,4 +24,6 @@ export * from './MessageInterface'
 
 export * from './NotificationInterface'
 
+export * from './CustomerNotificationInterface'
+
 

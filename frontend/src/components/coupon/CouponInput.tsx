@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { couponService } from "../../services/couponService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -6,14 +6,66 @@ import type { ApplyCouponResult } from "../../types/coupon.types";
 
 interface CouponInputProps {
   orderAmount: number;
+  /**
+   * Cart lines (product + quantity). When supplied the preview runs server-side
+   * with the same rules checkout uses, so the quoted discount is exactly what
+   * the order will charge.
+   */
+  items?: Array<{ product_id: string; quantity: number }>;
   onApplied: (result: ApplyCouponResult | null) => void;
 }
 
-const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
+const CouponInput = ({ orderAmount, items, onApplied }: CouponInputProps) => {
   const [code, setCode] = useState("");
   const [applied, setApplied] = useState<ApplyCouponResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isChecking, setIsChecking] = useState(false);
+
+  // Ref mirror so the basket-sync effect below reads the latest result without
+  // being re-run every time a coupon is applied (which would double-fire).
+  const appliedRef = useRef<ApplyCouponResult | null>(null);
+  const store = (result: ApplyCouponResult | null) => {
+    appliedRef.current = result;
+    setApplied(result);
+    onApplied(result);
+  };
+
+  // Stable fingerprint of the basket: re-runs only when a product or quantity
+  // actually changes, not on every render of the parent.
+  const basketKey = (items ?? []).map((item) => `${item.product_id}:${item.quantity}`).join("|");
+
+  // Re-validate the applied coupon whenever the basket changes, so the quoted
+  // discount can never drift from what checkout will actually charge. If the
+  // coupon stops applying (eligible items removed, minimum no longer met), it
+  // is cleared with the server's reason.
+  useEffect(() => {
+    if (!appliedRef.current) return;
+
+    let cancelled = false;
+    couponService
+      .apply({
+        code: appliedRef.current.code,
+        order_amount: orderAmount,
+        ...(items && items.length > 0 ? { items } : {}),
+      })
+      .then((response) => {
+        if (cancelled) return;
+        setApplied(response.data);
+        appliedRef.current = response.data;
+        onApplied(response.data);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        store(null);
+        setCode("");
+        setError(getErrorMessage(err));
+      });
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderAmount, basketKey]);
 
   const handleApply = async () => {
     if (!code.trim()) return;
@@ -21,23 +73,24 @@ const CouponInput = ({ orderAmount, onApplied }: CouponInputProps) => {
     setIsChecking(true);
 
     try {
-      const response = await couponService.apply({ code: code.trim(), order_amount: orderAmount });
-      setApplied(response.data);
-      onApplied(response.data);
+      const response = await couponService.apply({
+        code: code.trim(),
+        order_amount: orderAmount,
+        ...(items && items.length > 0 ? { items } : {}),
+      });
+      store(response.data);
     } catch (err) {
       setError(getErrorMessage(err));
-      setApplied(null);
-      onApplied(null);
+      store(null);
     } finally {
       setIsChecking(false);
     }
   };
 
   const handleRemove = () => {
-    setApplied(null);
+    store(null);
     setCode("");
     setError(null);
-    onApplied(null);
   };
 
   if (applied) {

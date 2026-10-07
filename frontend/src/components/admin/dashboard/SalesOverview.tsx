@@ -47,8 +47,8 @@ const LegendToggle = memo(
       title={`${label}: ${formatCurrency(total)} - ${hiddenHint}`}
       className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 transition-all duration-200 ${
         active
-          ? "border-[#ece1cf] bg-white hover:border-brand/40"
-          : "border-dashed border-[#ece1cf] bg-transparent opacity-60 hover:opacity-100"
+          ? "border-sand bg-white hover:border-brand/40"
+          : "border-dashed border-sand bg-transparent opacity-60 hover:opacity-100"
       }`}
     >
       <span
@@ -124,7 +124,7 @@ const SalesOverview = memo(({ current, previous, isLoading }: SalesOverviewProps
       ) : !hasData ? (
         <PanelEmpty message="No sales yet" hint="Revenue trends will appear once orders come in." />
       ) : (
-        <div className="h-[260px] -ml-2">
+        <div className="h-65 -ml-2">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>

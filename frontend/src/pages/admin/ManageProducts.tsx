@@ -1,4 +1,4 @@
-﻿import { useState, type FormEvent, useEffect } from "react";
+import { useState, type FormEvent, useEffect } from "react";
 import { BoxIcon } from "../../components/icons";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { productService } from "../../services/productService";
@@ -287,7 +287,7 @@ const ManageProducts = () => {
                       </div>
 
                       {/* Product Details */}
-                      <div className="grid grid-cols-2 gap-3 py-2 border-t border-b border-[#ece1cf]">
+                      <div className="grid grid-cols-2 gap-3 py-2 border-t border-b border-sand">
                         <div>
                           <p className="text-xs text-gray-600 font-medium">Price</p>
                           <p className="font-bold text-brand text-sm">{formatCurrency(product.price)}</p>
@@ -379,7 +379,7 @@ const ManageProducts = () => {
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-[#ece1cf]">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-sand">
                           <div>
                             <p className="text-xs text-gray-600 font-medium">Price</p>
                             <p className="font-bold text-brand text-sm">{formatCurrency(product.price)}</p>

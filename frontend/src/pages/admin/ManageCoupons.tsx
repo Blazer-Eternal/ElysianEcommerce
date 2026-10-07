@@ -226,7 +226,7 @@ const ManageCoupons = () => {
                     </div>
 
                     {/* Coupon Details Grid */}
-                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-[#ece1cf]">
+                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-sand">
                       <div>
                         <p className="text-xs text-gray-600 font-medium">Min Order</p>
                         <p className="font-bold text-gray-900">{formatCurrency(coupon.min_order_amount)}</p>
@@ -283,7 +283,7 @@ const ManageCoupons = () => {
                   >
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
                       {/* Coupon Code */}
-                      <div className="text-2xl font-bold text-brand font-mono tracking-wider sm:min-w-[140px]">
+                      <div className="text-2xl font-bold text-brand font-mono tracking-wider sm:min-w-35">
                         {coupon.code}
                       </div>
 
@@ -306,7 +306,7 @@ const ManageCoupons = () => {
                             </span>
                           )}
                         </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-[#ece1cf]">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-t border-b border-sand">
                           <div>
                             <p className="text-xs text-gray-600 font-medium">Discount</p>
                             <p className="font-bold text-gray-900">

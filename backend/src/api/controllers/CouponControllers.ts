@@ -1,6 +1,9 @@
 import { Response } from "express";
+import mongoose from "mongoose";
 import { CustomRequestInterface } from "../../intefaces";
 import { CouponServices } from "../../services";
+import { OrderModel } from "../../models/OrderModel";
+import { ProductServices } from "../../services/ProductServices";
 
 export class CouponController {
   // Admin: list all coupons
@@ -104,15 +107,63 @@ export class CouponController {
 
   // Any logged-in user: validate/apply a coupon code against an order amount
   static async applyCoupon(req: CustomRequestInterface, res: Response) {
-    const { code, order_amount } = req.body;
+    const { code, order_amount, items } = req.body;
     try {
       const coupon = await new CouponServices().findByCode(code);
       if (!coupon) {
         return res.status(404).json({ success: false, message: "Invalid coupon code" });
       }
 
+      // Preferred path: the client sent the cart lines, so the preview runs the
+      // identical rule set as order creation (category scope, electronics
+      // exclusion, sale items, per-user limits, caps, margin guardrail). The
+      // discount the customer sees here is the discount checkout will charge.
+      if (Array.isArray(items) && items.length > 0) {
+        if (!req.user?.id) {
+          return res.status(401).json({ success: false, message: "You must be signed in to apply a coupon" });
+        }
+
+        const lines: Array<{ product: any; quantity: number }> = [];
+        for (const line of items) {
+          if (!mongoose.isValidObjectId(line.product_id)) {
+            return res.status(400).json({ success: false, message: "One or more products are invalid" });
+          }
+          const product = await new ProductServices().findById(line.product_id);
+          if (!product) {
+            return res.status(400).json({ success: false, message: "One or more products no longer exist" });
+          }
+          if (product.stock < line.quantity) {
+            return res.status(400).json({ success: false, message: `Only ${product.stock} units of '${product.name}' in stock` });
+          }
+          lines.push({ product, quantity: line.quantity });
+        }
+
+        const evaluation = await new CouponServices().evaluateCoupon(coupon, req.user.id, lines);
+        if (!evaluation.ok) {
+          return res.status(400).json({ success: false, message: evaluation.message });
+        }
+
+        return res.status(200).json({
+          success: true,
+          message: "Coupon applied successfully",
+          data: {
+            code: coupon.code,
+            discount_type: coupon.discount_type,
+            discount_amount: evaluation.discount,
+            final_amount: Math.round((order_amount - evaluation.discount) * 100) / 100,
+            eligible_subtotal: evaluation.eligibleSubtotal,
+          },
+        });
+      }
+
+      // Legacy fallback: amount-only preview (no cart context). Kept for
+      // callers that cannot supply lines; order creation always re-validates.
       if (!coupon.is_active) {
         return res.status(400).json({ success: false, message: "This coupon is no longer active" });
+      }
+
+      if (coupon.starts_at && new Date() < new Date(coupon.starts_at)) {
+        return res.status(400).json({ success: false, message: "This coupon is not active yet" });
       }
 
       if (new Date() > coupon.expiry_date) {
@@ -121,6 +172,32 @@ export class CouponController {
 
       if (coupon.usage_limit !== null && coupon.used_count >= coupon.usage_limit) {
         return res.status(400).json({ success: false, message: "This coupon has reached its usage limit" });
+      }
+
+      if (coupon.per_user_limit !== null && coupon.per_user_limit !== undefined && req.user?.id) {
+        const windowStart = new Date(Date.now() - (coupon.per_user_window_days ?? 30) * 86400000);
+        const redemptions = await OrderModel.countDocuments({
+          user_id: req.user.id,
+          coupon_id: coupon._id,
+          created_at: { $gte: windowStart },
+        });
+        if (redemptions >= coupon.per_user_limit) {
+          return res.status(400).json({
+            success: false,
+            message: `You have already used this coupon ${coupon.per_user_limit} time(s) in the last ${coupon.per_user_window_days ?? 30} days`,
+          });
+        }
+      }
+
+      if (coupon.min_tier && req.user?.id) {
+        const tier = await CouponServices.getUserTier(req.user.id);
+        const rank = (t: string) => ["bronze", "gold", "platinum", "diamond"].indexOf(t);
+        if (rank(tier) < rank(coupon.min_tier)) {
+          return res.status(400).json({
+            success: false,
+            message: `This coupon is reserved for ${coupon.min_tier} members and above`,
+          });
+        }
       }
 
       if (order_amount < coupon.min_order_amount) {
@@ -135,6 +212,10 @@ export class CouponController {
         discount = (order_amount * coupon.value) / 100;
       } else {
         discount = coupon.value;
+      }
+
+      if (coupon.max_discount !== null && coupon.max_discount !== undefined) {
+        discount = Math.min(discount, coupon.max_discount);
       }
 
       discount = Math.min(discount, order_amount);

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { reviewService } from "../../services/reviewService";
 import AdminLayout from "../../components/layout/AdminLayout";
@@ -116,7 +116,7 @@ const ManageReviews = () => {
                   <table className="w-full">
                     {/* Table Header */}
                     <thead>
-                      <tr className="border-b border-[#ece1cf] bg-linear-to-r from-brand/5 to-cyan-600/5">
+                      <tr className="border-b border-sand bg-linear-to-r from-brand/5 to-cyan-600/5">
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Product Name</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Customer Name</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Rating</th>
@@ -127,7 +127,7 @@ const ManageReviews = () => {
                     </thead>
 
                     {/* Table Body */}
-                    <tbody className="divide-y divide-[#ece1cf]">
+                    <tbody className="divide-y divide-sand">
                       {reviews.map((review) => (
                         <tr key={review._id} className="hover:bg-cream-deep/50 transition-colors">
                           {/* Product Name */}
@@ -226,7 +226,7 @@ const ManageReviews = () => {
                         <span className="text-xs text-gray-500 font-medium">{review.rating}/5</span>
                       </div>
 
-                      <div className="py-3 border-t border-b border-[#ece1cf]">
+                      <div className="py-3 border-t border-b border-sand">
                         <p className="text-sm text-gray-700 line-clamp-4">
                           {review.comment || <span className="italic text-gray-500">No comment</span>}
                         </p>

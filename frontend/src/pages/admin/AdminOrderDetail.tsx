@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, memo, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, memo, useMemo, useCallback } from "react";
 import { AlertIcon, BanknoteIcon, BoxIcon, CreditCardIcon, PencilIcon } from "../../components/icons";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -97,7 +97,7 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
 
     <div className="space-y-6">
       {items.map((item: any, index: number) => (
-        <div key={item._id ?? index} className="flex gap-6 pb-6 border-b border-[#ece1cf] last:border-0 animate-fade-in">
+        <div key={item._id ?? index} className="flex gap-6 pb-6 border-b border-sand last:border-0 animate-fade-in">
           {/* Item Image */}
           {item.product_id && typeof item.product_id === "object" && (item.product_id as any).images?.[0] ? (
             <img
@@ -138,7 +138,7 @@ const OrderedItemsSection = memo(({ items, totalAmount }: any) => (
     </div>
 
     {/* Order Total */}
-    <div className="mt-6 pt-6 border-t border-[#ece1cf] flex justify-end">
+    <div className="mt-6 pt-6 border-t border-sand flex justify-end">
       <div className="text-center">
         <p className="text-sm text-gray-600 font-medium mb-1">Order Total</p>
         <p className="text-4xl font-bold text-brand">{formatCurrency(totalAmount)}</p>
@@ -156,7 +156,7 @@ const CustomerInfoSection = memo(({ user }: any) => (
     {typeof user === "object" && (
       <div className="space-y-4 animate-fade-in">
         {/* Customer Avatar */}
-        <div className="flex items-center gap-4 pb-4 border-b border-[#ece1cf]">
+        <div className="flex items-center gap-4 pb-4 border-b border-sand">
           <div className="w-12 h-12 rounded-full bg-linear-to-br from-brand to-cyan-600 flex items-center justify-center text-white text-xl font-bold shrink-0">
             {user.name?.charAt(0).toUpperCase() || "C"}
           </div>
@@ -222,7 +222,7 @@ const PaymentSummarySection = memo(({ order }: any) => (
     <h2 className="text-lg font-bold text-gray-900 mb-6">Payment Summary</h2>
 
     <div className="space-y-3 animate-fade-in">
-      <div className="flex justify-between pb-3 border-b border-[#ece1cf]">
+      <div className="flex justify-between pb-3 border-b border-sand">
         <p className="text-sm text-gray-600">Items ({order.items.length})</p>
         <p className="text-sm font-semibold text-gray-900">
           {formatCurrency(order.subtotal || order.total_amount)}
@@ -231,7 +231,7 @@ const PaymentSummarySection = memo(({ order }: any) => (
 
       {/* Discount/Coupon Applied */}
       {order.discount && order.discount > 0 && (
-        <div className="flex justify-between pb-3 border-b border-[#ece1cf] bg-green-50 -mx-2 px-2 py-2 rounded">
+        <div className="flex justify-between pb-3 border-b border-sand bg-green-50 -mx-2 px-2 py-2 rounded">
           <p className="text-sm text-gray-600">
             Discount Applied
             {order.coupon_id && typeof order.coupon_id === "object" && (
@@ -244,14 +244,14 @@ const PaymentSummarySection = memo(({ order }: any) => (
         </div>
       )}
 
-      <div className="flex justify-between pt-2 pb-3 border-b border-[#ece1cf]">
+      <div className="flex justify-between pt-2 pb-3 border-b border-sand">
         <p className="text-sm font-semibold text-gray-900">Total Amount</p>
         <p className="text-lg font-bold text-brand">
           {formatCurrency(order.total_amount)}
         </p>
       </div>
 
-      <div className="flex justify-between pb-3 border-b border-[#ece1cf]">
+      <div className="flex justify-between pb-3 border-b border-sand">
         <p className="text-sm text-gray-600">Payment Status</p>
         <span
           className={`px-3 py-1 rounded-full text-xs font-bold transition-smooth ${

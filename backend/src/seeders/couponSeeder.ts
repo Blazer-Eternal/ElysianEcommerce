@@ -14,6 +14,13 @@ interface CouponSeed {
   expiry_date: string;
   /** null = unlimited redemptions. */
   usage_limit: number | null;
+  max_discount?: number | null;
+  per_user_limit?: number | null;
+  per_user_window_days?: number;
+  category_scope?: string[];
+  electronics_only?: boolean;
+  exclude_electronics?: boolean;
+  min_tier?: string | null;
   purpose: string;
 }
 
@@ -21,14 +28,18 @@ interface CouponSeed {
 const EXPIRY = "2026-12-31";
 
 const couponData: CouponSeed[] = [
+  // Always-on
   {
     code: "WELCOME10",
     discount_type: DiscountTypeEnum.percentage,
     value: 10,
-    min_order_amount: 0,
+    min_order_amount: 1000,
     expiry_date: EXPIRY,
     usage_limit: null,
-    purpose: "First purchase / welcome coupon",
+    max_discount: 1000,
+    per_user_limit: 1,
+    per_user_window_days: 365,
+    purpose: "New customers, first order only",
   },
   {
     code: "FREESHIP",
@@ -37,52 +48,9 @@ const couponData: CouponSeed[] = [
     min_order_amount: 2000,
     expiry_date: EXPIRY,
     usage_limit: null,
-    purpose: "Free shipping (covers standard delivery fee)",
-  },
-  {
-    code: "COMEBACK500",
-    discount_type: DiscountTypeEnum.fixed,
-    value: 500,
-    min_order_amount: 3000,
-    expiry_date: EXPIRY,
-    usage_limit: null,
-    purpose: "Abandoned cart recovery",
-  },
-  {
-    code: "FESTIVE20",
-    discount_type: DiscountTypeEnum.percentage,
-    value: 20,
-    min_order_amount: 5000,
-    expiry_date: EXPIRY,
-    usage_limit: 1000,
-    purpose: "Festival / seasonal sale",
-  },
-  {
-    code: "BIGBUY15",
-    discount_type: DiscountTypeEnum.percentage,
-    value: 15,
-    min_order_amount: 100000,
-    expiry_date: EXPIRY,
-    usage_limit: 100,
-    purpose: "High-value order discount",
-  },
-  {
-    code: "TECH10",
-    discount_type: DiscountTypeEnum.percentage,
-    value: 10,
-    min_order_amount: 50000,
-    expiry_date: EXPIRY,
-    usage_limit: 200,
-    purpose: "Category-specific (Electronics) boost",
-  },
-  {
-    code: "VIP20",
-    discount_type: DiscountTypeEnum.percentage,
-    value: 20,
-    min_order_amount: 10000,
-    expiry_date: EXPIRY,
-    usage_limit: 50,
-    purpose: "Loyalty / VIP customer retention",
+    per_user_limit: 3,
+    per_user_window_days: 30,
+    purpose: "Waives the standard delivery fee",
   },
   {
     code: "SAVE500",
@@ -90,35 +58,81 @@ const couponData: CouponSeed[] = [
     value: 500,
     min_order_amount: 5000,
     expiry_date: EXPIRY,
+    usage_limit: 1000,
+    per_user_limit: 1,
+    per_user_window_days: 30,
+    exclude_electronics: true,
+    purpose: "Mid-size basket reward",
+  },
+  // Lifecycle
+  {
+    code: "COMEBACK300",
+    discount_type: DiscountTypeEnum.fixed,
+    value: 300,
+    min_order_amount: 3000,
+    expiry_date: EXPIRY,
     usage_limit: null,
-    purpose: "Minimum spend threshold (AOV increase)",
+    per_user_limit: 1,
+    per_user_window_days: 30,
+    purpose: "Abandoned-cart recovery",
   },
   {
-    code: "NEW10",
+    code: "MISSYOU",
+    discount_type: DiscountTypeEnum.fixed,
+    value: 400,
+    min_order_amount: 3000,
+    expiry_date: EXPIRY,
+    usage_limit: null,
+    per_user_limit: 1,
+    per_user_window_days: 90,
+    purpose: "Inactive 60+ days win-back",
+  },
+  // Tier-gated
+  {
+    code: "GOLD10",
     discount_type: DiscountTypeEnum.percentage,
     value: 10,
     min_order_amount: 3000,
     expiry_date: EXPIRY,
-    usage_limit: 300,
-    purpose: "New arrival / launch",
+    usage_limit: null,
+    max_discount: 1500,
+    min_tier: "gold",
+    purpose: "Gold tier coupon",
   },
   {
-    code: "CLEAR30",
+    code: "PLAT12",
     discount_type: DiscountTypeEnum.percentage,
-    value: 30,
-    min_order_amount: 5000,
+    value: 12,
+    min_order_amount: 3000,
     expiry_date: EXPIRY,
-    usage_limit: 100,
-    purpose: "Clearance / end of season",
+    usage_limit: null,
+    max_discount: 2500,
+    min_tier: "platinum",
+    purpose: "Platinum tier coupon",
   },
   {
-    code: "CREATOR15",
+    code: "DIAMOND15",
     discount_type: DiscountTypeEnum.percentage,
     value: 15,
-    min_order_amount: 2000,
+    min_order_amount: 3000,
     expiry_date: EXPIRY,
-    usage_limit: 500,
-    purpose: "Influencer / affiliate",
+    usage_limit: null,
+    max_discount: 4000,
+    min_tier: "diamond",
+    purpose: "Diamond tier coupon",
+  },
+  // Campaign
+  {
+    code: "FESTIVE15",
+    discount_type: DiscountTypeEnum.percentage,
+    value: 15,
+    min_order_amount: 5000,
+    expiry_date: EXPIRY,
+    usage_limit: 1000,
+    max_discount: 2000,
+    per_user_limit: 1,
+    per_user_window_days: 30,
+    purpose: "Festival / seasonal sale",
   },
   {
     code: "FLASH25",
@@ -127,7 +141,34 @@ const couponData: CouponSeed[] = [
     min_order_amount: 8000,
     expiry_date: EXPIRY,
     usage_limit: 150,
-    purpose: "Weekend / flash sale",
+    max_discount: 3000,
+    per_user_limit: 1,
+    per_user_window_days: 365,
+    category_scope: ["fashion", "beauty", "jewellery", "toys", "home decor"],
+    purpose: "Weekend flash sale, high-margin categories",
+  },
+  {
+    code: "CLEAR30",
+    discount_type: DiscountTypeEnum.percentage,
+    value: 30,
+    min_order_amount: 5000,
+    expiry_date: EXPIRY,
+    usage_limit: 100,
+    max_discount: 3000,
+    per_user_limit: 1,
+    per_user_window_days: 365,
+    category_scope: ["fashion", "footwear", "bags"],
+    purpose: "Clearance-tagged stock",
+  },
+  {
+    code: "LAUNCH10",
+    discount_type: DiscountTypeEnum.percentage,
+    value: 10,
+    min_order_amount: 3000,
+    expiry_date: EXPIRY,
+    usage_limit: 300,
+    max_discount: 1000,
+    purpose: "New-arrival launch",
   },
   {
     code: "FREEGIFT",
@@ -136,7 +177,18 @@ const couponData: CouponSeed[] = [
     min_order_amount: 5000,
     expiry_date: EXPIRY,
     usage_limit: 200,
-    purpose: "Free gift / bundle",
+    purpose: "Free gift bundle (valued at cost)",
+  },
+  // Partner
+  {
+    code: "CREATOR10",
+    discount_type: DiscountTypeEnum.percentage,
+    value: 10,
+    min_order_amount: 2000,
+    expiry_date: EXPIRY,
+    usage_limit: 500,
+    max_discount: 1000,
+    purpose: "Influencer / affiliate, one code per creator",
   },
   {
     code: "BULK10",
@@ -145,16 +197,29 @@ const couponData: CouponSeed[] = [
     min_order_amount: 20000,
     expiry_date: EXPIRY,
     usage_limit: 100,
+    max_discount: 5000,
     purpose: "Bulk / wholesale",
   },
+  // Electronics (fixed amount only; percentages never touch electronics)
   {
-    code: "MISSYOU",
+    code: "TECH2K",
     discount_type: DiscountTypeEnum.fixed,
-    value: 300,
-    min_order_amount: 2000,
+    value: 2000,
+    min_order_amount: 50000,
     expiry_date: EXPIRY,
-    usage_limit: null,
-    purpose: "Re-engagement / win-back",
+    usage_limit: 200,
+    electronics_only: true,
+    purpose: "Electronics boost",
+  },
+  {
+    code: "BIGBUY5K",
+    discount_type: DiscountTypeEnum.fixed,
+    value: 5000,
+    min_order_amount: 150000,
+    expiry_date: EXPIRY,
+    usage_limit: 100,
+    electronics_only: true,
+    purpose: "High-value electronics orders",
   },
 ];
 
@@ -165,6 +230,17 @@ const seedCoupons = async () => {
     let created = 0;
     let updated = 0;
     let unchanged = 0;
+
+    // Codes that no longer exist in the promotion plan are deactivated rather
+    // than deleted, so historical orders keep a valid coupon reference.
+    const activeCodes = couponData.map((c) => c.code);
+    const deactivated = await CouponModel.updateMany(
+      { code: { $nin: activeCodes }, is_active: true },
+      { $set: { is_active: false } }
+    );
+    if (deactivated.modifiedCount > 0) {
+      console.log(`Deactivated ${deactivated.modifiedCount} retired coupon code(s).`);
+    }
 
     for (const seed of couponData) {
       const expiry = new Date(`${seed.expiry_date}T23:59:59.999Z`);
@@ -178,6 +254,13 @@ const seedCoupons = async () => {
           min_order_amount: seed.min_order_amount,
           expiry_date: expiry,
           usage_limit: seed.usage_limit,
+          max_discount: seed.max_discount ?? null,
+          per_user_limit: seed.per_user_limit ?? null,
+          per_user_window_days: seed.per_user_window_days ?? 30,
+          category_scope: seed.category_scope ?? [],
+          electronics_only: seed.electronics_only ?? false,
+          exclude_electronics: seed.exclude_electronics ?? false,
+          min_tier: seed.min_tier ?? null,
           used_count: 0,
           is_active: true,
         });
@@ -193,6 +276,11 @@ const seedCoupons = async () => {
         existing.value !== seed.value ||
         existing.min_order_amount !== seed.min_order_amount ||
         existing.usage_limit !== seed.usage_limit ||
+        existing.max_discount !== (seed.max_discount ?? null) ||
+        existing.per_user_limit !== (seed.per_user_limit ?? null) ||
+        existing.electronics_only !== (seed.electronics_only ?? false) ||
+        existing.exclude_electronics !== (seed.exclude_electronics ?? false) ||
+        existing.min_tier !== (seed.min_tier ?? null) ||
         existing.expiry_date.getTime() !== expiry.getTime();
 
       if (!changed) {
@@ -209,6 +297,13 @@ const seedCoupons = async () => {
             min_order_amount: seed.min_order_amount,
             expiry_date: expiry,
             usage_limit: seed.usage_limit,
+            max_discount: seed.max_discount ?? null,
+            per_user_limit: seed.per_user_limit ?? null,
+            per_user_window_days: seed.per_user_window_days ?? 30,
+            category_scope: seed.category_scope ?? [],
+            electronics_only: seed.electronics_only ?? false,
+            exclude_electronics: seed.exclude_electronics ?? false,
+            min_tier: seed.min_tier ?? null,
           },
         }
       );

@@ -28,6 +28,10 @@ const CouponSchema = new Schema<CouponInterface>({
     type: Date,
     required: true,
   },
+  starts_at: {
+    type: Date,
+    default: null,
+  },
   usage_limit: {
     type: Number,
     default: null,
@@ -35,6 +39,39 @@ const CouponSchema = new Schema<CouponInterface>({
   used_count: {
     type: Number,
     default: 0,
+  },
+  max_discount: {
+    type: Number,
+    default: null,
+  },
+  per_user_limit: {
+    type: Number,
+    default: null,
+  },
+  per_user_window_days: {
+    type: Number,
+    default: 30,
+  },
+  category_scope: {
+    type: [String],
+    default: [],
+  },
+  electronics_only: {
+    type: Boolean,
+    default: false,
+  },
+  exclude_electronics: {
+    type: Boolean,
+    default: false,
+  },
+  exclude_sale_items: {
+    type: Boolean,
+    default: true,
+  },
+  min_tier: {
+    type: String,
+    enum: ["bronze", "gold", "platinum", "diamond", null],
+    default: null,
   },
   is_active: {
     type: Boolean,

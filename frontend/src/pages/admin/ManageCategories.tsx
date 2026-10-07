@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { categoryService } from "../../services/categoryService";
 import AdminLayout from "../../components/layout/AdminLayout";
@@ -223,7 +223,7 @@ const ManageCategories = () => {
                       )}
 
                       {/* Slug */}
-                      <div className="text-xs text-gray-600 py-2 border-t border-b border-[#ece1cf]">
+                      <div className="text-xs text-gray-600 py-2 border-t border-b border-sand">
                         <span className="font-medium">Slug:</span> <span className="font-mono text-brand">{category.slug}</span>
                       </div>
 
@@ -275,7 +275,7 @@ const ManageCategories = () => {
                         </div>
 
                         {/* Category Details */}
-                        <div className="py-3 border-t border-b border-[#ece1cf]">
+                        <div className="py-3 border-t border-b border-sand">
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             <div>
                               <p className="text-xs text-gray-600 font-medium">Slug</p>

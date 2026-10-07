@@ -75,6 +75,7 @@ export class OrderController {
       }
 
       const orderItems: OrderItemInterface[] = [];
+      const pricedProducts: any[] = [];
       let subtotal = 0;
 
       // Validate all products exist and have sufficient stock
@@ -97,6 +98,7 @@ export class OrderController {
           unit_price: product.price,
         });
 
+        pricedProducts.push(product);
         subtotal += product.price * line.quantity;
       }
 
@@ -109,24 +111,18 @@ export class OrderController {
         if (!coupon) {
           return res.status(404).json({ success: false, message: "Invalid coupon code" });
         }
-        if (!coupon.is_active) {
-          return res.status(400).json({ success: false, message: "This coupon is no longer active" });
-        }
-        if (new Date() > coupon.expiry_date) {
-          return res.status(400).json({ success: false, message: "This coupon has expired" });
-        }
-        if (coupon.usage_limit !== null && coupon.used_count >= coupon.usage_limit) {
-          return res.status(400).json({ success: false, message: "This coupon has reached its usage limit" });
-        }
-        if (subtotal < coupon.min_order_amount) {
-          return res.status(400).json({
-            success: false,
-            message: `Order amount must be at least ${coupon.min_order_amount} to use this coupon`,
-          });
-        }
 
-        discount = coupon.discount_type === "percentage" ? (subtotal * coupon.value) / 100 : coupon.value;
-        discount = Math.min(discount, subtotal);
+        // Full rule evaluation: scope, electronics exclusion, per-user limit,
+        // sale-item exclusion, order minimum on eligible items, caps.
+        const evaluation = await new CouponServices().evaluateCoupon(
+          coupon,
+          userId,
+          sourceLines.map((line, i) => ({ product: pricedProducts[i], quantity: line.quantity }))
+        );
+        if (!evaluation.ok) {
+          return res.status(400).json({ success: false, message: evaluation.message });
+        }
+        discount = evaluation.discount;
         couponId = coupon._id;
 
         // Increment coupon usage count

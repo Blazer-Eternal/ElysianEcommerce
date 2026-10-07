@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { orderService } from "../../services/orderService";
@@ -145,7 +145,7 @@ const ManageOrders = () => {
               className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
                 statusFilter === "all"
                   ? "bg-brand text-white"
-                  : "bg-white text-gray-600 border border-[#ece1cf] hover:border-brand/30 hover:text-brand"
+                  : "bg-white text-gray-600 border border-sand hover:border-brand/30 hover:text-brand"
               }`}
             >
               All
@@ -157,7 +157,7 @@ const ManageOrders = () => {
                 className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 ${
                   statusFilter === status
                     ? "bg-brand text-white"
-                    : "bg-white text-gray-600 border border-[#ece1cf] hover:border-brand/30 hover:text-brand"
+                    : "bg-white text-gray-600 border border-sand hover:border-brand/30 hover:text-brand"
                 }`}
               >
                 {ORDER_STATUS_LABELS[status]}
@@ -183,7 +183,7 @@ const ManageOrders = () => {
                   <table className="w-full">
                     {/* Table Header */}
                     <thead>
-                      <tr className="border-b border-[#ece1cf] bg-linear-to-r from-brand/5 to-cyan-600/5">
+                      <tr className="border-b border-sand bg-linear-to-r from-brand/5 to-cyan-600/5">
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Order #</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Customer</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Items</th>
@@ -197,7 +197,7 @@ const ManageOrders = () => {
                     </thead>
 
                     {/* Table Body */}
-                    <tbody className="divide-y divide-[#ece1cf]">
+                    <tbody className="divide-y divide-sand">
                       {orders.map((order) => (
                         <tr key={order._id} className="hover:bg-cream-deep/50 transition-colors">
                           {/* Order Number */}
@@ -354,7 +354,7 @@ const ManageOrders = () => {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-[#ece1cf]">
+                    <div className="grid grid-cols-2 gap-3 py-3 border-t border-b border-sand">
                       <div>
                         <p className="text-xs text-gray-600 font-medium">Items</p>
                         <p className="font-bold text-gray-900">
