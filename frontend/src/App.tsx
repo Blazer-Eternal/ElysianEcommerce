@@ -45,6 +45,7 @@ const ManageUsers = lazy(() => import("./pages/admin/ManageUsers"));
 const ManageReviews = lazy(() => import("./pages/admin/ManageReviews"));
 const ManageMessages = lazy(() => import("./pages/admin/ManageMessages"));
 const DataTablesDemo = lazy(() => import("./pages/admin/DataTablesDemo"));
+const AccountSettings = lazy(() => import("./pages/admin/AccountSettings"));
 
 // Info Pages
 const About = lazy(() => import("./pages/About"));
@@ -363,6 +364,16 @@ function App() {
           <ProtectedRoute requireAdmin>
             <AdminLayout>
               <DataTablesDemo />
+            </AdminLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.ADMIN_ACCOUNT}
+        element={
+          <ProtectedRoute requireAdmin>
+            <AdminLayout>
+              <AccountSettings />
             </AdminLayout>
           </ProtectedRoute>
         }

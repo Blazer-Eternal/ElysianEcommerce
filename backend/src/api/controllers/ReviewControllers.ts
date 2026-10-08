@@ -70,6 +70,25 @@ export class ReviewController {
     }
   }
 
+  /** Logged-in user: every review they have written, across all products. */
+  static async getMyReviews(req: CustomRequestInterface, res: Response) {
+    const userId = req.user?.id as string;
+    const page = toPositiveInt(req.query.page, 1);
+    const limit = Math.min(50, toPositiveInt(req.query.limit, 10));
+
+    try {
+      const list = await new ReviewServices().findByUser(userId, { page, limit });
+
+      return res.status(200).json({
+        success: true,
+        data: list.reviews,
+        pagination: list.pagination,
+      });
+    } catch (error) {
+      return sendValidationError(res, error);
+    }
+  }
+
   static async getAllReviews(req: CustomRequestInterface, res: Response) {
     const page = toPositiveInt(req.query.page, 1);
     const limit = Math.min(50, toPositiveInt(req.query.limit, 10));

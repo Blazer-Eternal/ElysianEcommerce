@@ -14,6 +14,15 @@ notificationRoutes.get(
   exceptionHandler(NotificationController.getNotifications)
 );
 
+// Admin only: the Daily Update drawer (derived live from orders, stock,
+// messages, reviews and a live storefront probe)
+notificationRoutes.get(
+  "/daily-brief",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(Guard.grantRole(RoleEnum.admin)),
+  exceptionHandler(NotificationController.getDailyBrief)
+);
+
 // Admin only: clear the badge once the dropdown has been opened
 notificationRoutes.post(
   "/read-all",

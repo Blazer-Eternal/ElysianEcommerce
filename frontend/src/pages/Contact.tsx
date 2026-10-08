@@ -1,6 +1,7 @@
-﻿import { useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { messageService } from "../services/messageService";
 import { getErrorMessage } from "../utils/getErrorMessage";
+import type { MessageTag } from "../types/message.types";
 
 const LocationIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -22,8 +23,28 @@ const EmailIcon = () => (
   </svg>
 );
 
+/** Topic buckets — must stay in sync with `MessageTagEnum` on the backend. */
+const TOPICS: Array<{ value: MessageTag; label: string }> = [
+  { value: "order", label: "Order status" },
+  { value: "shipping", label: "Shipping issue" },
+  { value: "refund", label: "Refund or return" },
+  { value: "pre_sales", label: "Pre-sales question" },
+  { value: "product", label: "Product question" },
+  { value: "payment", label: "Payment issue" },
+  { value: "account", label: "Account help" },
+  { value: "feedback", label: "Feedback" },
+  { value: "other", label: "Something else" },
+];
+
 const Contact = () => {
-  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    subject: "",
+    tag: "other" as MessageTag,
+    message: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,10 +60,12 @@ const Contact = () => {
         name: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim() || undefined,
+        subject: form.subject.trim(),
+        tag: form.tag,
         message: form.message.trim(),
       });
       setSubmitted(true);
-      setForm({ name: "", phone: "", email: "", message: "" });
+      setForm({ name: "", phone: "", email: "", subject: "", tag: "other", message: "" });
       setTimeout(() => setSubmitted(false), 5000);
     } catch (err) {
       setError(getErrorMessage(err));
@@ -126,7 +149,7 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="glass-strong rounded-2xl p-8 sm:p-10 border border-[#ece1d0] shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
+            <div className="glass-strong rounded-2xl p-8 sm:p-10 border border-sand shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
               <h2 className="text-2xl font-bold text-ink mb-2">Send us a Message</h2>
               <div className="mb-4 h-px w-16 bg-brand/40" />
               <p className="text-ink/70 text-sm mb-8">
@@ -135,14 +158,14 @@ const Contact = () => {
 
               {submitted && (
                 <div className="mb-6 glass bg-linear-to-r from-cyan-50 to-[#f7ecdb] border-l-4 border-brand rounded-lg px-6 py-4">
-                  <p className="text-brand font-semibold">✓ Message Received!</p>
+                  <p className="text-brand font-semibold">? Message Received!</p>
                   <p className="text-brand text-sm mt-1">We'll get back to you within 24 hours.</p>
                 </div>
               )}
 
               {error && (
                 <div className="mb-6 glass bg-red-50 border-l-4 border-red-500 rounded-lg px-6 py-4">
-                  <p className="text-red-700 font-semibold">✕ Couldn't send your message</p>
+                  <p className="text-red-700 font-semibold">? Couldn't send your message</p>
                   <p className="text-red-600 text-sm mt-1">{error}</p>
                 </div>
               )}
@@ -188,6 +211,42 @@ const Contact = () => {
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     className="w-full rounded-xl border border-[#ded2c4] bg-white px-4 py-3 text-ink placeholder-ink/45 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300"
                   />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="contact-subject" className="block text-sm font-semibold text-ink mb-2">Subject *</label>
+                    <input
+                      id="contact-subject"
+                      name="subject"
+                      type="text"
+                      placeholder="e.g. Where is my order?"
+                      required
+                      minLength={3}
+                      maxLength={150}
+                      value={form.subject}
+                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                      className="w-full rounded-xl border border-[#ded2c4] bg-white px-4 py-3 text-ink placeholder-ink/45 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact-topic" className="block text-sm font-semibold text-ink mb-2">Topic</label>
+                    <select
+                      id="contact-topic"
+                      name="tag"
+                      value={form.tag}
+                      onChange={(e) =>
+                        setForm({ ...form, tag: e.target.value as MessageTag })
+                      }
+                      className="w-full rounded-xl border border-[#ded2c4] bg-white px-4 py-3 text-ink focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all duration-300"
+                    >
+                      {TOPICS.map((topic) => (
+                        <option key={topic.value} value={topic.value}>
+                          {topic.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div>
@@ -244,7 +303,7 @@ const Contact = () => {
             <details key={i} className="glass rounded-xl p-6 transition-all duration-300 cursor-pointer group hover:shadow-[0_8px_24px_rgba(61,5,12,0.10)]">
               <summary className="font-semibold text-ink flex items-center justify-between">
                 {item.q}
-                <span className="text-brand group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-brand group-open:rotate-180 transition-transform">?</span>
               </summary>
               <p className="text-ink/70 mt-4 leading-relaxed">{item.a}</p>
             </details>

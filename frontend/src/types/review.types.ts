@@ -41,3 +41,26 @@ export type ReviewListResponse = PaginatedResponse<Review> & {
   stats: ReviewStats;
   myReview: Review | null;
 };
+
+/** The product a review belongs to, trimmed to what the portal needs to draw the row. */
+export interface MyReviewProduct {
+  _id: string;
+  name: string;
+  slug: string;
+  images: string[];
+  price: number;
+}
+
+/**
+ * One of the signed-in customer's own reviews, joined to its product.
+ * `product` is null when the product has since been removed — the rating and
+ * comment still belong to the customer and stay listed.
+ */
+export interface MyReview {
+  _id: string;
+  rating: number;
+  comment: string;
+  verified_purchase: boolean;
+  created_at: string;
+  product: MyReviewProduct | null;
+}

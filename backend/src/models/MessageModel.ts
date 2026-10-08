@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { MessageInterface } from "../intefaces/MessageInterface";
+import { MESSAGE_TAG_VALUES, MessageTagEnum } from "../enums/MessageEnums";
 
 const MessageSchema = new Schema<MessageInterface>({
   name: {
@@ -21,13 +22,40 @@ const MessageSchema = new Schema<MessageInterface>({
     maxlength: 30,
     default: "",
   },
+  subject: {
+    type: String,
+    required: true,
+    trim: true,
+    maxlength: 150,
+    default: "No subject",
+  },
   message: {
     type: String,
     required: true,
     trim: true,
     maxlength: 2000,
   },
+  tag: {
+    type: String,
+    enum: MESSAGE_TAG_VALUES,
+    default: MessageTagEnum.other,
+    index: true,
+  },
+  reply: {
+    type: String,
+    trim: true,
+    maxlength: 2000,
+    default: "",
+  },
+  replied_at: {
+    type: Date,
+    default: null,
+  },
   is_read: {
+    type: Boolean,
+    default: false,
+  },
+  archived: {
     type: Boolean,
     default: false,
   },

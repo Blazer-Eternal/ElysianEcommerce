@@ -1,6 +1,8 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
+import DailyUpdatePanel from "../admin/daily-update/DailyUpdatePanel";
+import AdminUserMenu from "../admin/dashboard/AdminUserMenu";
 
 // Icons
 const DashboardIcon = () => (
@@ -54,6 +56,12 @@ const DataTablesIcon = () => (
   </svg>
 );
 
+const SettingsIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.03 7.03 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.58.24-1.12.56-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.65 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.23.39.32.61.22l2.39-.96c.5.38 1.05.7 1.63.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.58-.24 1.12-.56 1.63-.94l2.39.96c.22.1.48.01.61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
+  </svg>
+);
+
 const MessageIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
     <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
@@ -98,6 +106,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { label: "Users", route: ROUTES.ADMIN_USERS, icon: <UserIcon /> },
     { label: "Reviews", route: ROUTES.ADMIN_REVIEWS, icon: <ReviewIcon /> },
     { label: "Messages", route: ROUTES.ADMIN_MESSAGES, icon: <MessageIcon /> },
+    { label: "Account & Settings", route: ROUTES.ADMIN_ACCOUNT, icon: <SettingsIcon /> },
     { label: "Data Tables", route: ROUTES.ADMIN_DATA_TABLES, icon: <DataTablesIcon /> },
   ];
 
@@ -105,13 +114,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     <div className="flex h-screen bg-linear-to-b from-cyan-50 to-white animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-linear-to-b from-white via-white to-cyan-50 border-r border-[#ece1d0] shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-linear-to-b from-white via-white to-cyan-50 border-r border-sand shadow-xl transform transition-transform duration-300 lg:relative lg:translate-x-0 overflow-y-auto gpu-accelerate ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
         {/* Sidebar Header - pinned above the nav so items never paint over it */}
-        <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#fefaf3] border-b border-[#ece1d0] shadow-[0_4px_12px_-6px_rgba(61,5,12,0.12)] p-6">
+        <div className="sticky top-0 z-20 bg-linear-to-r from-white to-[#fefaf3] border-b border-sand shadow-[0_4px_12px_-6px_rgba(61,5,12,0.12)] p-6">
           {/* Logo Section, full brand name, links back to the main site */}
           <div className="flex items-center justify-between">
             <Link
@@ -125,7 +134,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   alt="Elysian Ecommerce"
                   width={256}
                   height={256}
-                  className="h-12 w-12 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm group-hover:scale-105 transition-transform duration-300"
+                  className="h-12 w-12 rounded-full object-cover ring-1 ring-sand shadow-sm group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <div className="text-base font-bold text-brand leading-tight min-w-0 group-hover:text-brand-dark transition-colors duration-300">
@@ -189,17 +198,26 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col w-full overflow-hidden animation-container gpu-accelerate" style={{ contain: "layout style paint" }}>
-        {/* Top Bar - only carries the mobile sidebar toggle */}
-        <div className="bg-white border-b border-[#ece1d0] sticky top-0 z-40 gpu-accelerate lg:hidden" style={{ contain: "layout style paint" }}>
-          <div className="flex items-center justify-between px-6 py-4 gpu-accelerate" style={{ willChange: "background-color" }}>
+        {/* Top Bar - mobile menu toggle + the global Daily Update bell and account avatar */}
+        <div className="bg-white border-b border-sand sticky top-0 z-40 gpu-accelerate">
+          <div className="flex items-center justify-between gap-4 px-4 sm:px-6 py-3 gpu-accelerate">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="-m-2 rounded-lg p-2 text-brand hover:bg-brand/5 hover:text-brand-dark transition-colors gpu-accelerate"
+              className="rounded-lg p-2 text-brand hover:bg-brand/5 hover:text-brand-dark transition-colors gpu-accelerate lg:hidden"
               style={{ transform: "translateZ(0)" }}
+              aria-label="Open admin menu"
             >
               <MenuIcon />
             </button>
-            <div className="flex-1" />
+            <div className="hidden lg:block min-w-0">
+              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-ink/45">
+                Elysian Admin
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <DailyUpdatePanel />
+              <AdminUserMenu />
+            </div>
           </div>
         </div>
 

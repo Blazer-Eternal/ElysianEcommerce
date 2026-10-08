@@ -1,8 +1,24 @@
 import axiosInstance from "./axiosInstance";
-import type { GetReviewsParams, ReviewListResponse, Review, CreateReviewPayload, UpdateReviewPayload } from "../types/review.types";
+import type { GetReviewsParams, ReviewListResponse, Review, MyReview, CreateReviewPayload, UpdateReviewPayload } from "../types/review.types";
 import type { PaginatedResponse } from "../types/pagination.types";
 
 export const reviewService = {
+  /**
+   * The signed-in customer's own reviews across every product they have
+   * written about, newest first — powers the Reviews tab of the portal.
+   */
+  getMyReviews: async (
+    page = 1,
+    limit = 10,
+    config?: { signal?: AbortSignal }
+  ): Promise<PaginatedResponse<MyReview>> => {
+    const { data } = await axiosInstance.get("/reviews/my", {
+      params: { page, limit },
+      signal: config?.signal,
+    });
+    return data;
+  },
+
   getAll: async (
     params: { page?: number; limit?: number; sort?: string; signal?: AbortSignal } = {}
   ): Promise<PaginatedResponse<Review>> => {

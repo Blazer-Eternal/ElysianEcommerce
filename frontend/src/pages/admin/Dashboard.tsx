@@ -7,8 +7,6 @@ import { formatCurrency } from "../../utils/formatCurrency";
 
 // Dashboard analytics panels (charts + feeds)
 import PeriodSelector, { type PeriodDays } from "../../components/admin/dashboard/PeriodSelector";
-import NotificationBell from "../../components/admin/dashboard/NotificationBell";
-import AdminUserMenu from "../../components/admin/dashboard/AdminUserMenu";
 import DashboardStatCard from "../../components/admin/dashboard/DashboardStatCard";
 import SalesOverview from "../../components/admin/dashboard/SalesOverview";
 import TopCategories from "../../components/admin/dashboard/TopCategories";
@@ -38,11 +36,6 @@ const DashboardHeader = memo(({ period, onPeriodChange }: { period: PeriodDays; 
       </p>
     </div>
     <div className="flex flex-col items-start sm:items-end gap-3">
-      {/* Bell + account avatar sit directly above the "Last 30 Days" period selector */}
-      <div className="flex items-center gap-3">
-        <NotificationBell />
-        <AdminUserMenu />
-      </div>
       <PeriodSelector value={period} onChange={onPeriodChange} />
     </div>
   </div>

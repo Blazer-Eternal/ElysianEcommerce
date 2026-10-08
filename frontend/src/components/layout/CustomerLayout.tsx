@@ -2,15 +2,14 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { useAuth } from "../../hooks/useAuth";
-import { useCartState } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useMyOrders } from "../../hooks/useMyOrders";
 import { useCustomerNotifications } from "../../hooks/useCustomerNotifications";
 import { getActiveOrders, getTotalSpent } from "../../utils/customerDashboard";
 import { getTierStatus } from "../../utils/loyalty";
 import NotificationBell from "./NotificationBell";
+import CartPreview from "../cart/CartPreview";
 import {
-  BagIcon,
   BellIcon,
   BoxIcon,
   CrownIcon,
@@ -49,7 +48,6 @@ interface CustomerLayoutProps {
  */
 const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   const { user } = useAuth();
-  const { itemCount } = useCartState();
   const { items: wishlistItems } = useWishlist();
   const { data: ordersData } = useMyOrders();
   const { data: notificationsData } = useCustomerNotifications();
@@ -81,7 +79,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   const navItems: NavItem[] = [
     { label: "Overview", to: ROUTES.DASHBOARD, icon: <GridIcon size={20} /> },
     {
-      label: "My Orders",
+      label: "Orders and Reviews",
       to: ROUTES.ORDER_HISTORY,
       icon: <BoxIcon size={20} />,
       count: activeOrderCount,
@@ -128,7 +126,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   return (
     <div className="flex h-screen overflow-hidden bg-cream lg:pl-28">
       {/* Floating icon rail — desktop only */}
-      <aside className="fixed bottom-4 left-4 top-4 z-40 hidden w-18 flex-col items-center rounded-3xl border border-[#ece1d0] bg-white/95 p-2 shadow-[0_6px_32px_rgba(61,5,12,0.12)] backdrop-blur-sm lg:flex">
+      <aside className="fixed bottom-4 left-4 top-4 z-40 hidden w-18 flex-col items-center rounded-3xl border border-sand bg-white/95 p-2 shadow-[0_6px_32px_rgba(61,5,12,0.12)] backdrop-blur-sm lg:flex">
         <Link
           to={ROUTES.HOME}
           className="group relative flex h-12 w-12 shrink-0 items-center justify-center"
@@ -139,12 +137,12 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
             alt=""
             width={40}
             height={40}
-            className="h-10 w-10 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm"
+            className="h-10 w-10 rounded-full object-cover ring-1 ring-sand shadow-sm"
           />
           <RailTooltip label="Back to store" />
         </Link>
 
-        <span className="my-2 h-px w-8 shrink-0 bg-[#ece1d0]" aria-hidden />
+        <span className="my-2 h-px w-8 shrink-0 bg-sand" aria-hidden />
 
         <nav className="flex w-full min-h-0 flex-1 flex-col items-center justify-center gap-1.5">
           {navItems.map((item) => {
@@ -182,19 +180,19 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
 
       {/* Labelled drawer — small screens keep text, since hover does not exist */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-[#ece1d0] bg-linear-to-b from-white to-cyan-50 shadow-xl transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-sand bg-linear-to-b from-white to-cyan-50 shadow-xl transition-transform duration-300 lg:hidden ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
-        <div className="flex items-center justify-between gap-3 border-b border-[#ece1d0] px-5 py-4">
+        <div className="flex items-center justify-between gap-3 border-b border-sand px-5 py-4">
           <Link to={ROUTES.HOME} className="flex min-w-0 items-center gap-3" title="Back to Elysian Ecommerce">
             <img
               src="/images/Bestlogo.jpg"
               alt="Elysian Ecommerce"
               width={48}
               height={48}
-              className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm"
+              className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-sand shadow-sm"
             />
             <span className="min-w-0">
               <span className="block truncate text-sm font-bold text-ink">Elysian</span>
@@ -213,7 +211,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
         </div>
 
         <div className="px-4 pt-4">
-          <div className="flex items-center gap-3 rounded-2xl border border-[#ece1d0] bg-cream p-3 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
+          <div className="flex items-center gap-3 rounded-2xl border border-sand bg-cream p-3 shadow-[0_2px_16px_rgba(61,5,12,0.06)]">
             <div className="relative shrink-0">
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-brand to-cyan-600 text-sm font-bold text-white">
                 {initials}
@@ -266,7 +264,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       {/* Content column */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Top bar */}
-        <header className="flex items-center gap-3 border-b border-[#ece1d0] bg-white px-4 py-3 sm:px-6">
+        <header className="flex items-center gap-3 border-b border-sand bg-white px-4 py-3 sm:px-6">
           <button
             onClick={() => setSidebarOpen(true)}
             aria-label="Open menu"
@@ -290,18 +288,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
           <div className="ml-auto flex items-center gap-3 sm:gap-4">
             <NotificationBell />
 
-            <Link
-              to={ROUTES.CART}
-              aria-label={`Cart with ${itemCount} items`}
-              className="relative rounded-xl p-2 text-ink/55 transition-colors hover:bg-brand/5 hover:text-brand"
-            >
-              <BagIcon size={20} />
-              {itemCount > 0 && (
-                <span className="absolute -right-1.5 -top-1 min-w-4 rounded-full bg-brand px-1 text-[10px] font-bold leading-4 text-white ring-2 ring-white">
-                  {itemCount > 99 ? "99+" : itemCount}
-                </span>
-              )}
-            </Link>
+            <CartPreview />
 
             <Link
               to={ROUTES.PROFILE}

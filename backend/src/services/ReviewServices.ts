@@ -117,6 +117,73 @@ export class ReviewServices {
     };
   }
 
+  /**
+   * One signed-in customer's own reviews, newest first, each joined to the
+   * product it was written for so the portal can render the row without a
+   * second round-trip per review.
+   *
+   * Reviews whose product has since been deleted come back with
+   * `product: null` rather than being dropped — the star rating and comment
+   * still belong to the customer and must stay visible.
+   */
+  public async findByUser(userId: string, options: { page?: number; limit?: number } = {}) {
+    const { page = 1, limit = 10 } = options;
+    const skip = (page - 1) * limit;
+
+    const filter = { user_id: userId };
+
+    const [reviews, total] = await Promise.all([
+      ReviewModel.find(filter)
+        .populate("product_id", "name slug images price")
+        .sort({ created_at: -1 })
+        .skip(skip)
+        .limit(limit),
+      ReviewModel.countDocuments(filter),
+    ]);
+
+    const data = reviews.map((review) => {
+      const populated = review.product_id as unknown as {
+        _id?: unknown;
+        name?: string;
+        slug?: string;
+        images?: string[];
+        price?: number;
+      } | null;
+
+      const product =
+        populated && populated._id !== undefined && populated.name
+          ? {
+              _id: String(populated._id),
+              name: populated.name,
+              slug: populated.slug ?? "",
+              images: populated.images ?? [],
+              price: populated.price ?? 0,
+            }
+          : null;
+
+      return {
+        _id: String(review._id),
+        rating: review.rating,
+        comment: review.comment ?? "",
+        verified_purchase: review.verified_purchase,
+        created_at: review.created_at,
+        product,
+      };
+    });
+
+    return {
+      reviews: data,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+        hasNextPage: page * limit < total,
+        hasPrevPage: page > 1,
+      },
+    };
+  }
+
   public async findById(id: string): Promise<ReviewInterface | null> {
     return await ReviewModel.findById(id);
   }

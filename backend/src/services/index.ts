@@ -18,6 +18,8 @@ export * from './DashboardAnalyticsServices'
 
 export * from './MessageServices'
 
+export * from './AdminBriefServices'
+
 export * from './NotificationServices'
 
 export * from './CustomerNotificationServices';

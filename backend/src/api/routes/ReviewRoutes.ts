@@ -14,6 +14,13 @@ reviewRoutes.get(
   exceptionHandler(ReviewController.getAllReviews)
 );
 
+// Logged-in user only: their own reviews across every product they bought
+reviewRoutes.get(
+  "/my",
+  exceptionHandler(Guard.grantAccess),
+  exceptionHandler(ReviewController.getMyReviews)
+);
+
 // Logged-in user only: view reviews for a product
 reviewRoutes.get(
   "/product/:productId",

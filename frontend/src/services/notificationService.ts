@@ -3,6 +3,7 @@ import type {
   CustomerNotificationListResponse,
   NotificationListResponse,
 } from "../types/notification.types";
+import type { AdminBrief } from "../types/dailyBrief.types";
 
 export const notificationService = {
   /** Admin: recent activity feed + unread badge count. */
@@ -36,5 +37,14 @@ export const notificationService = {
   markCustomerAllRead: async (): Promise<{ success: boolean; message: string }> => {
     const { data } = await axiosInstance.post("/notifications/customer/read", { keys: [] });
     return data;
+  },
+
+  /**
+   * Admin: the Daily Update brief — 6 groups (sales, inventory, support,
+   * shipping, system, marketing) derived live from the database.
+   */
+  getDailyBrief: async (signal?: AbortSignal): Promise<AdminBrief> => {
+    const { data } = await axiosInstance.get("/notifications/daily-brief", { signal });
+    return data.data;
   },
 };

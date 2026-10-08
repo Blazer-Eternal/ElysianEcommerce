@@ -7,3 +7,5 @@ export * from './CouponEnums'
 export * from './OrderEnums'
 
 export * from './PaymentEnums'
+
+export * from './MessageEnums'
