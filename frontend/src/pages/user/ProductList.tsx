@@ -12,34 +12,45 @@ import type { Product, ProductQueryParams } from "../../types/product.types";
 const EMPTY_PRODUCTS: Product[] = [];
 
 /**
- * Wrapper that owns the inbound `?search=` parameter (the customer portal's
- * top bar hands its query to the catalog through it). The catalog itself is
- * keyed on the term, so a search arriving from another page always starts it
- * from a clean filter state instead of needing a state-sync effect.
+ * Wrapper that owns the inbound `?search=` and `?category=` parameters (the
+ * customer portal's top bar hands its query to the catalogue through the
+ * former, empty-state category shortcuts use the latter). The catalog itself
+ * is keyed on both, so a search or category arriving from another page always
+ * starts it from a clean filter state instead of needing a state-sync effect.
  */
 const ProductList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const urlSearch = searchParams.get("search")?.trim() || "";
+  const urlCategory = searchParams.get("category")?.trim() || "";
 
-  const clearUrlSearch = () =>
+  const clearUrlParams = () =>
     setSearchParams(
       (prev) => {
         const next = new URLSearchParams(prev);
         next.delete("search");
+        next.delete("category");
         return next;
       },
       { replace: true }
     );
 
-  return <ProductCatalog key={urlSearch} initialSearch={urlSearch} onClearSearch={clearUrlSearch} />;
+  return (
+    <ProductCatalog
+      key={`${urlSearch}|${urlCategory}`}
+      initialSearch={urlSearch}
+      initialCategory={urlCategory}
+      onClearParams={clearUrlParams}
+    />
+  );
 };
 
 interface ProductCatalogProps {
   initialSearch: string;
-  onClearSearch: () => void;
+  initialCategory: string;
+  onClearParams: () => void;
 }
 
-const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) => {
+const ProductCatalog = ({ initialSearch, initialCategory, onClearParams }: ProductCatalogProps) => {
   const [filters, setFilters] = useState<ProductQueryParams>({
     page: 1,
     limit: 12,
@@ -47,10 +58,11 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
     sortBy: "created_at",
     sortOrder: "asc",
     ...(initialSearch ? { search: initialSearch } : {}),
+    ...(initialCategory ? { category_id: initialCategory } : {}),
   });
 
   const handleReset = () => {
-    onClearSearch();
+    onClearParams();
     setFilters({
       page: 1,
       limit: 12,
@@ -150,7 +162,7 @@ const ProductCatalog = ({ initialSearch, onClearSearch }: ProductCatalogProps) =
                   className="glass rounded-2xl p-4 border border-[#ece1d0] animate-pulse gpu-accelerate"
                   style={{ animationDelay: `${i * 0.05}s`, transform: "translateZ(0)" }}
                 >
-                  <div className="w-full h-48 bg-cream-deep rounded-xl mb-4" />
+                  <div className="w-full aspect-4/3 bg-cream-deep rounded-xl mb-4" />
                   <div className="space-y-3">
                     <div className="h-4 bg-cream-deep rounded w-3/4" />
                     <div className="h-3 bg-cream-deep rounded w-1/2" />

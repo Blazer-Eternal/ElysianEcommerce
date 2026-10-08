@@ -3,11 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { categoryService } from "../../services/categoryService";
 import { useDebounce } from "../../hooks/useDebounce";
 import CategoryDropdown from "./CategoryDropdown";
+import PriceDropdown from "./PriceDropdown";
 import {
   PRICE_RANGES,
   parsePriceRanges,
   priceRangeKey,
-  priceRangeLabel,
   type PriceRange,
 } from "../../constants/priceRanges";
 import type { ProductQueryParams } from "../../types/product.types";
@@ -20,7 +20,6 @@ interface ProductFiltersProps {
 const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
   const [search, setSearch] = useState(filters.search || "");
   const debouncedSearch = useDebounce(search, 400);
-  const [priceOpen, setPriceOpen] = useState(true);
 
   const { data: categoriesRes } = useQuery({
     queryKey: ["categories"],
@@ -52,6 +51,9 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
     onChange({ ...filters, priceRanges: encoded || undefined, page: 1 });
   };
 
+  const clearPriceRanges = () =>
+    onChange({ ...filters, priceRanges: undefined, page: 1 });
+
   return (
     <div className="space-y-4 mb-6">
       <input
@@ -65,18 +67,28 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
         className="w-full border border-[#ece1d0] rounded-lg px-3 py-2 bg-white focus:outline-none focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-colors"
       />
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 items-center">
         <CategoryDropdown
           categories={categories}
           selectedId={filters.category_id}
           onSelect={(categoryId) => onChange({ ...filters, category_id: categoryId, page: 1 })}
         />
 
-        <label htmlFor="in-stock-only" className="flex items-center gap-1.5 text-sm">
+        <PriceDropdown
+          selected={selectedRanges}
+          onToggle={togglePriceRange}
+          onClear={clearPriceRanges}
+        />
+
+        <label
+          htmlFor="in-stock-only"
+          className="flex items-center gap-2 border border-[#ece1d0] rounded-lg px-3 py-2 text-sm bg-white text-gray-700 hover:border-brand/40 hover:text-brand transition-colors cursor-pointer"
+        >
           <input
             id="in-stock-only"
             name="inStock"
             type="checkbox"
+            className="accent-brand"
             checked={filters.inStock === true}
             onChange={(e) => onChange({ ...filters, inStock: e.target.checked || undefined, page: 1 })}
           />
@@ -92,49 +104,13 @@ const ProductFilters = ({ filters, onChange }: ProductFiltersProps) => {
             const [sortBy, sortOrder] = e.target.value.split(":");
             onChange({ ...filters, sortBy, sortOrder: sortOrder as "asc" | "desc", page: 1 });
           }}
-          className="border border-[#ece1d0] rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-colors"
+          className="border border-[#ece1d0] rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-colors hover:border-brand/40"
         >
           <option value="created_at:asc">Oldest First</option>
           <option value="created_at:desc">Newest First</option>
           <option value="price:asc">Price: Low to High</option>
           <option value="price:desc">Price: High to Low</option>
         </select>
-      </div>
-
-      {/* Price buckets, checkbox ranges sized to the real catalogue prices */}
-      <div className="border-t border-[#ece1d0] pt-4">
-        <button
-          type="button"
-          onClick={() => setPriceOpen((open) => !open)}
-          aria-expanded={priceOpen}
-          aria-controls="price-range-filters"
-          className="flex w-full items-center justify-between text-sm font-semibold text-gray-900"
-        >
-          <span>Price</span>
-          <span aria-hidden="true" className="text-lg leading-none text-gray-500">
-            {priceOpen ? "−" : "+"}
-          </span>
-        </button>
-
-        {priceOpen && (
-          <ul id="price-range-filters" className="mt-3 grid gap-2 sm:grid-cols-2">
-            {PRICE_RANGES.map((range) => {
-              const key = priceRangeKey(range);
-              return (
-                <li key={key}>
-                  <label className="flex items-center gap-2.5 text-sm text-gray-700 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={selectedRanges.has(key)}
-                      onChange={() => togglePriceRange(range)}
-                    />
-                    {priceRangeLabel(range)}
-                  </label>
-                </li>
-              );
-            })}
-          </ul>
-        )}
       </div>
     </div>
   );

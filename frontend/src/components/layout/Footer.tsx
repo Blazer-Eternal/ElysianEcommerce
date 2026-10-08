@@ -51,11 +51,11 @@ const Footer = () => {
           <div className="space-y-4 lg:pr-6">
             <Link to={ROUTES.HOME} className="inline-flex items-center gap-2.5 group">
               <img
-                src="/images/Bestlogo.jpg"
+                src="/images/Bestlogo-transparent.png"
                 alt="Elysian Logo"
                 width={256}
                 height={256}
-                className="h-14 w-14 rounded-full object-cover ring-2 ring-white/25 shadow"
+                className="h-14 w-14 object-contain"
               />
               <span className="flex flex-col leading-none">
                 <span className="font-display text-xl font-semibold text-cream">

@@ -13,7 +13,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-linear-to-b from-cream via-cream to-cream-deep overflow-hidden">
       {/* Subtle full-page Bestlogo watermark */}
       <img
-        src="/images/Bestlogo.jpg"
+        src="/images/Bestlogo-transparent.png"
         alt=""
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 h-[145vmin] w-[145vmin] -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.06]"

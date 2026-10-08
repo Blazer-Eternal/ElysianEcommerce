@@ -36,7 +36,7 @@ const ProductImage = ({ review }: { review: MyReview }) => {
   return (
     <Link
       to={ROUTES.PRODUCT_DETAIL(review.product._id)}
-      className="shrink-0 overflow-hidden rounded-xl border border-sand bg-white transition-colors hover:border-brand/40"
+      className="shrink-0 self-start overflow-hidden rounded-xl border border-sand bg-white transition-colors hover:border-brand/40"
     >
       <img
         src={cloudinaryImg(src ?? "", 200)}

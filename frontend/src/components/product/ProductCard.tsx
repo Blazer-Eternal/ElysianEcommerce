@@ -67,13 +67,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
       >
         <div className="glass rounded-2xl overflow-hidden hover:bg-white transition-all duration-300 h-full flex flex-col shadow-md hover:shadow-xl hover:-translate-y-1 gpu-accelerate" style={{ backfaceVisibility: "hidden" }}>
           {/* Image Container */}
-          <div className="relative overflow-hidden bg-linear-to-br from-cyan-50 to-[#f7ecdb] aspect-square">
+          <div className="relative overflow-hidden bg-linear-to-br from-cyan-50 to-[#f7ecdb] aspect-4/3">
             {/* Product Image */}
             <img
               src={cloudinaryImg(imageUrl, 800)}
               alt={product.name}
               width={800}
-              height={800}
+              height={600}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 gpu-accelerate"
               loading="lazy"
               decoding="async"
@@ -89,7 +89,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
             {/* Stock Badge */}
             <div className="absolute top-2 left-2">
-              <div className="glass rounded-full px-2.5 py-1 text-xs font-semibold">
+              <div className="glass rounded-full px-2 py-1 text-[11px] font-semibold">
                 {outOfStock ? (
                   <span className="text-red-600">Out of Stock</span>
                 ) : product.stock && product.stock < 5 ? (
@@ -102,16 +102,16 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
             {/* Wishlist Button */}
             <div className="absolute top-2 right-2 z-20">
-              <div className="glass rounded-full p-2 hover:bg-white transition-all duration-300 flex items-center justify-center">
+              <div className="glass rounded-full p-1.5 hover:bg-white transition-all duration-300 flex items-center justify-center">
                 <WishlistButton productId={product._id} />
               </div>
             </div>
           </div>
 
           {/* Content Container */}
-          <div className="flex-1 p-4 flex flex-col justify-between gap-3">
+          <div className="flex-1 p-3.5 flex flex-col justify-between gap-2.5">
             {/* Product Name */}
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 group-hover:text-brand transition-colors duration-300">
                 {product.name}
               </h3>
@@ -121,7 +121,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 <div className="flex items-center gap-1.5">
                   <StarRating
                     value={product.rating_avg}
-                    size={16}
+                    size={14}
                     filledClassName="text-brand"
                     emptyClassName="text-brand/30"
                   />
@@ -137,13 +137,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </div>
 
             {/* Price Container */}
-            <div className="pt-3 border-t border-[#ece1d0]">
+            <div className="pt-2.5 border-t border-[#ece1d0]">
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className="text-xl font-extrabold text-brand">
+                <span className="text-lg font-extrabold text-brand">
                   {formatCurrency(product.price)}
                 </span>
                 {mrp && (
-                  <span className="text-sm text-gray-500 line-through">
+                  <span className="text-xs text-gray-500 line-through">
                     {formatCurrency(mrp)}
                   </span>
                 )}
@@ -171,7 +171,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               <button
                 onClick={handleAddToCart}
                 disabled={outOfStock || isAdding}
-                className={`w-full rounded-xl border px-3 py-2 text-sm font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                className={`w-full rounded-lg border px-3 py-2 text-[13px] font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
                   justAdded
                     ? "border-green-500 bg-green-600 text-white disabled:hover:bg-green-600 disabled:hover:text-white"
                     : "border-brand/40 bg-white text-brand hover:bg-brand hover:border-brand hover:text-white disabled:hover:bg-white disabled:hover:text-brand"

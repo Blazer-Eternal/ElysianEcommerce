@@ -1,7 +1,7 @@
 import type { BriefGroupKey, BriefSeverity } from "../types/dailyBrief.types";
 
 /**
- * Colour vocabulary for the Daily Update drawer.
+ * Colour vocabulary for the Daily Update view.
  *
  * green = something good happened, amber = look soon, red = money/customer on
  * the line, slate = context only. Classes are canonical Tailwind tokens.
@@ -59,6 +59,12 @@ const MUTED_KEY = "elysian_admin_brief_muted";
 /** Bound so the read ledger never grows without limit. */
 const READ_CAP = 500;
 
+/**
+ * Window event fired whenever the seen-keys ledger is written, so the topbar
+ * bell badge and the full Notifications view stay in step without props.
+ */
+export const BRIEF_SEEN_EVENT = "elysian:brief-seen-changed";
+
 const readJson = <T>(key: string, fallback: T): T => {
   try {
     const raw = localStorage.getItem(key);
@@ -76,7 +82,12 @@ export const saveSeenKeys = (keys: string[]): void => {
   try {
     localStorage.setItem(READ_KEY, JSON.stringify(list));
   } catch {
-    /* storage full or blocked — the drawer simply re-prompts next visit */
+    /* storage full or blocked — the view simply re-prompts next visit */
+  }
+  if (typeof window !== "undefined") {
+    // Deferred: this can run inside a state updater (render phase), and the
+    // listeners setState on sibling components — never do that mid-render.
+    queueMicrotask(() => window.dispatchEvent(new Event(BRIEF_SEEN_EVENT)));
   }
 };
 

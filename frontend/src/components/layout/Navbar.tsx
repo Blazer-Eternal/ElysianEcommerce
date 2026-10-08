@@ -91,11 +91,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 flex items-center justify-between gap-2 sm:gap-3 md:gap-6 overflow-visible">
         <Link to={ROUTES.HOME} className="shrink-0 flex items-center gap-2 sm:gap-2.5 gpu-accelerate group" style={{ transform: "translateZ(0)" }}>
           <img 
-            src="/images/Bestlogo.jpg" 
+            src="/images/Bestlogo-transparent.png" 
             alt="ElysianEcommerce Logo" 
             width={256}
             height={256}
-            className="h-10 sm:h-12 md:h-14 w-10 sm:w-12 md:w-14 rounded-full object-cover ring-1 ring-[#ece1d0] shadow-sm transition-transform group-hover:scale-105"
+            className="h-10 sm:h-12 md:h-14 w-10 sm:w-12 md:w-14 object-contain transition-transform group-hover:scale-105"
             style={{ willChange: "transform" }}
           />
           <span className="hidden sm:flex flex-col leading-none pb-0.5">

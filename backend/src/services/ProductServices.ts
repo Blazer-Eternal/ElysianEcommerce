@@ -1,5 +1,6 @@
 import { ProductModel } from "../models/ProductModel";
 import { ProductInterface, InputProductInterface } from "../intefaces/ProductInterface";
+import { CategoryServices } from "./CategoryServices";
 
 export interface PriceRangeFilter {
   /** Inclusive lower bound in NPR. */
@@ -71,7 +72,10 @@ export class ProductServices {
       filter.price = price;
     }
     if (category_id) {
-      filter.category_id = category_id;
+      // Products always sit on a leaf category, so picking a parent in the
+      // storefront has to match the whole subtree, not just the parent id.
+      const categoryIds = await new CategoryServices().findSelfAndDescendants(category_id);
+      filter.category_id = categoryIds.length > 1 ? { $in: categoryIds } : category_id;
     }
     if (status) {
       filter.status = status;

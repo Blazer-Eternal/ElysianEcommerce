@@ -127,23 +127,6 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
     <div className="flex h-screen overflow-hidden bg-cream lg:pl-28">
       {/* Floating icon rail — desktop only */}
       <aside className="fixed bottom-4 left-4 top-4 z-40 hidden w-18 flex-col items-center rounded-3xl border border-sand bg-white/95 p-2 shadow-[0_6px_32px_rgba(61,5,12,0.12)] backdrop-blur-sm lg:flex">
-        <Link
-          to={ROUTES.HOME}
-          className="group relative flex h-12 w-12 shrink-0 items-center justify-center"
-          aria-label="Back to Elysian Ecommerce"
-        >
-          <img
-            src="/images/Bestlogo.jpg"
-            alt=""
-            width={40}
-            height={40}
-            className="h-10 w-10 rounded-full object-cover ring-1 ring-sand shadow-sm"
-          />
-          <RailTooltip label="Back to store" />
-        </Link>
-
-        <span className="my-2 h-px w-8 shrink-0 bg-sand" aria-hidden />
-
         <nav className="flex w-full min-h-0 flex-1 flex-col items-center justify-center gap-1.5">
           {navItems.map((item) => {
             const active = isActive(item);
@@ -188,11 +171,11 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
         <div className="flex items-center justify-between gap-3 border-b border-sand px-5 py-4">
           <Link to={ROUTES.HOME} className="flex min-w-0 items-center gap-3" title="Back to Elysian Ecommerce">
             <img
-              src="/images/Bestlogo.jpg"
+              src="/images/Bestlogo-transparent.png"
               alt="Elysian Ecommerce"
               width={48}
               height={48}
-              className="h-12 w-12 shrink-0 rounded-full object-cover ring-1 ring-sand shadow-sm"
+              className="h-12 w-12 shrink-0 object-contain"
             />
             <span className="min-w-0">
               <span className="block truncate text-sm font-bold text-ink">Elysian</span>
@@ -272,6 +255,21 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
           >
             <MenuIcon size={22} />
           </button>
+
+          <Link
+            to={ROUTES.HOME}
+            className="group flex shrink-0 items-center"
+            aria-label="Back to Elysian Ecommerce"
+            title="Back to Elysian Ecommerce"
+          >
+            <img
+              src="/images/Bestlogo-transparent.png"
+              alt="Elysian Ecommerce"
+              width={40}
+              height={40}
+              className="h-9 w-9 object-contain transition-transform group-hover:scale-105 sm:h-10 sm:w-10"
+            />
+          </Link>
 
           <form onSubmit={handleSearch} className="relative min-w-0 flex-1 sm:max-w-md">
             <SearchIcon size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/50" />
