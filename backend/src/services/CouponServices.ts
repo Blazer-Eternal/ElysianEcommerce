@@ -61,8 +61,8 @@ export class CouponServices {
   /**
    * Membership tier for coupon gating.
    *
-   * Delegates to the shared loyalty engine — fixed cycles, the Rs. 1,000
-   * floor, the 14-day spacing rule and the 7-day return window — so a tier
+   * Delegates to the shared loyalty engine, fixed cycles, the Rs. 1,000
+   * floor, the 14-day spacing rule and the 7-day return window, so a tier
    * coupon opens on the same day the customer's dashboard says it does.
    * "registered" ranks below every level: nothing has been earned yet.
    */

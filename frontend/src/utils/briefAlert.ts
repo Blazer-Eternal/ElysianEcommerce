@@ -81,17 +81,17 @@ export const saveSeenKeys = (keys: string[]): void => {
   try {
     localStorage.setItem(READ_KEY, JSON.stringify(list));
   } catch {
-    /* storage full or blocked — the view simply re-prompts next visit */
+    /* storage full or blocked, the view simply re-prompts next visit */
   }
   if (typeof window !== "undefined") {
     // Deferred: this can run inside a state updater (render phase), and the
-    // listeners setState on sibling components — never do that mid-render.
+    // listeners setState on sibling components, never do that mid-render.
     queueMicrotask(() => window.dispatchEvent(new Event(BRIEF_SEEN_EVENT)));
   }
 };
 
 /**
- * Only new orders and a dead storefront earn a desktop alert — a single vendor
+ * Only new orders and a dead storefront earn a desktop alert, a single vendor
  * can miss a low-stock nudge, but not a sale going through or the site falling
  * over. Takes the whole entry so the key can carry the intent.
  */

@@ -72,7 +72,7 @@ const tierRank = (name: string): number =>
  * Builds the signed-in customer's notification feed.
  *
  * Design rule: derive only what the database can prove. Every entry below is a
- * fact about a real record — current order status, a wishlist item's live price
+ * fact about a real record, current order status, a wishlist item's live price
  * and stock, an untouched cart, an unreviewed delivered order, a coupon that is
  * active and genuinely available to this customer's tier. Categories with no
  * backing data simply produce nothing; no message is ever invented to fill a
@@ -199,7 +199,7 @@ export class CustomerNotificationServices {
             message = `Order ${number} is confirmed. Rs. ${money(total)} is due on delivery.`;
           } else {
             title = "Order confirmed";
-            message = `Order ${number} is confirmed — awaiting your eSewa payment of Rs. ${money(
+            message = `Order ${number} is confirmed. Awaiting your eSewa payment of Rs. ${money(
               total
             )}.`;
           }
@@ -351,7 +351,7 @@ export class CustomerNotificationServices {
           title: `${product.name} is on sale`,
           message: `Now Rs. ${money(product.price)} against a Rs. ${money(
             product.mrp
-          )} MRP — Rs. ${money(product.mrp - product.price)} less than the listed price.`,
+          )} MRP, Rs. ${money(product.mrp - product.price)} less than the listed price.`,
           timestamp: savedAt,
           timestampLabel: "Saved to wishlist",
           href,
@@ -370,7 +370,7 @@ export class CustomerNotificationServices {
         key: `cart:idle:${cart._id}:${cartUpdatedAt.toISOString()}`,
         category: CustomerNotificationCategoryEnum.wishlist,
         title: `You left ${lineCount} item${lineCount === 1 ? "" : "s"} in your cart`,
-        message: `Your cart is saved — check out whenever you are ready.`,
+        message: `Your cart is saved. Check out whenever you are ready.`,
         timestamp: cartUpdatedAt,
         timestampLabel: "Cart updated",
         href: "/cart",
@@ -496,8 +496,8 @@ export class CustomerNotificationServices {
         key: `coupon:${coupon._id}`,
         category: CustomerNotificationCategoryEnum.promotions,
         title: isPercentage
-          ? `${coupon.code} — ${coupon.value}% off`
-          : `${coupon.code} — Rs. ${money(coupon.value)} off`,
+          ? `${coupon.code}: ${coupon.value}% off`
+          : `${coupon.code}: Rs. ${money(coupon.value)} off`,
         message: `${headline}${
           qualifiers.length ? `, ${qualifiers.join(", ")}` : ""
         }, valid until ${shortDate(coupon.expiry_date)}.`,

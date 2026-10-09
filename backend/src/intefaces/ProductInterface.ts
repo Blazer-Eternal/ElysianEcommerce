@@ -8,7 +8,7 @@ export interface InputProductInterface {
   sku: string;
   price: number;
   cost_price?: number;
-  /** Maximum retail price — the struck-through original price shown on the storefront. */
+  /** Maximum retail price, the struck-through original price shown on the storefront. */
   mrp?: number;
   /** Displayed brand (e.g. "Dot & Key"); purely presentational. */
   brand?: string;

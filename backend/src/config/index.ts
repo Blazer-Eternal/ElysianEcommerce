@@ -7,11 +7,11 @@ export const environment = process.env.NODE_ENV || "development";
 
 export const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 
-// Google "Continue with Google" — the Web OAuth Client ID. Must match the
+// Google "Continue with Google", the Web OAuth Client ID. Must match the
 // VITE_GOOGLE_CLIENT_ID used by the frontend button.
 export const googleClientId: string = process.env.GOOGLE_CLIENT_ID as string;
 
-// eSewa v2 sandbox (test) credentials — publicly documented test values.
+// eSewa v2 sandbox (test) credentials, publicly documented test values.
 // Swap these for real merchant credentials via env vars when going live.
 export const esewaConfig = {
   productCode: process.env.ESEWA_PRODUCT_CODE || "EPAYTEST",

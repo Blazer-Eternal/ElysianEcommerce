@@ -26,7 +26,7 @@ const CATEGORY_ICON: Record<CustomerNotificationCategory, ReactNode> = {
  * Header notification bell.
  *
  * Opens a dropdown capped at `BELL_PREVIEW_LIMIT` entries rather than
- * navigating away — the order/tracking centre has its own nav entry. The footer
+ * navigating away, the order/tracking centre has its own nav entry. The footer
  * button is the only route out, to the full Notifications page.
  */
 const NotificationBell = () => {

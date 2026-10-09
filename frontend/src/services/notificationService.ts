@@ -40,7 +40,7 @@ export const notificationService = {
   },
 
   /**
-   * Admin: the Daily Update brief — 6 groups (sales, inventory, support,
+   * Admin: the Daily Update brief, 6 groups (sales, inventory, support,
    * shipping, system, marketing) derived live from the database.
    */
   getDailyBrief: async (signal?: AbortSignal): Promise<AdminBrief> => {

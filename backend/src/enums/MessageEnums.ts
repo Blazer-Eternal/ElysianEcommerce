@@ -1,7 +1,7 @@
 /**
  * Topic buckets a contact-form message can belong to. The customer picks one
  * when they write in (the "Topic" select on the Contact page), and the admin
- * can re-assign it later from the inbox — the value is what the inbox filter
+ * can re-assign it later from the inbox. The value is what the inbox filter
  * chips are built from, so keep it stable and machine-safe.
  */
 export enum MessageTagEnum {

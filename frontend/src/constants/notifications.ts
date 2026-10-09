@@ -5,7 +5,7 @@ import type { CustomerNotificationCategory } from "../types/notification.types";
  *
  * Order matters: it is the order the full notifications page groups entries
  * under, and the bell dropdown reads the same labels for its eyebrow text.
- * Categories the server did not return simply do not render — there is no
+ * Categories the server did not return simply do not render. There is no
  * empty shell for a group with nothing behind it.
  */
 export const NOTIFICATION_CATEGORY_LABELS: Record<CustomerNotificationCategory, string> = {

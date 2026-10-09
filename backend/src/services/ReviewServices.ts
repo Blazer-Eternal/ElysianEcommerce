@@ -123,7 +123,7 @@ export class ReviewServices {
    * second round-trip per review.
    *
    * Reviews whose product has since been deleted come back with
-   * `product: null` rather than being dropped — the star rating and comment
+   * `product: null` rather than being dropped. The star rating and comment
    * still belong to the customer and must stay visible.
    */
   public async findByUser(userId: string, options: { page?: number; limit?: number } = {}) {

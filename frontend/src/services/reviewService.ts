@@ -5,7 +5,7 @@ import type { PaginatedResponse } from "../types/pagination.types";
 export const reviewService = {
   /**
    * The signed-in customer's own reviews across every product they have
-   * written about, newest first — powers the Reviews tab of the portal.
+   * written about, newest first. Powers the Reviews tab of the portal.
    */
   getMyReviews: async (
     page = 1,

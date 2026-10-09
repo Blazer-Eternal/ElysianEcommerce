@@ -5,7 +5,7 @@ import { NotificationServices, AdminBriefServices } from "../../services";
 export class NotificationController {
   /**
    * Admin: the Daily Update panel. Six groups (sales, inventory, support,
-   * shipping, system, marketing) derived live from the store's own records —
+   * shipping, system, marketing) derived live from the store's own records,
    * nothing here is stored, so it is never stale.
    */
   static async getDailyBrief(req: CustomRequestInterface, res: Response) {

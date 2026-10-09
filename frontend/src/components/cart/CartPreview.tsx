@@ -27,7 +27,7 @@ const toRows = (items: CartItemType[]): Row[] =>
  * "Active cart preview" panel hanging off the header cart icon.
  *
  * Reads the live cart from `CartContext`, so the thumbnail, price and subtotal
- * are the customer's real basket rather than a mock — and the remove button
+ * are the customer's real basket rather than a mock, and the remove button
  * calls the same `DELETE /cart/items/:productId` the cart page uses, keeping
  * both screens in sync.
  */
@@ -44,7 +44,7 @@ const CartPreview = () => {
   const subtotal = rows.reduce((sum, row) => sum + row.product.price * row.quantity, 0);
   const itemCount = rows.reduce((sum, row) => sum + row.quantity, 0);
 
-  // Close on outside click or Escape — the same contract as the bell menus.
+  // Close on outside click or Escape, the same contract as the bell menus.
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (event: PointerEvent) => {

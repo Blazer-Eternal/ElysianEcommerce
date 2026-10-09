@@ -4,8 +4,8 @@ import { formatDateTime } from "./formatDate";
 /**
  * Live-tracking view of an order, derived entirely from the order document.
  *
- * The database stores one status field plus `created_at` — there is no
- * shipment/carrier table — so every caption below is a rendering of a value
+ * The database stores one status field plus `created_at`. There is no
+ * shipment/carrier table, so every caption below is a rendering of a value
  * that is actually on the record. Steps the order has not reached yet carry
  * no detail instead of an invented one.
  */
@@ -78,7 +78,7 @@ export const getTrackingSteps = (order: Order): TrackingStep[] => {
 };
 
 /**
- * Milestones reached so far, newest first — the list the tracking modal
+ * Milestones reached so far, newest first: the list the tracking modal
  * renders. Cancelled orders never enter the progression, so they yield no
  * events and the modal shows the cancellation notice instead.
  */

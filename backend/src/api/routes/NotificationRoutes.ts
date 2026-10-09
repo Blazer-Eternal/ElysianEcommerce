@@ -33,7 +33,7 @@ notificationRoutes.post(
 
 /*
  * Customer feed. Derived live from the signed-in customer's own orders,
- * wishlist, cart, coupons and reviews — nothing is stored as content, only the
+ * wishlist, cart, coupons and reviews, nothing is stored as content, only the
  * read markers behind `read` / `unreadCount`. Registered after the admin
  * routes above; the literal "/" and "/read-all" paths never match "/customer".
  */

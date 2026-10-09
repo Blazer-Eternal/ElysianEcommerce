@@ -6,7 +6,7 @@ export const formatDate = (dateString: string): string => {
   });
 };
 
-/** "Oct 4, 2026, 9:30 AM" — a stored timestamp shown with its clock time. */
+/** "Oct 4, 2026, 9:30 AM", a stored timestamp shown with its clock time. */
 export const formatDateTime = (dateString: string): string => {
   return new Date(dateString).toLocaleString("en-US", {
     year: "numeric",
@@ -31,7 +31,7 @@ const ordinalSuffix = (day: number): string => {
   }
 };
 
-/** "Wednesday, October 7th, 2026" — the greeting-header date on the dashboard. */
+/** "Wednesday, October 7th, 2026", the greeting-header date on the dashboard. */
 export const formatLongDate = (date: Date = new Date()): string => {
   const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
   const month = date.toLocaleDateString("en-US", { month: "long" });

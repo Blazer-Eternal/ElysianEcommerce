@@ -11,7 +11,7 @@ dotenv.config();
 interface ProductSeed {
   name: string;
   slug: string;
-  /** Real manufacturer brand — the store name is never shown as a product brand. */
+  /** Real manufacturer brand, the store name is never shown as a product brand. */
   brand: string;
   description: string;
   sku: string;
@@ -38,7 +38,7 @@ const resolveImageUrl = async (url: string): Promise<string> => {
     const res = await fetch(url, { redirect: "follow" });
     return res.url && res.url !== url ? res.url : url;
   } catch {
-    return url; // network hiccup — keep the redirecting URL rather than lose the image
+    return url; // network hiccup, keep the redirecting URL rather than lose the image
   }
 };
 
@@ -135,7 +135,7 @@ const seedProducts = async () => {
       const category = await CategoryModel.findOne({ slug: item.category_slug });
 
       if (!category) {
-        console.log(`⚠️ Skipped "${item.name}" — category slug '${item.category_slug}' not found. Run seed:categories first.`);
+        console.log(`⚠️ Skipped "${item.name}", category slug '${item.category_slug}' not found. Run seed:categories first.`);
         skippedCount++;
         continue;
       }

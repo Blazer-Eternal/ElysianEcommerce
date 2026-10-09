@@ -5,7 +5,7 @@ import { addCartItemValidator, updateCartItemValidator } from "../../validators/
 
 const cartRoutes = Router();
 
-// All cart routes require login — cart is always tied to req.user.id, never a URL param
+// All cart routes require login, cart is always tied to req.user.id, never a URL param
 cartRoutes.get("/", exceptionHandler(Guard.grantAccess), exceptionHandler(CartController.getMyCart));
 
 cartRoutes.post(

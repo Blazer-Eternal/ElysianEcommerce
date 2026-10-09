@@ -1,7 +1,7 @@
 /**
  * Maintenance script: rewrite seeded picsum.photos image URLs to the direct
  * (no-302) CDN URLs they redirect to, so the storefront stops paying an extra
- * round-trip per product image on first view. Idempotent — URLs that are
+ * round-trip per product image on first view. Idempotent, URLs that are
  * already direct are left untouched.
  *
  * Run from backend/:  npx tsx src/scripts/resolveProductImages.ts

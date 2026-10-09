@@ -30,7 +30,7 @@ const matchesFilter = (order: Order, filter: FilterKey): boolean => {
 };
 
 /**
- * "Orders and Reviews" — two views over the same corner of the portal.
+ * "Orders and Reviews", two views over the same corner of the portal.
  *
  * The Orders side is byte-for-byte the old order history (same query key,
  * same filter chips, same cards, same pagination); Reviews is a sibling tab
@@ -71,7 +71,7 @@ const OrderHistory = () => {
           <p className="mt-1.5 text-sm sm:text-base text-gray-600">
             {tab === "orders"
               ? "View order history, track shipments, and follow delivery status"
-              : "Everything you have rated, with the comments you left — all editable."}
+              : "Everything you have rated, with the comments you left. All of it is editable."}
           </p>
         </div>
 

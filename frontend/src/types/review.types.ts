@@ -53,7 +53,7 @@ export interface MyReviewProduct {
 
 /**
  * One of the signed-in customer's own reviews, joined to its product.
- * `product` is null when the product has since been removed — the rating and
+ * `product` is null when the product has since been removed, the rating and
  * comment still belong to the customer and stay listed.
  */
 export interface MyReview {

@@ -15,7 +15,7 @@ interface UserSeed {
 
 /**
  * Demo / test customers. The store previously mixed admin test data with real
- * accounts, so orders, reviews, cart and wishlist were wiped — these users are
+ * accounts, so orders, reviews, cart and wishlist were wiped, these users are
  * the clean replacement base for the storefront.
  */
 const userData: UserSeed[] = [
@@ -35,7 +35,7 @@ const seedUsers = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI as string);
 
-    // Hash once and reuse — bcrypt is deliberately slow, one hash per unique
+    // Hash once and reuse, bcrypt is deliberately slow, one hash per unique
     // password is enough for the whole batch.
     const passwordHashCache = new Map<string, string>();
     const hashFor = async (password: string): Promise<string> => {
@@ -70,7 +70,7 @@ const seedUsers = async () => {
         continue;
       }
 
-      // Never touch password_hash/role of an existing account — only refresh
+      // Never touch password_hash/role of an existing account, only refresh
       // the profile fields this seeder owns. Existing credentials keep working.
       const changes: Record<string, unknown> = {};
       if (existing.name !== seed.name) changes.name = seed.name;

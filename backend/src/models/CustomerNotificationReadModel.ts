@@ -7,7 +7,7 @@ import { CustomerNotificationReadInterface } from "../intefaces/CustomerNotifica
  * The feed itself is derived live from Orders / Wishlist / Cart / Coupons /
  * Reviews on every request, so no generated copy is ever written to the
  * database. All that needs to survive between requests is *which* derived keys
- * this customer has already seen — hence this deliberately tiny marker row.
+ * this customer has already seen, hence this deliberately tiny marker row.
  *
  * Keys are deterministic (`order:<id>:status:shipped`, `coupon:<id>`, ...), so
  * a marker keeps meaning the same thing until the underlying record genuinely

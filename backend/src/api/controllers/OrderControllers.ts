@@ -137,7 +137,7 @@ export class OrderController {
       const total_amount = subtotal - discount;
       const order_number = new OrderServices().generateOrderNumber();
 
-      // COD — create order immediately with pending status
+      // COD, create order immediately with pending status
       if (payment_method === PaymentMethodEnum.cod) {
         try {
           // Reserve stock for COD orders
@@ -181,7 +181,7 @@ export class OrderController {
         }
       }
 
-      // eSewa — DO NOT create order yet. Return pre-order token only.
+      // eSewa, DO NOT create order yet. Return pre-order token only.
       // Stock will be reserved ONLY after payment is verified.
       // Cart is NOT cleared yet - user can retry if payment fails.
       if (payment_method === PaymentMethodEnum.esewa) {
@@ -266,7 +266,7 @@ export class OrderController {
 
       console.log(`[eSewa Verification] Payment verification SUCCESSFUL for order ${preOrderData.order_number}`);
 
-      // Payment verified — NOW create the order
+      // Payment verified, NOW create the order
       // Reserve stock for all items
       for (const item of preOrderData.items) {
         const product = await new ProductServices().findById(item.product_id.toString());
@@ -352,7 +352,7 @@ export class OrderController {
       const page = req.query.page ? parseInt(req.query.page as string) : 1;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 20;
 
-      // Optional ?status= filter — only applied when it matches a known status.
+      // Optional ?status= filter, applied only when it matches a known status.
       const rawStatus = typeof req.query.status === "string" ? req.query.status : undefined;
       const status = rawStatus && Object.values(OrderStatusEnum).includes(rawStatus as OrderStatusEnum) ? rawStatus : undefined;
 

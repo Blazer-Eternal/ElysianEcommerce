@@ -139,7 +139,7 @@ const Notifications = () => {
             <p className="mx-auto mt-2 max-w-md text-sm text-gray-500">
               {filter === "unread"
                 ? "You have read every update in your feed."
-                : "Updates appear here as soon as there is something real to share — an order moving along, a price drop on a saved item, or a coupon you can use."}
+                : "Updates appear here as soon as there is something real to share: an order moving along, a price drop on a saved item, or a coupon you can use."}
             </p>
             {filter === "unread" ? (
               <button
@@ -229,7 +229,7 @@ const Notifications = () => {
           ))
         )}
 
-        {/* Everything here is derived from live records — nothing is archived. */}
+        {/* Everything here is derived from live records, nothing is archived. */}
         <p className="flex items-center justify-center gap-1.5 text-center text-xs text-gray-400">
           <CheckIcon size={13} /> Updates are rebuilt from your orders, wishlist, cart and available
           offers each time you load this page.

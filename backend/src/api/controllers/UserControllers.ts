@@ -16,7 +16,7 @@ export class UserController {
     }
   }
 
-  // Owner or admin only — a user cannot view someone else's profile
+  // Owner or admin only, a user cannot view someone else's profile
   static async getUserById(req: CustomRequestInterface, res: Response) {
     const id = req.params.id as string;
 
@@ -78,7 +78,7 @@ export class UserController {
         });
       }
 
-      // Nobody may change their own role — otherwise the only admin could
+      // Nobody may change their own role, otherwise the only admin could
       // demote themselves and lock the whole panel. The UI hides this too,
       // but the API is the source of truth.
       if (req.user?.id === id) {
@@ -94,7 +94,7 @@ export class UserController {
         if (adminCount <= 1) {
           return res.status(409).json({
             success: false,
-            message: "Cannot demote the last admin account — the admin panel would become inaccessible.",
+            message: "Cannot demote the last admin account; the admin panel would become inaccessible.",
           });
         }
       }
@@ -128,7 +128,7 @@ export class UserController {
         if (adminCount <= 1) {
           return res.status(409).json({
             success: false,
-            message: "Cannot delete the last admin account — the admin panel would become inaccessible.",
+            message: "Cannot delete the last admin account; the admin panel would become inaccessible.",
           });
         }
       }

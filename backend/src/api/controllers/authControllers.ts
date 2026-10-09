@@ -120,7 +120,7 @@ export class AuthController {
         addresses: [],
       });
 
-      // Admin bell notification — never blocks the signup response.
+      // Admin bell notification, never blocks the signup response.
       void new NotificationServices().recordSignup(user.name, user.email);
 
       return res.status(201).json({
@@ -438,7 +438,7 @@ export class AuthController {
           google_id: doc.google_id,
         });
         message = "Account created and logged in successfully!";
-        // Admin bell notification — never blocks the login response.
+        // Admin bell notification, never blocks the login response.
         void new NotificationServices().recordSignup(user.name, user.email);
       }
 

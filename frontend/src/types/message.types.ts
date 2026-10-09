@@ -1,6 +1,6 @@
 ﻿import type { PaginatedResponse } from "./pagination.types";
 
-/** Topic buckets — mirrors `MessageTagEnum` on the backend. */
+/** Topic buckets; mirrors `MessageTagEnum` on the backend. */
 export type MessageTag =
   | "order"
   | "shipping"
@@ -13,7 +13,7 @@ export type MessageTag =
   | "other"
   | "spam";
 
-/** Inbox filter states — mirrors `MessageStatusEnum`. */
+/** Inbox filter states; mirrors `MessageStatusEnum`. */
 export type MessageStatus = "unread" | "read" | "replied" | "archived";
 
 export interface Message {

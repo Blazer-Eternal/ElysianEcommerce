@@ -124,7 +124,7 @@ const Dashboard = () => {
   });
 
   // Tier, cycle and points are all derived server-side from the order
-  // history — this snapshot quotes the same numbers as the loyalty page.
+  // history. This snapshot quotes the same numbers as the loyalty page.
   const loyaltyTier = loyalty?.tier ?? null;
   const loyaltyPoints = loyalty?.points.available ?? 0;
   const spendProgress =
@@ -222,7 +222,7 @@ const Dashboard = () => {
             />
           </div>
 
-          {/* Active shipment — live tracking hero */}
+          {/* Active shipment, live tracking hero */}
           {shipment && currentIndex >= 0 ? (
             <section className={`${CARD} lg:col-span-2 xl:col-span-4`}>
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -286,8 +286,8 @@ const Dashboard = () => {
 
               <p className="mt-5 text-sm text-gray-600">
                 Status:{" "}
-                <span className="font-semibold text-gray-900">{steps[currentIndex].label}</span> —
-                updates appear here as soon as the carrier scans your parcel.
+                <span className="font-semibold text-gray-900">{steps[currentIndex].label}</span>.
+                Updates appear here as soon as the carrier scans your parcel.
               </p>
             </section>
           ) : (
@@ -320,7 +320,7 @@ const Dashboard = () => {
 
             {orders.length === 0 ? (
               <p className="mt-4 rounded-xl border border-dashed border-sand bg-cream px-4 py-6 text-center text-sm text-gray-500">
-                No orders yet — once you place one, its status shows up here.
+                No orders yet. Once you place one, its status shows up here.
               </p>
             ) : (
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">

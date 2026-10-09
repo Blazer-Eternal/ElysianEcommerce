@@ -2,8 +2,8 @@
  * The membership ladder exactly as the storefront publishes it.
  *
  * These numbers mirror `backend/src/services/LoyaltyServices.ts`, which is
- * what actually decides a customer's level. They exist so the public pages —
- * compare benefits, the plans rail, the loyalty copy — quote one set of
+ * what actually decides a customer's level. They exist so the public pages,
+ * compare benefits, the plans rail, the loyalty copy, quote one set of
  * figures instead of restating them inline, and so a change to the engine has
  * exactly two places to land.
  */

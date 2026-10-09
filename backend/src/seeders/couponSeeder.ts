@@ -146,7 +146,7 @@ const couponData: CouponSeed[] = [
     purpose: "Festival / seasonal sale",
   },
   // Flash codes are released to members first. The code itself is never
-  // printed on a public page — Platinum and Diamond receive it in their
+  // printed on a public page, Platinum and Diamond receive it in their
   // account and email ahead of any public window, which keeps the 150-run cap
   // away from coupon sites and bots.
   {
@@ -281,7 +281,7 @@ const seedCoupons = async () => {
           is_active: true,
         });
         created += 1;
-        console.log(`Created: ${seed.code} — ${seed.purpose}`);
+        console.log(`Created: ${seed.code}, ${seed.purpose}`);
         continue;
       }
 
@@ -324,7 +324,7 @@ const seedCoupons = async () => {
         }
       );
       updated += 1;
-      console.log(`Updated: ${seed.code} — ${seed.purpose}`);
+      console.log(`Updated: ${seed.code}, ${seed.purpose}`);
     }
 
     console.log(

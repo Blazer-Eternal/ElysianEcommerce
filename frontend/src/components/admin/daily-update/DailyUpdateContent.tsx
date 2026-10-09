@@ -133,7 +133,7 @@ export default function DailyUpdateContent() {
   const allEntries = useMemo(() => groups.flatMap((g) => g.entries), [groups]);
   const actionEntries = useMemo(() => allEntries.filter((e) => e.action_required), [allEntries]);
 
-  /* Arriving at the full view counts as reading it — same as when the old
+  /* Arriving at the full view counts as reading it, same as when the old
      drawer opened: the bell badge clears once the admin has landed here. */
   const markAllSeen = useCallback(() => {
     setSeen((prev) => {

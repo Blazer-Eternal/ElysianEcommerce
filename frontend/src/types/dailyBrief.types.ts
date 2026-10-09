@@ -1,4 +1,4 @@
-/** How urgent an item in the Daily Update drawer is — drives the colour. */
+/** How urgent an item in the Daily Update drawer is; drives the colour. */
 export type BriefSeverity = "critical" | "warning" | "success" | "info";
 
 export interface BriefAction {
@@ -7,7 +7,7 @@ export interface BriefAction {
 }
 
 export interface BriefEntry {
-  /** Stable id — the drawer remembers which items this admin has already seen. */
+  /** Stable id; the drawer remembers which items this admin has already seen. */
   key: string;
   severity: BriefSeverity;
   /** True when ignoring this item costs money, stock or a customer. */

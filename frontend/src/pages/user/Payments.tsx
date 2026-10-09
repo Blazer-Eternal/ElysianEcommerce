@@ -22,7 +22,7 @@ const CARD = "rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16p
 /**
  * Payment methods the storefront actually supports. The order schema only ever
  * records `cod` or `esewa`, so this list is derived from the customer's own
- * orders rather than a saved-card vault — none exists in this system.
+ * orders rather than a saved-card vault, none exists in this system.
  */
 const METHOD_META: Record<PaymentMethod, { label: string; blurb: string; icon: React.ReactNode; iconClassName: string }> = {
   cod: {
@@ -168,7 +168,7 @@ const Payments = () => {
           <p className="mt-4 flex items-start gap-2 rounded-xl bg-cream/70 px-4 py-3 text-xs leading-relaxed text-gray-500">
             <AlertIcon size={14} className="mt-0.5 shrink-0 text-ink/45" />
             <span>
-              This store takes Cash on Delivery and eSewa only — card numbers are never stored on
+              This store takes Cash on Delivery and eSewa only. Card numbers are never stored on
               your account, so there is no card vault to manage.
             </span>
           </p>
@@ -238,7 +238,7 @@ const Payments = () => {
 
           {orders.length > 0 && (
             <p className="mt-4 flex items-center gap-1.5 text-xs text-gray-400">
-              <CheckIcon size={13} /> Every row is read straight from your orders — nothing is
+              <CheckIcon size={13} /> Every row is read straight from your orders; nothing is
               recorded separately for payments.
             </p>
           )}

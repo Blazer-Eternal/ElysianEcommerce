@@ -37,7 +37,7 @@ Thumbs.db
 *.sln
 *.sw?
 
-# Repo-root tooling — local only.
+# Repo-root tooling, local only.
 # Only backend/, frontend/ and this .gitignore are meant to ship.
 # The leading / anchors these to the repo root, so frontend/package.json
 # and backend/package.json are still tracked as before.

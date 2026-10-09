@@ -23,7 +23,7 @@ export interface NotificationListResponse {
 
 /**
  * The five customer update groups. A group is only ever present in the
- * response when the database holds data behind it — there is no placeholder
+ * response when the database holds data behind it. There is no placeholder
  * content for a category that currently has nothing to say.
  */
 export type CustomerNotificationCategory =
@@ -37,7 +37,7 @@ export type CustomerNotificationCategory =
  * One derived customer update.
  *
  * `timestamp` is a real date taken from the source record, and
- * `timestampLabel` states what that date marks — the server never claims a
+ * `timestampLabel` states what that date marks, the server never claims a
  * status-change time the schema does not record.
  */
 export interface CustomerNotification {

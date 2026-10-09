@@ -45,7 +45,7 @@ const plans: Plan[] = [
     badge: "Level 1",
     headline: "2 qualifying orders + Rs. 3,000 within 6 months",
     description:
-      "Everyone starts at Registered — Bronze is the first level you earn, and it starts your points.",
+      "Everyone starts at Registered. Bronze is the first level you earn, and it starts your points.",
     icon: <CrownIcon size={20} />,
     accent: "from-amber-700 to-orange-800",
     perks: [
@@ -230,7 +230,7 @@ const PlanCard = ({ plan }: { plan: Plan }) => (
 
 /**
  * Home plans rail: one horizontal snap-scrolling track of compact cards with
- * left/right arrow controls — membership levels first, then the live
+ * left/right arrow controls, membership levels first, then the live
  * coupon-backed savings plans. No expand/collapse, nothing hidden.
  */
 const PlansSection = () => {
@@ -276,8 +276,8 @@ const PlansSection = () => {
             </h2>
 
             <p className="text-sm leading-relaxed text-ink/65 sm:text-base">
-              Four earned membership levels and a set of live promo codes —
-              every plan below states its exact requirements or terms, so you
+              Four earned membership levels and a set of live promo codes.
+              Every plan below states its exact requirements or terms, so you
               know exactly what you are using.
             </p>
           </div>

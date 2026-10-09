@@ -13,7 +13,7 @@ import {
 } from "../utils/loyalty";
 
 /**
- * Every figure on this page comes from `utils/loyalty.ts` — the same constants
+ * Every figure on this page comes from `utils/loyalty.ts`, the same constants
  * the plans rail and the loyalty portal quote. The server-side engine
  * (`LoyaltyServices`) is the source of truth; these numbers mirror it so the
  * storefront speaks with one voice.
@@ -58,16 +58,16 @@ const comparisonRows: {
   },
   {
     label: "Tier coupon",
-    registered: "—",
-    bronze: "—",
-    gold: "GOLD10 — 10% off, up to Rs. 1,500",
-    platinum: "PLAT12 — 12% off, up to Rs. 2,500",
-    diamond: "DIAMOND15 — 15% off, up to Rs. 4,000",
+    registered: "-",
+    bronze: "-",
+    gold: "GOLD10: 10% off, up to Rs. 1,500",
+    platinum: "PLAT12: 12% off, up to Rs. 2,500",
+    diamond: "DIAMOND15: 15% off, up to Rs. 4,000",
   },
   {
     label: "Sale early access",
-    registered: "—",
-    bronze: "—",
+    registered: "-",
+    bronze: "-",
     gold: "Seasonal sales open to you 24 hours early",
     platinum: "Seasonal sales open 24 hours early, plus flash-sale invitations",
     diamond:
@@ -122,14 +122,14 @@ const qualifyingRules = [
   `Only delivered orders count, and only once the ${RETURN_WINDOW_DAYS}-day return window after delivery has closed.`,
   `An order must be worth at least ${formatCurrency(MIN_COUNTED_ORDER)} to count at all.`,
   `One order contributes at most ${formatCurrency(MAX_COUNTED_SPEND_PER_ORDER)} towards the spend requirement, so a single large purchase cannot carry a level on its own.`,
-  `Orders placed within ${ORDER_SPACING_DAYS} days of each other count as one order for the order count — their spend still counts in full.`,
+  `Orders placed within ${ORDER_SPACING_DAYS} days of each other count as one order for the order count. Their spend still counts in full.`,
   "An active month is any calendar month in which you placed at least one qualifying order.",
   "Refunds and cancellations remove the qualifying spend and order count of the affected order.",
   "Spend is the item subtotal after discounts. Delivery fees and the value of redeemed points do not count.",
 ];
 
 const cycleRules = [
-  "Everyone starts at Registered. Your first cycle runs for 6 months from the day you created your account — reach Bronze inside it to start earning points.",
+  "Everyone starts at Registered. Your first cycle runs for 6 months from the day you created your account. Reach Bronze inside it to start earning points.",
   `From Gold up, each level is measured over a fixed 12-month cycle that starts on the day you earned the level. Your spend, order and active-month counters reset when a new cycle begins.`,
   "Meet every requirement mid-cycle and you upgrade immediately, one level at a time. Your new benefits apply from your very next order.",
   `When a cycle ends, meeting the requirements for your level keeps it. Missing them drops you by exactly one level, and Registered is as low as you can go.`,
@@ -140,7 +140,7 @@ const pointsRules = [
   `Points stay pending until the ${RETURN_WINDOW_DAYS}-day return window after delivery closes, then move to your available balance.`,
   `Points expire ${POINTS_RULES.validityMonths} months after the day you earn them. Your account shows any balance expiring in the next 30 days.`,
   `Redeem from ${POINTS_RULES.redemptionMin} points, and use points on up to ${POINTS_RULES.redemptionCap * 100}% of an order's value.`,
-  `Some categories earn at a different rate — electronics earns ${POINTS_RULES.electronicsMultiplier}× the usual points.`,
+  `Some categories earn at a different rate: electronics earns ${POINTS_RULES.electronicsMultiplier}× the usual points.`,
   "Points are removed when an order is refunded, and they have no cash value.",
 ];
 
@@ -227,7 +227,7 @@ const CompareBenefits = () => {
           </h2>
           <p className="leading-relaxed text-ink/65">
             Every level keeps the benefits of the one below it, so moving up
-            only ever adds. Registered is where every account starts — Bronze
+            only ever adds. Registered is where every account starts, Bronze
             and above are earned.
           </p>
         </div>
@@ -399,7 +399,7 @@ const CompareBenefits = () => {
         </h2>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink/65">
           Tier coupons appear in the checkout of members at the right level and
-          stay available while the offer lasts. One coupon per order — codes
+          stay available while the offer lasts. One coupon per order; codes
           do not stack with each other or with sale pricing.
         </p>
         <div className="mt-8 overflow-x-auto rounded-2xl border border-sand bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
@@ -447,8 +447,8 @@ const CompareBenefits = () => {
               Fair use
             </p>
             <p className="mt-3 leading-relaxed text-ink/75">
-              Orders placed to artificially reach a level — for example bulk
-              orders that are then returned — do not count towards your
+              Orders placed to artificially reach a level, for example bulk
+              orders that are then returned, do not count towards your
               requirements. We may pause coupons or levels while we review
               activity that looks like abuse.
             </p>
@@ -478,7 +478,7 @@ const CompareBenefits = () => {
             live in your loyalty dashboard.
           </p>
           <Link
-            to={ROUTES.LOYALTY}
+            to={ROUTES.DASHBOARD}
             className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3.5 text-sm font-bold tracking-wide text-white uppercase shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] transition-colors duration-300 hover:bg-brand-dark"
           >
             Open loyalty dashboard

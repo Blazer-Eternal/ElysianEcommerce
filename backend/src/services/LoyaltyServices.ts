@@ -32,7 +32,7 @@ import { OrderStatusEnum, PaymentStatusEnum } from "../enums/OrderEnums";
  *   held when the order was placed, half rate on electronics, pending until
  *   the return window closes, valid for 12 months from that day.
  *
- * Everything here is derived from order records — no stored tier, so the rules
+ * Everything here is derived from order records, no stored tier, so the rules
  * can be corrected without migrating anybody's account.
  */
 
@@ -42,7 +42,7 @@ import { OrderStatusEnum, PaymentStatusEnum } from "../enums/OrderEnums";
 
 /** Days an order must sit delivered before it starts counting. */
 export const RETURN_WINDOW_DAYS = 7;
-/** Orders below this value never count — neither their spend nor their number. */
+/** Orders below this value never count: neither their spend nor their number. */
 export const MIN_COUNTED_VALUE = 1_000;
 /** One order can contribute at most this much spend. */
 export const MAX_COUNTED_SPEND = 50_000;
@@ -221,7 +221,7 @@ interface OrderRow {
   created_at: Date;
   status: OrderStatusEnum;
   payment_status: PaymentStatusEnum;
-  /** Item subtotal after discounts — the number every rule below reads. */
+  /** Item subtotal after discounts; the number every rule below reads. */
   value: number;
   delivered_at: Date | null;
   items: ItemRow[];
@@ -321,7 +321,7 @@ export class LoyaltyServices {
   /* public API                                                        */
   /* ---------------------------------------------------------------- */
 
-  /** Tier name only — the light path the coupon gate runs at checkout. */
+  /** Tier name only; the light path the coupon gate runs at checkout. */
   public async getTierName(userId: string): Promise<TierName> {
     const rows = await this.loadOrders(userId, false);
     const anchor = await this.userAnchor(userId, rows);
@@ -599,13 +599,13 @@ export class LoyaltyServices {
     const open = checklist.find((item) => !item.met);
     if (!open) {
       return holding
-        ? `Everything for ${target.name} is met this cycle — no action needed.`
+        ? `Everything for ${target.name} is met this cycle; no action needed.`
         : `${target.name} is met in full; the level applies from today.`;
     }
     switch (open.key) {
       case "spend": {
         const gap = Math.max(0, target.minSpend - counters.spend);
-        return `Add Rs. ${money(gap)} of qualifying spend — you are at Rs. ${money(
+        return `Add Rs. ${money(gap)} of qualifying spend; you are at Rs. ${money(
           counters.spend
         )} of Rs. ${money(target.minSpend)}.`;
       }
@@ -613,11 +613,11 @@ export class LoyaltyServices {
         const left = Math.max(0, target.minOrders - counters.orders);
         return `Place ${left} more qualifying order${left === 1 ? "" : "s"} of Rs. ${money(
           MIN_COUNTED_VALUE
-        )} or more — orders less than ${ORDER_SPACING_DAYS} days apart count as one.`;
+        )} or more. Orders less than ${ORDER_SPACING_DAYS} days apart count as one.`;
       }
       case "activeMonths": {
         const left = Math.max(0, target.minActiveMonths - counters.activeMonths);
-        return `Shop in ${left} more separate month${left === 1 ? "" : "s"} this cycle — you are at ${
+        return `Shop in ${left} more separate month${left === 1 ? "" : "s"} this cycle; you are at ${
           counters.activeMonths
         } of ${target.minActiveMonths}.`;
       }
@@ -652,7 +652,7 @@ export class LoyaltyServices {
           order_number: row.order_number,
           state: "excluded" as const,
           label: "Doesn't count",
-          detail: `Qualifying orders start at Rs. ${money(MIN_COUNTED_VALUE)} — this one is ${money(row.value)}.`,
+          detail: `Qualifying orders start at Rs. ${money(MIN_COUNTED_VALUE)}. This one is ${money(row.value)}.`,
         };
       }
       if (row.status !== OrderStatusEnum.delivered) {
@@ -671,7 +671,7 @@ export class LoyaltyServices {
           order_number: row.order_number,
           state: "pending" as const,
           label: `Pending until ${shortDate(at)}`,
-          detail: "Delivered — it counts once the 7-day return window closes.",
+          detail: "Delivered. It counts once the 7-day return window closes.",
         };
       }
       return {

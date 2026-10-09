@@ -69,7 +69,7 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
   if (!isSmtpConfigured) {
     console.log(
-      "⚠️ SMTP not configured — password reset emails will NOT be sent. " +
+      "⚠️ SMTP not configured: password reset emails will NOT be sent. " +
         "Fill SMTP_HOST / SMTP_USER / SMTP_PASS in backend/.env (see the notes at the top of src/config/mailer.ts)."
     );
   }

@@ -48,7 +48,7 @@ export class EsewaServices {
   }
 
   // Independently re-verifies the transaction with eSewa's own status API,
-  // rather than trusting the redirect payload alone — this is what actually
+  // rather than trusting the redirect payload alone. This is what actually
   // confirms payment, since a client-side redirect can be spoofed.
   public async verifyTransaction(transactionUuid: string, totalAmount: number): Promise<boolean> {
     const amount = totalAmount.toFixed(2);

@@ -54,7 +54,7 @@ const ProductImage = ({ review }: { review: MyReview }) => {
 /**
  * The signed-in customer's own reviews, grouped per product.
  *
- * Editing reuses `PATCH /reviews/:id` and deleting `DELETE /reviews/:id` — the
+ * Editing reuses `PATCH /reviews/:id` and deleting `DELETE /reviews/:id`, the
  * exact endpoints the product page already uses, so a change here is instantly
  * reflected on the product's public review list (both invalidate the same
  * `["reviews", productId]` cache entry).

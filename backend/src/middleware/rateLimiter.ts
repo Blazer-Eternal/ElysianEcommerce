@@ -1,6 +1,6 @@
 import rateLimit from "express-rate-limit";
 
-// Strict limiter for login/signup — prevents brute-force and spam registration
+// Strict limiter for login/signup, prevents brute-force and spam registration
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   limit: 10, // 10 attempts per window per IP
@@ -12,7 +12,7 @@ export const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Limiter for the public contact form — it needs no authentication, so it
+// Limiter for the public contact form, it needs no authentication, so it
 // would otherwise be an easy spam vector into the admin inbox.
 export const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

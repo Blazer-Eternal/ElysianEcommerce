@@ -35,7 +35,7 @@ const ProductSchema = new Schema<ProductInterface>({
     min: 0,
   },
   // Struck-through original price shown next to the selling price (must stay >= price
-  // to be meaningful — a lower value is simply not displayed).
+  // to be meaningful, a lower value is simply not displayed).
   mrp: {
     type: Number,
     min: 0,

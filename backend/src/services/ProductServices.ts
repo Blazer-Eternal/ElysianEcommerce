@@ -15,7 +15,7 @@ export interface ProductQueryOptions {
   search?: string;
   minPrice?: number;
   maxPrice?: number;
-  /** Selected price buckets — union of inclusive [min, max] windows. */
+  /** Selected price buckets, union of inclusive [min, max] windows. */
   priceRanges?: PriceRangeFilter[];
   category_id?: string;
   status?: string;

@@ -2,7 +2,7 @@ import { Document, Types } from "mongoose";
 
 /**
  * The five customer-facing update groups. Each one only ever renders when the
- * database actually holds data behind it — a category with no backing records
+ * database actually holds data behind it, a category with no backing records
  * is omitted from the feed entirely rather than filled with placeholder copy.
  */
 export enum CustomerNotificationCategoryEnum {
@@ -27,7 +27,7 @@ export enum CustomerNotificationCategoryEnum {
  * keyed by the deterministic `key` below.
  *
  * `timestamp` is always a real date taken from the source record, and
- * `timestampLabel` states exactly what that date marks — a shipped order shows
+ * `timestampLabel` states exactly what that date marks: a shipped order shows
  * the date it was *placed*, never a status-change time the database does not
  * record.
  */

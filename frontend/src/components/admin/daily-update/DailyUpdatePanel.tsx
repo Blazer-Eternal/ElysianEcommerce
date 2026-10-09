@@ -24,7 +24,7 @@ type PreviewItem = {
 /**
  * Admin topbar bell.
  *
- * Opens a compact dropdown capped at `BELL_PREVIEW_LIMIT` entries — the full
+ * Opens a compact dropdown capped at `BELL_PREVIEW_LIMIT` entries, the full
  * daily update lives on the Notifications page (sidebar → Notifications),
  * which the footer link points at. Same brief data as before; only the
  * presentation moved out of the slide-in drawer.
@@ -177,7 +177,7 @@ export default function DailyUpdatePanel() {
             )}
           </div>
 
-          {/* preview list — max BELL_PREVIEW_LIMIT items */}
+          {/* preview list, max BELL_PREVIEW_LIMIT items */}
           {preview.length === 0 ? (
             <div className="px-4 py-8 text-center">
               <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-cream text-ink/40">
@@ -232,7 +232,7 @@ export default function DailyUpdatePanel() {
             </ul>
           )}
 
-          {/* footer — the only route out to the full daily update */}
+          {/* footer, the only route out to the full daily update */}
           <Link
             to={ROUTES.ADMIN_NOTIFICATIONS}
             onClick={() => setOpen(false)}

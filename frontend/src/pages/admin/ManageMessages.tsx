@@ -47,7 +47,7 @@ const SearchIcon = () => (
   </svg>
 );
 
-/** Small status dot + label — the first column of the inbox table. */
+/** Small status dot + label, the first column of the inbox table. */
 const StatusCell = ({ message }: { message: Message }) => {
   if (message.archived) {
     return (
@@ -161,7 +161,7 @@ const ManageMessages = () => {
   };
 
   const handleOpen = (message: Message) => {
-    // Opening a thread is the read event — no separate "Mark Read" button needed.
+    // Opening a thread is the read event, no separate "Mark Read" button needed.
     if (!message.is_read && !message.archived) markRead.mutate(message._id);
     setOpenMessage({ ...message, is_read: true });
   };

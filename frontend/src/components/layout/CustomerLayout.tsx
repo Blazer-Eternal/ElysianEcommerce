@@ -44,7 +44,7 @@ interface CustomerLayoutProps {
  * Desktop navigation is a detached floating icon rail: icons only, a tooltip
  * that fades and slides in on hover, and a filled highlight on the active
  * entry. Touch devices keep a labelled drawer instead, since hover has no
- * meaning there — both read from the same `navItems` list.
+ * meaning there. Both read from the same `navItems` list.
  */
 const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   const { user } = useAuth();
@@ -128,7 +128,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
 
   return (
     <div className="flex h-screen overflow-hidden bg-cream lg:pl-28">
-      {/* Floating icon rail — desktop only */}
+      {/* Floating icon rail, desktop only */}
       <aside className="fixed bottom-4 left-4 top-4 z-40 hidden w-18 flex-col items-center rounded-3xl border border-sand bg-white/95 p-2 shadow-[0_6px_32px_rgba(61,5,12,0.12)] backdrop-blur-sm lg:flex">
         <nav className="flex w-full min-h-0 flex-1 flex-col items-center justify-center gap-1.5">
           {navItems.map((item) => {
@@ -164,7 +164,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
         </nav>
       </aside>
 
-      {/* Labelled drawer — small screens keep text, since hover does not exist */}
+      {/* Labelled drawer, small screens keep text, since hover does not exist */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-sand bg-linear-to-b from-white to-cyan-50 shadow-xl transition-transform duration-300 lg:hidden ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"

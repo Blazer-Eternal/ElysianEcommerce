@@ -6,7 +6,7 @@ export class CartServices {
     return await CartModel.findOne({ user_id: userId }).populate("items.product_id", "name price images stock status");
   }
 
-  // Raw cart, without populate — items.product_id stays a plain ObjectId.
+  // Raw cart, without populate, items.product_id stays a plain ObjectId.
   // Used internally (e.g. order creation) where the actual ID is needed, not expanded product data.
   public async findRawByUserId(userId: string): Promise<CartInterface | null> {
     return await CartModel.findOne({ user_id: userId });

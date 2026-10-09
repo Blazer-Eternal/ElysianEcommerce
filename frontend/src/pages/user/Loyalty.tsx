@@ -19,11 +19,11 @@ import {
 } from "../../utils/loyalty";
 import type { TierName } from "../../types/loyalty.types";
 
-/** Join truthy class fragments — the codebase has no shared cn helper. */
+/** Join truthy class fragments, the codebase has no shared cn helper. */
 const cn = (...parts: Array<string | false | null | undefined>): string =>
   parts.filter(Boolean).join(" ");
 
-/** The tiers a customer climbs to — Registered is where everyone starts. */
+/** The tiers a customer climbs to, Registered is where everyone starts. */
 const EARNED_TIERS: TierLevel[] = TIER_LEVELS;
 
 const TIER_ICONS: Record<TierLevel["name"], ReactNode> = {
@@ -90,7 +90,7 @@ export default function Loyalty() {
 
   /**
    * The callout sits under the tier being worked towards: the current level
-   * once earned, otherwise Bronze — the first one to unlock.
+   * once earned, otherwise Bronze, the first one to unlock.
    */
   const calloutTier = useMemo<TierLevel | null>(() => {
     if (!tier) return null;
@@ -260,7 +260,7 @@ export default function Loyalty() {
             );
           })}
 
-          {/* Requirements callout — aligned under the tier it describes */}
+          {/* Requirements callout, aligned under the tier it describes */}
           {calloutTier && (
             <div
               className={cn(
@@ -296,7 +296,7 @@ export default function Loyalty() {
                   <p className="mt-3 border-t border-ink/10 pt-2.5 text-xs text-ink/55">
                     Your current cycle runs until{" "}
                     <span className="font-medium text-ink">
-                      {formatDate(cycle.end) ?? "—"}
+                      {formatDate(cycle.end) ?? "-"}
                     </span>
                     . Spend, orders and active months in this window decide
                     whether you hold this level or move up.
@@ -339,7 +339,7 @@ export default function Loyalty() {
         <div className="grid gap-4 px-6 py-6 sm:px-8 md:grid-cols-2 lg:grid-cols-4">
           {checklist.length === 0 ? (
             <p className="text-sm text-ink/60 lg:col-span-4">
-              No active requirements right now — you've met everything for this
+              No active requirements right now. You've met everything for this
               cycle.
             </p>
           ) : (
@@ -455,7 +455,7 @@ export default function Loyalty() {
               in points on every qualifying order.
             </li>
             <li>
-              Some categories earn at a different rate — electronics earns{" "}
+              Some categories earn at a different rate: electronics earns{" "}
               <span className="font-semibold text-ink">
                 {POINTS_RULES.electronicsMultiplier}×
               </span>{" "}

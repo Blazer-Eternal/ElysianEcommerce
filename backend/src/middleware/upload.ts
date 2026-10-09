@@ -3,7 +3,7 @@ import sharp from "sharp";
 import { Request, Response, NextFunction } from "express";
 import cloudinary from "../config/cloudinary";
 
-// Everything stays in memory — never touches disk, works fine on serverless.
+// Everything stays in memory, never touches disk, works fine on serverless.
 const storage = multer.memoryStorage();
 
 const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
@@ -22,7 +22,7 @@ export const upload = multer({
 });
 
 // Compresses each uploaded file in memory, then uploads the buffer directly
-// to Cloudinary — no local filesystem involved at any point.
+// to Cloudinary, no local filesystem involved at any point.
 export const compressImages = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const files = req.files as Express.Multer.File[];

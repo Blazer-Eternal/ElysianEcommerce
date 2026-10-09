@@ -33,7 +33,7 @@ export class CustomerNotificationController {
 
   /**
    * Mark specific keys as read. An absent or empty `keys` array means
-   * "everything currently in the feed" — the mark-all-as-read button.
+   * "everything currently in the feed", the mark-all-as-read button.
    */
   static async markRead(req: CustomRequestInterface, res: Response) {
     try {

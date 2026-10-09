@@ -24,12 +24,12 @@ export const DEFAULT_CANNED_REPLIES: CannedReply[] = [
   {
     id: "shipping-eta",
     label: "Shipping ETA",
-    body: "Your order has shipped and is currently in transit. The tracking link is on its way to your email — delivery usually takes 2–4 working days within Nepal.",
+    body: "Your order has shipped and is currently in transit. The tracking link is on its way to your email. Delivery usually takes 2–4 working days within Nepal.",
   },
   {
     id: "delay-apology",
     label: "Delay apology",
-    body: "I'm sorry for the wait — your order is taking longer than our usual timeline. We're on it, and I'll personally update you within 24 hours with a firm date.",
+    body: "I'm sorry for the wait. Your order is taking longer than our usual timeline. We're on it, and I'll personally update you within 24 hours with a firm date.",
   },
   {
     id: "refund-status",
@@ -39,12 +39,12 @@ export const DEFAULT_CANNED_REPLIES: CannedReply[] = [
   {
     id: "presales",
     label: "Pre-sales help",
-    body: "Great to hear you're interested! Happy to help with sizing, stock or delivery questions — tell me which product you're looking at and I'll confirm the details.",
+    body: "Great to hear you're interested! Happy to help with sizing, stock or delivery questions. Tell me which product you're looking at and I'll confirm the details.",
   },
   {
     id: "closing",
     label: "Closing & sign-off",
-    body: "Is there anything else I can help you with? If not, thank you for shopping with Elysian — we really appreciate it.",
+    body: "Is there anything else I can help you with? If not, thank you for shopping with Elysian. We really appreciate it.",
   },
 ];
 
@@ -71,7 +71,7 @@ const writeStored = (items: CannedReply[]): void => {
   try {
     localStorage.setItem(STORED_KEY, JSON.stringify(items.slice(-30)));
   } catch {
-    /* storage blocked — the session simply keeps the in-memory copy */
+    /* storage blocked, the session simply keeps the in-memory copy */
   }
 };
 

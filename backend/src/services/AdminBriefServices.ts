@@ -19,7 +19,7 @@ export interface BriefAction {
 }
 
 export interface BriefEntry {
-  /** Stable id — the portal uses it to remember which items were already read. */
+  /** Stable id; the portal uses it to remember which items were already read. */
   key: string;
   severity: BriefSeverity;
   /** True when ignoring this item costs money, stock or a customer. */
@@ -145,7 +145,7 @@ const probeUrl = (target: string): Promise<StorefrontProbe> =>
         port: parsed.port || (secure ? 443 : 80),
         path: parsed.pathname || "/",
         timeout: 6000,
-        // The certificate is inspected rather than enforced here — an expired
+        // The certificate is inspected rather than enforced here; an expired
         // chain is reported as its own alert instead of hiding the ping.
         rejectUnauthorized: false,
         headers: { "user-agent": "ElysianEcommerce-Monitor/1.0", accept: "*/*" },
@@ -184,7 +184,7 @@ const getStorefrontProbe = async (): Promise<StorefrontProbe> => {
 };
 
 /**
- * Everything on this page is read live out of MongoDB — no seeded copy, no
+ * Everything on this page is read live out of MongoDB. No seeded copy, no
  * invented numbers. A group with nothing to say renders empty rather than
  * padding itself with filler.
  */
@@ -306,7 +306,7 @@ export class AdminBriefServices {
         severity: "warning",
         action_required: false,
         title: "Order cancelled",
-        message: `${nameOf(order)} cancelled #${order.order_number} — ${money(order.total_amount)} lost.`,
+        message: `${nameOf(order)} cancelled #${order.order_number}: ${money(order.total_amount)} lost.`,
         created_at: iso(order.created_at),
         href,
         actions: [{ label: "Open order", href }],
@@ -316,7 +316,7 @@ export class AdminBriefServices {
     return {
       key: "sales",
       label: "Sales & Orders",
-      subtitle: "Every sale is your sale — these come first.",
+      subtitle: "Every sale is your sale. These come first.",
       entries: entries.sort(bySeverityThenTime),
     };
   }
@@ -369,7 +369,7 @@ export class AdminBriefServices {
     return {
       key: "inventory",
       label: "Inventory & Stock",
-      subtitle: "You are the only vendor — nobody restocks for you.",
+      subtitle: "You are the only vendor; nobody restocks for you.",
       entries: entries.sort(bySeverityThenTime),
     };
   }
@@ -406,7 +406,7 @@ export class AdminBriefServices {
         severity: message.is_read ? "info" : "warning",
         action_required: !message.is_read,
         title: message.is_read ? "Customer message waiting for a reply" : "New customer message",
-        message: `${message.name} — "${message.subject}"`,
+        message: `${message.name}: "${message.subject}"`,
         created_at: iso(message.created_at),
         href: "/admin/messages",
         actions: [{ label: "View & reply", href: "/admin/messages" }],
@@ -442,7 +442,7 @@ export class AdminBriefServices {
     return {
       key: "support",
       label: "Customer Service & Operations",
-      subtitle: "You handle every ticket yourself — nothing gets missed.",
+      subtitle: "You handle every ticket yourself; nothing gets missed.",
       entries: entries.sort(bySeverityThenTime),
     };
   }
@@ -473,7 +473,7 @@ export class AdminBriefServices {
         severity: "warning",
         action_required: true,
         title: "Past ship-by date",
-        message: `#${order.order_number} has been waiting ${days} day${days === 1 ? "" : "s"} — pack it and print the label.`,
+        message: `#${order.order_number} has been waiting ${days} day${days === 1 ? "" : "s"}. Pack it and print the label.`,
         created_at: iso(order.created_at),
         href,
         actions: [{ label: "Open order", href }],
@@ -541,7 +541,7 @@ export class AdminBriefServices {
         title: probe.ok ? "Storefront online" : "Storefront unreachable",
         message: probe.ok
           ? `${process.env.FRONTEND_URL} responded in ${probe.latency_ms}ms (HTTP ${probe.status}).`
-          : `Ping to ${process.env.FRONTEND_URL} failed${probe.error ? ` — ${probe.error}` : ""}. Checkout is unavailable until it recovers.`,
+          : `Ping to ${process.env.FRONTEND_URL} failed${probe.error ? `, ${probe.error}` : ""}. Checkout is unavailable until it recovers.`,
         created_at: new Date().toISOString(),
       },
       {
@@ -575,7 +575,7 @@ export class AdminBriefServices {
     return {
       key: "system",
       label: "System & Security",
-      subtitle: "If the site is down, the revenue is too — checked live.",
+      subtitle: "If the site is down, the revenue is too. Checked live.",
       entries,
     };
   }

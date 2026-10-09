@@ -33,7 +33,7 @@ const initialsOf = (name?: string): string => {
 };
 
 /**
- * Admin header avatar — initials in a crimson disc, no photo needed. Opens a
+ * Admin header avatar, initials in a crimson disc, no photo needed. Opens a
  * menu that routes to Account & Settings (the admin-only profile screen) or
  * back to the storefront, and can sign out.
  */

@@ -23,7 +23,7 @@ const EmailIcon = () => (
   </svg>
 );
 
-/** Topic buckets — must stay in sync with `MessageTagEnum` on the backend. */
+/** Topic buckets, must stay in sync with `MessageTagEnum` on the backend. */
 const TOPICS: Array<{ value: MessageTag; label: string }> = [
   { value: "order", label: "Order status" },
   { value: "shipping", label: "Shipping issue" },
