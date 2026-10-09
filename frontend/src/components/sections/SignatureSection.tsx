@@ -35,8 +35,8 @@ const PILLARS: Pillar[] = [
   {
     id: "delivery",
     title: "Delivery you can follow",
-    body: "Orders leave within the working day and you get a status at every step after that. Standard delivery is free above Rs. 2,000, and cash on delivery remains an option across the whole catalogue.",
-    tags: ["Free above Rs. 2,000", "Live status", "Cash on delivery"],
+    body: "Orders leave within the working day and you get a status at every step after that. Delivery gets freer as your membership climbs, and cash on delivery remains an option across the whole catalogue.",
+    tags: ["Tier delivery perks", "Live status", "Cash on delivery"],
     icon: <TruckIcon size={72} strokeWidth={1.1} />,
     tile: <TruckIcon size={22} strokeWidth={2} />,
     glow: "radial-gradient(120% 100% at 88% 8%, rgba(212,139,146,0.7) 0%, rgba(212,139,146,0) 58%)",

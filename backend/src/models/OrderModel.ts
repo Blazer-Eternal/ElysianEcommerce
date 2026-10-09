@@ -100,6 +100,13 @@ const OrderSchema = new Schema<OrderInterface>({
     // Admin findAll() sorts all orders by created_at with no other filter.
     index: true,
   },
+  // Set once, on the first transition to "delivered"; the loyalty rules read
+  // it to start the return window. Orders delivered before this field existed
+  // stay null and fall back to created_at.
+  delivered_at: {
+    type: Date,
+    default: null,
+  },
 });
 
 /*

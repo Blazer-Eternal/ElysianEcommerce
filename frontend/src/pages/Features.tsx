@@ -194,7 +194,7 @@ const Features = () => {
             </h2>
 
             <p className="text-ink/70 text-lg transition-colors duration-300">
-              Free delivery over Rs. 2,000, and 30-day returns on eligible items.
+              30-day returns on eligible items, and delivery perks that grow with your tier.
             </p>
 
             <a

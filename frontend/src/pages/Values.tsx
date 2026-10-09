@@ -466,8 +466,8 @@ const Values = () => {
               </h2>
 
               <p className="mx-auto max-w-2xl text-lg leading-relaxed text-ink/70">
-                Browse the collection and judge us on the six above. Free delivery over Rs. 2,000,
-                30-day returns on eligible items.
+                Browse the collection and judge us on the six above. 30-day returns on eligible
+                items, and delivery that rewards you for coming back.
               </p>
 
               <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">

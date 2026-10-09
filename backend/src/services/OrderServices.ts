@@ -143,6 +143,19 @@ export class OrderServices {
   }
 
   public async updateStatus(id: string, status: OrderStatusEnum): Promise<OrderInterface | null> {
+    // Stamp the delivery moment the first time it happens: the return window
+    // (and every loyalty rule that waits for it) starts here. A later status
+    // change must never move that date, so it is only set while unset.
+    if (status === OrderStatusEnum.delivered) {
+      const existing = await OrderModel.findById(id).select("delivered_at").lean();
+      if (existing && !existing.delivered_at) {
+        return await OrderModel.findByIdAndUpdate(
+          id,
+          { status, delivered_at: new Date() },
+          { returnDocument: "after" }
+        );
+      }
+    }
     return await OrderModel.findByIdAndUpdate(id, { status }, { returnDocument: "after" });
   }
 

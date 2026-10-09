@@ -7,11 +7,9 @@ import {
   BRIEF_SEEN_EVENT,
   GROUP_STYLES,
   SEVERITY_STYLES,
-  isMuted,
   loadSeenKeys,
   pushDesktopAlert,
   saveSeenKeys,
-  setMuted,
 } from "../../../utils/briefAlert";
 import { GROUP_ICONS, SEVERITY_DOT, SEVERITY_LABEL, timeAgo, type Filter } from "./briefMeta";
 
@@ -103,7 +101,6 @@ export default function DailyUpdateContent() {
 
   const [filter, setFilter] = useState<Filter>("all");
   const [seenKeys, setSeen] = useState<string[]>(() => loadSeenKeys());
-  const [muted, setMutedState] = useState<boolean>(() => isMuted());
   const [note, setNote] = useState<string | null>(null);
   const [permission, setPermission] = useState<NotificationPermission | "unsupported">(() =>
     typeof Notification === "undefined" ? "unsupported" : Notification.permission,
@@ -222,36 +219,6 @@ export default function DailyUpdateContent() {
                 : `${actionEntries.length} action required · ${allEntries.length - actionEntries.length} for your info`}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              const next = !muted;
-              setMutedState(next);
-              setMuted(next);
-              flashNote(next ? "Alert sounds muted." : "Alert sounds on.");
-            }}
-            title={muted ? "Unmute alerts" : "Mute alerts"}
-            className={`flex h-9 w-9 items-center justify-center rounded-full border transition ${
-              muted
-                ? "border-teal-500/40 bg-teal-50 text-teal-600"
-                : "border-sand bg-white text-ink/60 hover:text-ink"
-            }`}
-          >
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-              {muted ? (
-                <>
-                  <path d="M11 5 6 9H2v6h4l5 4z" />
-                  <line x1="23" y1="9" x2="17" y2="15" />
-                  <line x1="17" y1="9" x2="23" y2="15" />
-                </>
-              ) : (
-                <>
-                  <path d="M11 5 6 9H2v6h4l5 4z" />
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-                </>
-              )}
-            </svg>
-          </button>
         </div>
 
         {/* filters */}

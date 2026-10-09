@@ -123,7 +123,8 @@ const CTASection = () => {
 
                   <p className="text-ink/65 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-medium line-clamp-3">
                     Browse what has just landed, or search for the one thing you came for.
-                    Checkout takes cash on delivery or eSewa, and delivery is free above Rs. 2,000.
+                    Checkout takes cash on delivery or eSewa, and your delivery charge shrinks as
+                    you climb the membership tiers.
                   </p>
                 </div>
 

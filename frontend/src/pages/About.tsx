@@ -227,7 +227,7 @@ const About = () => {
 
               <div className="border-t border-[#ece1d0] pt-5">
                 <p className="text-sm text-ink/70 transition-colors duration-300 group-hover:text-ink">
-                  Free delivery over Rs. 2,000, 30-day returns on eligible items, and payment by Cash on Delivery or eSewa.
+                  Delivery that gets freer as you climb the tiers, 30-day returns on eligible items, and payment by Cash on Delivery or eSewa.
                 </p>
               </div>
             </div>
@@ -372,7 +372,7 @@ const About = () => {
 
               <p className="mx-auto max-w-2xl text-lg leading-relaxed text-ink/70 sm:text-xl">
                 Every item is quality-checked before it ships, with 30-day returns on eligible
-                items and free delivery over Rs. 2,000.
+                items and delivery perks that grow with your membership tier.
               </p>
 
               <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">

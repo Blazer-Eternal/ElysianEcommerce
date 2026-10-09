@@ -1,58 +1,94 @@
 ﻿/**
- * Loyalty rules for the customer dashboard.
+ * The membership ladder exactly as the storefront publishes it.
  *
- * The backend keeps no separate points ledger, so the portal derives rewards
- * from what is actually verifiable in the customer's order history: their
- * spend on non-cancelled orders. Tier thresholds follow the 12-month,
- * order-capped qualifying-spend model documented on the compare-benefits
- * page; as an interim the dashboard still derives the level from lifetime
- * non-cancelled spend until the backend exposes per-order qualifying spend
- * and order counts.
+ * These numbers mirror `backend/src/services/LoyaltyServices.ts`, which is
+ * what actually decides a customer's level. They exist so the public pages —
+ * compare benefits, the plans rail, the loyalty copy — quote one set of
+ * figures instead of restating them inline, and so a change to the engine has
+ * exactly two places to land.
  */
 
-export interface Tier {
-  name: string;
-  /** Qualifying spend (rolling 12 months) required to reach this tier. */
-  minSpend: number;
-  /** Minimum number of delivered orders required alongside the spend. */
-  minOrders: number;
-  /** Points returned per rupee of qualifying spend (1 point = Rs. 1). */
+/** Charged below a tier's threshold; waived from it upwards. */
+export const FREE_DELIVERY_FEE = 150;
+
+/** An order must be worth at least this much to count at all. */
+export const MIN_COUNTED_ORDER = 1_000;
+
+/** One order can contribute at most this much towards the spend requirement. */
+export const MAX_COUNTED_SPEND_PER_ORDER = 50_000;
+
+/** Orders closer together than this count as a single order. */
+export const ORDER_SPACING_DAYS = 14;
+
+/** Days after delivery before an order starts counting. */
+export const RETURN_WINDOW_DAYS = 7;
+
+export interface TierLevel {
+  name: "Bronze" | "Gold" | "Platinum" | "Diamond";
+  /** One cycle at this level: counters reset when it ends. */
+  cycleMonths: number;
+  spend: number;
+  orders: number;
+  activeMonths: number;
+  /** Share of settled orders that may be cancelled, null = not checked. */
+  returnRate: number | null;
+  /** Points per rupee: 1 point is worth Rs. 1. */
   pointsRate: number;
+  /** Order value from which standard delivery is free at this level. */
+  freeDeliveryFrom: number;
 }
 
-/** Ordered lowest → highest; a customer holds the last tier they qualify for. */
-export const TIERS: Tier[] = [
-  { name: "Bronze", minSpend: 0, minOrders: 0, pointsRate: 0.005 },
-  { name: "Gold", minSpend: 30_000, minOrders: 3, pointsRate: 0.01 },
-  { name: "Platinum", minSpend: 100_000, minOrders: 8, pointsRate: 0.015 },
-  { name: "Diamond", minSpend: 250_000, minOrders: 15, pointsRate: 0.02 },
+export const TIER_LEVELS: TierLevel[] = [
+  {
+    name: "Bronze",
+    cycleMonths: 6,
+    spend: 3_000,
+    orders: 2,
+    activeMonths: 2,
+    returnRate: null,
+    pointsRate: 0.005,
+    freeDeliveryFrom: 5_000,
+  },
+  {
+    name: "Gold",
+    cycleMonths: 12,
+    spend: 30_000,
+    orders: 4,
+    activeMonths: 3,
+    returnRate: 0.2,
+    pointsRate: 0.01,
+    freeDeliveryFrom: 2_000,
+  },
+  {
+    name: "Platinum",
+    cycleMonths: 12,
+    spend: 100_000,
+    orders: 8,
+    activeMonths: 5,
+    returnRate: 0.2,
+    pointsRate: 0.015,
+    freeDeliveryFrom: 500,
+  },
+  {
+    name: "Diamond",
+    cycleMonths: 12,
+    spend: 250_000,
+    orders: 15,
+    activeMonths: 8,
+    returnRate: 0.2,
+    pointsRate: 0.02,
+    freeDeliveryFrom: 500,
+  },
 ];
 
-/** Points earned from qualifying spend, tier rate applied, rounded down. */
-export const getLoyaltyPoints = (totalSpent: number): number => {
-  const spend = Math.max(0, totalSpent);
-  const tier = TIERS.reduce((found, t) => (spend >= t.minSpend ? t : found), TIERS[0]);
-  return Math.floor(spend * tier.pointsRate);
-};
+/** Bronze is earned, never given at signup: these are its entry numbers. */
+export const BRONZE_ENTRY = TIER_LEVELS[0];
 
-export interface TierStatus {
-  tier: Tier;
-  next: Tier | null;
-  /** 0–1 progress towards `next` (1 when already on the top tier). */
-  progress: number;
-}
-
-/** Current tier plus progress towards the next one, from qualifying spend. */
-export const getTierStatus = (totalSpent: number): TierStatus => {
-  const spend = Math.max(0, totalSpent);
-  const index = TIERS.reduce((found, tier, i) => (spend >= tier.minSpend ? i : found), 0);
-  const tier = TIERS[index];
-  const next = TIERS[index + 1] ?? null;
-
-  if (!next) return { tier, next, progress: 1 };
-
-  const span = next.minSpend - tier.minSpend;
-  const progress = span > 0 ? Math.min(1, (spend - tier.minSpend) / span) : 1;
-
-  return { tier, next, progress };
-};
+/** Points basics published on every surface: pending, expiry, redemption. */
+export const POINTS_RULES = {
+  pendingDays: RETURN_WINDOW_DAYS,
+  validityMonths: 12,
+  redemptionMin: 500,
+  redemptionCap: 0.1,
+  electronicsMultiplier: 0.5,
+} as const;

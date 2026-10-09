@@ -21,3 +21,5 @@ export * from './MessageControllers'
 export * from './NotificationControllers'
 
 export * from './CustomerNotificationControllers'
+
+export * from './LoyaltyControllers'

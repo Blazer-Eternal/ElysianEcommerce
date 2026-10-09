@@ -5,8 +5,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useMyOrders } from "../../hooks/useMyOrders";
 import { useCustomerNotifications } from "../../hooks/useCustomerNotifications";
-import { getActiveOrders, getTotalSpent } from "../../utils/customerDashboard";
-import { getTierStatus } from "../../utils/loyalty";
+import { getActiveOrders } from "../../utils/customerDashboard";
+import { useLoyalty } from "../../hooks/useLoyalty";
 import NotificationBell from "./NotificationBell";
 import CartPreview from "../cart/CartPreview";
 import {
@@ -51,6 +51,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   const { items: wishlistItems } = useWishlist();
   const { data: ordersData } = useMyOrders();
   const { data: notificationsData } = useCustomerNotifications();
+  const { data: loyalty } = useLoyalty();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -61,7 +62,9 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   const orders = ordersData?.data ?? [];
   const activeOrderCount = getActiveOrders(orders).length;
   const unreadNotifications = notificationsData?.unreadCount ?? 0;
-  const { tier } = getTierStatus(getTotalSpent(orders));
+  const tier = loyalty?.tier;
+  // No level held yet: the account is Registered until Bronze is earned.
+  const tierLabel = tier ? (tier.index >= 0 ? `${tier.name} Tier` : "Registered") : "Loyalty";
 
   // The portal scrolls its own content pane (the window itself never moves),
   // so reset it on navigation and honour `#hash` links.
@@ -205,7 +208,7 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
               <p className="truncate text-sm font-semibold text-ink">{user?.name}</p>
               <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700">
                 <CrownIcon size={11} />
-                {tier.name} Tier
+                {tierLabel}
               </span>
             </div>
           </div>

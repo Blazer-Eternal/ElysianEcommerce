@@ -215,8 +215,8 @@ const Cart = () => {
                 </p>
 
                 <p className="text-sm text-gray-700">
-                  Orders over Rs. 2,000 ship free, and every order can be
-                  returned within 30 days.
+                  Your delivery charge shrinks as you climb the membership tiers,
+                  and every order can be returned within 30 days.
                 </p>
               </div>
             </div>

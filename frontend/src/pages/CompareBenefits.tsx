@@ -1,78 +1,197 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import { ArrowRightIcon, CheckIcon } from "../components/icons";
+import { formatCurrency } from "../utils/formatCurrency";
+import {
+  FREE_DELIVERY_FEE,
+  MAX_COUNTED_SPEND_PER_ORDER,
+  MIN_COUNTED_ORDER,
+  ORDER_SPACING_DAYS,
+  POINTS_RULES,
+  RETURN_WINDOW_DAYS,
+  TIER_LEVELS,
+} from "../utils/loyalty";
 
-const comparisonRows: { label: string; bronze: string; gold: string; platinum: string; diamond: string }[] = [
-  { label: "Points earned", bronze: "0.5% back", gold: "1% back", platinum: "1.5% back", diamond: "2% back" },
-  { label: "Standard delivery", bronze: "Rs. 150, free above Rs. 5,000", gold: "Free above Rs. 2,000", platinum: "Free, all orders", diamond: "Free express, all orders" },
-  { label: "Tier coupon", bronze: "WELCOME10 on first order", gold: "GOLD10, 10% up to Rs. 1,500", platinum: "PLAT12, 12% up to Rs. 2,500", diamond: "DIAMOND15, 15% up to Rs. 4,000" },
-  { label: "Early access", bronze: "—", gold: "Seasonal sales", platinum: "Flash sales (FLASH25)", diamond: "Invite-only offers" },
-  { label: "Support", bronze: "Standard", gold: "Standard", platinum: "Priority", diamond: "Dedicated" },
+/**
+ * Every figure on this page comes from `utils/loyalty.ts` — the same constants
+ * the plans rail and the loyalty portal quote. The server-side engine
+ * (`LoyaltyServices`) is the source of truth; these numbers mirror it so the
+ * storefront speaks with one voice.
+ */
+const tierColumn = (name: (typeof TIER_LEVELS)[number]["name"]) =>
+  TIER_LEVELS.find((tier) => tier.name === name)!;
+
+const percent = (rate: number) =>
+  `${(rate * 100).toFixed(1).replace(/\.0$/, "")}%`;
+
+const comparisonRows: {
+  label: string;
+  registered: string;
+  bronze: string;
+  gold: string;
+  platinum: string;
+  diamond: string;
+}[] = [
+  {
+    label: "How you get there",
+    registered: "Create an account",
+    bronze: "Earned in your first cycle",
+    gold: "Earned in a 12-month cycle",
+    platinum: "Earned in a 12-month cycle",
+    diamond: "Earned in a 12-month cycle",
+  },
+  {
+    label: "Points earned",
+    registered: `${percent(tierColumn("Bronze").pointsRate)} of qualifying spend`,
+    bronze: `${percent(tierColumn("Bronze").pointsRate)} of qualifying spend`,
+    gold: `${percent(tierColumn("Gold").pointsRate)} of qualifying spend`,
+    platinum: `${percent(tierColumn("Platinum").pointsRate)} of qualifying spend`,
+    diamond: `${percent(tierColumn("Diamond").pointsRate)} of qualifying spend`,
+  },
+  {
+    label: "Standard delivery",
+    registered: `Rs. ${FREE_DELIVERY_FEE} fee on every order`,
+    bronze: `Free from ${formatCurrency(tierColumn("Bronze").freeDeliveryFrom)}`,
+    gold: `Free from ${formatCurrency(tierColumn("Gold").freeDeliveryFrom)}`,
+    platinum: `Free from ${formatCurrency(tierColumn("Platinum").freeDeliveryFrom)}`,
+    diamond: `Free from ${formatCurrency(tierColumn("Diamond").freeDeliveryFrom)}`,
+  },
+  {
+    label: "Tier coupon",
+    registered: "—",
+    bronze: "—",
+    gold: "GOLD10 — 10% off, up to Rs. 1,500",
+    platinum: "PLAT12 — 12% off, up to Rs. 2,500",
+    diamond: "DIAMOND15 — 15% off, up to Rs. 4,000",
+  },
+  {
+    label: "Sale early access",
+    registered: "—",
+    bronze: "—",
+    gold: "Seasonal sales open to you 24 hours early",
+    platinum: "Seasonal sales open 24 hours early, plus flash-sale invitations",
+    diamond:
+      "Seasonal sales open 24 hours early, plus occasional invite-only offers",
+  },
+  {
+    label: "Support response",
+    registered: "Standard support, within 48 hours",
+    bronze: "Standard support, within 48 hours",
+    gold: "Priority support, within 24 hours",
+    platinum: "Priority support, within 12 hours",
+    diamond: "Dedicated support line, within 12 hours",
+  },
 ];
 
-const thresholdRows = [
-  { tier: "Bronze", spend: "Join free", orders: "—", share: "Everyone" },
-  { tier: "Gold", spend: "Rs. 30,000", orders: "3", share: "Roughly the top 30% of customers" },
-  { tier: "Platinum", spend: "Rs. 100,000", orders: "8", share: "Roughly the top 10%" },
-  { tier: "Diamond", spend: "Rs. 250,000", orders: "15", share: "The top 2–3%" },
+const requirementRows = [
+  {
+    tier: "Bronze",
+    cycle: "First 6 months of your account",
+    spend: tierColumn("Bronze").spend,
+    orders: tierColumn("Bronze").orders,
+    months: tierColumn("Bronze").activeMonths,
+    rate: "Not checked",
+  },
+  {
+    tier: "Gold",
+    cycle: "Every 12-month cycle",
+    spend: tierColumn("Gold").spend,
+    orders: tierColumn("Gold").orders,
+    months: tierColumn("Gold").activeMonths,
+    rate: "20% or less",
+  },
+  {
+    tier: "Platinum",
+    cycle: "Every 12-month cycle",
+    spend: tierColumn("Platinum").spend,
+    orders: tierColumn("Platinum").orders,
+    months: tierColumn("Platinum").activeMonths,
+    rate: "20% or less",
+  },
+  {
+    tier: "Diamond",
+    cycle: "Every 12-month cycle",
+    spend: tierColumn("Diamond").spend,
+    orders: tierColumn("Diamond").orders,
+    months: tierColumn("Diamond").activeMonths,
+    rate: "20% or less",
+  },
 ];
 
 const qualifyingRules = [
-  "Only delivered orders count, and only after the 7-day return window has passed.",
-  "Spend is the item subtotal after discounts. Delivery fees and points redeemed do not count.",
-  "Each order counts for at most Rs. 50,000. A Rs. 2,14,000 phone counts as Rs. 50,000, so one big purchase cannot carry a tier.",
-  "We look at a rolling 12 months, not your lifetime history, so your level reflects how you shop today.",
-  "You need both the spend threshold and the minimum order count. Either one alone is not enough.",
+  `Only delivered orders count, and only once the ${RETURN_WINDOW_DAYS}-day return window after delivery has closed.`,
+  `An order must be worth at least ${formatCurrency(MIN_COUNTED_ORDER)} to count at all.`,
+  `One order contributes at most ${formatCurrency(MAX_COUNTED_SPEND_PER_ORDER)} towards the spend requirement, so a single large purchase cannot carry a level on its own.`,
+  `Orders placed within ${ORDER_SPACING_DAYS} days of each other count as one order for the order count — their spend still counts in full.`,
+  "An active month is any calendar month in which you placed at least one qualifying order.",
+  "Refunds and cancellations remove the qualifying spend and order count of the affected order.",
+  "Spend is the item subtotal after discounts. Delivery fees and the value of redeemed points do not count.",
 ];
 
-const movementRules = [
-  "Upgrades apply the moment both conditions are met; the new benefits start on your very next order.",
-  "Level reviews happen once every 12 months. A step down is by one tier at most, never more.",
-  "Benefits only stack upward. A Diamond member keeps every Bronze, Gold and Platinum perk as well.",
-  "Refunds and cancellations remove the qualifying spend of the affected order.",
+const cycleRules = [
+  "Everyone starts at Registered. Your first cycle runs for 6 months from the day you created your account — reach Bronze inside it to start earning points.",
+  `From Gold up, each level is measured over a fixed 12-month cycle that starts on the day you earned the level. Your spend, order and active-month counters reset when a new cycle begins.`,
+  "Meet every requirement mid-cycle and you upgrade immediately, one level at a time. Your new benefits apply from your very next order.",
+  `When a cycle ends, meeting the requirements for your level keeps it. Missing them drops you by exactly one level, and Registered is as low as you can go.`,
+  "Points sit outside the tier system: a level change leaves them intact, and they stay yours until they expire.",
 ];
 
-const groundRules = [
-  "Electronics earn points at half the usual rate and are excluded from percentage coupons. Fixed-amount coupons such as TECH2K and BIGBUY5K cover them instead.",
-  "Points can pay for at most 10% of an order.",
-  "One coupon per order, no stacking, no combining with sale pricing.",
-  "Your final line price always stays at least 5% above our cost on every item.",
-  "Total reward cost on an order, discount plus points plus any delivery subsidy, is capped at about 40% of the gross margin on that order.",
+const pointsRules = [
+  `Points stay pending until the ${RETURN_WINDOW_DAYS}-day return window after delivery closes, then move to your available balance.`,
+  `Points expire ${POINTS_RULES.validityMonths} months after the day you earn them. Your account shows any balance expiring in the next 30 days.`,
+  `Redeem from ${POINTS_RULES.redemptionMin} points, and use points on up to ${POINTS_RULES.redemptionCap * 100}% of an order's value.`,
+  `Some categories earn at a different rate — electronics earns ${POINTS_RULES.electronicsMultiplier}× the usual points.`,
+  "Points are removed when an order is refunded, and they have no cash value.",
 ];
 
-const publicCoupons = [
-  { code: "WELCOME10", offer: "10% off, up to Rs. 1,000", min: "Rs. 1,000", limits: "New customers, first order only" },
-  { code: "FREESHIP", offer: "Standard delivery fee waived", min: "Rs. 2,000", limits: "Up to 3 uses per account every 30 days" },
-  { code: "SAVE500", offer: "Rs. 500 off", min: "Rs. 5,000", limits: "1 use per account every 30 days, 1,000 total" },
-  { code: "FESTIVE15", offer: "15% off, up to Rs. 2,000", min: "Rs. 5,000", limits: "Festival dates only, 1,000 total" },
-  { code: "FLASH25", offer: "25% off, up to Rs. 3,000", min: "Rs. 8,000", limits: "Friday 6 PM – Sunday 11:59 PM, high-margin categories, 150 total" },
-  { code: "CLEAR30", offer: "30% off, up to Rs. 3,000", min: "Rs. 5,000", limits: "Clearance-tagged fashion, footwear and bags, 100 total" },
-];
-
-const measures = [
+const couponRows = [
   {
-    metric: "Reward cost as a share of gross margin",
-    detail: "Every discount, point and free delivery is charged against order margin, not revenue. If a tier or coupon would push us past 40% of margin on a category, the cap catches it before the customer ever sees the price.",
+    code: "WELCOME10",
+    offer: "10% off, up to Rs. 1,000",
+    min: formatCurrency(1_000),
+    limits: "Registered customers, once per account",
   },
   {
-    metric: "Tier distribution",
-    detail: "We track how many members sit at each level and re-check thresholds every quarter against real order percentiles: Gold near the top 30%, Platinum near the top 10%, Diamond at the top 2–3%. If Diamond creeps past that, thresholds move up.",
+    code: "GOLD10",
+    offer: "10% off, up to Rs. 1,500",
+    min: formatCurrency(3_000),
+    limits: "Gold and above, 2 uses per account every 30 days, electronics excluded",
   },
   {
-    metric: "Points liability",
-    detail: "Outstanding points are treated as a future discount owed. We publish the rate per tier (0.5% to 2% back) so this obligation is bounded, and we cap redemption at 10% of any order.",
+    code: "PLAT12",
+    offer: "12% off, up to Rs. 2,500",
+    min: formatCurrency(3_000),
+    limits: "Platinum and above, 2 uses per account every 30 days, electronics excluded",
   },
   {
-    metric: "Repeat purchase and basket size",
-    detail: "The point of the tiers is habit, not one big haul. We watch 90-day repeat rate and average basket by tier, and we want both to rise as the level rises.",
+    code: "DIAMOND15",
+    offer: "15% off, up to Rs. 4,000",
+    min: formatCurrency(3_000),
+    limits: "Diamond, 2 uses per account every 30 days, electronics excluded",
   },
   {
-    metric: "Coupon redemption quality",
-    detail: "Each code's redemptions, revenue generated and margin impact are reviewed monthly. Codes that cannibalise full-price sales without growing new demand get their terms tightened or retired.",
+    code: "FREESHIP",
+    offer: `Standard delivery fee (Rs. ${FREE_DELIVERY_FEE}) waived`,
+    min: formatCurrency(2_000),
+    limits: "Up to 3 uses per account every 30 days",
   },
   {
-    metric: "Delivery subsidy per order",
-    detail: "Free-delivery promises are priced, not assumed. We measure average delivery cost covered per order for each tier and tune the free-delivery minimums so the promise stays funded.",
+    code: "SAVE500",
+    offer: "Rs. 500 off",
+    min: formatCurrency(5_000),
+    limits: "1 use per account every 30 days, 1,000 redemptions total, electronics excluded",
+  },
+  {
+    code: "FESTIVE15",
+    offer: "15% off, up to Rs. 2,000",
+    min: formatCurrency(5_000),
+    limits: "Festival dates only, 1 use per account every 30 days, 1,000 redemptions total",
+  },
+  {
+    code: "CLEAR30",
+    offer: "30% off, up to Rs. 3,000",
+    min: formatCurrency(5_000),
+    limits: "Clearance-tagged fashion, footwear and bags, once per account, 100 redemptions total",
   },
 ];
 
@@ -80,15 +199,18 @@ const CompareBenefits = () => {
   return (
     <div className="space-y-20 pb-20 sm:pb-28">
       {/* Hero */}
-      <div className="relative pt-12 pb-6 sm:pt-20 sm:pb-10 overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">Membership &amp; Savings</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-ink">
+      <div className="relative pt-12 pb-6 overflow-hidden sm:pt-20 sm:pb-10">
+        <div className="mx-auto max-w-4xl space-y-5 px-4 text-center sm:px-6">
+          <p className="text-[11px] font-semibold tracking-[0.25em] text-brand uppercase">
+            Membership &amp; Savings
+          </p>
+          <h1 className="text-4xl font-semibold text-ink sm:text-5xl lg:text-6xl">
             Compare <span className="text-brand">every benefit</span>
           </h1>
-          <p className="text-lg text-ink/70 leading-relaxed max-w-2xl mx-auto">
-            Four membership levels, a handful of live coupons, one set of rules. This page explains
-            exactly how each level is earned, what it returns, and how we keep every promise funded.
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-ink/70">
+            Four membership levels above Registered, fixed yearly cycles, one
+            set of rules. This page states exactly how each level is earned,
+            what it returns, and the terms every coupon runs under.
           </p>
           <div className="flex justify-center gap-3 pt-1">
             <div className="h-px w-16 bg-brand/40" />
@@ -98,19 +220,23 @@ const CompareBenefits = () => {
       </div>
 
       {/* Level comparison matrix */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl space-y-3">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-ink">The four levels, side by side</h2>
-          <p className="text-ink/65 leading-relaxed">
-            Every level keeps the benefits of the one below it, so moving up only ever adds. Higher
-            levels never trade one perk for another.
+          <h2 className="text-3xl font-semibold text-ink sm:text-4xl">
+            The five stages, side by side
+          </h2>
+          <p className="leading-relaxed text-ink/65">
+            Every level keeps the benefits of the one below it, so moving up
+            only ever adds. Registered is where every account starts — Bronze
+            and above are earned.
           </p>
         </div>
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-[#ece1d0] bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
-          <table className="w-full min-w-180 text-sm">
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-sand bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
+          <table className="w-full min-w-200 text-sm">
             <thead>
-              <tr className="bg-[#fdfaf3] text-left">
+              <tr className="bg-cream-deep text-left">
                 <th className="px-5 py-4 font-semibold text-ink/60">Benefit</th>
+                <th className="px-5 py-4 font-semibold text-ink">Registered</th>
                 <th className="px-5 py-4 font-semibold text-ink">Bronze</th>
                 <th className="px-5 py-4 font-semibold text-ink">Gold</th>
                 <th className="px-5 py-4 font-semibold text-ink">Platinum</th>
@@ -120,7 +246,10 @@ const CompareBenefits = () => {
             <tbody>
               {comparisonRows.map((row, i) => (
                 <tr key={row.label} className={i % 2 === 1 ? "bg-cream/60" : ""}>
-                  <td className="px-5 py-4 font-semibold text-ink">{row.label}</td>
+                  <td className="px-5 py-4 font-semibold text-ink">
+                    {row.label}
+                  </td>
+                  <td className="px-5 py-4 text-ink/70">{row.registered}</td>
                   <td className="px-5 py-4 text-ink/70">{row.bronze}</td>
                   <td className="px-5 py-4 text-ink/70">{row.gold}</td>
                   <td className="px-5 py-4 text-ink/70">{row.platinum}</td>
@@ -130,76 +259,83 @@ const CompareBenefits = () => {
             </tbody>
           </table>
         </div>
+        <p className="mt-3 text-xs text-ink/50">
+          Early access opens the sale to you 24 hours before it goes public.
+          Diamond invitations arrive occasionally and while the offer lasts.
+        </p>
       </section>
 
-      {/* How your level is calculated */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+      {/* Exact requirements */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="max-w-2xl space-y-3">
+          <h2 className="text-3xl font-semibold text-ink sm:text-4xl">
+            Exactly what each level requires
+          </h2>
+          <p className="leading-relaxed text-ink/65">
+            All three conditions must be met inside the same cycle. Spend,
+            orders and active months are tracked on your loyalty page, so you
+            can see your position at any time.
+          </p>
+        </div>
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-sand bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
+          <table className="w-full min-w-180 text-sm">
+            <thead>
+              <tr className="bg-cream-deep text-left">
+                <th className="px-5 py-4 font-semibold text-ink/60">Level</th>
+                <th className="px-5 py-4 font-semibold text-ink/60">Cycle</th>
+                <th className="px-5 py-4 font-semibold text-ink/60">
+                  Qualifying spend
+                </th>
+                <th className="px-5 py-4 font-semibold text-ink/60">
+                  Qualifying orders
+                </th>
+                <th className="px-5 py-4 font-semibold text-ink/60">
+                  Active months
+                </th>
+                <th className="px-5 py-4 font-semibold text-ink/60">
+                  Return / cancel rate
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {requirementRows.map((row, i) => (
+                <tr key={row.tier} className={i % 2 === 1 ? "bg-cream/60" : ""}>
+                  <td className="px-5 py-4 font-semibold text-ink">
+                    {row.tier}
+                  </td>
+                  <td className="px-5 py-4 text-ink/70">{row.cycle}</td>
+                  <td className="px-5 py-4 font-semibold text-brand">
+                    {formatCurrency(row.spend)}
+                  </td>
+                  <td className="px-5 py-4 text-ink/70">{row.orders}</td>
+                  <td className="px-5 py-4 text-ink/70">{row.months}</td>
+                  <td className="px-5 py-4 text-ink/70">{row.rate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-xs text-ink/50">
+          The return / cancel rate is measured across your last 4 settled
+          orders. Bronze is not checked, since it is earned inside your first
+          cycle.
+        </p>
+      </section>
+
+      {/* Qualifying rules */}
+      <section className="mx-auto grid max-w-6xl items-start gap-10 px-4 sm:px-6 lg:grid-cols-2">
         <div className="space-y-5">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-ink">How your level is calculated</h2>
-          <p className="text-ink/65 leading-relaxed">
-            A level should say something about how you shop, not about one lucky purchase. Qualifying
-            spend is counted this way:
-          </p>
-          <ul className="space-y-3">
-            {qualifyingRules.map((rule) => (
-              <li key={rule} className="flex items-start gap-3 text-ink/80">
-                <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
-                  <CheckIcon size={11} strokeWidth={3.5} />
-                </span>
-                {rule}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="rounded-2xl border border-[#ece1d0] bg-white p-6 sm:p-8 shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold">Thresholds</p>
-          <h3 className="mt-2 text-xl font-semibold text-ink">Qualifying spend in a rolling 12 months</h3>
-          <div className="mt-6 space-y-4">
-            {thresholdRows.map((row) => (
-              <div key={row.tier} className="flex items-baseline justify-between gap-4 border-b border-[#ece1d0] pb-4 last:border-0 last:pb-0">
-                <div>
-                  <p className="font-semibold text-ink">{row.tier}</p>
-                  <p className="text-xs text-ink/55">{row.share}</p>
-                </div>
-                <div className="text-right">
-                  <p className="font-semibold text-brand">{row.spend}</p>
-                  <p className="text-xs text-ink/55">{row.orders === "—" ? "no minimum" : `${row.orders}+ orders`}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mt-6 text-xs leading-relaxed text-ink/50">
-            At an average basket of around Rs. 4,000, Diamond works out to roughly one order a week for
-            a year, demanding, but a level a regular customer can genuinely earn.
+          <h2 className="text-3xl font-semibold text-ink sm:text-4xl">
+            Which orders count
+          </h2>
+          <p className="leading-relaxed text-ink/65">
+            A level should say something about how you shop, not about one
+            lucky purchase. Qualifying spend is counted this way:
           </p>
         </div>
-      </section>
-
-      {/* Movement rules */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2 className="text-3xl sm:text-4xl font-semibold text-ink max-w-2xl">Moving up, moving down</h2>
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {movementRules.map((rule, i) => (
-            <div key={rule} className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand">Rule {String(i + 1).padStart(2, "0")}</p>
-              <p className="mt-3 text-ink/75 leading-relaxed">{rule}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Ground rules */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-        <div>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-ink">The ground rules for points and coupons</h2>
-          <p className="mt-4 text-ink/65 leading-relaxed">
-            Rewards should feel generous without selling below cost. These rules apply to every level
-            and every code, at every checkout.
-          </p>
-        </div>
-        <ul className="space-y-4">
-          {groundRules.map((rule) => (
-            <li key={rule} className="flex items-start gap-3 text-ink/80 leading-relaxed">
+        <ul className="space-y-3">
+          {qualifyingRules.map((rule) => (
+            <li key={rule} className="flex items-start gap-3 text-ink/80">
               <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
                 <CheckIcon size={11} strokeWidth={3.5} />
               </span>
@@ -209,27 +345,81 @@ const CompareBenefits = () => {
         </ul>
       </section>
 
-      {/* Public coupons */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2 className="text-3xl sm:text-4xl font-semibold text-ink">Coupons open to everyone</h2>
-        <p className="mt-4 max-w-2xl text-ink/65 leading-relaxed">
-          Six public codes, each with its own window or run-count. Tier coupons such as GOLD10,
-          PLAT12 and DIAMOND15 appear automatically in the checkout of members at the right level.
+      {/* Cycles */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <h2 className="max-w-2xl text-3xl font-semibold text-ink sm:text-4xl">
+          How cycles work
+        </h2>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          {cycleRules.map((rule, i) => (
+            <div
+              key={rule}
+              className="rounded-2xl border border-sand bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.05)]"
+            >
+              <p className="text-xs font-bold tracking-[0.2em] text-brand uppercase">
+                Rule {String(i + 1).padStart(2, "0")}
+              </p>
+              <p className="mt-3 leading-relaxed text-ink/75">{rule}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Points */}
+      <section className="mx-auto grid max-w-6xl items-start gap-10 px-4 sm:px-6 lg:grid-cols-2">
+        <div>
+          <h2 className="text-3xl font-semibold text-ink sm:text-4xl">
+            How points work
+          </h2>
+          <p className="mt-4 leading-relaxed text-ink/65">
+            Points are separate from your level. You earn them on qualifying
+            orders at your level's rate, and they belong to you until they
+            expire.
+          </p>
+        </div>
+        <ul className="space-y-4">
+          {pointsRules.map((rule) => (
+            <li
+              key={rule}
+              className="flex items-start gap-3 leading-relaxed text-ink/80"
+            >
+              <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
+                <CheckIcon size={11} strokeWidth={3.5} />
+              </span>
+              {rule}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Coupons */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <h2 className="text-3xl font-semibold text-ink sm:text-4xl">
+          Coupons and their terms
+        </h2>
+        <p className="mt-4 max-w-2xl leading-relaxed text-ink/65">
+          Tier coupons appear in the checkout of members at the right level and
+          stay available while the offer lasts. One coupon per order — codes
+          do not stack with each other or with sale pricing.
         </p>
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-[#ece1d0] bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
+        <div className="mt-8 overflow-x-auto rounded-2xl border border-sand bg-white shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
           <table className="w-full min-w-180 text-sm">
             <thead>
-              <tr className="bg-[#fdfaf3] text-left">
+              <tr className="bg-cream-deep text-left">
                 <th className="px-5 py-4 font-semibold text-ink/60">Code</th>
                 <th className="px-5 py-4 font-semibold text-ink/60">Offer</th>
-                <th className="px-5 py-4 font-semibold text-ink/60">Min. order</th>
+                <th className="px-5 py-4 font-semibold text-ink/60">
+                  Min. order
+                </th>
                 <th className="px-5 py-4 font-semibold text-ink/60">Limits</th>
               </tr>
             </thead>
             <tbody>
-              {publicCoupons.map((c, i) => (
+              {couponRows.map((c, i) => (
                 <tr key={c.code} className={i % 2 === 1 ? "bg-cream/60" : ""}>
-                  <td className="px-5 py-4 font-bold tracking-wide text-brand">{c.code}</td>
+                  <td className="px-5 py-4 font-bold tracking-wide text-brand">
+                    {c.code}
+                  </td>
                   <td className="px-5 py-4 text-ink/80">{c.offer}</td>
                   <td className="px-5 py-4 text-ink/70">{c.min}</td>
                   <td className="px-5 py-4 text-ink/70">{c.limits}</td>
@@ -238,35 +428,58 @@ const CompareBenefits = () => {
             </tbody>
           </table>
         </div>
+        <p className="mt-3 max-w-3xl text-xs leading-relaxed text-ink/50">
+          Our weekend flash sale runs for a limited number of redemptions and is
+          released to Platinum and Diamond members before any public window. The
+          code reaches members in their account and email, so it is not
+          published on this page.
+        </p>
       </section>
 
-      {/* Measurement */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="max-w-2xl space-y-3">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-ink">How we measure all of this</h2>
-          <p className="text-ink/65 leading-relaxed">
-            A benefits page is a promise. These are the numbers we watch to keep the promise honest,
-            reviewed monthly by our retail and finance teams together.
-          </p>
-        </div>
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
-          {measures.map((m) => (
-            <div key={m.metric} className="rounded-2xl border border-[#ece1d0] bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
-              <h3 className="font-semibold text-ink">{m.metric}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink/65">{m.detail}</p>
-            </div>
-          ))}
+      {/* Program terms */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <h2 className="text-3xl font-semibold text-ink sm:text-4xl">
+          Program terms
+        </h2>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          <div className="rounded-2xl border border-sand bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
+            <p className="text-xs font-bold tracking-[0.2em] text-brand uppercase">
+              Fair use
+            </p>
+            <p className="mt-3 leading-relaxed text-ink/75">
+              Orders placed to artificially reach a level — for example bulk
+              orders that are then returned — do not count towards your
+              requirements. We may pause coupons or levels while we review
+              activity that looks like abuse.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-sand bg-white p-6 shadow-[0_2px_16px_rgba(61,5,12,0.05)]">
+            <p className="text-xs font-bold tracking-[0.2em] text-brand uppercase">
+              Changes to the program
+            </p>
+            <p className="mt-3 leading-relaxed text-ink/75">
+              Requirements, benefits and coupon terms may change as the program
+              evolves. Levels you have already earned stand for the rest of
+              their cycle, and any change is published on this page with its
+              effective date.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="rounded-2xl border border-[#ece1d0] bg-linear-to-br from-white to-[#fdfaf3] p-10 text-center space-y-5">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-ink">Ready to see what you have earned?</h2>
-          <p className="text-ink/65">Your current level, points and qualifying spend live in your loyalty dashboard.</p>
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+        <div className="space-y-5 rounded-2xl border border-sand bg-linear-to-br from-white to-cream p-10 text-center">
+          <h2 className="text-2xl font-semibold text-ink sm:text-3xl">
+            Ready to see what you have earned?
+          </h2>
+          <p className="text-ink/65">
+            Your current level, cycle dates, points and per-order counting all
+            live in your loyalty dashboard.
+          </p>
           <Link
             to={ROUTES.LOYALTY}
-            className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3.5 text-sm font-bold uppercase tracking-wide text-white shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] transition-colors duration-300 hover:bg-brand-dark"
+            className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3.5 text-sm font-bold tracking-wide text-white uppercase shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] transition-colors duration-300 hover:bg-brand-dark"
           >
             Open loyalty dashboard
             <ArrowRightIcon size={16} />

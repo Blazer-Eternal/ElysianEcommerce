@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { orderService } from "../../services/orderService";
 import OrderCard from "../../components/order/OrderCard";
@@ -9,7 +9,9 @@ import Spinner from "../../components/ui/Spinner";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
 import { isActiveOrder } from "../../utils/customerDashboard";
+import { useLoyalty } from "../../hooks/useLoyalty";
 import type { Order } from "../../types/order.types";
+import type { OrderFlag } from "../../types/loyalty.types";
 
 /** Client-side views over the current page of orders; statuses stay untouched. */
 const FILTERS = [
@@ -44,6 +46,16 @@ const OrderHistory = () => {
     queryKey: ["my-orders", page],
     queryFn: ({ signal }) => orderService.getMyOrders(page, 10, { signal }),
   });
+
+  // Per-order tier labels ("Counts", "Pending until …", "Doesn't count") come
+  // from the same server engine that computes the tier, so the list always
+  // matches the loyalty page.
+  const { data: loyalty } = useLoyalty();
+  const loyaltyFlags = useMemo(() => {
+    const map = new Map<string, OrderFlag>();
+    (loyalty?.orders ?? []).forEach((flag) => map.set(flag.order_id, flag));
+    return map;
+  }, [loyalty]);
 
   const orders = data?.data || [];
   const visibleOrders = orders.filter((order) => matchesFilter(order, filter));
@@ -158,7 +170,11 @@ const OrderHistory = () => {
                 <div className="space-y-4">
                   {visibleOrders.map((order) => (
                     <div key={order._id} className="animate-fade-in">
-                      <OrderCard order={order} onTrack={() => setTrackingOrder(order)} />
+                      <OrderCard
+                        order={order}
+                        onTrack={() => setTrackingOrder(order)}
+                        loyaltyFlag={loyaltyFlags.get(order._id)}
+                      />
                     </div>
                   ))}
                 </div>

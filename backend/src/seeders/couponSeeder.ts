@@ -87,7 +87,9 @@ const couponData: CouponSeed[] = [
     per_user_window_days: 90,
     purpose: "Inactive 60+ days win-back",
   },
-  // Tier-gated
+  // Tier-gated. Every tier code carries the same shape: a Rs. 3,000 minimum,
+  // a capped percentage, electronics excluded (percentages never touch them)
+  // and two redemptions per member per 30 days.
   {
     code: "GOLD10",
     discount_type: DiscountTypeEnum.percentage,
@@ -96,6 +98,9 @@ const couponData: CouponSeed[] = [
     expiry_date: EXPIRY,
     usage_limit: null,
     max_discount: 1500,
+    per_user_limit: 2,
+    per_user_window_days: 30,
+    exclude_electronics: true,
     min_tier: "gold",
     purpose: "Gold tier coupon",
   },
@@ -107,6 +112,9 @@ const couponData: CouponSeed[] = [
     expiry_date: EXPIRY,
     usage_limit: null,
     max_discount: 2500,
+    per_user_limit: 2,
+    per_user_window_days: 30,
+    exclude_electronics: true,
     min_tier: "platinum",
     purpose: "Platinum tier coupon",
   },
@@ -118,6 +126,9 @@ const couponData: CouponSeed[] = [
     expiry_date: EXPIRY,
     usage_limit: null,
     max_discount: 4000,
+    per_user_limit: 2,
+    per_user_window_days: 30,
+    exclude_electronics: true,
     min_tier: "diamond",
     purpose: "Diamond tier coupon",
   },
@@ -134,6 +145,10 @@ const couponData: CouponSeed[] = [
     per_user_window_days: 30,
     purpose: "Festival / seasonal sale",
   },
+  // Flash codes are released to members first. The code itself is never
+  // printed on a public page — Platinum and Diamond receive it in their
+  // account and email ahead of any public window, which keeps the 150-run cap
+  // away from coupon sites and bots.
   {
     code: "FLASH25",
     discount_type: DiscountTypeEnum.percentage,
@@ -144,8 +159,9 @@ const couponData: CouponSeed[] = [
     max_discount: 3000,
     per_user_limit: 1,
     per_user_window_days: 365,
+    min_tier: "platinum",
     category_scope: ["fashion", "beauty", "jewellery", "toys", "home decor"],
-    purpose: "Weekend flash sale, high-margin categories",
+    purpose: "Weekend flash sale, released to Platinum and Diamond first",
   },
   {
     code: "CLEAR30",

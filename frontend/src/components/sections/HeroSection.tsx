@@ -21,10 +21,10 @@ const ArrowIcon = memo(() => (
 ArrowIcon.displayName = "ArrowIcon";
 
 const TRUST = [
-  { icon: <TruckIcon size={22} />, label: "Free delivery", detail: "on carts over Rs. 2,000" },
+  { icon: <TruckIcon size={22} />, label: "Delivery that rewards you", detail: "free thresholds shrink as you climb" },
   { icon: <CreditCardIcon size={22} />, label: "Pay how you like", detail: "COD or eSewa, your pick" },
   { icon: <RefreshIcon size={22} />, label: "30 days to decide", detail: "full refund on returns" },
-  { icon: <CoinsIcon size={22} />, label: "Member rewards", detail: "1 point per Rs. 2 spent" },
+  { icon: <CoinsIcon size={22} />, label: "Member rewards", detail: "0.5–2% back in points, by tier" },
 ];
 
 const HeroSection = memo(() => {
@@ -94,7 +94,7 @@ const HeroSection = memo(() => {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-70" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand" />
                 </span>
-                Free delivery above Rs. 2,000
+                Delivery perks that grow with your tier
               </div>
 
               <h1

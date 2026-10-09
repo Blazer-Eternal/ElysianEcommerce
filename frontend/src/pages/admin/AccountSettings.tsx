@@ -7,7 +7,7 @@ import { userService } from "../../services/userService";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/getErrorMessage";
-import { isMuted, setMuted, pushDesktopAlert } from "../../utils/briefAlert";
+import { pushDesktopAlert } from "../../utils/briefAlert";
 
 const inputClass =
   "w-full border border-sand rounded-lg px-4 py-3 text-sm bg-cream/70 focus:outline-none focus:border-brand/40 focus:ring-2 focus:ring-brand/20 focus:bg-white";
@@ -87,7 +87,6 @@ const AccountSettings = () => {
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
 
-  const [alertsMuted, setAlertsMuted] = useState<boolean>(() => isMuted());
   const [desktopState, setDesktopState] = useState<string>("");
 
   const profileUser = data?.data;
@@ -134,12 +133,6 @@ const AccountSettings = () => {
     } finally {
       setIsSavingPassword(false);
     }
-  };
-
-  const toggleAlerts = () => {
-    const next = !alertsMuted;
-    setAlertsMuted(next);
-    setMuted(next);
   };
 
   const enableDesktopAlerts = () => {
@@ -342,30 +335,6 @@ const AccountSettings = () => {
             subtitle="How the Daily Update drawer gets your attention."
           >
             <div className="space-y-3">
-              <div className="flex items-center justify-between gap-4 rounded-xl border border-sand bg-cream/60 px-4 py-3.5">
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-gray-900">Alert sounds</p>
-                  <p className="mt-0.5 text-xs text-gray-500">
-                    A short chime for new orders and critical events.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={!alertsMuted}
-                  onClick={toggleAlerts}
-                  className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-                    alertsMuted ? "bg-gray-300" : "bg-brand"
-                  }`}
-                >
-                  <span
-                    className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${
-                      alertsMuted ? "left-0.5" : "left-5.5"
-                    }`}
-                  />
-                </button>
-              </div>
-
               <div className="flex items-center justify-between gap-4 rounded-xl border border-sand bg-cream/60 px-4 py-3.5">
                 <div className="min-w-0">
                   <p className="text-sm font-semibold text-gray-900">Desktop alerts</p>

@@ -32,7 +32,7 @@ const TopSellingProducts = memo(({ products, isLoading }: TopSellingProductsProp
       ) : data.length === 0 ? (
         <PanelEmpty message="No product sales yet" hint="Best sellers appear after the first orders." />
       ) : (
-        <div className="h-[240px] -ml-2">
+        <div className="h-60 -ml-2">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 10, right: 10, left: -14, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1e6d4" vertical={false} />

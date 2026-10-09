@@ -44,4 +44,9 @@ export interface OrderInterface extends Document {
   payment_status: PaymentStatusEnum;
   payment_method: PaymentMethodEnum;
   created_at: Date;
+  /**
+   * When the parcel was marked delivered. The 7-day return window, and with it
+   * every loyalty rule that waits for it, runs from this date.
+   */
+  delivered_at?: Date | null;
 }

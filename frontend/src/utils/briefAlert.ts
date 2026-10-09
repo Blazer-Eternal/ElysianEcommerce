@@ -55,7 +55,6 @@ export const GROUP_STYLES: Record<BriefGroupKey, { iconBg: string; text: string 
 };
 
 const READ_KEY = "elysian_admin_brief_read";
-const MUTED_KEY = "elysian_admin_brief_muted";
 /** Bound so the read ledger never grows without limit. */
 const READ_CAP = 500;
 
@@ -91,19 +90,9 @@ export const saveSeenKeys = (keys: string[]): void => {
   }
 };
 
-export const isMuted = (): boolean => readJson<boolean>(MUTED_KEY, false);
-
-export const setMuted = (value: boolean): void => {
-  try {
-    localStorage.setItem(MUTED_KEY, JSON.stringify(value));
-  } catch {
-    /* ignore */
-  }
-};
-
 /**
- * Only new orders and a dead storefront earn a sound — a single vendor can
- * miss a low-stock nudge, but not a sale going through or the site falling
+ * Only new orders and a dead storefront earn a desktop alert — a single vendor
+ * can miss a low-stock nudge, but not a sale going through or the site falling
  * over. Takes the whole entry so the key can carry the intent.
  */
 export const isAlertWorthy = (entry: { key: string; severity: BriefSeverity }): boolean =>
@@ -111,44 +100,6 @@ export const isAlertWorthy = (entry: { key: string; severity: BriefSeverity }): 
   entry.key.startsWith("order-vip:") ||
   (entry.key === "sys:storefront" && entry.severity === "critical") ||
   (entry.key === "sys:database" && entry.severity === "critical");
-
-let audioContext: AudioContext | null = null;
-
-const getAudioContext = (): AudioContext | null => {
-  if (typeof window === "undefined") return null;
-  const Ctor =
-    window.AudioContext ??
-    (window as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-  if (!Ctor) return null;
-  if (!audioContext) audioContext = new Ctor();
-  if (audioContext.state === "suspended") void audioContext.resume();
-  return audioContext;
-};
-
-/** Two-note chime (sale) / low dissonant hit (failure), synthesised — no asset. */
-export const playBriefChime = (kind: "order" | "critical"): void => {
-  if (isMuted()) return;
-  const context = getAudioContext();
-  if (!context) return;
-
-  const notes = kind === "order" ? [880, 1318.5] : [523.25, 392];
-  notes.forEach((frequency, index) => {
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const start = context.currentTime + index * 0.14;
-
-    oscillator.type = kind === "order" ? "sine" : "triangle";
-    oscillator.frequency.setValueAtTime(frequency, start);
-
-    gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(0.22, start + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.45);
-
-    oscillator.connect(gain).connect(context.destination);
-    oscillator.start(start);
-    oscillator.stop(start + 0.5);
-  });
-};
 
 /** Best-effort desktop notification; silently does nothing when unsupported. */
 export const pushDesktopAlert = (title: string, body: string): void => {

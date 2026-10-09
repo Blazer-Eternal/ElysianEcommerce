@@ -23,7 +23,7 @@ import {
   getTotalSpent,
 } from "../../utils/customerDashboard";
 import { getTrackingSteps, trackingCircleClass, type TrackingStep } from "../../utils/orderTracking";
-import { getLoyaltyPoints, getTierStatus } from "../../utils/loyalty";
+import { useLoyalty } from "../../hooks/useLoyalty";
 import type { Order } from "../../types/order.types";
 import {
   ArrowRightIcon,
@@ -89,6 +89,7 @@ const Dashboard = () => {
   const { addItem } = useCartActions();
   const { items: wishlistItems } = useWishlist();
   const { data: ordersData, isLoading } = useMyOrders();
+  const { data: loyalty } = useLoyalty();
 
   const [addingId, setAddingId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
@@ -122,8 +123,13 @@ const Dashboard = () => {
     })),
   });
 
-  const loyaltyPoints = getLoyaltyPoints(totalSpent);
-  const { tier, next, progress } = getTierStatus(totalSpent);
+  // Tier, cycle and points are all derived server-side from the order
+  // history — this snapshot quotes the same numbers as the loyalty page.
+  const loyaltyTier = loyalty?.tier ?? null;
+  const loyaltyPoints = loyalty?.points.available ?? 0;
+  const spendProgress =
+    loyalty?.checklist.find((item) => item.key === "spend")?.progress ?? 0;
+  const nextTier = loyalty?.nextTier ?? null;
   const firstName = user?.name?.split(" ")[0] ?? "there";
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
@@ -201,7 +207,11 @@ const Dashboard = () => {
               iconClassName="bg-amber-50 text-amber-500"
               label="Loyalty Points"
               value={`${loyaltyPoints.toLocaleString("en-IN")} pts`}
-              hint="Points worth 0.5–2% back, by tier"
+              hint={
+                loyaltyTier && loyaltyTier.index >= 0
+                  ? `earned at your ${loyaltyTier.name} tier rate`
+                  : "earn points from every delivered order"
+              }
             />
             <StatCard
               icon={<HeartIcon size={22} />}
@@ -345,7 +355,7 @@ const Dashboard = () => {
             <div className="mt-4 flex flex-wrap items-center gap-2.5">
               <span className="inline-flex items-center gap-1 rounded-full bg-cyan-100 px-2.5 py-1 text-xs font-semibold text-cyan-700">
                 <CrownIcon size={12} />
-                {tier.name} Tier
+                {loyaltyTier && loyaltyTier.index >= 0 ? `${loyaltyTier.name} Tier` : "Registered"}
               </span>
               <span className="text-sm font-semibold text-gray-900">
                 {loyaltyPoints.toLocaleString("en-IN")} pts
@@ -354,13 +364,13 @@ const Dashboard = () => {
             <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-sand">
               <div
                 className="h-full rounded-full bg-linear-to-r from-brand to-cyan-600 transition-all duration-700"
-                style={{ width: `${Math.round(progress * 100)}%` }}
+                style={{ width: `${Math.round(spendProgress * 100)}%` }}
               />
             </div>
             <p className="mt-2 text-xs text-gray-500">
-              {next
-                ? `${formatCurrency(Math.max(0, next.minSpend - totalSpent))} to ${next.name}`
-                : "top tier"}
+              {nextTier
+                ? `${formatCurrency(Math.max(0, nextTier.requirements.spend - (loyalty?.counters.spend ?? 0)))} in qualifying spend to ${nextTier.name}`
+                : "top tier reached"}
             </p>
             <Link
               to={ROUTES.LOYALTY}

@@ -133,7 +133,8 @@ const StorySection = () => {
               </p>
               <p>
                 Cash on delivery still matters, and so does paying upfront on eSewa, both work on
-                every order. Prices are shown in rupees, delivery is free above Rs. 2,000, and if
+                every order. Prices are shown in rupees, delivery gets freer the higher you climb,
+                and if
                 something arrives wrong you have thirty days to send it back.
               </p>
             </div>

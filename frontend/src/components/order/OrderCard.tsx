@@ -1,18 +1,28 @@
 import { Link } from "react-router-dom";
 import type { Order } from "../../types/order.types";
+import type { OrderFlag } from "../../types/loyalty.types";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { formatDate } from "../../utils/formatDate";
 import { ROUTES } from "../../constants/routes";
 import OrderStatusBadge from "./OrderStatusBadge";
 import Button from "../ui/Button";
 
+/** Small pill telling the shopper how this order counts towards their tier. */
+const LOYALTY_PILL: Record<OrderFlag["state"], string> = {
+  counts: "border-gold/30 bg-cream-deep text-gold-dark",
+  pending: "border-sand bg-cream text-ink/60",
+  excluded: "border-ink/10 bg-white text-ink/45",
+};
+
 interface OrderCardProps {
   order: Order;
   /** Opens the live-tracking modal for this order. */
   onTrack: () => void;
+  /** How this order counts towards the loyalty tier, when known. */
+  loyaltyFlag?: OrderFlag;
 }
 
-const OrderCard = ({ order, onTrack }: OrderCardProps) => {
+const OrderCard = ({ order, onTrack, loyaltyFlag }: OrderCardProps) => {
   const itemNames = order.items.map((item) => item.product_name).join(", ");
 
   return (
@@ -26,6 +36,14 @@ const OrderCard = ({ order, onTrack }: OrderCardProps) => {
             #{order.order_number}
           </Link>
           <OrderStatusBadge status={order.status} />
+          {loyaltyFlag && (
+            <span
+              title={loyaltyFlag.detail ?? undefined}
+              className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${LOYALTY_PILL[loyaltyFlag.state]}`}
+            >
+              {loyaltyFlag.label}
+            </span>
+          )}
         </div>
 
         <p className="mt-1.5 truncate text-sm text-gray-500">

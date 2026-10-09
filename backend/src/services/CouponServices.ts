@@ -2,7 +2,7 @@ import { CouponModel } from "../models/CouponModel";
 import { OrderModel } from "../models/OrderModel";
 import { CouponInterface, InputCouponInterface } from "../intefaces/CouponInterface";
 import { DiscountTypeEnum } from "../enums/CouponEnums";
-import { OrderStatusEnum } from "../enums/OrderEnums";
+import { LoyaltyServices } from "./LoyaltyServices";
 
 /** A line being priced: a populated product plus quantity. */
 export interface PricedLine {
@@ -59,33 +59,16 @@ export class CouponServices {
   }
 
   /**
-   * Membership tier from the last 12 months of orders: qualifying spend is the
-   * item subtotal after discounts, capped at Rs. 50,000 per order, counted only
-   * for orders that were paid, shipped or delivered (not cancelled).
+   * Membership tier for coupon gating.
+   *
+   * Delegates to the shared loyalty engine — fixed cycles, the Rs. 1,000
+   * floor, the 14-day spacing rule and the 7-day return window — so a tier
+   * coupon opens on the same day the customer's dashboard says it does.
+   * "registered" ranks below every level: nothing has been earned yet.
    */
   public static async getUserTier(userId: string): Promise<string> {
-    const since = new Date(Date.now() - 365 * 86400000);
-    const orders = await OrderModel.find({
-      user_id: userId,
-      created_at: { $gte: since },
-      status: { $in: [OrderStatusEnum.paid, OrderStatusEnum.shipped, OrderStatusEnum.delivered] },
-    }).select("subtotal discount");
-
-    let qualifying = 0;
-    for (const order of orders) {
-      const net = Math.max(0, (order.subtotal ?? 0) - (order.discount ?? 0));
-      qualifying += Math.min(net, 50000);
-    }
-
-    const thresholds = [
-      { name: "diamond", minSpend: 250000, minOrders: 15 },
-      { name: "platinum", minSpend: 100000, minOrders: 8 },
-      { name: "gold", minSpend: 30000, minOrders: 3 },
-    ];
-    for (const t of thresholds) {
-      if (qualifying >= t.minSpend && orders.length >= t.minOrders) return t.name;
-    }
-    return "bronze";
+    const tier = await new LoyaltyServices().getTierName(userId);
+    return tier.toLowerCase();
   }
 
   /**
@@ -129,7 +112,9 @@ export class CouponServices {
 
     if (coupon.min_tier) {
       const tier = await CouponServices.getUserTier(userId);
-      const rank = (t: string) => ["bronze", "gold", "platinum", "diamond"].indexOf(t);
+      // Registered sits under Bronze, so an entry-stage account can never
+      // reach a tier-gated code.
+      const rank = (t: string) => ["registered", "bronze", "gold", "platinum", "diamond"].indexOf(t);
       if (rank(tier) < rank(coupon.min_tier)) {
         return fail(`This coupon is reserved for ${coupon.min_tier} members and above`);
       }

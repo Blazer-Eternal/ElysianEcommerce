@@ -14,6 +14,10 @@ import {
   CustomerNotificationCategoryEnum,
   CustomerNotificationWithRead,
 } from "../intefaces/CustomerNotificationInterface";
+import {
+  LoyaltyServices,
+  type LoyaltySummary as LoyaltyEngineSummary,
+} from "./LoyaltyServices";
 
 /** How many of the newest orders get a status entry. */
 const ORDER_LIMIT = 6;
@@ -30,14 +34,6 @@ const PROMO_LIMIT = 3;
 const IDLE_CART_HOURS = 24;
 /** Stock at or below this (but above zero) counts as "running low". */
 const LOW_STOCK_THRESHOLD = 2;
-
-/** Tier rules mirrored exactly from `frontend/src/utils/loyalty.ts`. */
-const TIERS = [
-  { name: "Bronze", minSpend: 0, pointsRate: 0.005 },
-  { name: "Gold", minSpend: 30_000, pointsRate: 0.01 },
-  { name: "Platinum", minSpend: 100_000, pointsRate: 0.015 },
-  { name: "Diamond", minSpend: 250_000, pointsRate: 0.02 },
-];
 
 /** The product fields every notification needs, once `populate` has resolved. */
 interface PopulatedProduct {
@@ -70,7 +66,7 @@ const shortDate = (date: Date): string =>
   new Date(date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 
 const tierRank = (name: string): number =>
-  ["bronze", "gold", "platinum", "diamond"].indexOf(name.toLowerCase());
+  ["registered", "bronze", "gold", "platinum", "diamond"].indexOf(name.toLowerCase());
 
 /**
  * Builds the signed-in customer's notification feed.
@@ -133,7 +129,7 @@ export class CustomerNotificationServices {
     const userRef = new Types.ObjectId(userId);
     const now = new Date();
 
-    const [orders, wishlist, cart, reviews, coupons, spendLedger] = await Promise.all([
+    const [orders, wishlist, cart, reviews, coupons, loyaltySummary] = await Promise.all([
       // Recent orders drive the status entries and the review requests.
       OrderModel.find({ user_id: userRef }).sort({ created_at: -1 }).limit(20),
       WishlistModel.find({ user_id: userRef })
@@ -149,15 +145,12 @@ export class CustomerNotificationServices {
       CouponModel.find({ is_active: true, expiry_date: { $gte: now } })
         .sort({ expiry_date: 1 })
         .limit(40),
-      // Lifetime non-cancelled spend, oldest first, so the tier-crossing order
-      // and its date come back from one light covering read.
-      OrderModel.find({ user_id: userRef, status: { $ne: OrderStatusEnum.cancelled } })
-        .select("created_at total_amount")
-        .sort({ created_at: 1 })
-        .lean(),
+      // The shared loyalty engine: tier, cycle and points, so this feed quotes
+      // exactly the numbers the loyalty dashboard shows.
+      new LoyaltyServices().evaluate(userId),
     ]);
 
-    const loyalty = this.deriveLoyalty(spendLedger);
+    const loyalty = this.deriveLoyalty(loyaltySummary);
 
     return [
       ...this.deriveOrders(orders),
@@ -250,51 +243,31 @@ export class CustomerNotificationServices {
   /* ------------------------------------------------------------------ */
 
   /**
-   * Lifetime non-cancelled spend plus the date the current tier was first
-   * reached — both read straight off the order ledger, so these numbers always
-   * agree with the dashboard's Loyalty Snapshot.
+   * Flattens the shared loyalty engine's summary into the shape the rewards
+   * entries read: the level held, the day it was reached, the points that are
+   * actually available (pending and expired balances are not announced) and
+   * the lifetime figures the message quotes.
    */
-  private deriveLoyalty(ledger: SpendLedgerEntry[]): LoyaltySummary {
-    const tierIndexFor = (spent: number): number =>
-      TIERS.reduce((found, tier, index) => (spent >= tier.minSpend ? index : found), 0);
-
-    let totalSpent = 0;
-    let latestQualifyingOrder: Date | null = null;
-    for (const order of ledger) {
-      totalSpent += order.total_amount;
-      latestQualifyingOrder = order.created_at;
-    }
-
-    const tierIndex = tierIndexFor(totalSpent);
-    const tier = TIERS[tierIndex];
-
-    let running = 0;
-    let tierCrossedAt: Date | null = null;
-    for (const order of ledger) {
-      running += order.total_amount;
-      if (running >= tier.minSpend) {
-        tierCrossedAt = order.created_at;
-        break;
-      }
-    }
-
+  private deriveLoyalty(summary: LoyaltyEngineSummary): LoyaltySummary {
+    const latestEntry = summary.history.find((entry) => entry.points > 0);
     return {
-      totalSpent,
-      tierIndex,
-      tierName: tier.name,
-      pointsRate: tier.pointsRate,
-      points: Math.floor(totalSpent * tier.pointsRate),
-      tierCrossedAt,
-      latestQualifyingOrder,
-      orderCount: ledger.length,
+      totalSpent: summary.lifetimeSpend,
+      tierIndex: summary.tier.index,
+      tierName: summary.tier.name,
+      pointsRate: summary.tier.pointsRate,
+      points: summary.points.available,
+      tierCrossedAt: summary.reached_at ? new Date(summary.reached_at) : null,
+      latestQualifyingOrder: latestEntry ? new Date(latestEntry.date) : null,
+      orderCount: summary.lifetimeOrders,
     };
   }
 
   private deriveRewards(loyalty: LoyaltySummary): CustomerNotification[] {
     const notifications: CustomerNotification[] = [];
 
-    // Bronze is the starting tier — reaching it is not news.
-    if (loyalty.tierIndex > 0 && loyalty.tierCrossedAt) {
+    // Reaching any level is news: Bronze is earned now, not handed out at
+    // signup, so even the entry level gets its own announcement.
+    if (loyalty.tierIndex >= 0 && loyalty.tierCrossedAt) {
       notifications.push({
         key: `rewards:tier:${loyalty.tierName}`,
         category: CustomerNotificationCategoryEnum.rewards,
@@ -546,4 +519,3 @@ type OrderDoc = OrderInterface;
 type WishlistDoc = WishlistInterface;
 type CartDoc = CartInterface;
 type CouponDoc = CouponInterface;
-type SpendLedgerEntry = { created_at: Date; total_amount: number };

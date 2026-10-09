@@ -12,6 +12,7 @@ import wishlistRoutes from "./WishlistRoutes";
 import orderRoutes from "./OrderRoutes";
 import messageRoutes from "./MessageRoutes";
 import notificationRoutes from "./NotificationRoutes";
+import loyaltyRoutes from "./LoyaltyRoutes";
 
 const router = express.Router();
 
@@ -29,6 +30,7 @@ router.use("/wishlist", wishlistRoutes);
 router.use("/orders", orderRoutes);
 router.use("/messages", messageRoutes);
 router.use("/notifications", notificationRoutes);
+router.use("/loyalty", loyaltyRoutes);
 
 
 export default router;

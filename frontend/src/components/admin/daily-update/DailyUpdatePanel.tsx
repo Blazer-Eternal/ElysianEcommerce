@@ -9,9 +9,7 @@ import {
   BRIEF_SEEN_EVENT,
   GROUP_STYLES,
   isAlertWorthy,
-  isMuted,
   loadSeenKeys,
-  playBriefChime,
   pushDesktopAlert,
   saveSeenKeys,
 } from "../../../utils/briefAlert";
@@ -72,7 +70,7 @@ export default function DailyUpdatePanel() {
     };
   }, []);
 
-  /* new alert-worthy entries -> chime + desktop notification (silent on first paint) */
+  /* new alert-worthy entries -> desktop notification (silent on first paint) */
   useEffect(() => {
     if (!data) return;
     const keys = allEntries.map((e) => e.key);
@@ -84,7 +82,6 @@ export default function DailyUpdatePanel() {
     const fresh = allEntries.filter((e) => isAlertWorthy(e) && !already.has(e.key));
     if (!fresh.length) return;
     keys.forEach((k) => already.add(k));
-    if (!isMuted()) playBriefChime(fresh.some((e) => e.severity === "critical") ? "critical" : "order");
     fresh.forEach((e) => pushDesktopAlert(`Elysian · ${e.title}`, e.message));
   }, [data, allEntries]);
 
