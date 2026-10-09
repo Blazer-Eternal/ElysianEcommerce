@@ -2,6 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useCartState } from "../../hooks/useCart";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { ROUTES } from "../../constants/routes";
 
 const UserIcon = () => (
@@ -37,6 +38,7 @@ const CloseIcon = () => (
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const { itemCount } = useCartState();
+  const isAdmin = useIsAdmin();
   const navigate = useNavigate();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -118,19 +120,21 @@ const Navbar = () => {
         <div className="flex items-center gap-4 md:gap-6 shrink-0 ml-auto overflow-visible">
           {isAuthenticated ? (
             <>
-              {/* Cart Icon - badge is anchored to an icon-sized wrapper, NOT the link box (the box changes between
+              {/* Cart Icon, hidden for admins who never shop. Badge is anchored to an icon-sized wrapper, NOT the link box (the box changes between
                   desktop 28px and mobile 44px touch rule, the icon never does). Offset makes the badge's left edge
                   overlap the icon's RIGHT EDGE by 4px and run down it - badge stays connected to the icon in every view */}
-              <Link to={ROUTES.CART} aria-label="Cart" className="relative inline-flex shrink-0 w-7 h-7 items-center justify-center text-ink/75 hover:accent-text transition-colors overflow-visible">
-                <span className="relative inline-flex">
-                  <BagIcon />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-1.5 -right-4 w-5 h-5 text-[10px] rounded-full flex items-center justify-center font-bold bg-brand text-white ring-2 ring-cream">
-                      {itemCount > 99 ? '99+' : itemCount}
-                    </span>
-                  )}
-                </span>
-              </Link>
+              {!isAdmin && (
+                <Link to={ROUTES.CART} aria-label="Cart" className="relative inline-flex shrink-0 w-7 h-7 items-center justify-center text-ink/75 hover:accent-text transition-colors overflow-visible">
+                  <span className="relative inline-flex">
+                    <BagIcon />
+                    {itemCount > 0 && (
+                      <span className="absolute -top-1.5 -right-4 w-5 h-5 text-[10px] rounded-full flex items-center justify-center font-bold bg-brand text-white ring-2 ring-cream">
+                        {itemCount > 99 ? '99+' : itemCount}
+                      </span>
+                    )}
+                  </span>
+                </Link>
+              )}
 
               {/* Account Menu - Desktop and Mobile */}
               <div className="inline-flex shrink-0 overflow-visible" ref={accountMenuRef} style={{ zIndex: 50 }}>

@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCartActions } from "../../hooks/useCart";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { categoryService } from "../../services/categoryService";
 import type { Category } from "../../types/category.types";
 import type { Product } from "../../types/product.types";
@@ -63,6 +64,7 @@ const asStat = (label: string, value: string, icon: ReactNode, tone: string) => 
 const Wishlist = () => {
   const { items, isLoading } = useWishlist();
   const { addItem } = useCartActions();
+  const isAdmin = useIsAdmin();
 
   const [addingId, setAddingId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
@@ -597,13 +599,15 @@ const Wishlist = () => {
 
                       {/* Actions */}
                       <div className="mt-auto pt-1.5 flex gap-2">
-                        <button
-                          onClick={() => handleAddToCart(product._id)}
-                          disabled={outOfStock || isAdding}
-                          className="flex-1 py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-cream-deep disabled:to-cream-deep disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
-                        >
-                          {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
-                        </button>
+                        {!isAdmin && (
+                          <button
+                            onClick={() => handleAddToCart(product._id)}
+                            disabled={outOfStock || isAdding}
+                            className="flex-1 py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-cream-deep disabled:to-cream-deep disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
+                          >
+                            {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
+                          </button>
+                        )}
                         <Link
                           to={ROUTES.PRODUCT_DETAIL(product._id)}
                           className="px-3 py-2 rounded-lg font-medium text-xs transition-all duration-300 text-brand border border-brand/30 bg-white hover:bg-teal-50 hover:border-brand/50"
@@ -723,13 +727,15 @@ const Wishlist = () => {
 
                   {/* Actions */}
                   <div className="hidden sm:flex flex-col gap-2 w-32 shrink-0">
-                    <button
-                      onClick={() => handleAddToCart(product._id)}
-                      disabled={outOfStock || isAdding}
-                      className="w-full py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-cream-deep disabled:to-cream-deep disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
-                    >
-                      {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
-                    </button>
+                    {!isAdmin && (
+                      <button
+                        onClick={() => handleAddToCart(product._id)}
+                        disabled={outOfStock || isAdding}
+                        className="w-full py-2 rounded-lg font-semibold text-xs transition-all duration-300 bg-linear-to-r from-brand to-cyan-600 text-white hover:from-brand-dark hover:to-cyan-700 hover:shadow-md disabled:from-cream-deep disabled:to-cream-deep disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:shadow-none transform active:scale-95"
+                      >
+                        {outOfStock ? "Out of Stock" : isAdding ? "Adding..." : justAdded ? "✓ Added!" : "Add to Cart"}
+                      </button>
+                    )}
                     <Link
                       to={ROUTES.PRODUCT_DETAIL(product._id)}
                       className="w-full py-2 rounded-lg font-medium text-xs transition-all duration-300 text-center text-brand border border-brand/30 bg-white hover:bg-teal-50 hover:border-brand/50"

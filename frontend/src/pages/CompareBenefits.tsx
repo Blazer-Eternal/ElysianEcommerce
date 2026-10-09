@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
+import { useIsAdmin } from "../hooks/useIsAdmin";
 import { ArrowRightIcon, CheckIcon } from "../components/icons";
 import { formatCurrency } from "../utils/formatCurrency";
 import {
@@ -196,6 +197,10 @@ const couponRows = [
 ];
 
 const CompareBenefits = () => {
+  // The CTA at the bottom points at the shopper's own loyalty dashboard, which
+  // means nothing to an admin auditing the public page, so it is hidden for them.
+  const isAdmin = useIsAdmin();
+
   return (
     <div className="space-y-20 pb-20 sm:pb-28">
       {/* Hero */}
@@ -467,25 +472,27 @@ const CompareBenefits = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <div className="mx-auto max-w-4xl px-4 sm:px-6">
-        <div className="space-y-5 rounded-2xl border border-sand bg-linear-to-br from-white to-cream p-10 text-center">
-          <h2 className="text-2xl font-semibold text-ink sm:text-3xl">
-            Ready to see what you have earned?
-          </h2>
-          <p className="text-ink/65">
-            Your current level, cycle dates, points and per-order counting all
-            live in your loyalty dashboard.
-          </p>
-          <Link
-            to={ROUTES.DASHBOARD}
-            className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3.5 text-sm font-bold tracking-wide text-white uppercase shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] transition-colors duration-300 hover:bg-brand-dark"
-          >
-            Open loyalty dashboard
-            <ArrowRightIcon size={16} />
-          </Link>
+      {/* CTA, hidden for admins: it points at the shopper's own dashboard */}
+      {!isAdmin && (
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="space-y-5 rounded-2xl border border-sand bg-linear-to-br from-white to-cream p-10 text-center">
+            <h2 className="text-2xl font-semibold text-ink sm:text-3xl">
+              Ready to see what you have earned?
+            </h2>
+            <p className="text-ink/65">
+              Your current level, cycle dates, points and per-order counting all
+              live in your loyalty dashboard.
+            </p>
+            <Link
+              to={ROUTES.DASHBOARD}
+              className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3.5 text-sm font-bold tracking-wide text-white uppercase shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] transition-colors duration-300 hover:bg-brand-dark"
+            >
+              Open loyalty dashboard
+              <ArrowRightIcon size={16} />
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

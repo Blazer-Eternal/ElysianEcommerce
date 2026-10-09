@@ -9,6 +9,7 @@ import StarRating from "../../components/ui/StarRating";
 import WishlistButton from "../../components/wishlist/WishlistButton";
 import Spinner from "../../components/ui/Spinner";
 import { useAuth } from "../../hooks/useAuth";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { useCartActions } from "../../hooks/useCart";
 import { formatCurrency, formatDiscount, getDisplayMrp } from "../../utils/formatCurrency";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -33,6 +34,7 @@ const ShareIcon = () => (
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { isAuthenticated } = useAuth();
+  const isAdmin = useIsAdmin();
   const { addItem } = useCartActions();
   const navigate = useNavigate();
   const location = useLocation();
@@ -242,6 +244,9 @@ const ProductDetail = () => {
               )}
             </div>
 
+            {/* Commerce controls (quantity + buy/add), hidden for admins */}
+            {!isAdmin && (
+              <>
             {/* Quantity */}
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <span className="text-gray-600">Quantity</span>
@@ -307,6 +312,8 @@ const ProductDetail = () => {
               <p className="mt-3 text-sm text-center text-gray-500">
                 This product is currently out of stock.
               </p>
+            )}
+              </>
             )}
           </div>
         </div>

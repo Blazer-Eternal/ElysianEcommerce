@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { InfoIcon, LockIcon, ZapIcon } from "../icons";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { useAnimationPause } from "../../hooks/useAnimationPause";
 import type { Cart } from "../../types/cart.types";
 import type { Product } from "../../types/product.types";
@@ -11,6 +12,7 @@ interface CartSummaryProps {
 }
 
 const CartSummary = ({ cart }: CartSummaryProps) => {
+  const isAdmin = useIsAdmin();
   const { ref } = useAnimationPause({ threshold: 0.05, rootMargin: "100px", pauseOnScroll: true });
   
   const subtotal = cart.items.reduce((sum, item) => {
@@ -63,13 +65,15 @@ const CartSummary = ({ cart }: CartSummaryProps) => {
           </p>
         </div>
 
-        {/* CTA Button */}
-        <Link
-          to={ROUTES.CHECKOUT}
-          className="block w-full py-3 px-4 rounded-xl font-bold text-sm text-white text-center bg-linear-to-r from-brand to-cyan-600 hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
-        >
-          Proceed to Checkout
-        </Link>
+        {/* CTA Button, hidden for admins who never place orders */}
+        {!isAdmin && (
+          <Link
+            to={ROUTES.CHECKOUT}
+            className="block w-full py-3 px-4 rounded-xl font-bold text-sm text-white text-center bg-linear-to-r from-brand to-cyan-600 hover:from-brand-dark hover:to-cyan-700 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+          >
+            Proceed to Checkout
+          </Link>
+        )}
 
         {/* Footer badges */}
         <div className="mt-3 flex items-center justify-center gap-3 text-xs font-semibold text-gray-600">

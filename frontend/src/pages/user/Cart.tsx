@@ -1,6 +1,8 @@
-﻿import { Link } from "react-router-dom";
+﻿import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { LightbulbIcon } from "../../components/icons";
 import { useCartState } from "../../hooks/useCart";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import Spinner from "../../components/ui/Spinner";
@@ -8,6 +10,16 @@ import { ROUTES } from "../../constants/routes";
 
 const Cart = () => {
   const { cart, isLoading } = useCartState();
+  const isAdmin = useIsAdmin();
+  const navigate = useNavigate();
+
+  // Admins never shop, so the whole cart surface is out of bounds for them.
+  // Every entry point is already hidden; this covers a direct URL visit.
+  useEffect(() => {
+    if (isAdmin) navigate(ROUTES.ADMIN_DASHBOARD, { replace: true });
+  }, [isAdmin, navigate]);
+
+  if (isAdmin) return null;
 
   // Loading state
   if (isLoading) {

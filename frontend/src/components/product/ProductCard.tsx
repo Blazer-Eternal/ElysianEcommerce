@@ -4,6 +4,7 @@ import type { Product } from "../../types/product.types";
 import { formatCurrency, formatDiscount, getDisplayMrp } from "../../utils/formatCurrency";
 import { ROUTES } from "../../constants/routes";
 import { useCartActions } from "../../hooks/useCart";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { useAnimationPause } from "../../hooks/useAnimationPause";
 import WishlistButton from "../wishlist/WishlistButton";
 import StarRating from "../ui/StarRating";
@@ -19,6 +20,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const [justAdded, setJustAdded] = useState(false);
   const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { addItem } = useCartActions();
+  const isAdmin = useIsAdmin();
   const { ref } = useAnimationPause({ threshold: 0.05, rootMargin: "100px", pauseOnScroll: true });
 
   // Clear any pending success-message timer when the card unmounts.
@@ -153,39 +155,41 @@ const ProductCard = ({ product }: ProductCardProps) => {
               </div>
             </div>
 
-            {/* Add to Cart */}
-            <div className="relative">
-              {/* Success feedback */}
-              {justAdded && (
-                <div
-                  role="status"
-                  className="absolute bottom-full left-0 right-0 z-20 mb-2 flex items-center justify-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-2.5 py-1.5 text-center text-xs font-bold text-green-700 shadow-md animate-scale-in"
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-green-600" aria-hidden="true">
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
-                  <span>Successfully added to cart</span>
-                </div>
-              )}
+            {/* Add to Cart, hidden for admins who are only auditing the catalog */}
+            {!isAdmin && (
+              <div className="relative">
+                {/* Success feedback */}
+                {justAdded && (
+                  <div
+                    role="status"
+                    className="absolute bottom-full left-0 right-0 z-20 mb-2 flex items-center justify-center gap-1.5 rounded-lg border border-green-300 bg-green-50 px-2.5 py-1.5 text-center text-xs font-bold text-green-700 shadow-md animate-scale-in"
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-green-600" aria-hidden="true">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                    <span>Successfully added to cart</span>
+                  </div>
+                )}
 
-              <button
-                onClick={handleAddToCart}
-                disabled={outOfStock || isAdding}
-                className={`w-full rounded-lg border px-3 py-2 text-[13px] font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
-                  justAdded
-                    ? "border-green-500 bg-green-600 text-white disabled:hover:bg-green-600 disabled:hover:text-white"
-                    : "border-brand/40 bg-white text-brand hover:bg-brand hover:border-brand hover:text-white disabled:hover:bg-white disabled:hover:text-brand"
-                }`}
-              >
-                {isAdding
-                  ? "Adding..."
-                  : outOfStock
-                  ? "Out of Stock"
-                  : justAdded
-                  ? "✓ Added!"
-                  : "Add to Cart"}
-              </button>
-            </div>
+                <button
+                  onClick={handleAddToCart}
+                  disabled={outOfStock || isAdding}
+                  className={`w-full rounded-lg border px-3 py-2 text-[13px] font-bold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
+                    justAdded
+                      ? "border-green-500 bg-green-600 text-white disabled:hover:bg-green-600 disabled:hover:text-white"
+                      : "border-brand/40 bg-white text-brand hover:bg-brand hover:border-brand hover:text-white disabled:hover:bg-white disabled:hover:text-brand"
+                  }`}
+                >
+                  {isAdding
+                    ? "Adding..."
+                    : outOfStock
+                    ? "Out of Stock"
+                    : justAdded
+                    ? "✓ Added!"
+                    : "Add to Cart"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -24,6 +24,7 @@ import {
 } from "../../utils/customerDashboard";
 import { getTrackingSteps, trackingCircleClass, type TrackingStep } from "../../utils/orderTracking";
 import { useLoyalty } from "../../hooks/useLoyalty";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import type { Order } from "../../types/order.types";
 import {
   ArrowRightIcon,
@@ -90,6 +91,7 @@ const Dashboard = () => {
   const { items: wishlistItems } = useWishlist();
   const { data: ordersData, isLoading } = useMyOrders();
   const { data: loyalty } = useLoyalty();
+  const isAdmin = useIsAdmin();
 
   const [addingId, setAddingId] = useState<string | null>(null);
   const [addedId, setAddedId] = useState<string | null>(null);
@@ -454,24 +456,26 @@ const Dashboard = () => {
                         </Link>
                         <p className="mt-0.5 text-sm text-gray-500">{formatCurrency(price)}</p>
 
-                        <button
-                          type="button"
-                          onClick={() => handleAddToCart(item.productId)}
-                          disabled={isAdding || outOfStock}
-                          className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-brand-dark disabled:cursor-not-allowed disabled:text-gray-400"
-                        >
-                          {outOfStock ? (
-                            "Out of stock"
-                          ) : justAdded ? (
-                            <>
-                              <CheckIcon size={16} /> Added to cart
-                            </>
-                          ) : (
-                            <>
-                              <PlusIcon size={16} /> {isAdding ? "Adding..." : "Add to Cart"}
-                            </>
-                          )}
-                        </button>
+                        {!isAdmin && (
+                          <button
+                            type="button"
+                            onClick={() => handleAddToCart(item.productId)}
+                            disabled={isAdding || outOfStock}
+                            className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-brand-dark disabled:cursor-not-allowed disabled:text-gray-400"
+                          >
+                            {outOfStock ? (
+                              "Out of stock"
+                            ) : justAdded ? (
+                              <>
+                                <CheckIcon size={16} /> Added to cart
+                              </>
+                            ) : (
+                              <>
+                                <PlusIcon size={16} /> {isAdding ? "Adding..." : "Add to Cart"}
+                              </>
+                            )}
+                          </button>
+                        )}
                       </div>
                     </div>
                   );

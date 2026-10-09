@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCartActions, useCartState } from "../../hooks/useCart";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { ROUTES } from "../../constants/routes";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { cloudinaryImg } from "../../utils/imageUrl";
@@ -34,6 +35,7 @@ const toRows = (items: CartItemType[]): Row[] =>
 const CartPreview = () => {
   const { cart } = useCartState();
   const { removeItem } = useCartActions();
+  const isAdmin = useIsAdmin();
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -187,15 +189,17 @@ const CartPreview = () => {
                 <p className="mt-0.5 text-[11px] text-ink/55">Shipping and discounts apply at checkout.</p>
               </div>
 
-              <div className="px-4 pb-4">
-                <button
-                  type="button"
-                  onClick={handleCheckout}
-                  className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-bold text-white shadow-[0_2px_16px_rgba(61,5,12,0.18)] transition-colors hover:bg-brand-dark"
-                >
-                  Proceed to Checkout
-                </button>
-              </div>
+              {!isAdmin && (
+                <div className="px-4 pb-4">
+                  <button
+                    type="button"
+                    onClick={handleCheckout}
+                    className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-bold text-white shadow-[0_2px_16px_rgba(61,5,12,0.18)] transition-colors hover:bg-brand-dark"
+                  >
+                    Proceed to Checkout
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>

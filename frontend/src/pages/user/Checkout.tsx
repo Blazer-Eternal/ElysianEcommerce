@@ -1,8 +1,9 @@
-﻿import { useState, type FormEvent } from "react";
+﻿import { useEffect, useState, type FormEvent } from "react";
 import { AlertIcon, BanknoteIcon, CheckIcon, CreditCardIcon, MapPinIcon, TicketIcon } from "../../components/icons";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useCartState } from "../../hooks/useCart";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { productService } from "../../services/productService";
 import { orderService } from "../../services/orderService";
 import { getErrorMessage } from "../../utils/getErrorMessage";
@@ -23,7 +24,16 @@ interface CheckoutLine {
 
 const Checkout = () => {
   const { cart } = useCartState();
+  const isAdmin = useIsAdmin();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  // Admins never place orders; keep the whole checkout surface out of reach.
+  // Every entry point (Buy Now, Proceed to Checkout) is already hidden, this
+  // covers a direct URL visit.
+  useEffect(() => {
+    if (isAdmin) navigate(ROUTES.ADMIN_DASHBOARD, { replace: true });
+  }, [isAdmin, navigate]);
 
   // Buy Now arrives as /checkout?buyNow=<productId>&qty=<n>. The item is
   // ordered straight from here, so it is never placed in the cart.
@@ -56,6 +66,8 @@ const Checkout = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const buyNowProduct = isBuyNow ? buyNowData?.data ?? null : null;
+
+  if (isAdmin) return null;
 
   if (isBuyNow && isBuyNowLoading) {
     return (
