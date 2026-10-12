@@ -41,10 +41,14 @@ interface CustomerLayoutProps {
 /**
  * Customer portal shell.
  *
- * Desktop navigation is a detached floating icon rail: icons only, a tooltip
- * that fades and slides in on hover, and a filled highlight on the active
- * entry. Touch devices keep a labelled drawer instead, since hover has no
- * meaning there. Both read from the same `navItems` list.
+ * The top bar spans the full width of the window. Under it the body row holds
+ * two panes: a detached icon rail on the left, shaped as a borderless capsule
+ * with a deep soft shadow so it hovers over the page instead of looking
+ * attached (icons only, a tooltip that fades and slides in on hover, and a
+ * filled highlight on the active entry, tall only as its own icons and
+ * centred against the content pane) and the scrolling content beside it.
+ * Touch devices keep a labelled drawer instead, since hover has no meaning
+ * there. Both navs read from the same `navItems` list.
  */
 const CustomerLayout = ({ children }: CustomerLayoutProps) => {
   const { user } = useAuth();
@@ -127,10 +131,68 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
       .toUpperCase() ?? "?";
 
   return (
-    <div className="flex h-screen overflow-hidden bg-cream lg:pl-28">
-      {/* Floating icon rail, desktop only */}
-      <aside className="fixed bottom-4 left-4 top-4 z-40 hidden w-18 flex-col items-center rounded-3xl border border-sand bg-white/95 p-2 shadow-[0_6px_32px_rgba(61,5,12,0.12)] backdrop-blur-sm lg:flex">
-        <nav className="flex w-full min-h-0 flex-1 flex-col items-center justify-center gap-1.5">
+    <div className="flex h-screen flex-col overflow-hidden bg-cream">
+      {/* Top bar: a full-width row of its own, so the portal chrome runs
+          edge to edge instead of starting after the rail's column. */}
+      <header className="flex shrink-0 items-center gap-3 border-b border-sand bg-white px-4 py-3 sm:px-6">
+        <button
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open menu"
+          className="-m-1.5 rounded-lg p-1.5 text-ink/60 transition-colors hover:bg-brand/5 hover:text-brand lg:hidden"
+        >
+          <MenuIcon size={22} />
+        </button>
+
+        <Link
+          to={ROUTES.HOME}
+          className="group flex shrink-0 items-center"
+          aria-label="Back to Elysian Ecommerce"
+          title="Back to Elysian Ecommerce"
+        >
+          <img
+            src="/images/Bestlogo-transparent.png"
+            alt="Elysian Ecommerce"
+            width={40}
+            height={40}
+            className="h-9 w-9 object-contain transition-transform group-hover:scale-105 sm:h-10 sm:w-10"
+          />
+        </Link>
+
+        <form onSubmit={handleSearch} className="relative min-w-0 flex-1 sm:max-w-md">
+          <SearchIcon size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/50" />
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Search orders, products, invoices..."
+            aria-label="Search the store"
+            className="w-full rounded-xl border border-transparent bg-cream-deep py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink/55 focus:border-brand/40 focus:bg-white focus:ring-2 focus:ring-brand/15 focus:outline-none"
+          />
+        </form>
+
+        <div className="ml-auto flex items-center gap-3 sm:gap-4">
+          <NotificationBell />
+
+          <CartPreview />
+
+          <Link
+            to={ROUTES.PROFILE}
+            className="flex items-center gap-2 text-sm font-medium text-ink/75 transition-colors hover:text-brand"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-brand to-cyan-600 text-xs font-bold text-white">
+              {initials}
+            </span>
+            <span className="hidden sm:inline">{firstName}</span>
+          </Link>
+        </div>
+      </header>
+
+      {/* Body row: the floating rail and the scrolling content pane. The rail
+          lives in this row rather than pinned to the viewport, so it hugs its
+          own icons (no dead height), sits centred against the row, and the
+          content starts right beside it. */}
+      <div className="flex min-h-0 flex-1">
+        <nav className="relative z-40 my-4 ml-6 hidden w-18 shrink-0 flex-col items-center gap-1.5 self-center rounded-full bg-white/95 p-2 shadow-[0_20px_45px_-12px_rgba(61,5,12,0.28),0_6px_14px_-8px_rgba(61,5,12,0.14)] backdrop-blur-sm lg:flex">
           {navItems.map((item) => {
             const active = isActive(item);
             return (
@@ -162,7 +224,12 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
             );
           })}
         </nav>
-      </aside>
+
+        {/* Page content, the only pane that scrolls */}
+        <main ref={mainRef} className="min-w-0 flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
 
       {/* Labelled drawer, small screens keep text, since hover does not exist */}
       <aside
@@ -247,67 +314,6 @@ const CustomerLayout = ({ children }: CustomerLayoutProps) => {
         <div className="fixed inset-0 z-40 bg-ink/40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* Content column */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        {/* Top bar */}
-        <header className="flex items-center gap-3 border-b border-sand bg-white px-4 py-3 sm:px-6">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open menu"
-            className="-m-1.5 rounded-lg p-1.5 text-ink/60 transition-colors hover:bg-brand/5 hover:text-brand lg:hidden"
-          >
-            <MenuIcon size={22} />
-          </button>
-
-          <Link
-            to={ROUTES.HOME}
-            className="group flex shrink-0 items-center"
-            aria-label="Back to Elysian Ecommerce"
-            title="Back to Elysian Ecommerce"
-          >
-            <img
-              src="/images/Bestlogo-transparent.png"
-              alt="Elysian Ecommerce"
-              width={40}
-              height={40}
-              className="h-9 w-9 object-contain transition-transform group-hover:scale-105 sm:h-10 sm:w-10"
-            />
-          </Link>
-
-          <form onSubmit={handleSearch} className="relative min-w-0 flex-1 sm:max-w-md">
-            <SearchIcon size={18} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink/50" />
-            <input
-              type="search"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search orders, products, invoices..."
-              aria-label="Search the store"
-              className="w-full rounded-xl border border-transparent bg-cream-deep py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink/55 focus:border-brand/40 focus:bg-white focus:ring-2 focus:ring-brand/15 focus:outline-none"
-            />
-          </form>
-
-          <div className="ml-auto flex items-center gap-3 sm:gap-4">
-            <NotificationBell />
-
-            <CartPreview />
-
-            <Link
-              to={ROUTES.PROFILE}
-              className="flex items-center gap-2 text-sm font-medium text-ink/75 transition-colors hover:text-brand"
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-brand to-cyan-600 text-xs font-bold text-white">
-                {initials}
-              </span>
-              <span className="hidden sm:inline">{firstName}</span>
-            </Link>
-          </div>
-        </header>
-
-        {/* Page content */}
-        <main ref={mainRef} className="flex-1 overflow-y-auto">
-          {children}
-        </main>
-      </div>
     </div>
   );
 };

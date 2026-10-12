@@ -3,6 +3,7 @@ import { ROUTES } from "../constants/routes";
 import { useIsAdmin } from "../hooks/useIsAdmin";
 import { ArrowRightIcon, CheckIcon } from "../components/icons";
 import { formatCurrency } from "../utils/formatCurrency";
+import { PUBLISHED_COUPONS } from "../utils/coupons";
 import {
   FREE_DELIVERY_FEE,
   MAX_COUNTED_SPEND_PER_ORDER,
@@ -14,10 +15,11 @@ import {
 } from "../utils/loyalty";
 
 /**
- * Every figure on this page comes from `utils/loyalty.ts`, the same constants
- * the plans rail and the loyalty portal quote. The server-side engine
- * (`LoyaltyServices`) is the source of truth; these numbers mirror it so the
- * storefront speaks with one voice.
+ * Every figure on this page comes from `utils/loyalty.ts` (the same
+ * constants the plans rail and the loyalty portal quote) and, for the coupon
+ * table, from `utils/coupons.ts`. The server-side engine (`LoyaltyServices`)
+ * and the coupon rules behind `POST /coupons/apply` are the source of truth;
+ * these numbers mirror them so the storefront speaks with one voice.
  */
 const tierColumn = (name: (typeof TIER_LEVELS)[number]["name"]) =>
   TIER_LEVELS.find((tier) => tier.name === name)!;
@@ -145,59 +147,8 @@ const pointsRules = [
   "Points are removed when an order is refunded, and they have no cash value.",
 ];
 
-const couponRows = [
-  {
-    code: "WELCOME10",
-    offer: "10% off, up to Rs. 1,000",
-    min: formatCurrency(1_000),
-    limits: "Registered customers, once per account",
-  },
-  {
-    code: "GOLD10",
-    offer: "10% off, up to Rs. 1,500",
-    min: formatCurrency(3_000),
-    limits: "Gold and above, 2 uses per account every 30 days, electronics excluded",
-  },
-  {
-    code: "PLAT12",
-    offer: "12% off, up to Rs. 2,500",
-    min: formatCurrency(3_000),
-    limits: "Platinum and above, 2 uses per account every 30 days, electronics excluded",
-  },
-  {
-    code: "DIAMOND15",
-    offer: "15% off, up to Rs. 4,000",
-    min: formatCurrency(3_000),
-    limits: "Diamond, 2 uses per account every 30 days, electronics excluded",
-  },
-  {
-    code: "FREESHIP",
-    offer: `Standard delivery fee (Rs. ${FREE_DELIVERY_FEE}) waived`,
-    min: formatCurrency(2_000),
-    limits: "Up to 3 uses per account every 30 days",
-  },
-  {
-    code: "SAVE500",
-    offer: "Rs. 500 off",
-    min: formatCurrency(5_000),
-    limits: "1 use per account every 30 days, 1,000 redemptions total, electronics excluded",
-  },
-  {
-    code: "FESTIVE15",
-    offer: "15% off, up to Rs. 2,000",
-    min: formatCurrency(5_000),
-    limits: "Festival dates only, 1 use per account every 30 days, 1,000 redemptions total",
-  },
-  {
-    code: "CLEAR30",
-    offer: "30% off, up to Rs. 3,000",
-    min: formatCurrency(5_000),
-    limits: "Clearance-tagged fashion, footwear and bags, once per account, 100 redemptions total",
-  },
-];
-
 const CompareBenefits = () => {
-  // The CTA at the bottom points at the shopper's own loyalty dashboard, which
+  // The CTA at the bottom opens the shopper's own Loyalty & Rewards page, which
   // means nothing to an admin auditing the public page, so it is hidden for them.
   const isAdmin = useIsAdmin();
 
@@ -420,7 +371,7 @@ const CompareBenefits = () => {
               </tr>
             </thead>
             <tbody>
-              {couponRows.map((c, i) => (
+              {PUBLISHED_COUPONS.map((c, i) => (
                 <tr key={c.code} className={i % 2 === 1 ? "bg-cream/60" : ""}>
                   <td className="px-5 py-4 font-bold tracking-wide text-brand">
                     {c.code}
@@ -484,7 +435,7 @@ const CompareBenefits = () => {
               live in your loyalty dashboard.
             </p>
             <Link
-              to={ROUTES.DASHBOARD}
+              to={ROUTES.LOYALTY}
               className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3.5 text-sm font-bold tracking-wide text-white uppercase shadow-[0_14px_30px_-16px_rgba(61,5,12,0.9)] transition-colors duration-300 hover:bg-brand-dark"
             >
               Open loyalty dashboard

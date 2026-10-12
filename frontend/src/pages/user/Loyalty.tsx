@@ -1,5 +1,6 @@
 import { useMemo, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../constants/routes";
 import {
   ArrowRightIcon,
   CheckIcon,
@@ -104,7 +105,7 @@ export default function Loyalty() {
 
   if (isLoading) {
     return (
-      <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <div className="animate-pulse space-y-6">
           <div className="h-44 rounded-3xl bg-cream-deep" />
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -142,7 +143,7 @@ export default function Loyalty() {
   const expiringSoon = points.expiring;
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
       {/* ============ HEADER ============ */}
       <section className="relative overflow-hidden rounded-3xl border border-gold/15 bg-linear-to-br from-cream via-cream-deep to-cream px-6 py-8 sm:px-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(209,128,41,0.14),transparent_55%)]" />
@@ -186,13 +187,13 @@ export default function Loyalty() {
             </span>
             <div className="flex gap-3">
               <button
-                onClick={() => navigate("/rewards")}
+                onClick={() => navigate(`${ROUTES.LOYALTY}#points-summary`)}
                 className="rounded-full bg-brand px-5 py-2.5 text-sm font-medium text-white transition hover:bg-brand-dark"
               >
                 Redeem Points
               </button>
               <button
-                onClick={() => navigate("/compare-benefits")}
+                onClick={() => navigate(ROUTES.COMPARE_BENEFITS)}
                 className="rounded-full border border-gold/40 bg-white px-5 py-2.5 text-sm font-medium text-gold-dark transition hover:bg-cream-deep"
               >
                 Compare Benefits
@@ -400,7 +401,12 @@ export default function Loyalty() {
 
       <div className="grid gap-8 lg:grid-cols-2">
         {/* ============ POINTS SUMMARY ============ */}
-        <section className="rounded-3xl border border-ink/8 bg-white px-6 py-6 sm:px-8">
+        {/* Anchor for the header's "Redeem Points" CTA: there is no separate
+            rewards catalog, the redemption rules live in this card. */}
+        <section
+          id="points-summary"
+          className="rounded-3xl border border-ink/8 bg-white px-6 py-6 sm:px-8"
+        >
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-gold/30 to-gold text-gold-dark">
               <CoinsIcon className="h-5 w-5" />
@@ -476,7 +482,7 @@ export default function Loyalty() {
           </ul>
 
           <button
-            onClick={() => navigate("/rewards")}
+            onClick={() => navigate(ROUTES.COMPARE_BENEFITS)}
             className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-brand transition hover:text-brand-dark"
           >
             <GiftIcon className="h-4 w-4" />

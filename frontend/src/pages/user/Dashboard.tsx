@@ -23,6 +23,7 @@ import {
   getTotalSpent,
 } from "../../utils/customerDashboard";
 import { getTrackingSteps, trackingCircleClass, type TrackingStep } from "../../utils/orderTracking";
+import { couponsForTier } from "../../utils/coupons";
 import { useLoyalty } from "../../hooks/useLoyalty";
 import { useIsAdmin } from "../../hooks/useIsAdmin";
 import type { Order } from "../../types/order.types";
@@ -40,6 +41,7 @@ import {
   MapPinIcon,
   PlusIcon,
   StarIcon,
+  TicketIcon,
   TruckIcon,
 } from "../../components/icons";
 
@@ -132,6 +134,15 @@ const Dashboard = () => {
   const spendProgress =
     loyalty?.checklist.find((item) => item.key === "spend")?.progress ?? 0;
   const nextTier = loyalty?.nextTier ?? null;
+  // Every code this shopper may apply right now: their tier's own perks
+  // first, then the always-on ones, from the catalog the compare-benefits
+  // page prints. Registered and Bronze share the same set, since no level
+  // below Gold carries a dedicated coupon.
+  const availableCoupons = useMemo(
+    () => couponsForTier(loyaltyTier?.index ?? -1),
+    [loyaltyTier]
+  );
+  const snapshotCoupons = availableCoupons.slice(0, 3);
   const firstName = user?.name?.split(" ")[0] ?? "there";
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
@@ -374,6 +385,45 @@ const Dashboard = () => {
                 ? `${formatCurrency(Math.max(0, nextTier.requirements.spend - (loyalty?.counters.spend ?? 0)))} in qualifying spend to ${nextTier.name}`
                 : "top tier reached"}
             </p>
+            {/* The codes this tier can actually apply, so the card's lower
+                half carries something usable instead of empty space. */}
+            <div className="mt-5 border-t border-sand pt-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide text-gray-500">
+                  <TicketIcon size={14} className="text-brand" />
+                  Coupons you can use
+                </p>
+                {availableCoupons.length > snapshotCoupons.length && (
+                  <Link
+                    to={ROUTES.COMPARE_BENEFITS}
+                    title="See every coupon and its terms"
+                    className="text-[11px] font-medium text-gray-400 transition-colors hover:text-brand"
+                  >
+                    +{availableCoupons.length - snapshotCoupons.length} more
+                  </Link>
+                )}
+              </div>
+
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {snapshotCoupons.map((coupon) => (
+                  <div
+                    key={coupon.code}
+                    className="min-w-0 rounded-xl border border-sand bg-cream px-3 py-2"
+                  >
+                    <p className="truncate text-xs font-bold tracking-wide text-gray-900">
+                      {coupon.code}
+                    </p>
+                    <p className="mt-0.5 truncate text-[11px] leading-tight text-gray-500">
+                      {coupon.offer}
+                    </p>
+                    <p className="mt-0.5 truncate text-[10px] leading-tight text-gray-400">
+                      min. {coupon.min}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <Link
               to={ROUTES.LOYALTY}
               className="mt-auto w-fit rounded-full bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:bg-brand/20"

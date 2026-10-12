@@ -203,7 +203,9 @@ function App() {
         path={ROUTES.LOYALTY}
         element={
           <ProtectedRoute>
-            <Loyalty />
+            <CustomerLayout>
+              <Loyalty />
+            </CustomerLayout>
           </ProtectedRoute>
         }
       />
