@@ -362,7 +362,7 @@ const Wishlist = () => {
       `}</style>
 
       {/* Header banner */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 animate-fade-in">
+      <div className="px-4 sm:px-6 animate-fade-in">
         <div className="relative overflow-hidden rounded-3xl border border-[#ece1d0] bg-white shadow-sm">
           <div aria-hidden="true" className="absolute inset-0 bg-linear-to-r from-teal-50 via-white to-cyan-50" />
           <div
@@ -421,7 +421,7 @@ const Wishlist = () => {
       </div>
 
       {/* Filter & Sort toolbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-5">
+      <div className="px-4 sm:px-6 mt-5">
         <div className="flex flex-col lg:flex-row gap-3 lg:items-center justify-between rounded-2xl border border-[#ece1d0] bg-white px-4 py-3 shadow-sm">
           <div className="flex gap-2 flex-wrap items-center">
             <button
@@ -493,7 +493,7 @@ const Wishlist = () => {
       </div>
 
       {/* Products, Grid / List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-5">
+      <div className="px-4 sm:px-6 mt-5">
         {viewMode === "grid" ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 auto-rows-max">
             {filteredAndSortedItems.map((item) => {

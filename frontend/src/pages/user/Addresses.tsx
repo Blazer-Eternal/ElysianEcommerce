@@ -113,7 +113,7 @@ const Addresses = () => {
 
   return (
     <CustomerLayout>
-      <div className="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="max-w-3xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         {/* Header */}
         <section className={CARD}>
           <div className="flex flex-wrap items-start justify-between gap-4">

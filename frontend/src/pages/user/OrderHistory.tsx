@@ -61,7 +61,7 @@ const OrderHistory = () => {
   const visibleOrders = orders.filter((order) => matchesFilter(order, filter));
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 sm:py-12">
+    <div className="px-4 py-10 sm:py-12">
       {/* Header with the two tabs */}
       <div className="mb-8 animate-fade-in">
         <div>

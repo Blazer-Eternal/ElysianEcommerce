@@ -1,3 +1,5 @@
+import NepaliDate from "nepali-date-converter";
+
 export const formatDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
@@ -17,25 +19,23 @@ export const formatDateTime = (dateString: string): string => {
   });
 };
 
-const ordinalSuffix = (day: number): string => {
-  if (day % 100 >= 11 && day % 100 <= 13) return "th";
-  switch (day % 10) {
-    case 1:
-      return "st";
-    case 2:
-      return "nd";
-    case 3:
-      return "rd";
-    default:
-      return "th";
-  }
-};
+const NEPALI_MONTHS_EN = [
+  "Baisakh", "Jestha", "Ashadh", "Shrawan", "Bhadra", "Ashwin",
+  "Kartik", "Mangsir", "Poush", "Magh", "Falgun", "Chaitra",
+];
 
-/** "Wednesday, October 7th, 2026", the greeting-header date on the dashboard. */
-export const formatLongDate = (date: Date = new Date()): string => {
-  const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
-  const month = date.toLocaleDateString("en-US", { month: "long" });
-  return `${weekday}, ${month} ${date.getDate()}${ordinalSuffix(date.getDate())}, ${date.getFullYear()}`;
+const WEEKDAYS_EN = [
+  "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+];
+
+/**
+ * "Monday, Ashwin 26, 2083", the greeting-header date on the dashboard.
+ * Bikram Sambat calendar, written with English weekday, month and digits,
+ * converted from the browser's local date so it agrees with the shopper's clock.
+ */
+export const formatNepaliLongDate = (date: Date = new Date()): string => {
+  const bs = NepaliDate.fromAD(date);
+  return `${WEEKDAYS_EN[date.getDay()]}, ${NEPALI_MONTHS_EN[bs.getMonth()]} ${bs.getDate()}, ${bs.getYear()}`;
 };
 
 /**

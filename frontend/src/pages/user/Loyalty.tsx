@@ -105,7 +105,7 @@ export default function Loyalty() {
 
   if (isLoading) {
     return (
-      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+      <div className="px-4 py-6 sm:px-6 sm:py-8">
         <div className="animate-pulse space-y-6">
           <div className="h-44 rounded-3xl bg-cream-deep" />
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -143,7 +143,7 @@ export default function Loyalty() {
   const expiringSoon = points.expiring;
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
+    <div className="space-y-6 px-4 py-6 sm:px-6 sm:py-8">
       {/* ============ HEADER ============ */}
       <section className="relative overflow-hidden rounded-3xl border border-gold/15 bg-linear-to-br from-cream via-cream-deep to-cream px-6 py-8 sm:px-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(209,128,41,0.14),transparent_55%)]" />

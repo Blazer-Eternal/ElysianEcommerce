@@ -14,7 +14,7 @@ import { useWishlist } from "../../hooks/useWishlist";
 import { useCartActions } from "../../hooks/useCart";
 import { productService } from "../../services/productService";
 import { formatCurrency } from "../../utils/formatCurrency";
-import { formatDate, formatLongDate } from "../../utils/formatDate";
+import { formatDate, formatNepaliLongDate } from "../../utils/formatDate";
 import { cloudinaryImg } from "../../utils/imageUrl";
 import {
   getActiveOrders,
@@ -177,7 +177,7 @@ const Dashboard = () => {
 
   return (
     <CustomerLayout>
-      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
+      <div className="space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         {/* Greeting header */}
         <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
           <div className="min-w-0">
@@ -190,7 +190,7 @@ const Dashboard = () => {
                 : "Nothing is on the way right now"}
             </p>
           </div>
-          <p className="text-sm font-medium text-gray-500">{formatLongDate()}</p>
+          <p className="text-sm font-medium text-gray-500">{formatNepaliLongDate()}</p>
         </header>
 
         {/*

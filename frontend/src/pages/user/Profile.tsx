@@ -144,7 +144,7 @@ const Profile = () => {
     .toUpperCase();
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10 space-y-6">
+    <div className="max-w-3xl px-4 py-10 space-y-6">
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500">Keep your account details up to date.</p>
         <p className="flex items-center gap-1.5 text-sm text-green-700">
